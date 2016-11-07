@@ -1,0 +1,14 @@
+/tests/vendor/
+/tests/behat.yml
+/tests/logs/mink/*
+!/tests/logs/mink/.gitkeep
+/tests/.env
+/package-data/www/*
+!/package-data/www/.gitkeep
+/package-data/mysql/*
+!/package-data/mysql/.gitkeep
+/temp/*
+!/temp/.gitkeep
+
+### JetBrains IDEs ###
+/.idea/

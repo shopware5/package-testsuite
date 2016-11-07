@@ -1,0 +1,34 @@
+default:
+    extensions:
+        SensioLabs\Behat\PageObjectExtension:
+            namespaces:
+                page: Shopware\Tests\Mink\Page
+                element: Shopware\Tests\Mink\Element
+        Behat\MinkExtension:
+            base_url: 'http://shopware.localhost/'
+            default_session: 'goutte'
+            javascript_session: 'selenium2'
+            goutte: ~
+            selenium2:
+                wd_host: "http://selenium:4444/wd/hub"
+                capabilities: { 'firefox': {'profile':'ff_prefs.zip'} }
+            browser_name: firefox
+
+    gherkin:
+      filters:
+        tags: ~@knownFailing
+
+    suites:
+        default:
+            paths:    [ %paths.base%/features ]
+            template: Responsive
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - Shopware\Tests\Mink\FeatureContext
+                - Shopware\Tests\Mink\GeneralContext
+                - Shopware\Tests\Mink\BackendContext
+                - Shopware\Tests\Mink\FrontendContext
+                - Shopware\Tests\Mink\FrontendCheckoutContext
+                - Shopware\Tests\Mink\FrontendAccountContext
+                - Shopware\Tests\Mink\ApiContext
+                - Shopware\Tests\Mink\DetailContext

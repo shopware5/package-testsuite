@@ -1,0 +1,47 @@
+version: '2'
+services:
+  mysql:
+    build: ./build-mysql
+    environment:
+       MYSQL_ROOT_PASSWORD: toor
+       MYSQL_DATABASE: shopware
+       MYSQL_USER: shopware
+       MYSQL_PASSWORD: shopware
+    volumes:
+      - ../package-data/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+  apache:
+      build: ./build-apache
+      volumes:
+        - ../assetgenerator:/var/www/assetgenerator
+        - ../package-data/www:/var/www/shopware
+      links:
+        - mysql
+        - smtp
+      ports:
+        - 80:80
+      entrypoint: /entrypoint.sh
+  smtp:
+    image: mailhog/mailhog
+  selenium:
+    build: ./build-selenium
+    links:
+      - apache:assetgenerator.localhost
+      - apache:shopware-test.localhost
+    ports:
+      - 5900:5900
+  behat:
+    build: ./build-behat
+    volumes:
+      - ../tests:/tests
+#      - ../tests:/home/dev/tests
+    depends_on:
+      - apache
+      - selenium
+      - smtp
+    links:
+      - apache:shopware-test.localhost
+      - selenium
+      - smtp
+    entrypoint: /entrypoint.sh
