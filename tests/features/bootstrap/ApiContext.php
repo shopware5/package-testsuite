@@ -2,7 +2,6 @@
 
 namespace Shopware\Tests\Mink;
 
-use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Exception\MissingRequirementException;
@@ -69,8 +68,8 @@ class ApiContext extends SubContext
         foreach ($data as $item) {
             $this->generatedUsers[] = $item['email'];
             $password = (array_key_exists('password', $item) && !empty($item['password'])) ? $item['password'] : '';
-            $group = (array_key_exists('group', $item) && !empty($item['group'])) ? $item['group'] : '';
-            $this->checkIfCustomerAccountExists($item['email'], $password, $group);
+            $group = (array_key_exists('group', $item) && !empty($item['group'])) ? $item['group'] : 'EK';
+            $this->recreateCustomerAccount($item['email'], $password, $group);
         }
     }
 
@@ -80,7 +79,7 @@ class ApiContext extends SubContext
     public function theCustomerAccountExists($email, $password = '', $group = '')
     {
         $this->generatedUsers[] = $email;
-        $this->checkIfCustomerAccountExists($email, $password, $group);
+        $this->recreateCustomerAccount($email, $password, $group);
     }
 
     /**
@@ -88,7 +87,7 @@ class ApiContext extends SubContext
      */
     public function cleanGeneratedUsers(AfterScenarioScope $scope)
     {
-        if($this->generatedUsers == null || !is_array($this->generatedUsers)){
+        if ($this->generatedUsers == null || !is_array($this->generatedUsers)) {
             return;
         }
 
@@ -106,20 +105,24 @@ class ApiContext extends SubContext
      * @param string $password
      * @param string $group
      */
-    private function checkIfCustomerAccountExists($email, $password = '', $group = '')
+    private function recreateCustomerAccount($email, $password = '', $group = '')
     {
         $api = $this->getApiClient();
 
-        if ($api->customerExists($email) === false) {
-            $data = [
-                'email' => $email,
-                'password' => $password ?: $this->slugify($email),
-            ];
-            if (!empty($group)) {
-                $data['groupKey'] = $group;
-            }
-            $api->createCustomer($data);
+        if ($api->customerExists($email) === true) {
+            $api->deleteCustomerByEmail($email);
         }
+
+        $data = [
+            'email' => $email,
+            'password' => $password ?: $this->slugify($email),
+        ];
+
+        if (!empty($group)) {
+            $data['groupKey'] = $group;
+        }
+
+        $api->createCustomer($data);
     }
 
     /**

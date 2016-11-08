@@ -3,6 +3,7 @@
 namespace Shopware\Tests\Mink;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\Exception as MinkException;
@@ -146,5 +147,23 @@ class FeatureContext extends SubContext implements SnippetAcceptingContext
             uniqid('', true), 'png');
         $filepath = $filepath ? $filepath : (ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir());
         file_put_contents($filepath . '/' . $filename, $this->getSession()->getScreenshot());
+    }
+
+    /**
+     * @Given I am in subshop with URL :url
+     * @param $url
+     */
+    public function iAmInSubshopWithURL($url)
+    {
+        if (substr($url, 0, 4) === "http") {
+            $this->setMinkParameters([
+                'base_url' => $url
+            ]);
+            return;
+        }
+        $baseUrl = $this->getMinkParameter('base_url');
+        $this->setMinkParameters([
+            'base_url' => rtrim($baseUrl, "/") . "/" . ltrim($url, "/")
+        ]);
     }
 }
