@@ -288,7 +288,7 @@ class XpathBuilder
 
     public function getXTabContainerForLabel($label)
     {
-        return $this->span('desc', ['@text' => $label])->div('asc',['~class' => 'x-tab'],1)->get();
+        return $this->span('desc', ['@text' => $label])->div('asc', ['~class' => 'x-tab'], 1)->get();
     }
 
     public function getXSelectorPebbleForLabel($label)
@@ -301,14 +301,19 @@ class XpathBuilder
     }
 
     /**
-     * @param $action
+     * @param string $action
+     * @param string $optionText
      * @return XpathBuilder
      */
-    public function xDropdown($action)
+    public function xDropdown($action, $optionText = "")
     {
-        return $this
-            ->div(['~class' => 'x-boundlist', 'and', '@data-action' => $action])
-            ->li('desc', ['@role' => 'option']);
+        $this->div(['~class' => 'x-boundlist', 'and', '@data-action' => $action]);
+        if (empty($optionText)) {
+            $this->li('desc', ['@role' => 'option']);
+            return $this;
+        }
+        $this->li('desc', ['@role' => 'option', 'and', '@text' => $optionText]);
+        return $this;
     }
 
     public function getXInputForLabel($label)

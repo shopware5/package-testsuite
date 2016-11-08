@@ -117,4 +117,26 @@ class ContextAwarePage extends Page
             return empty($elem) || !$elem->isVisible();
         }, 90);
     }
+
+    /**
+     * @param NodeElement $parent
+     * @param string $label
+     * @param string $action
+     * @param string $optionText
+     */
+    protected function selectFromXDropdown(NodeElement $parent, $label, $action, $optionText)
+    {
+        $xp =new XpathBuilder();
+        $pebbleXpath = $xp->getXSelectorPebbleForLabel($label);
+        $pebble = $parent->find('xpath', $pebbleXpath);
+        if(empty($pebble)){
+            echo "\n";
+            print_r([$parent->getXpath(),$pebbleXpath]);
+            echo "\n";
+        }
+        $pebble->click();
+
+        $dropdownOption = $this->waitForSelectorPresent('xpath', $xp->xDropdown($action, $optionText)->get());
+        $dropdownOption->click();
+    }
 }

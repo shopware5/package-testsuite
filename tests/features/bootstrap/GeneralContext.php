@@ -2,6 +2,7 @@
 
 namespace Shopware\Tests\Mink;
 
+use Behat\Gherkin\Node\TableNode;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class GeneralContext extends SubContext
@@ -24,5 +25,21 @@ class GeneralContext extends SubContext
     public function iShouldSeeEventually($text)
     {
         $this->waitForText($text);
+    }
+
+    /**
+     * @When /^I do stuff$/
+     */
+    public function iDoStuff()
+    {
+        echo "Foo";
+    }
+
+    /**
+     * @Then /^I want to be happy$/
+     */
+    public function iWantToBeHappy()
+    {
+        echo "Foo";
     }
 }

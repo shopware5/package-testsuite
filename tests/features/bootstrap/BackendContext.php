@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Exception\NotFoundByXpathException;
 use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\Page\Backend\BackendLogin;
+use Shopware\Tests\Mink\Page\Backend\Config;
 use Shopware\Tests\Mink\Page\Backend\Payment;
 use Shopware\Tests\Mink\Page\Backend\RiskManagement;
 use Shopware\Tests\Mink\Page\Backend\Shipping;
@@ -78,14 +79,10 @@ class BackendContext extends SubContext
         $this->iEditTheUserWithEmail($email);
         $this->waitForText('API-Zugang');
 
-        $apiCheckboxLabelXPath = $xp
-            ->div(['@text' => 'API-Zugang'])
-            ->fieldset('asc',[],1)
-            ->label('desc', ['@text' => 'Aktiviert']);
+        $apiCheckboxLabelXPath = $xp->div(['@text' => 'API-Zugang'])->fieldset('asc', [], 1)->label('desc',
+                ['@text' => 'Aktiviert']);
 
-        $apiCheckboxXPath = $xp
-            ->tr('asc',[],1)
-            ->input('desc');
+        $apiCheckboxXPath = $xp->tr('asc', [], 1)->input('desc');
 
         /** @var NodeElement $apiCheckbox */
         $apiCheckboxLabel = $this->getSession()->getPage()->find('xpath', $apiCheckboxLabelXPath);
@@ -504,41 +501,31 @@ class BackendContext extends SubContext
         /** @var NodeElement $window */
         $window = $page->find('xpath', $windowXPath);
         $this->assertNotNull($window, "Payment window: $windowXPath");
-        
-        $typeElementXPath = $xp
-            ->div('desc', ['starts-with' => ['@id', 'payment-main-tree']])
-            ->div('desc', ['~class' => 'x-grid-cell-inner', 'and', '~text' => $type . ' ('])
-            ->get();
+
+        $typeElementXPath = $xp->div('desc', ['starts-with' => ['@id', 'payment-main-tree']])->div('desc',
+                ['~class' => 'x-grid-cell-inner', 'and', '~text' => $type . ' ('])->get();
 
         /** @var NodeElement $typeElement */
         $typeElement = $window->find('xpath', $typeElementXPath);
         $this->assertNotNull($typeElement, "Type element: $typeElementXPath");
         $typeElement->click();
 
-        $tabXPath = $xp
-            ->span('desc', ['@class' => 'x-tab-inner', 'and', '~text' => 'Generell'])
-            ->get();
+        $tabXPath = $xp->span('desc', ['@class' => 'x-tab-inner', 'and', '~text' => 'Generell'])->get();
 
         /** @var NodeElement $tab */
         $tab = $window->find('xpath', $tabXPath);
         $this->assertNotNull($tab, "General Tab: $tabXPath");
         $tab->click();
 
-        $checkboxXPath = $xp
-            ->label('desc', ['~class' => 'x-form-item-label', 'and', '@text' => 'Aktiv:'])
-            ->td('asc', [], 1)
-            ->td('fs', [], 1)
-            ->input('desc', [], 1)
-            ->get();
+        $checkboxXPath = $xp->label('desc', ['~class' => 'x-form-item-label', 'and', '@text' => 'Aktiv:'])->td('asc',
+                [], 1)->td('fs', [], 1)->input('desc', [], 1)->get();
 
         /** @var NodeElement $checkbox */
         $checkbox = $window->find('xpath', $checkboxXPath);
         $this->assertNotNull($checkbox, "Activation checkbox: $checkboxXPath");
 
         /* ExtJS checkboxes are buttons. Ancestor table tag indicates checked/unckecked via class. */
-        $checkedXPath = $xp
-            ->table('asc', ['~class' => 'x-form-cb-checked'], 1)
-            ->get();
+        $checkedXPath = $xp->table('asc', ['~class' => 'x-form-cb-checked'], 1)->get();
         /** @var NodeElement $checked */
         $checked = $checkbox->find('xpath', $checkedXPath);
         if ($checked !== null && count($options) === 0) {
@@ -553,10 +540,8 @@ class BackendContext extends SubContext
             $this->setPaymentOption($key, $value, $window);
         }
 
-        $saveButtonXPath = $xp
-            ->span('desc', ['@text' => 'Speichern', 'and', '~class' => 'x-btn-inner'])
-            ->button('asc', [], 1)
-            ->get();
+        $saveButtonXPath = $xp->span('desc', ['@text' => 'Speichern', 'and', '~class' => 'x-btn-inner'])->button('asc',
+                [], 1)->get();
 
         /** @var NodeElement $checkbox */
         $saveButton = $window->find('xpath', $saveButtonXPath);
@@ -571,11 +556,8 @@ class BackendContext extends SubContext
         $xp = new XpathBuilder();
         switch ($key) {
             case 'surcharge':
-                $surchargeInputXPath = $xp
-                    ->label('desc', ['@text' => 'Pauschaler Aufschlag:'])
-                    ->tr('asc', [], 1)
-                    ->input('desc', ['@name' => 'surcharge'])
-                    ->get();
+                $surchargeInputXPath = $xp->label('desc', ['@text' => 'Pauschaler Aufschlag:'])->tr('asc', [],
+                        1)->input('desc', ['@name' => 'surcharge'])->get();
                 /** @var NodeElement $surchargeInput */
                 $surchargeInput = $window->find('xpath', $surchargeInputXPath);
                 $this->assertNotNull($surchargeInput, "Type element: $surchargeInputXPath");
@@ -619,5 +601,23 @@ class BackendContext extends SubContext
         /** @var Shipping $page */
         $page = $this->getPage('Shipping');
         $page->activateCountriesForShippingMethod($method, $table->getHash());
+    }
+
+    /**
+     * @Given /^the following subshops exist:$/
+     */
+    public function theFollowingSubshopsExist(TableNode $table)
+    {
+        $data = $table->getHash();
+        $this->login();
+        foreach ($data as $subshop) {
+            if (!array_key_exists('host', $subshop)) {
+                $subshop['host'] = $this->getMinkParameter('base_url');
+            }
+            /** @var Config $page */
+            $page = $this->getPage('Config');
+            $page->open();
+            $page->createSubShop($subshop);
+        }
     }
 }
