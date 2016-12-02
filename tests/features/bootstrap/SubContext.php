@@ -127,6 +127,23 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
+     * @param string $selector xpath selector
+     * @param string $text
+     * @param int $sleep
+     */
+    protected function waitForTextInElement($selector, $text, $sleep = 2)
+    {
+        sleep($sleep);
+        $this->spin(function (SubContext $context) use ($text, $selector) {
+            /** @var NodeElement $baseElement */
+            $baseElement = $context->getSession()->getPage()->find('xpath', $selector);
+            $result = $baseElement->findAll('xpath', "/descendant::*[contains(text(), '$text')]");
+            return $result != null && count($result) > 0;
+        });
+    }
+
+    /**
+     * Checks via spin function if a string exists, with sleep at the beginning (default 2)
      * @param string $text
      * @param int $sleep
      */

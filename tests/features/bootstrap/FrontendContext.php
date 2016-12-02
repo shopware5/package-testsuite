@@ -28,9 +28,9 @@ class FrontendContext extends SubContext
 
         $frontendIndex->open();
 
-        $namedSelectors = $frontendIndex->getNamedSelectors();
+        $cssSelectors = $frontendIndex->getCssSelectors();
 
-        $frontendIndex->clickLink($namedSelectors['myAccount']['de']);
+        $frontendIndex->find('css', $cssSelectors['myAccount'])->click();
 
         $alreadyLoggedIn = $this->waitIfThereIsText($email);
         $wrongCustomer = $this->checkIfThereIsText('Willkommen', $this);
@@ -46,7 +46,7 @@ class FrontendContext extends SubContext
             $accountPage->logout();
             $this->waitForText('Logout erfolgreich');
             $frontendIndex->open();
-            $frontendIndex->clickLink($namedSelectors['myAccount']['de']);
+            $frontendIndex->find('css', $cssSelectors['myAccount'])->click();
         }
 
         $this->waitForText('Ich bin bereits Kunde');
