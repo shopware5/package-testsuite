@@ -18,7 +18,9 @@ class Index extends Page implements HelperSelectorInterface
      */
     public function getCssSelectors()
     {
-        return [];
+        return [
+            'myAccount' => '.account--link',
+        ];
     }
 
     /**
@@ -26,12 +28,7 @@ class Index extends Page implements HelperSelectorInterface
      */
     public function getNamedSelectors()
     {
-        return [
-            'myAccount' => [
-                'de' => 'Mein Konto',
-                'en' => 'My Account',
-            ]
-        ];
+        return [];
     }
 
     /**
@@ -59,6 +56,16 @@ class Index extends Page implements HelperSelectorInterface
                 ->div('dsc', ['@class' => 'product--info'])
                 ->a('dsc', ['@class' => 'product--title', 'and', '@title'=>'{PRODUCTNAME}'])
                 ->div('asc', ['~class' => 'product--box'], 1)
+                ->get(),
+            'logoPictureSourceElements' => $xp
+                ->div(['~class' => 'logo--shop'])
+                ->picture('desc',[],1)
+                ->source('desc', [])
+                ->get(),
+            'logoPictureimgElement' => $xp
+                ->div(['~class' => 'logo--shop'])
+                ->picture('desc',[],1)
+                ->img('desc', [],1)
                 ->get(),
         ];
     }
