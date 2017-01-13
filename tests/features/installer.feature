@@ -51,12 +51,12 @@ Feature: I can start and complete the installation process
       | c_database_user   |
       | c_database_schema |
     When I fill the "databaseForm" form:
-      | field               | value         |
-      | c_database_host     | mysql         |
-      | c_database_port     | 3306          |
-      | c_database_user     | shopware-bare |
-      | c_database_password | shopware-bare |
-      | c_database_schema   | shopware-bare |
+      | field               | value    |
+      | c_database_host     | mysql    |
+      | c_database_port     | 3306     |
+      | c_database_user     | shopware |
+      | c_database_password | shopware |
+      | c_database_schema   | shopware |
     And I advance to the next installer page
 
     And I click on "start" on the installer page to start the database update

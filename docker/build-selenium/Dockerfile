@@ -1,4 +1,6 @@
-FROM selenium/standalone-firefox-debug:2.53.0
+FROM selenium/standalone-chrome:3.0.1
+
+USER root
 
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install \
@@ -16,3 +18,5 @@ RUN locale-gen de_DE.UTF-8 \
   && apt-get -qqy --no-install-recommends install \
     language-pack-de \
   && rm -rf /var/lib/apt/lists/*
+
+USER seluser
