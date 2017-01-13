@@ -2,8 +2,6 @@
 
 namespace Shopware\Tests\Mink;
 
-
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\Page\Installer\InstallerIndex;

@@ -1,5 +1,4 @@
 /tests/vendor/
-#/tests/behat.yml
 /tests/logs/mink/*
 !/tests/logs/mink/.gitkeep
 /files/*
