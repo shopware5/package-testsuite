@@ -11,8 +11,6 @@ services:
        MYSQL_DATABASE: shopware
        MYSQL_USER: shopware
        MYSQL_PASSWORD: shopware
-    ports:
-      - 3306:3306
   apache:
       build: ./build-apache
       image: swag/apache-packagetests
