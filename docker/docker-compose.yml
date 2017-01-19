@@ -1,47 +1,48 @@
 version: '2'
+
+volumes:
+  datavolume:
+
 services:
   mysql:
-    build: ./build-mysql
+    image: mysql
     environment:
        MYSQL_ROOT_PASSWORD: toor
        MYSQL_DATABASE: shopware
        MYSQL_USER: shopware
        MYSQL_PASSWORD: shopware
-    volumes:
-      - ../package-data/mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
   apache:
       build: ./build-apache
+      image: swag/apache-packagetests
       volumes:
         - ../assetgenerator:/var/www/assetgenerator
-        - ../package-data/www:/var/www/shopware
+        - datavolume:/var/www/shopware
+        - ~/.composer/cache:/root/.composer/cache
       links:
         - mysql
         - smtp
-      ports:
-        - 80:80
-      entrypoint: /entrypoint.sh
+      extra_hosts:
+        - "assetgenerator.example:127.0.0.1"
+        - "shopware.test:127.0.0.1"
   smtp:
     image: mailhog/mailhog
   selenium:
     build: ./build-selenium
+    image: swag/selenium
     links:
-      - apache:assetgenerator.localhost
-      - apache:shopware-test.localhost
-    ports:
-      - 5900:5900
-  behat:
-    build: ./build-behat
+      - apache:assetgenerator.example
+      - apache:shopware.test
+  tools:
+    build: ./build-tools
+    image: swag/tools-packagetests
     volumes:
       - ../tests:/tests
-#      - ../tests:/home/dev/tests
-    depends_on:
-      - apache
-      - selenium
-      - smtp
+      - datavolume:/var/www/shopware
+      - ~/.composer/cache:/root/.composer/cache
+      - ../files:/source
+      - ../tests/logs:/logs
     links:
-      - apache:shopware-test.localhost
+      - apache:shopware.test
+      - apache:assetgenerator.example
       - selenium
       - smtp
-    entrypoint: /entrypoint.sh
