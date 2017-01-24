@@ -60,7 +60,7 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
     /**
      * Starts the database migration
      *
-     *
+     * @param string $text Text of the button which starts the database migration
      *
      */
     public function clickOnDbStart($text)
@@ -95,6 +95,8 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
 
     /**
      * Advances to the next updater page
+     *
+     * @param string $stepName Name of the step from which the navigation will proceed
      *
      */
     public function advanceToStep($stepName)

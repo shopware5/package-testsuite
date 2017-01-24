@@ -2,12 +2,12 @@
 Feature: I can start and complete the update process
 
   Scenario: I can execute the update process in german language via auto-update
-    Given I am on the page "backend index"
-    And I am logged in with user "demo" and password "demo"
+    Given I am on the page "BackendLogin"
+    When I log in in with user "demo" and password "demo"
     Then I should see "Eine neue Version von Shopware ist verfügbar!"
     When I click on "Details"
     Then I should see "Softwareaktualisierung"
-    And I should see a text which contains "Shopware Version"
+    And I should see "Shopware Version"
     And the "Update starten" button should be disabled
 
     When I click on the "Voraussetzungen" tab
@@ -22,13 +22,12 @@ Feature: I can start and complete the update process
     And I should see "Shopware Updater" eventually
 
     When I am on the page "UpdaterIndex"
-    Then I should skip "Systemvoraussetzungen"
     And I should see "Datenbank Update durchführen" eventually
     And I should see "Aufräumen" eventually
 
     When I have unused files in my installation
     And  I advance to the next updater page
-    Then I should see a text which contains "entfernte Dateien"
+    Then I should see "entfernte Dateien"
 
     When the cleanup will be finished and the loading indicator disappears
     Then I should see "Die Aktualisierung wurde erfolgreich abgeschlossen." eventually

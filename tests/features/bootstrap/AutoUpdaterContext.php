@@ -56,4 +56,20 @@ class AutoUpdaterContext implements Context
     {
         throw new PendingException();
     }
+
+    /**
+     * @When /^I click on "([^"]*)"$/
+     */
+    public function iClickOn($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^I log in in with user "([^"]*)" and password "([^"]*)"$/
+     */
+    public function iLogInInWithUserAndPassword($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
 }

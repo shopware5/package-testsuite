@@ -85,6 +85,10 @@ class UpdaterContext extends SubContext
         $this->setRequirementsFullfillment(false);
     }
 
+    /**
+     * Sets the access privileges of a directory according to the situation to simulate system requirements
+     *
+     */
     private function setRequirementsFullfillment($meetRequirements)
     {
         if($meetRequirements === false) {
