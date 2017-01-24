@@ -24,7 +24,7 @@ Feature: I can start and complete the update process
     Then I should see "entfernte Dateien"
 
     When I should see "Die Aktualisierung wurde erfolgreich abgeschlossen." eventually
-    Then I should see the reminder to remove the update-assets folder
+    Then I should see the reminder "Ihr Shop befindet sich zurzeit im Wartungsmodus." to remove the update-assets folder
 
   Scenario: The system requirements for the update are not fullfilled
     Given the update requirements are not met
@@ -47,7 +47,7 @@ Feature: I can start and complete the update process
     Then I should see "entfernte Dateien"
 
     When I should see "Die Aktualisierung wurde erfolgreich abgeschlossen." eventually
-    Then I should see the reminder to remove the update-assets folder
+    Then I should see the reminder "Ihr Shop befindet sich zurzeit im Wartungsmodus." to remove the update-assets folder
 
 
 

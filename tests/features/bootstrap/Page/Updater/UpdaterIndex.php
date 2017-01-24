@@ -87,10 +87,12 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
     /**
      * Provides the handling of the update-asset folder after the update is finshed
      *
+     * @param string $updateTitle Text which indicates the hint to remove the update assets
+     *
      */
-    public function handleUpdateAssets()
+    public function handleUpdateAssets($updateTitle)
     {
-        $this->waitForText("Ihr Shop befindet sich zurzeit im Wartungsmodus.");
+        $this->waitForText($updateTitle);
     }
 
     /**

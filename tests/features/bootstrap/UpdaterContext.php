@@ -60,13 +60,13 @@ class UpdaterContext extends SubContext
     }
 
     /**
-     * @Given I should see the reminder to remove the update-assets folder
+     * @Given I should see the reminder :hint to remove the update-assets folder
      */
-    public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder()
+    public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder($hint)
     {
         /** @var UpdaterIndex $page */
         $page = $this->getPage('UpdaterIndex');
-        $page->handleUpdateAssets();
+        $page->handleUpdateAssets($hint);
     }
 
     /**

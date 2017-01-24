@@ -6,6 +6,7 @@
  * Time: 07:53
  */
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 
 class AutoUpdaterContext implements Context
 {
@@ -50,7 +51,7 @@ class AutoUpdaterContext implements Context
     }
 
     /**
-     * @When I click the :text element$
+     * @When I click the :text element
      */
     public function iClickTheElement($text)
     {
@@ -58,7 +59,7 @@ class AutoUpdaterContext implements Context
     }
 
     /**
-     * @When /^I click on "([^"]*)"$/
+     * @When I click on :element
      */
     public function iClickOn($arg1)
     {
@@ -66,9 +67,9 @@ class AutoUpdaterContext implements Context
     }
 
     /**
-     * @When /^I log in in with user "([^"]*)" and password "([^"]*)"$/
+     * @When I log in in with user :username and password :password
      */
-    public function iLogInInWithUserAndPassword($arg1, $arg2)
+    public function iLogInInWithUserAndPassword($username, $password)
     {
         throw new PendingException();
     }
