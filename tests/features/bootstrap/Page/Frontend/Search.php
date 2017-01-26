@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -6,7 +7,6 @@ use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class Search extends Page implements HelperSelectorInterface
 {
-
     protected $path = 'search?sSearch={searchTerm}';
 
     /**

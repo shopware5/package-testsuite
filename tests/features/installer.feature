@@ -89,7 +89,7 @@ Feature: I can start and complete the installation process
       | c_config_admin_password | demo                |
     And I advance to the next installer page
     Then I should see "Die Installation wurde erfolgreich abgeschlossen."
-    And  I should see the link "shopFrontend" leading to "/"
+    And I should see the link "shopFrontend" leading to "/"
     And I should see the link "shopBackend" leading to "/backend"
     When I am on the page "Index"
     Then I should see "Realisiert mit Shopware"

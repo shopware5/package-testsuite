@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink\Page\Backend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;

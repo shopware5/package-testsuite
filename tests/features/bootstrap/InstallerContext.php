@@ -2,8 +2,6 @@
 
 namespace Shopware\Tests\Mink;
 
-
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\Page\Installer\InstallerIndex;
@@ -126,7 +124,7 @@ class InstallerContext extends SubContext
         usleep(250000);
         /** @var InstallerIndex $page */
         $page = $this->getPage('InstallerIndex');
-        $page->checkIfDisabled('css',$field);
+        $page->checkIfDisabled('css', $field);
     }
 
     /**

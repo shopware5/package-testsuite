@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;

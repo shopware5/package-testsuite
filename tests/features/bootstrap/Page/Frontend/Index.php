@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
@@ -59,13 +60,13 @@ class Index extends Page implements HelperSelectorInterface
                 ->get(),
             'logoPictureSourceElements' => $xp
                 ->div(['~class' => 'logo--shop'])
-                ->picture('desc',[],1)
+                ->picture('desc', [], 1)
                 ->source('desc', [])
                 ->get(),
             'logoPictureimgElement' => $xp
                 ->div(['~class' => 'logo--shop'])
-                ->picture('desc',[],1)
-                ->img('desc', [],1)
+                ->picture('desc', [], 1)
+                ->img('desc', [], 1)
                 ->get(),
         ];
     }

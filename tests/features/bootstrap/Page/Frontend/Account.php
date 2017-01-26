@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Gherkin\Node\TableNode;
@@ -315,10 +316,9 @@ class Account extends Page implements HelperSelectorInterface
         Helper::clickNamedLink($element, 'changeButton');
 
         Helper::fillForm($this, 'paymentForm', $data);
-        if($table){
+        if ($table) {
             
 //            throw new \Exception(print_r($table,true));
-            
         }
         Helper::pressNamedButton($this, 'changePaymentButton');
     }
