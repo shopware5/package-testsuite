@@ -1,4 +1,5 @@
 <?php
+
 namespace  Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Gherkin\Node\TableNode;
@@ -171,9 +172,9 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
         $element = $this->getElement('CheckoutPayment');
 
         $this->spin(function (ContextAwarePage $context) use ($element) {
-            try{
+            try {
                 Helper::clickNamedLink($element, 'changeButton');
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return false;
             }
             return true;
@@ -198,9 +199,9 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
         Helper::fillForm($this, 'shippingPaymentForm', $data);
 
         $this->spin(function (ContextAwarePage $context) {
-            try{
+            try {
                 Helper::pressNamedButton($this, 'changePaymentButton');
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return false;
             }
             return true;

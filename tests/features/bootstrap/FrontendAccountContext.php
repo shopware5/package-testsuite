@@ -111,9 +111,9 @@ class FrontendAccountContext extends SubContext
         $data = $table->getHash();
         /** @var Account $page */
         $page = $this->getPage('Account');
-        $page->open();        
+        $page->open();
         $alreadyLoggedIn = $this->waitIfThereIsText("Willkommen");
-        if($alreadyLoggedIn){
+        if ($alreadyLoggedIn) {
             $page->logout();
             $this->waitForTextNotPresent("Willkommen");
         }

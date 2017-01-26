@@ -79,7 +79,7 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
         $textNotPresent = $this->waitForTextNotPresent("entfernte Dateien");
         $indicatorNotPresent = $this->waitForSelectorNotPresent('css', '.loading-indicator');
 
-        if($textNotPresent === false || $indicatorNotPresent === false ){
+        if ($textNotPresent === false || $indicatorNotPresent === false) {
             throw new \Exception('Cleanup could not be finished');
         }
     }

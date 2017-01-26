@@ -125,5 +125,4 @@ class FrontendCheckoutContext extends SubContext
         $page = $this->getPage('CheckoutConfirm');
         $page->changeShippingOrPaymentMethod($subject, $method, $data);
     }
-
 }

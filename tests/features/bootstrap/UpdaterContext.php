@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink;
 
 use Behat\Behat\Tester\Exception\PendingException;
@@ -44,7 +45,7 @@ class UpdaterContext extends SubContext
         $page = $this->getPage('UpdaterIndex');
         $entry = $page->find('css', 'td');
 
-        if($entry){
+        if ($entry) {
             return;
         }
     }
@@ -91,7 +92,7 @@ class UpdaterContext extends SubContext
      */
     private function setRequirementsFullfillment($meetRequirements)
     {
-        if($meetRequirements === false) {
+        if ($meetRequirements === false) {
             chmod($this->testPath, 0444);
             return;
         }

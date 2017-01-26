@@ -1,4 +1,5 @@
 <?php
+
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Mink\Driver\GoutteDriver;

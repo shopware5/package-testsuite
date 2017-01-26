@@ -124,7 +124,7 @@ class InstallerContext extends SubContext
         usleep(250000);
         /** @var InstallerIndex $page */
         $page = $this->getPage('InstallerIndex');
-        $page->checkIfDisabled('css',$field);
+        $page->checkIfDisabled('css', $field);
     }
 
     /**

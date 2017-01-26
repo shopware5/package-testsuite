@@ -17,7 +17,6 @@ use Shopware\Tests\Mink\Element\MultipleElement;
 
 class SubContext extends PageObjectContext implements MinkAwareContext
 {
-
     use SpinTrait;
 
     /**

@@ -1,10 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: r.schwering
- * Date: 11.01.2017
- * Time: 07:53
- */
+
+namespace Shopware\Tests\Mink;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 
