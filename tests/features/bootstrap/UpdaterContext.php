@@ -2,8 +2,6 @@
 
 namespace Shopware\Tests\Mink;
 
-use Behat\Behat\Tester\Exception\PendingException;
-use Shopware\Tests\Mink\Page\Updater\SystemRequirements;
 use Shopware\Tests\Mink\Page\Updater\UpdaterIndex;
 
 class UpdaterContext extends SubContext

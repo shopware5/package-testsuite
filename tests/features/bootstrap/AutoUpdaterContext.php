@@ -2,33 +2,36 @@
 
 namespace Shopware\Tests\Mink;
 
-use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Gherkin\Node\TableNode;
+use Shopware\Tests\Mink\Page\Updater\AutoUpdaterIndex;
 
-class AutoUpdaterContext implements Context
+class AutoUpdaterContext extends SubContext
 {
+    private $testPath = "";
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->testPath = getenv('base_path');
+    }
     /**
      * @Given the :label button should be disabled
      */
     public function theButtonShouldBeDisabled($label)
     {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->checkIfEnabled("xpath", $label, false);
     }
 
     /**
-     * @When I click on the :title tab
+     * @When I click on the :tab tab
      */
-    public function iClickOnTheTab($title)
+    public function iClickOnTheTab($tab)
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given the requirements are fullfilled
-     */
-    public function theRequirementsAreFullfilled()
-    {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->clickOnTab($tab);
     }
 
     /**
@@ -36,7 +39,9 @@ class AutoUpdaterContext implements Context
      */
     public function iConfirmThatICreatedABackup()
     {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->tickConfirmationCheckbox();
     }
 
     /**
@@ -44,7 +49,9 @@ class AutoUpdaterContext implements Context
      */
     public function theButtonShouldBeEnabledSoThatTheUpdateCanBeStarted($label)
     {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->checkIfEnabled("xpath", $label, true);
     }
 
     /**
@@ -52,22 +59,117 @@ class AutoUpdaterContext implements Context
      */
     public function iClickTheElement($text)
     {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->clickOnElement($text);
     }
 
     /**
-     * @When I click on :element
+     * @When I click on :element to look at the update details
      */
-    public function iClickOn($arg1)
+    public function iClickOnPrepareTheUpdate($element)
     {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->clickOnElement($element);
     }
 
     /**
-     * @When I log in in with user :username and password :password
+     * @Given the :tab requirement is fullfilled
      */
-    public function iLogInInWithUserAndPassword($username, $password)
+    public function thePluginRequirementsAreFullfilled($tab)
     {
-        throw new PendingException();
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->checkTabRequirementFullfilled($tab);
+    }
+
+    /**
+     * @Given the listed requirements are fullfilled:
+     */
+    public function theListedRequirementsAreFullfilled1(TableNode $table)
+    {
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+
+        foreach ($table as $item) {
+            $page->checkSystemRequirements($item);
+        }
+    }
+
+    /**
+     * @Given I should see the link :linktext leading to :target after the update
+     */
+    public function iShouldSeeTheLinkLeadingTo($linktext, $target)
+    {
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->checkIfShopIsAvailable($linktext, $target);
+    }
+
+    /**
+     * @Given the auto update requirements are not met
+     */
+    public function theAutoUpdateRequirementsAreNotMet()
+    {
+        $this->setRequirementsFullfillment(false);
+    }
+
+
+    /**
+     * @Given the listed requirements are not fullfilled
+     */
+    public function theRequirementIsNotFullfilled()
+    {
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+
+        if ($page->checkSystemRequirementsUnfullfilled('Voraussetzungen') === false) {
+            throw new \Exception('Requirement well met.');
+        }
+    }
+
+
+    /**
+     * @When I correct the auto update requirements
+     */
+    public function iCorrectTheAutoUpdateRequirements()
+    {
+        $this->setRequirementsFullfillment(true);
+    }
+
+    /**
+     * @Given I refresh the window
+     */
+    public function iRefreshTheWindow()
+    {
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->refreshElement();
+        sleep(5);
+    }
+
+
+    /**
+     * @When I click the :text updater element
+     */
+    public function clickOnUpdaterElement($text)
+    {
+        /** @var AutoUpdaterIndex $page */
+        $page = $this->getPage('AutoUpdaterIndex');
+        $page->clickOnUpdaterElement($text);
+    }
+
+    /**
+     * Fakes an unfullfilled requirement or undoes it
+     * @param bool $meetRequirements Determines if the requirement should be met or not
+     */
+    private function setRequirementsFullfillment($meetRequirements)
+    {
+        if ($meetRequirements === false) {
+            rename($this->testPath.'/recovery', $this->testPath.'/recovery-new');
+            return;
+        }
+        rename($this->testPath.'/recovery-new', $this->testPath.'/recovery');
     }
 }

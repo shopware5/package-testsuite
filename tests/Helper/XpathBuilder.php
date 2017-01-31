@@ -147,7 +147,7 @@ class XpathBuilder
             case 'text':
                 $result = '';
                 foreach ($text as $part) {
-                    $result .= "./descendant-or-self::*[contains(text(),'$part')] and ";
+                    $result .= "./descendant-or-self::*[text()[contains(.,'$part')]] and ";
                 }
                 return rtrim($result, ' and ');
                 break;
