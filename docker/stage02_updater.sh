@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 export COMPOSE_PROJECT_NAME=$1
 echo "COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}"
@@ -15,12 +15,15 @@ then
 fi
 
 echo "Checking for update package"
-[[ -n $(find ../files -maxdepth 1 -name "${PACKAGE_NAME}") ]] || \
-     { echo "Error: No update package found!"; exit 1; }
+if [ ! -n "$(find ../files -maxdepth 1 -name "${PACKAGE_NAME}")" ]
+then
+     echo "Error: No update package found!";
+     exit 1;
+fi
 
 echo "Create configuration"
-[[ -f "$ENV_TESTS" ]] && rm "$ENV_TESTS"
-[[ -f "$BEHAT" ]] && rm "$BEHAT"
+[ -f "$ENV_TESTS" ] && rm "$ENV_TESTS"
+[ -f "$BEHAT" ] && rm "$BEHAT"
 cp ${ENV_TESTS_DIST} ${ENV_TESTS}
 cp ${BEHAT_DIST} ${BEHAT}
 
@@ -64,8 +67,8 @@ echo "Run Mink"
 docker-compose run tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater'
 
 echo "Cleanup"
-[[ -f "$ENV_TESTS" ]] && rm "$ENV_TESTS"
-[[ -f "$BEHAT" ]] && rm "$BEHAT"
+[ -f "$ENV_TESTS" ] && rm "$ENV_TESTS"
+[ -f "$BEHAT" ] && rm "$BEHAT"
 docker-compose run tools chown $(id -u):$(id -g) -R /tests
 docker-compose down -v --remove-orphans
 docker-compose rm --force -v
