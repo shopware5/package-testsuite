@@ -24,6 +24,8 @@ services:
       extra_hosts:
         - "assetgenerator.example:127.0.0.1"
         - "shopware.test:127.0.0.1"
+      environment:
+        SHOPWARE_ENV: testing
   smtp:
     image: mailhog/mailhog
   selenium:

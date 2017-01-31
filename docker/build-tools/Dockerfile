@@ -41,6 +41,9 @@ RUN wget http://shopwarelabs.github.io/sw-cli-tools/sw.phar \
     && mv sw.phar /usr/local/bin/sw
 RUN chmod +x /usr/local/bin/sw
 
+COPY ./config_testing.php /config_testing.php
+RUN chmod +x /config_testing.php
+
 COPY ./wait-mysql.sh /wait-mysql.sh
 RUN chmod +x /wait-mysql.sh
 
