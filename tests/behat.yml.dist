@@ -16,7 +16,6 @@ default:
             goutte: ~
             selenium2:
                 wd_host: "http://selenium:4444/wd/hub"
-                #capabilities: { 'firefox': {'profile':'ff_prefs.zip'} }
                 capabilities: { "browserName": "chrome", "browser": "chrome", 'chrome': {'switches':['--lang=de']}}
             browser_name: chrome
 
@@ -40,3 +39,4 @@ default:
                 - Shopware\Tests\Mink\DetailContext
                 - Shopware\Tests\Mink\InstallerContext
                 - Shopware\Tests\Mink\UpdaterContext
+                - Shopware\Tests\Mink\AutoUpdaterContext

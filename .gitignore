@@ -1,3 +1,6 @@
+/.php_cs.cache
+/tests/.env
+/tests/behat.yml
 /tests/vendor/
 /tests/logs/mink/*
 !/tests/logs/mink/.gitkeep
