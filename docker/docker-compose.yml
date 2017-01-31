@@ -26,8 +26,6 @@ services:
         - "shopware.test:127.0.0.1"
       environment:
         SHOPWARE_ENV: testing
-      ports:
-        - 80:80
   smtp:
     image: mailhog/mailhog
   selenium:

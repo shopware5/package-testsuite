@@ -3,6 +3,10 @@
 export COMPOSE_PROJECT_NAME=$1
 echo "COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}"
 PACKAGE_NAME="*_install_*_latest.zip"
+ENV_TESTS="../tests/.env"
+ENV_TESTS_DIST="../tests/.env.dist"
+BEHAT="../tests/behat.yml"
+BEHAT_DIST="../tests/behat.yml.dist"
 
 if [ "$1" = "" ]
 then
@@ -15,10 +19,6 @@ echo "Checking for install package"
      { echo "Error: No install package found!"; exit 1; }
 
 echo "Create configuration"
-ENV_TESTS="../tests/.env"
-ENV_TESTS_DIST="../tests/.env.dist"
-BEHAT="../tests/behat.yml"
-BEHAT_DIST="../tests/behat.yml.dist"
 [[ -f "$ENV_TESTS" ]] && rm "$ENV_TESTS"
 [[ -f "$BEHAT" ]] && rm "$BEHAT"
 cp ${ENV_TESTS_DIST} ${ENV_TESTS}
