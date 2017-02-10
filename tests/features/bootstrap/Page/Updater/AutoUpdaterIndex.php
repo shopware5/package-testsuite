@@ -124,9 +124,10 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
      * Checks if all requirements are fullfilled
      *
      * @param string $item The requirement which should be checked
+     * @param string $pathApache basepath of the shop from apache's point of view
      * @throws \Exception
      **/
-    public function checkSystemRequirements($item)
+    public function checkSystemRequirements($item, $pathApache)
     {
         /** @var XpathBuilder $xp */
         $xp = new XpathBuilder();
@@ -134,11 +135,20 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
         $windowXpath = $xp->xWindowByExactTitle('Softwareaktualisierung')->get();
         $window = $this->find('xpath', $windowXpath);
 
-        $gridXPath = $xp
-            ->div('desc', ['~text' => $item])
-            ->table('asc', [], 1)
-            ->get()
-        ;
+        if ($item['message'] === "testPathApache/files" || $item['message'] === "testPathApache") {
+            $text = str_replace('testPathApache', '', $item['message']);
+            var_dump($text);
+
+            $gridXPath = $xp
+                ->div('desc', ['~text' => $pathApache.$text])
+                ->table('asc', [], 1)
+                ->get();
+        } else {
+            $gridXPath = $xp
+                ->div('desc', ['~text' => $item])
+                ->table('asc', [], 1)
+                ->get();
+        }
 
         $this->waitForXpathElementPresent($gridXPath);
 
@@ -154,15 +164,15 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
                 continue;
             }
 
-            $statusXpath = $xp->td('desc', [])->get().'[position()=1]';
-            $messageXpath = $xp->td('desc', [])->get().'[position()=2]';
+            $statusXpath = $xp->td('desc', [])->get() . '[position()=1]';
+            $messageXpath = $xp->td('desc', [])->get() . '[position()=2]';
 
             $message = $row->find('xpath', $messageXpath)->getText();
             $statusCell = $row->find('xpath', $statusXpath);
             $statusGreen = $statusCell->find('xpath', $xp->img('desc', ['~class' => 'sprite-tick'])->get());
 
             if ($statusGreen === null) {
-                throw new \Exception('Requirement not met: "'.$message.'"');
+                throw new \Exception('Requirement not met: "' . $message . '"');
             }
         }
     }

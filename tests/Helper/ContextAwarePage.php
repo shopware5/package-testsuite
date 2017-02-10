@@ -51,7 +51,6 @@ class ContextAwarePage extends Page
      * @param string $selector css, xpath...
      * @param string $locator
      * @param int $sleep
-     * @return bool
      */
     protected function waitForSelectorNotPresent($selector, $locator, $sleep = 2)
     {
