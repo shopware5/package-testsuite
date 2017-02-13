@@ -1,0 +1,117 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "GET",
+    "urlPath": "/v1/release/update"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "version": "5.2.99",
+      "release_date": null,
+      "uri": "http://releases.s3.shopware.com.s3.amazonaws.com/update_5.2.16_3e40e36e97afff8cbecd5e66e2ba2dcdd6c65694.zip",
+      "size": "33316243",
+      "sha1": "3e40e36e97afff8cbecd5e66e2ba2dcdd6c65694",
+      "checks": [
+        {
+          "type": "phpversion",
+          "value": "5.6.4",
+          "level": 20
+        },
+        {
+          "type": "mysqlversion",
+          "value": "5.5",
+          "level": 20
+        },
+        {
+          "type": "licensecheck",
+          "value": {
+            "licenseKeys": [
+              "SwagEnterprisePremium",
+              "SwagEnterpriseCluster",
+              "SwagEnterprise",
+              "SwagCommercial",
+              "SwagCore"
+            ]
+          },
+          "level": 20
+        },
+        {
+          "type": "emotiontemplate",
+          "value": null,
+          "level": 20
+        },
+        {
+          "type": "regex",
+          "value": {
+            "expression": "#sGetArticleAccessories#i",
+            "directories": [
+              "engine/Shopware/Plugins/Local/",
+              "engine/Shopware/Plugins/Community/"
+            ],
+            "fileRegex": "#.*\\.php#i",
+            "message": {
+              "en": "sArticles::sGetArticleAccessories is deprecated<br/> %s",
+              "de": "sArticles::sGetArticleAccessories Zugriff ist veraltet<br/> %s"
+            }
+          },
+          "level": 10
+        },
+        {
+          "type": "regex",
+          "value": {
+            "expression": "sCreateTranslationTable",
+            "directories": [
+              "engine/Shopware/Plugins/Local/",
+              "engine/Shopware/Plugins/Community/"
+            ],
+            "fileRegex": "#.*\\.php#i",
+            "message": {
+              "en": "sArticles::sCreateTranslationTable is removed<br/> %s",
+              "de": "sArticles::sCreateTranslationTable Zugriff ist veraltet<br/> %s"
+            }
+          },
+          "level": 10
+        },
+        {
+          "type": "writable",
+          "value": [
+            "files",
+            "recovery/"
+          ],
+          "level": 20
+        },
+        {
+          "type": "writable",
+          "value": [
+            "/"
+          ],
+          "level": 10
+        }
+      ],
+      "changelog": {
+        "de": {
+          "id": "137",
+          "releaseId": null,
+          "language": "de",
+          "changelog": "",
+          "release_id": "74"
+        },
+        "en": {
+          "id": "138",
+          "releaseId": null,
+          "language": "en",
+          "changelog": "",
+          "release_id": "74"
+        }
+      },
+      "isNewer": true
+    },
+    "headers" : {
+      "Server" : "nginx",
+      "Content-Type" : "application/json",
+      "Transfer-Encoding" : "chunked",
+      "Connection" : "keep-alive"
+    }
+  }
+}

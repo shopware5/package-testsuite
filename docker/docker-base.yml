@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: shopware
+      MYSQL_USER: shopware
+      MYSQL_PASSWORD: shopware
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+  apache:
+    build: ./build-apache
+    image: swag/apache-packagetests
+    volumes:
+      - ../www/assetgenerator:/var/www/assetgenerator
+      - ../www/updates:/var/www/updates
+      - datavolume:/var/www/shopware
+      - updatesvolume:/var/www/cdn
+      - ~/.composer/cache:/root/.composer/cache
+    extra_hosts:
+      - "assetgenerator.example:127.0.0.1"
+      - "updates.example:127.0.0.1"
+      - "cdn.example:127.0.0.1"
+      - "shopware.test:127.0.0.1"
+    environment:
+      SHOPWARE_ENV: testing
+  smtp:
+    image: mailhog/mailhog
+  selenium:
+    build: ./build-selenium
+    image: swag/selenium
+  tools:
+    build: ./build-tools
+    image: swag/tools-packagetests
+    volumes:
+      - ../tests:/tests
+      - datavolume:/var/www/shopware
+      - updatesvolume:/var/www/cdn
+      - ~/.composer/cache:/root/.composer/cache
+      - ../files:/source
+      - ../tests/logs:/logs

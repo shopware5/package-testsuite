@@ -9,10 +9,14 @@ services:
     extends:
       file: docker-base.yml
       service: mysql
+    ports:
+      - 3306:3306
   apache:
     extends:
       file: docker-base.yml
       service: apache
+    ports:
+      - 80:80
     links:
       - mysql
       - smtp
@@ -20,6 +24,8 @@ services:
     extends:
       file: docker-base.yml
       service: smtp
+    ports:
+      - 8025:8025
   selenium:
     extends:
       file: docker-base.yml
@@ -35,6 +41,5 @@ services:
       - apache:shopware.test
       - apache:assetgenerator.example
       - apache:updates.example
-      - apache:cdn.example
       - selenium
       - smtp

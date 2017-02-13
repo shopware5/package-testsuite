@@ -43,6 +43,8 @@ RUN echo "date.timezone = 'Europe/Berlin'" >> /usr/local/etc/php/php.ini
 
 COPY sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY sites-available/001-assetgenerator.conf /etc/apache2/sites-available/001-assetgenerator.conf
+COPY sites-available/002-updates.conf /etc/apache2/sites-available/002-updates.conf
+COPY sites-available/003-cdn.conf /etc/apache2/sites-available/003-cdn.conf
 
 COPY ssl/cert.txt /etc/ssl/certs/cert.txt
 COPY ssl/key.txt /etc/ssl/certs/key.txt
@@ -56,20 +58,20 @@ RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN a2ensite 000-default
 RUN a2ensite 001-assetgenerator
+RUN a2ensite 002-updates
+RUN a2ensite 003-cdn
 
 RUN wget http://shopwarelabs.github.io/sw-cli-tools/sw.phar \
     && mv sw.phar /usr/local/bin/sw
 RUN chmod 777 /usr/local/bin/sw
 RUN chmod 777 /usr/local/bin
 
+RUN mkdir -p /var/www/cdn
+COPY cdn/.htaccess /var/www/cdn/.htaccess
+
 RUN mkdir -p /var/www/shopware
+RUN mkdir -p /var/www/updates
 RUN chown -R www-data /var/www
 RUN chmod -R 777 /var/www
-
-COPY ./wait-mysql.sh /wait-mysql.sh
-RUN chmod +x /wait-mysql.sh
-
-COPY ./wait-smtp.sh /wait-smtp.sh
-RUN chmod +x /wait-smtp.sh
 
 WORKDIR /var/www/shopware
