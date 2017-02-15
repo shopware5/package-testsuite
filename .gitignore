@@ -8,6 +8,7 @@
 !/files/.gitkeep
 /temp/*
 !/temp/.gitkeep
+.php_cs.cache
 
 ### JetBrains IDEs ###
 /.idea/

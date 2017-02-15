@@ -1,0 +1,10 @@
+{
+  "priority": 20,
+  "request": {
+    "method": "GET",
+    "urlPattern": ".*"
+  },
+  "response": {
+    "proxyBaseUrl" : "http://update-api.shopware.com/"
+  }
+}

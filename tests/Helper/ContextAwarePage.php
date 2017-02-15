@@ -51,6 +51,7 @@ class ContextAwarePage extends Page
      * @param string $selector css, xpath...
      * @param string $locator
      * @param int $sleep
+     * @return bool
      */
     protected function waitForSelectorNotPresent($selector, $locator, $sleep = 2)
     {
@@ -62,6 +63,25 @@ class ContextAwarePage extends Page
                 return true;
             }
             return false;
+        });
+    }
+
+    /**
+     * Checks via spin function if an element is present on page via given xpath, with sleep at the beginning (default 2)
+     * @param $xpath
+     * @param int $sleep
+     * @return bool
+     */
+    protected function waitForXpathElementPresent($xpath, $sleep = 2)
+    {
+        sleep($sleep);
+        $this->spin(function (ContextAwarePage $context) use ($xpath) {
+            /** @var NodeElement $elem */
+            $elem = $context->getSession()->getPage()->find('xpath', $xpath);
+            if ($elem === null) {
+                return false;
+            }
+            return true;
         });
     }
 
