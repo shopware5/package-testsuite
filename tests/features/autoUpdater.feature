@@ -28,8 +28,8 @@ Feature: I can start and complete the update process
       | Erforderliche MySQL Version      |
       | Sie benutzen die Shopware CE     |
       | Kein Emotion Template verwendet. |
-      | /var/www/html/shopware/files     |
-      | /var/www/html/shopware           |
+      | testPathApache/files             |
+      | testPathApache                   |
     And the "Update starten" button should be enabled so that the update can be started
 
     When I click the "Update starten" element

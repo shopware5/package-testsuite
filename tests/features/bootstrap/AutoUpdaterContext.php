@@ -7,12 +7,14 @@ use Shopware\Tests\Mink\Page\Updater\AutoUpdaterIndex;
 
 class AutoUpdaterContext extends SubContext
 {
-    private $testPath = "";
+    private $testPath;
+    private $testPathApache;
 
     public function __construct()
     {
         parent::__construct();
         $this->testPath = getenv('base_path');
+        $this->testPathApache = getenv('base_path_apache');
     }
     /**
      * @Given the :label button should be disabled
@@ -93,7 +95,7 @@ class AutoUpdaterContext extends SubContext
         $page = $this->getPage('AutoUpdaterIndex');
 
         foreach ($table as $item) {
-            $page->checkSystemRequirements($item);
+            $page->checkSystemRequirements($item,$this->testPathApache);
         }
     }
 
