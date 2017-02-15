@@ -113,7 +113,7 @@ class InstallerContext extends SubContext
     public function iShouldSeeAfterImportIsFinished($text)
     {
         $xp = new XpathBuilder();
-        $this->waitForTextInElement($xp->div(['@class' => 'counter-text'])->get(), $text, 0);
+        $this->waitForTextInElement($xp->div(['@class' => 'counter-text'])->get(), $text, 0, 120);
     }
 
     /**

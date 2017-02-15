@@ -129,8 +129,9 @@ class SubContext extends PageObjectContext implements MinkAwareContext
      * @param string $selector xpath selector
      * @param string $text
      * @param int $sleep
+     * @param int $wait
      */
-    protected function waitForTextInElement($selector, $text, $sleep = 2)
+    protected function waitForTextInElement($selector, $text, $sleep = 2, $wait = 60)
     {
         sleep($sleep);
         $this->spin(function (SubContext $context) use ($text, $selector) {
@@ -138,7 +139,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
             $baseElement = $context->getSession()->getPage()->find('xpath', $selector);
             $result = $baseElement->findAll('xpath', "/descendant::*[contains(text(), '$text')]");
             return $result != null && count($result) > 0;
-        });
+        }, $wait);
     }
 
     /**
