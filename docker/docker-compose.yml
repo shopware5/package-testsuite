@@ -7,10 +7,12 @@ services:
   mysql:
     image: mysql
     environment:
-       MYSQL_ROOT_PASSWORD: toor
-       MYSQL_DATABASE: shopware
-       MYSQL_USER: shopware
-       MYSQL_PASSWORD: shopware
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: shopware
+      MYSQL_USER: shopware
+      MYSQL_PASSWORD: shopware
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
   apache:
       build: ./build-apache
       image: swag/apache-packagetests

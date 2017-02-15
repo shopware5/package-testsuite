@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-while ! nc -z mysql 3306; do sleep 1; done
+retries=30
+while ! nc -z mysql 3306
+do
+    ((c++)) && ((c==retries)) && break
+    echo -n .
+    sleep 1;
+done

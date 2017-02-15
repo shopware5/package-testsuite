@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-while ! nc -z smtp 1025; do sleep 1; done
+retries=30
+while ! nc -z smtp 1025
+do
+    ((c++)) && ((c==retries)) && break
+    echo -n .
+    sleep 1;
+done
