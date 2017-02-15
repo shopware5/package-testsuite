@@ -2,6 +2,7 @@
 
 namespace Shopware\Tests\Mink\Page\Installer;
 
+use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
 use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\Helper;
@@ -107,7 +108,11 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function fillInAndSubmitForm($formname, $data)
     {
-        Helper::fillForm($this, $formname, $data);
+        Helper::fillForm($this, $formname, $data, [
+            'c_database_schema' => function($form, $fieldValue) {
+                usleep(500000);
+            }
+        ]);
     }
 
     /**

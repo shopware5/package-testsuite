@@ -512,8 +512,9 @@ EOD
      * @param Page|Element|HelperSelectorInterface $parent
      * @param string $formKey
      * @param array $values
+     * @param array $callables Array of callable functions ['formFieldName' => function(NodeElement $form, $fieldValue){}]
      */
-    public static function fillForm(HelperSelectorInterface $parent, $formKey, $values)
+    public static function fillForm(HelperSelectorInterface $parent, $formKey, $values, array $callables = [])
     {
         $elements = self::findElements($parent, [$formKey]);
         $form = $elements[$formKey];
@@ -523,6 +524,11 @@ EOD
             unset($value['field']);
 
             foreach ($value as $key => $fieldValue) {
+
+                if(array_key_exists($key, $callables)) {
+                    $callables[$key]($form, $fieldValue);
+                }
+
                 if ($key !== 'value') {
                     $fieldName = sprintf('%s[%s]', $key, $tempFieldName);
                 }
