@@ -77,7 +77,6 @@ class ArticleSlider extends SliderElement implements HelperSelectorInterface
         $nameElement = $slide->find('css', $selectors['slideName']);
 
         $names = [
-            'imageAlt' => $slide->find('css', $selectors['slideImage'])->getAttribute('alt'),
             'linkTitle' => $slide->find('css', $selectors['slideLink'])->getAttribute('title'),
             'name' => trim($nameElement->getHtml()),
             'nameTitle' => $nameElement->getAttribute('title'),
