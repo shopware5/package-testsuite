@@ -65,7 +65,6 @@ class CompareColumn extends MultipleElement implements HelperSelectorInterface
         $elements = Helper::findElements($this, ['thumbnailImage', 'thumbnailLink', 'name', 'detailsButton']);
 
         $names = array(
-            'articleThumbnailImageAlt' => $elements['thumbnailImage']->getAttribute('alt'),
             'articleThumbnailLinkTitle' => $elements['thumbnailLink']->getAttribute('title'),
             'articleName' => $elements['name']->getText(),
             'articleTitle' => $elements['name']->getAttribute('title'),
