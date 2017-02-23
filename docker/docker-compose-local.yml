@@ -27,12 +27,14 @@ services:
     ports:
       - 8025:8025
   selenium:
-    extends:
-      file: docker-base.yml
-      service: selenium
+    build: ./build-selenium-debug
+    image: swag/selenium-debug
     links:
       - apache:assetgenerator.example
       - apache:shopware.test
+      - apache:shopware-subshop-01.test
+    ports:
+          - 5900:5900
   tools:
     extends:
       file: docker-base.yml
@@ -41,5 +43,6 @@ services:
       - apache:shopware.test
       - apache:assetgenerator.example
       - apache:updates.example
+      - apache:shopware-subshop-01.test
       - selenium
       - smtp

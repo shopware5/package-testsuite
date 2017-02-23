@@ -143,7 +143,7 @@ class FeatureContext extends SubContext implements SnippetAcceptingContext
     {
         // Under Cygwin, uniqid with more_entropy must be set to true.
         // No effect in other environments.
-        $filename = $filename ?: sprintf('%s_%s_%s.%s', $this->getMinkParameter('browser_name'), date('c'),
+        $filename = $filename ?: sprintf('%s_%s_%s.%s', $this->getMinkParameter('browser_name'), time(),
             uniqid('', true), 'png');
         $filepath = $filepath ? $filepath : (ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir());
         file_put_contents($filepath . '/' . $filename, $this->getSession()->getScreenshot());

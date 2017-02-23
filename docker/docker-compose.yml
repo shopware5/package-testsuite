@@ -26,6 +26,7 @@ services:
       service: selenium
     links:
       - apache:assetgenerator.example
+      - apache:shopware-subshop-01.test
       - apache:shopware.test
   tools:
     extends:
@@ -33,6 +34,7 @@ services:
       service: tools
     links:
       - apache:shopware.test
+      - apache:shopware-subshop-01.test
       - apache:assetgenerator.example
       - apache:updates.example
       - apache:cdn.example

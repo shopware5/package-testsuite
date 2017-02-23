@@ -3,6 +3,7 @@
 namespace Shopware\Tests\Mink;
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Exception\MissingRequirementException;
 use Shopware\Helper\ApiClient;
@@ -162,5 +163,14 @@ class ApiContext extends SubContext
         if ($api->customerExists($email)) {
             $api->deleteCustomerByEmail($email);
         }
+    }
+
+    /**
+     * @Given the category tree :tree exists
+     */
+    public function theFollowingCategoryIsAvailable($tree)
+    {
+        $api = $this->getApiClient();
+        $api->createCategoryTree($tree);
     }
 }

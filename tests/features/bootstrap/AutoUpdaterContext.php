@@ -18,6 +18,7 @@ class AutoUpdaterContext extends SubContext
     }
     /**
      * @Given the :label button should be disabled
+     * @Given the :element element should be disabled
      */
     public function theButtonShouldBeDisabled($label)
     {
@@ -48,6 +49,7 @@ class AutoUpdaterContext extends SubContext
 
     /**
      * @Then the :label button should be enabled so that the update can be started
+     * @Given the :element element should be enabled
      */
     public function theButtonShouldBeEnabledSoThatTheUpdateCanBeStarted($label)
     {

@@ -102,9 +102,7 @@ class InstallerContext extends SubContext
      */
     public function iShouldSeeTheLinkLeadingTo($linktext, $target)
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
-        $page->checkIfShopIsAvailable($linktext, $target);
+
     }
 
     /**

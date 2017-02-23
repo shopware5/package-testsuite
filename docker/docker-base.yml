@@ -24,6 +24,7 @@ services:
       - "updates.example:127.0.0.1"
       - "cdn.example:127.0.0.1"
       - "shopware.test:127.0.0.1"
+      - "shopware-subshop-01.test:127.0.0.1"
     environment:
       SHOPWARE_ENV: testing
   smtp:

@@ -219,12 +219,38 @@ class ApiClient
      * @param int $parentId
      * @return array
      */
-    private function createCategory($name, $parentId)
+    public function createCategory($name, $parentId)
     {
         return $this->post('api/categories', [
             'parentId' => $parentId,
             'name' => $name,
         ]);
+    }
+
+    /**
+     * @param string $name
+     * @param integer $parentId
+     * @return bool
+     * @throws \Exception
+     */
+    public function categoryExists($name, $parentId)
+    {
+        $existsResponse = $this->get('api/categories', [
+            'filter' => [
+                'name' => $name,
+                'parentId' => $parentId,
+            ]
+        ]);
+
+        if ($existsResponse['success'] !== true) {
+            throw new \Exception('API communication unsuccessful: ' . print_r($existsResponse, true));
+        }
+
+        if ($existsResponse['total'] > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -360,8 +386,8 @@ class ApiClient
                 $data = [
                     'name' => $country['name'],
                     'iso' => $country['iso'],
-                    'iso3'=> $country['iso3'],
-                    'isoName'=> $country['isoName'],
+                    'iso3' => $country['iso3'],
+                    'isoName' => $country['isoName'],
                     'shippingFree' => (bool)(array_key_exists('shippingFree', $countryData) ? $countryData['shippingFree'] : false),
                     'taxFree' => (bool)(array_key_exists('taxFree', $countryData) ? $countryData['taxFree'] : false),
                     'taxFreeUstId' => (bool)(array_key_exists('taxFreeUstId', $countryData) ? $countryData['taxFreeUstId'] : false),
@@ -371,7 +397,7 @@ class ApiClient
                     'forceStateInRegistration' => (bool)(array_key_exists('forceStateInRegistration', $countryData) ? $countryData['forceStateInRegistration'] : false),
                 ];
 
-                $this->put('api/countries/'.$country['id'], ['json' => $data]);
+                $this->put('api/countries/' . $country['id'], ['json' => $data]);
                 $countriesFound++;
             }
             if ($countryCount == $countriesFound) {
@@ -443,7 +469,7 @@ class ApiClient
         $id = $this->getCustomerGroupIdByKey($customerGroup['key']);
 
         $data = $this->buildCustomerGroupDataArray($customerGroup);
-        $this->put('api/customerGroups/'.$id, ['json' => $data]);
+        $this->put('api/customerGroups/' . $id, ['json' => $data]);
     }
 
     /**
@@ -472,6 +498,6 @@ class ApiClient
      */
     public function deleteCustomerById($id)
     {
-        $this->delete('api/customers/'.$id);
+        $this->delete('api/customers/' . $id);
     }
 }
