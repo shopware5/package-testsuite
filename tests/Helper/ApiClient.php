@@ -219,38 +219,12 @@ class ApiClient
      * @param int $parentId
      * @return array
      */
-    public function createCategory($name, $parentId)
+    private function createCategory($name, $parentId)
     {
         return $this->post('api/categories', [
             'parentId' => $parentId,
             'name' => $name,
         ]);
-    }
-
-    /**
-     * @param string $name
-     * @param integer $parentId
-     * @return bool
-     * @throws \Exception
-     */
-    public function categoryExists($name, $parentId)
-    {
-        $existsResponse = $this->get('api/categories', [
-            'filter' => [
-                'name' => $name,
-                'parentId' => $parentId,
-            ]
-        ]);
-
-        if ($existsResponse['success'] !== true) {
-            throw new \Exception('API communication unsuccessful: ' . print_r($existsResponse, true));
-        }
-
-        if ($existsResponse['total'] > 0) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

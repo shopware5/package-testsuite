@@ -64,14 +64,13 @@ class SubshopContext extends SubContext
 
 
     /**
-     * Established database connection
+     * Establishes database connection
      */
     public static function getDbConnection()
     {
         if (self::$dbConnection === null) {
             self::$dbConnection = new \PDO('mysql:dbname=shopware;host=mysql', 'shopware', 'shopware');
         }
-
         return self::$dbConnection;
     }
 }

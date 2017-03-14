@@ -6,16 +6,14 @@ use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
 use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
-use Shopware\Tests\Mink\ApiContext;
 
 class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
 {
     private $shopConfigurationLabel = 'Grundeinstellungen - Shops';
     private $saveShopConfigurationLabel = 'Speichern';
 
-
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -23,7 +21,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getCssSelectors()
     {
@@ -31,7 +29,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getNamedSelectors()
     {
@@ -69,7 +67,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * Fills in and submits a configuration form in the basic configuration
+     * Fills in and submits the shop configuration form
      *
      * @param string[] $data Defines the form field and their data
      */
@@ -90,26 +88,13 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
                     $field->setValue($entry['value']);
                     break;
                 case 'combobox':
-                    $this->fillComboBox($window, $entry, $xp);
+                    $this->fillCombobox($window, $entry, $xp);
                     break;
                 case 'checkbox':
-                    $checkboxXpath = $xp->getXFormElementForLabel($entry['label'], 'input');
-                    $tableXpath = $checkboxXpath . $xp->table('asc', [], 1)->get();
-
-                    $field = $window->find('xpath', $tableXpath);
-                    $field->click();
-
-                    $table = $this->find('xpath', $tableXpath);
-
-                    $this->spin(function () use ($tableXpath, $table) {
-                        if ($table !== null && $table->hasClass('x-form-cb-checked')) {
-                            return true;
-                        }
-                        return false;
-                    }, 5);
+                    $this->fillCheckbox($window, $entry, $xp);
                     break;
                 case 'selecttree':
-                    $this->fillSelectTree($window, $entry, $xp);
+                    $this->fillSelecttree($window, $entry, $xp);
                     break;
                 case 'textarea':
                     $field = $window->find('xpath', $xp->getXFormElementForLabel($entry['label'], 'textarea'));
@@ -124,10 +109,10 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      * Fills in a combobox
      *
      * @param NodeElement $window
-     * @param string[] $entry Data which should be used for the combobox
+     * @param string $entry Data which should be used for the combobox
      * @param XpathBuilder $xp Window, which is currently opened
      */
-    private function fillComboBox($window, $entry, $xp)
+    private function fillCombobox($window, $entry, $xp)
     {
         $pebble = $window->find('xpath', $xp->getXSelectorPebbleForLabel($entry['label']));
         $this->assertNotNull($pebble, print_r($entry, true));
@@ -144,13 +129,13 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * Selects an entry in a SelectTree
+     * Selects an entry in a selecttree
      *
      * @param NodeElement $window Window, which is currently opened
-     * @param string[] $entry Data which should be used for the selection
+     * @param string $entry Data which should be used for the selection
      * @param XpathBuilder $xp
      */
-    private function fillSelectTree($window, $entry, $xp)
+    private function fillSelecttree($window, $entry, $xp)
     {
         $xpathsCategory = $xp->getSelectTreeElements($entry['value']);
 
@@ -170,8 +155,34 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
         }
     }
 
+
     /**
-     * Clicks a specific element
+     * Fills in a checkbox
+     *
+     * @param NodeElement $window
+     * @param string $entry Data which should be used for the checkbox
+     * @param XpathBuilder $xp Window, which is currently opened
+     */
+    private function fillCheckbox($window, $entry, $xp)
+    {
+        $checkboxXpath = $xp->getXFormElementForLabel($entry['label'], 'input');
+        $tableXpath = $checkboxXpath . $xp->table('asc', [], 1)->get();
+
+        $field = $window->find('xpath', $tableXpath);
+        $field->click();
+
+        $table = $this->find('xpath', $tableXpath);
+
+        $this->spin(function () use ($tableXpath, $table) {
+            if ($table !== null && $table->hasClass('x-form-cb-checked')) {
+                return true;
+            }
+            return false;
+        }, 5);
+    }
+
+    /**
+     * Clicks the corresponding button to submit a form
      *
      * @param string $elementName Name of the element
      * @param XpathBuilder $xp
@@ -179,7 +190,6 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
     public function submitForm($elementName, $xp)
     {
         $elementXpath = $xp->span(['@text' => $elementName, 'and', '~class' => 'x-btn-inner'])->button('asc', [], 1)->get();
-
         $element = $this->find('xpath', $elementXpath);
         $element->click();
     }

@@ -10,7 +10,7 @@ use Shopware\Tests\Mink\HelperSelectorInterface;
 class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
 {
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -22,7 +22,7 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
     }
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getCssSelectors()
     {

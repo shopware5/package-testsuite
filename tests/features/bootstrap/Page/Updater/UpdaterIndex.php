@@ -15,7 +15,7 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
     protected $path = '/recovery/update/';
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -28,7 +28,7 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getCssSelectors()
     {
