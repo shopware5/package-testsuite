@@ -26,7 +26,7 @@ Feature: I can create and access a subshop
     And I fill in and submit the "Details" configuration form:
       | label                | value                    | type       | action             |
       | Shop-Typ:            | Subshop                  | combobox   | typeSwitch         |
-      | Name:                | Demosubshop              | input      |                    |
+      | Name:                | SwagTestSubshop          | input      |                    |
       | Titel:               | Mein Demosubshop         | input      |                    |
       | Position:            | 1                        | input      |                    |
       | Host:                | shopware-subshop-01.test | input      |                    |

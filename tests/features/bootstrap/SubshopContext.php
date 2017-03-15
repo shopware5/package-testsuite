@@ -10,6 +10,10 @@ class SubshopContext extends SubContext
 {
     /** @var \PDO $dbConnection */
     private static $dbConnection;
+    private static $subshopName = 'SwagTestSubshop';
+    private static $mainCategoryName = 'Subshop-Kategorie';
+    private static $minorCategoryName = 'Subshop-Unterkategorie';
+
 
     /**
      * @Then I should be able to access the subshop via using :url
@@ -56,10 +60,24 @@ class SubshopContext extends SubContext
      */
     public static function cleanupFeature(AfterFeatureScope $scope)
     {
-        self::getDbConnection()->exec('DELETE FROM s_core_shops WHERE id=3;');
-        self::getDbConnection()->exec('DELETE FROM s_core_rewrite_urls WHERE subshopID = 3;');
-        self::getDbConnection()->exec('DELETE FROM s_core_config_values WHERE shop_id = 3;');
-        self::getDbConnection()->exec('DELETE FROM s_categories WHERE id IN (5, 6);');
+        $shopStmt = self::getDbConnection()->prepare('SELECT id FROM s_core_shops WHERE name=:shopName');
+        $shopStmt->execute([':shopName' => self::$subshopName]);
+        $subShopId = $shopStmt->fetchColumn();
+
+        $deleteShopStmt = self::getDbConnection()->prepare('DELETE FROM s_core_shops WHERE name=:shopName');
+        $deleteShopStmt->execute([':shopName' => self::$subshopName]);
+
+        $deleteRewriteUrlsStmt = self::getDbConnection()->prepare('DELETE FROM s_core_rewrite_urls WHERE subshopID=:subShopId');
+        $deleteRewriteUrlsStmt->execute([':subShopId' => $subShopId]);
+
+        $deleteConfigValuesStmt = self::getDbConnection()->prepare('DELETE FROM s_core_config_values WHERE shop_id=:subShopId');
+        $deleteConfigValuesStmt->execute([':subShopId' => $subShopId]);
+
+        $deleteCategoriesStmt = self::getDbConnection()->prepare('DELETE FROM s_categories WHERE `description` IN (:categoryMain, :categoryMinor)');
+        $deleteCategoriesStmt->execute([
+            ':categoryMain' => self::$mainCategoryName,
+            ':categoryMinor' => self::$minorCategoryName
+        ]);
     }
 
 

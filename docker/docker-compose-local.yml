@@ -29,6 +29,7 @@ services:
   selenium:
     build: ./build-selenium-debug
     image: swag/selenium-debug
+    shm_size: 1G
     links:
       - apache:assetgenerator.example
       - apache:shopware.test

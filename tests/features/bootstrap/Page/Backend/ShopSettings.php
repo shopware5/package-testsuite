@@ -11,6 +11,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
 {
     private $shopConfigurationLabel = 'Grundeinstellungen - Shops';
     private $saveShopConfigurationLabel = 'Speichern';
+    private $startCategoryName = 'Deutsch';
 
     /**
      * {@inheritdoc}
@@ -143,7 +144,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
         $pebble->click();
 
         foreach ($xpathsCategory as $xpath) {
-            $dropdownXP = $xp->div('desc', ['@text' => 'Deutsch'])->div('asc', ['~class' => 'x-tree-panel'])->get();
+            $dropdownXP = $xp->div('desc', ['@text' => $this->startCategoryName])->div('asc', ['~class' => 'x-tree-panel'])->get();
             $this->waitForXpathElementPresent($dropdownXP);
 
             $dropdown = $this->find('xpath', $dropdownXP);
