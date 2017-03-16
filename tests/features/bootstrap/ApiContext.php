@@ -163,4 +163,13 @@ class ApiContext extends SubContext
             $api->deleteCustomerByEmail($email);
         }
     }
+
+    /**
+     * @Given the category tree :tree exists
+     */
+    public function theFollowingCategoryIsAvailable($tree)
+    {
+        $api = $this->getApiClient();
+        $api->createCategoryTree($tree);
+    }
 }

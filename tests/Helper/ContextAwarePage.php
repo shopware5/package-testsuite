@@ -11,6 +11,17 @@ class ContextAwarePage extends Page
     use SpinTrait;
 
     /**
+     * @param mixed $element
+     * @param string $message
+     */
+    protected function assertNotNull($element, $message)
+    {
+        if (null === $element) {
+            throw new \UnexpectedValueException($message);
+        }
+    }
+
+    /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
      * @param string $text
      * @param int $sleep
@@ -124,9 +135,42 @@ class ContextAwarePage extends Page
     }
 
     /**
+     * Checks via spin function if element is clickable, then clicks it, with sleep at the beginning (default 2)
+     * @param NodeElement $elem
+     * @throws \Exception
+     */
+    protected function clickOnElementWhenReady(NodeElement $elem)
+    {
+        $this->spin(function (ContextAwarePage $context) use ($elem) {
+            try {
+                $elem->click();
+                return true;
+            } catch (\Exception $e) {
+                return false;
+            }
+        }, 90);
+    }
+
+    /**
+     * Checks via spin function if a locator is visible on page, with sleep at the beginning (default 2)
+     * @param string $selector css, xpath...
+     * @param string $locator
+     * @throws \Exception
+     */
+    protected function waitForSelectorVisible($selector, $locator)
+    {
+        $this->spin(function (ContextAwarePage $context) use ($selector, $locator) {
+            /** @var NodeElement $elem */
+            $elem = $context->getSession()->getPage()->find($selector, $locator);
+            return !empty($elem) || $elem->isVisible();
+        }, 90);
+    }
+
+    /**
      * Checks via spin function if a locator is invisible on page, with sleep at the beginning (default 2)
      * @param string $selector css, xpath...
      * @param string $locator
+     * @throws \Exception
      */
     protected function waitForSelectorInvisible($selector, $locator)
     {
@@ -145,12 +189,12 @@ class ContextAwarePage extends Page
      */
     protected function selectFromXDropdown(NodeElement $parent, $label, $action, $optionText)
     {
-        $xp =new XpathBuilder();
+        $xp = new XpathBuilder();
         $pebbleXpath = $xp->getXSelectorPebbleForLabel($label);
         $pebble = $parent->find('xpath', $pebbleXpath);
-        if(empty($pebble)){
+        if (empty($pebble)) {
             echo "\n";
-            print_r([$parent->getXpath(),$pebbleXpath]);
+            print_r([$parent->getXpath(), $pebbleXpath]);
             echo "\n";
         }
         $pebble->click();

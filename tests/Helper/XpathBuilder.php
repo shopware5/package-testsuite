@@ -223,22 +223,22 @@ class XpathBuilder
                     case 'starts-with':
                         if (!is_array($condition) || count($condition) !== 2) {
                             throw new \Exception('Invalid number of arguments for SubConditionHandler starts-with: '
-                                ."\n".print_r($target, true)
-                                ."\n".print_r($condition, true)
-                                ."\n".print_r($conditions, true)."\n");
+                                . "\n" . print_r($target, true)
+                                . "\n" . print_r($condition, true)
+                                . "\n" . print_r($conditions, true) . "\n");
                         }
-                        $conditionString .= $target."(".$condition[0].", '".$condition[1]."') ";
+                        $conditionString .= $target . "(" . $condition[0] . ", '" . $condition[1] . "') ";
                         break;
                     case 'ends-with':
                         if (!is_array($condition) || count($condition) !== 2) {
-                            throw new \Exception('Invalid number of arguments for SubConditionHandler: '.$target);
+                            throw new \Exception('Invalid number of arguments for SubConditionHandler: ' . $target);
                         }
                         $attr = $condition[0];
                         $text = $condition[1];
-                        $conditionString .= "'".$text."'=substring(".$attr.", string-length(".$attr.")- string-length('".$text."') +1) ";
+                        $conditionString .= "'" . $text . "'=substring(" . $attr . ", string-length(" . $attr . ")- string-length('" . $text . "') +1) ";
                         break;
                     default:
-                        throw new \Exception('SubConditionHandler not implemented: '.$target);
+                        throw new \Exception('SubConditionHandler not implemented: ' . $target);
                 }
                 continue;
             }
@@ -393,5 +393,27 @@ class XpathBuilder
             ->div('asc', ['~class' => 'x-grid-with-row-lines'])
             ->div('desc', ['~class' => 'x-grid-body'])
             ->get();
+    }
+
+    /**
+     * @param string $selectString
+     * @return array
+     */
+    public function getSelectTreeElements($selectString)
+    {
+        $xpaths = [];
+        $categories = array_map('trim', explode('>', $selectString));
+        $lastKey = count($categories) - 1;
+
+        foreach ($categories as $key => $category) {
+            if ($key == $lastKey) {
+                $categoryXP = $this->div('desc', ['@text' => $category])->img('desc', ['~class' => 'x-tree-icon'])->get();
+                $xpaths[] = $categoryXP;
+                break;
+            }
+            $categoryXP = $this->div('desc', ['~class' => 'x-tree-panel'])->div('desc', ['@text' => $category])->img('desc', ['~class' => 'x-tree-expander'])->get();
+            $xpaths[] = $categoryXP;
+        }
+        return $xpaths;
     }
 }

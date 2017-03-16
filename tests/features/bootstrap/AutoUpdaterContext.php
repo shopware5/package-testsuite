@@ -16,6 +16,7 @@ class AutoUpdaterContext extends SubContext
         $this->testPath = getenv('base_path');
         $this->testPathApache = getenv('base_path_apache');
     }
+
     /**
      * @Given the :label button should be disabled
      */
@@ -95,7 +96,7 @@ class AutoUpdaterContext extends SubContext
         $page = $this->getPage('AutoUpdaterIndex');
 
         foreach ($table as $item) {
-            $page->checkSystemRequirements($item,$this->testPathApache);
+            $page->checkSystemRequirements($item, $this->testPathApache);
         }
     }
 
@@ -169,9 +170,9 @@ class AutoUpdaterContext extends SubContext
     private function setRequirementsFullfillment($meetRequirements)
     {
         if ($meetRequirements === false) {
-            rename($this->testPath.'/recovery', $this->testPath.'/recovery-new');
+            rename($this->testPath . '/recovery', $this->testPath . '/recovery-new');
             return;
         }
-        rename($this->testPath.'/recovery-new', $this->testPath.'/recovery');
+        rename($this->testPath . '/recovery-new', $this->testPath . '/recovery');
     }
 }

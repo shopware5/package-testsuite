@@ -2,7 +2,6 @@
 
 namespace Shopware\Tests\Mink\Page\Installer;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
 use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\Helper;
@@ -17,7 +16,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
     protected $path = '/recovery/install/';
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -44,7 +43,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * * {@inheritdoc}
+     * {@inheritdoc}
      */
     public function getCssSelectors()
     {

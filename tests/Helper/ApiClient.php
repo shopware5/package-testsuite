@@ -360,8 +360,8 @@ class ApiClient
                 $data = [
                     'name' => $country['name'],
                     'iso' => $country['iso'],
-                    'iso3'=> $country['iso3'],
-                    'isoName'=> $country['isoName'],
+                    'iso3' => $country['iso3'],
+                    'isoName' => $country['isoName'],
                     'shippingFree' => (bool)(array_key_exists('shippingFree', $countryData) ? $countryData['shippingFree'] : false),
                     'taxFree' => (bool)(array_key_exists('taxFree', $countryData) ? $countryData['taxFree'] : false),
                     'taxFreeUstId' => (bool)(array_key_exists('taxFreeUstId', $countryData) ? $countryData['taxFreeUstId'] : false),
@@ -371,7 +371,7 @@ class ApiClient
                     'forceStateInRegistration' => (bool)(array_key_exists('forceStateInRegistration', $countryData) ? $countryData['forceStateInRegistration'] : false),
                 ];
 
-                $this->put('api/countries/'.$country['id'], ['json' => $data]);
+                $this->put('api/countries/' . $country['id'], ['json' => $data]);
                 $countriesFound++;
             }
             if ($countryCount == $countriesFound) {
@@ -443,7 +443,7 @@ class ApiClient
         $id = $this->getCustomerGroupIdByKey($customerGroup['key']);
 
         $data = $this->buildCustomerGroupDataArray($customerGroup);
-        $this->put('api/customerGroups/'.$id, ['json' => $data]);
+        $this->put('api/customerGroups/' . $id, ['json' => $data]);
     }
 
     /**
@@ -472,6 +472,6 @@ class ApiClient
      */
     public function deleteCustomerById($id)
     {
-        $this->delete('api/customers/'.$id);
+        $this->delete('api/customers/' . $id);
     }
 }
