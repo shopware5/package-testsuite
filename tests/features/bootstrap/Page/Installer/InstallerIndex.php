@@ -109,7 +109,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
     {
         Helper::fillForm($this, $formname, $data, [
             'c_database_schema' => function($form, $fieldValue) {
-                usleep(500000);
+                usleep(750000);
             }
         ]);
     }
@@ -165,7 +165,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
         $element->hasAttribute('disabled');
 
         if ($element->hasAttribute('disabled')) {
-            throw new Exception('License agreement field should be enabled in this case, but is not.');
+            throw new \Exception('License agreement field should be enabled in this case, but is not.');
         }
     }
 
