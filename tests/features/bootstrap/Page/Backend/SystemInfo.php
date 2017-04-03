@@ -43,64 +43,51 @@ class SystemInfo extends ContextAwarePage implements HelperSelectorInterface
      **/
     public function checkRequirements($item, $meetRequirements)
     {
+        if ($meetRequirements) {
+            $this->checkStatus($item, 'sprite-tick');
+            return;
+        }
+        $this->checkStatus($item, 'sprite-cross');
+    }
+
+    /**
+     * @param string $item
+     * @param string $class
+     */
+    private function checkStatus($item, $class)
+    {
+        $xp = new XpathBuilder();
+        $grid = $this->getSystemGrid($item);
+
+        $statusXpath = $xp->div('desc', ['@text' => $item])->tr('asc', [], 1)->get();
+        $statusCell = $grid->find('xpath', $statusXpath);
+        $this->assertNotNull($statusCell, sprintf('Could not find element with XPath cell %s', $statusXpath));
+
+        $statusXpath = $xp->div('desc', ['~class' => $class])->get();
+        $status = $statusCell->find('xpath', $statusXpath);
+        $this->assertNotNull($status, sprintf('Could not find element with XPath status %s', $statusXpath));
+    }
+
+    /**
+     * @param string $item
+     * @return NodeElement|null
+     */
+    private function getSystemGrid($item)
+    {
         /** @var XpathBuilder $xp */
         $xp = new XpathBuilder();
 
         $windowXpath = $xp->xWindowByExactTitle($this->windowTitle)->get();
 
         $window = $this->find('xpath', $windowXpath);
-        $this->assertNotNull($window, print_r('Could not find element with XPath ' . $windowXpath, true));
+        $this->assertNotNull($window, sprintf('Could not find element with XPath %s', $windowXpath));
 
-        $gridXPath = $xp
-            ->div('desc', ['~text' => $item])
-            ->table('asc', [], 1)
-            ->get();
+        $gridXPath = $xp->div('desc', ['~text' => $item])->table('asc', [], 1)->get();
         $this->waitForXpathElementPresent($gridXPath);
 
         $grid = $window->find('xpath', $gridXPath);
-        $this->assertNotNull($grid, print_r('Could not find element with XPath ' . $gridXPath, true));
+        $this->assertNotNull($grid, sprintf('Could not find element with XPath %s', $gridXPath));
 
-        if ($meetRequirements) {
-            $this->checkStatusGreen($grid, $xp, $item);
-            return;
-        }
-        $this->checkStatusRed($grid, $xp, $item);
-    }
-
-    /**
-     * Checks, if the status of the given entry is crossed
-     *
-     * @param NodeElement $grid Area in which the entry is located as a row
-     * @param XpathBuilder $xp
-     * @param string $label Label of the requirement
-     *
-     */
-    private function checkStatusRed($grid, $xp, $label)
-    {
-        $statusXpath = $xp->div('desc', ['@text' => $label])->tr('asc', [], 1)->get();
-        $statusCell = $grid->find('xpath', $statusXpath);
-        $this->assertNotNull($statusCell, print_r('Could not find element with XPath cell ' . $statusXpath, true));
-
-        $statusRedXpath = $xp->div('desc', ['~class' => 'sprite-cross'])->get();
-        $statusRed = $statusCell->find('xpath', $statusRedXpath);
-        $this->assertNotNull($statusRed, print_r('Could not find element with XPath status ' . $statusRedXpath, true));
-    }
-
-    /**
-     * Checks, if the status of the given entry is ticked
-     *
-     * @param NodeElement $grid Area in which the entry is located as a row
-     * @param XpathBuilder $xp
-     * @param string $label Label of the requirement
-     */
-    private function checkStatusGreen($grid, $xp, $label)
-    {
-        $statusXpath = $xp->div('desc', ['@text' => $label])->tr('asc', [], 1)->get();
-        $statusCell = $grid->find('xpath', $statusXpath);
-        $this->assertNotNull($statusCell, print_r('Could not find element with XPath cell ' . $statusXpath, true));
-
-        $statusRedXpath = $xp->div('desc', ['~class' => 'sprite-tick'])->get();
-        $statusRed = $statusCell->find('xpath', $statusRedXpath);
-        $this->assertNotNull($statusRed, print_r('Could not find element with XPath status ' . $statusRedXpath, true));
+        return $grid;
     }
 }
