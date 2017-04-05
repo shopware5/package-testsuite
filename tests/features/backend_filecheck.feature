@@ -14,7 +14,7 @@ Feature: I can check the files which belong to my shop installation
     Then I should see "Shopware-Verzeichnisse" eventually
 
     When I click on the "Shopware-Verzeichnisse" tab
-    Then a "folder" requirement should has a "cross" as status
+    Then a "folder" requirement should have a "cross" as status
     When I correct the "folder" requirement
     And I reload the page
     Then I should see "Einstellungen" eventually
@@ -27,7 +27,7 @@ Feature: I can check the files which belong to my shop installation
     Then all "folder" requirements should have a "tick" as status
 
     When I click on the "Shopware-Dateien" tab
-    Then a "file" requirement should has a "cross" as status
+    Then a "file" requirement should have a "cross" as status
 
     When I correct the "file" requirement
     And I reload the page

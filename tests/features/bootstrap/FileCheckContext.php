@@ -9,6 +9,7 @@ class FileCheckContext extends SubContext
     private $testPath;
     private $folderRequirementLabel = 'media/music/';
     private $fileRequirementLabel = 'engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap.php';
+    private $renamedFileRequirementLabel = '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap-.php';
     private $unfulfilledIcon = 'cross';
 
     public function __construct()
@@ -35,29 +36,19 @@ class FileCheckContext extends SubContext
     }
 
     /**
-     * @Then a :requirement requirement should has a :icon as status
+     * @Then a :requirement requirement should have a :icon as status
      * @Then all :requirement requirements should have a :icon as status
      */
     public function aRequirementShouldOwnAsStatus($requirement, $icon)
     {
         /** @var SystemInfo $page */
         $page = $this->getPage('SystemInfo');
-        $requirementLabel = '';
+        $requirementLabel = $requirement === 'folder' ? $this->folderRequirementLabel : $this->fileRequirementLabel;
 
-        switch ($requirement) {
-            case 'folder':
-                $requirementLabel = $this->folderRequirementLabel;
-                break;
-            case 'file':
-                $requirementLabel = $this->fileRequirementLabel;
-                break;
-        }
-
-        if ($icon === $this->unfulfilledIcon) {
-            $page->checkRequirements($requirementLabel, false);
-        } else {
-            $page->checkRequirements($requirementLabel, true);
-        }
+        $page->checkRequirements(
+            $requirementLabel,
+            $icon !== $this->unfulfilledIcon
+        );
     }
 
 
@@ -69,17 +60,17 @@ class FileCheckContext extends SubContext
     private function setRequirementsFulfillment($meetRequirements, $type = '')
     {
         if ($meetRequirements === false) {
-            rename($this->testPath . '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap.php', $this->testPath . '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap-.php');
-            chmod($this->testPath . '/media/music', 0444);
+            rename($this->testPath . '/' . $this->fileRequirementLabel, $this->testPath . $this->renamedFileRequirementLabel);
+            chmod($this->testPath . '/' . $this->folderRequirementLabel, 0444);
             return;
         }
 
         switch ($type) {
             case 'file':
-                rename($this->testPath . '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap-.php', $this->testPath . '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap.php');
+                rename($this->testPath . $this->renamedFileRequirementLabel, $this->testPath . '/' . $this->fileRequirementLabel);
                 break;
             case 'folder':
-                chmod($this->testPath . '/media/music', 0777);
+                chmod($this->testPath . '/' . $this->folderRequirementLabel, 0777);
                 break;
         }
     }
