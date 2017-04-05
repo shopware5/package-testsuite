@@ -41,3 +41,4 @@ default:
                 - Shopware\Tests\Mink\UpdaterContext
                 - Shopware\Tests\Mink\AutoUpdaterContext
                 - Shopware\Tests\Mink\SubshopContext
+                - Shopware\Tests\Mink\FileCheckContext
