@@ -171,14 +171,14 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     {
         $element = $this->getElement('CheckoutPayment');
 
-        $this->spin(function (ContextAwarePage $context) use ($element) {
-            try {
-                Helper::clickNamedLink($element, 'changeButton');
-            } catch (\Exception $e) {
-                return false;
-            }
-            return true;
-        }, 10);
+        $xp = new XpathBuilder();
+        $changeButtonXpath = $xp->form(['@id' => 'confirm--form'])->a('desc', ['~class' => 'btn--change-payment'])->get();
+
+        $this->waitForSelectorPresent('xpath', $changeButtonXpath);
+
+        Helper::clickNamedLink($element, 'changeButton');
+
+        $this->waitForSelectorNotPresent('xpath', $changeButtonXpath);
 
         if (!is_numeric($method)) {
             $this->waitForText($method);
