@@ -46,6 +46,7 @@ use Shopware\Tests\Mink\Helper;
  * @method XpathBuilder picture(...$args)
  * @method XpathBuilder source(...$args)
  * @method XpathBuilder form(...$args)
+ * @method XpathBuilder textarea(...$args)
  */
 class XpathBuilder
 {
