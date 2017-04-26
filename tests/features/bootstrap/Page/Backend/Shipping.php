@@ -122,9 +122,17 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
 
         $editor->find('xpath', $xp->getXFormElementForLabel('Name:', 'input'))->setValue($shipping['name']);
 
-        $this->setBackendDropdownValue($editor, $xPaths['editFormCalculationSelectorPebble'], 'calculation', $shipping['calculationType']);
-        $this->setBackendDropdownValue($editor, $xPaths['editFormTypeSelectorPebble'], 'type', $shipping['shippingType']);
-        $this->setBackendDropdownValue($editor, $xPaths['editFormSurchargeSelectorPebble'], 'surchargeCalculation', $shipping['surchargeCalculation']);
+        $this->spin(function() use ($editor, $xPaths, $shipping) {
+            $this->setBackendDropdownValue($editor, $xPaths['editFormCalculationSelectorPebble'], 'calculation', $shipping['calculationType']);
+        });
+
+        $this->spin(function() use ($editor, $xPaths, $shipping) {
+            $this->setBackendDropdownValue($editor, $xPaths['editFormTypeSelectorPebble'], 'type', $shipping['shippingType']);
+        });
+
+        $this->spin(function() use ($editor, $xPaths, $shipping) {
+            $this->setBackendDropdownValue($editor, $xPaths['editFormSurchargeSelectorPebble'], 'surchargeCalculation', $shipping['surchargeCalculation']);
+        });
 
         $editor->find('xpath', $xPaths['editFormActiveCheckbox'])->click();
         $this->saveEditorAndClose($editor, 'Tracking-URL');
