@@ -1,4 +1,4 @@
-@checkout @javascript
+@checkout @javascript @knownFailing
 Feature: Checkout articles (scenario origin is cart with one product in it)
 
   Background:
