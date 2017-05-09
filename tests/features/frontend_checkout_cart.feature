@@ -1,4 +1,4 @@
-@checkout @javascript @knownFailing
+@checkout @javascript
 Feature: Checkout articles (scenario origin is cart with one product in it)
 
   Background:
@@ -14,8 +14,8 @@ Feature: Checkout articles (scenario origin is cart with one product in it)
       | test@example.com |
       | test@example.de  |
     And the following shipping options exist:
-      | name            | costs | calculationType | shippingType        | surchargeCalculation          |
-      | Express Versand | 9,9   | Preis           | Standard Versandart | Als eigene Warenkorb-Position |
+      | name             | costs | calculationType | shippingType        | surchargeCalculation          |
+      | Express Versand  | 9,9   | Preis           | Standard Versandart | Als eigene Warenkorb-Position |
 
   @fastOrder @payment @delivery
   Scenario Outline: I can finish my order with different payment and delivery methods
