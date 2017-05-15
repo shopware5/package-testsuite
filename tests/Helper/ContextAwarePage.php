@@ -131,6 +131,23 @@ class ContextAwarePage extends Page
     }
 
     /**
+     * @param NodeElement $parent
+     * @param string $xPath
+     * @param string $class
+     * @throws \Exception
+     */
+    protected function waitForClassNotPresent($parent, $xPath, $class)
+{
+    $this->spin(function (NodeElement $parent, $xPath, $class) use ($parent, $xPath, $class) {
+        $element = $parent->find('xpath', $xPath);
+        if($element->hasClass($class)) {
+            return false;
+        }
+        return true;
+    });
+}
+
+    /**
      * For use in backend forms, sets the dropdown value in an editor window
      * @param NodeElement $editor The NodeElement of the editor window
      * @param string $pebble The Xpath for the dropdown pebble

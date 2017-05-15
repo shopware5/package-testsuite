@@ -10,6 +10,8 @@ use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class Shipping extends ContextAwarePage implements HelperSelectorInterface
 {
+    private $requiredFields = ['Versandkosten-Berechnung nach', 'Versandart-Typ', 'Zahlungsart-Aufschlag'];
+
     /**
      * @var string $path
      */
@@ -110,22 +112,35 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
 
         $this->waitForText('Tracking-URL');
 
-        $editor = $this->find('xpath', $xPaths['editorWindow']);
-
-        /** @var NodeElement $shippingCostCell */
-        $shippingCostCell = $editor->find('xpath', $xPaths['shippingCostCell']);
-        $shippingCostCell->doubleClick();
-
-        /** @var NodeElement $focussedInput */
-        $focussedInput = $this->waitForSelectorPresent('xpath', $xp->getXFocussedInput());
-        $focussedInput->setValue($shipping['costs']);
-        $focussedInput->keyPress(13);
+        $editor = $this->waitForSelectorPresent('xpath', $xPaths['editorWindow']);
+        $this->assertNotNull($editor, print_r($xPaths['editorWindow'], true));
 
         $editor->find('xpath', $xp->getXFormElementForLabel('Name:', 'input'))->setValue($shipping['name']);
 
         $this->setBackendDropdownValue($editor, $xPaths['editFormCalculationSelectorPebble'], 'calculation', $shipping['calculationType']);
+
+        $windowNames = $this->getSession()->getWindowNames();
+        while(count($windowNames) > 1) {
+            $this->getSession()->switchToWindow(end($windowNames));
+            $this->getSession()->executeScript('window.close()');
+            usleep(200);
+            $windowNames = $this->getSession()->getWindowNames();
+        }
+        $this->getSession()->switchToWindow(end($windowNames));
+
+        //$this->waitForClassNotPresent($editor, $xPaths['editFormTypeSelectorPebble'], 'x-unselectable');
         $this->setBackendDropdownValue($editor, $xPaths['editFormTypeSelectorPebble'], 'type', $shipping['shippingType']);
         $this->setBackendDropdownValue($editor, $xPaths['editFormSurchargeSelectorPebble'], 'surchargeCalculation', $shipping['surchargeCalculation']);
+
+        /** @var NodeElement $shippingCostCell */
+        $shippingCostCell = $editor->find('xpath', $xPaths['shippingCostCell']);
+        $this->assertNotNull($shippingCostCell, print_r($xPaths['shippingCostCell'], true));
+        $shippingCostCell->doubleClick();
+
+        /** @var NodeElement $focussedInput */
+        $focussedInput = $this->waitForSelectorPresent('xpath', $xp->getXFocussedInput());
+        $this->assertNotNull($focussedInput, print_r($xp->getXFocussedInput(), true));
+        $focussedInput->setValue($shipping['costs']);
 
         $editor->find('xpath', $xPaths['editFormActiveCheckbox'])->click();
         $this->saveEditorAndClose($editor, 'Tracking-URL');
@@ -145,11 +160,13 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
         $window = $this->find('xpath', $xPaths['window']);
 
         $methodRow = $window->find('xpath', $xp->strong(['@text' => $method])->tr('asc', ['~class' => 'x-grid-row'])->get());
+
         if ($methodRow == null) {
             throw new \Exception(sprintf('Missing shipping method "%s"', $method));
         }
 
         $editIcon = $methodRow->find('xpath', $xp->getXPencilIcon());
+        $this->assertNotNull($editIcon, print_r($xp->getXPencilIcon(), true));
         $editIcon->click();
 
         $this->waitForText('Tracking-URL');
@@ -160,8 +177,9 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
         $paymentMethodsTab = $editor->find('xpath', $xp->getXTabContainerForLabel('Zahlart Auswahl'));
         $paymentMethodsTab->click();
 
-        $availablePaymentMethodRowsXPath = $xp->getXGridBodyForLabel('Verfügbar').$xp->tr('desc', ['~class' => 'x-grid-row'])->get();
-        $addButton = $editor->find('xpath', $xp->button('desc', ['@data-qtip' => 'Add to Selected'])->get());
+        $availablePaymentMethodRowsXPath = $xp->getXGridBodyForLabel('Verfügbar') . $xp->tr('desc', ['~class' => 'x-grid-row'])->get();
+
+        $addButton = $this->waitForSelectorPresent('xpath', $xp->button('desc', ['@data-qtip' => 'Add to Selected'])->get());
 
         foreach ($data as $payment) {
             /** @var NodeElement[] $availablePaymentMethodRows */
@@ -172,7 +190,12 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
                 if ($text != trim($payment)) {
                     continue;
                 }
-                $row->click();
+
+                $paymentRowXpath = $xp->div(['@text' => $text, 'and', '~class' => 'x-grid-cell-inner'])->tr('asc', [], 1)->get();
+                $paymentRow = $this->waitForSelectorPresent('xpath', $paymentRowXpath);
+
+                $this->assertNotNull($paymentRow, print_r($row->getXpath(), true));
+                $paymentRow->click();
                 $addButton->click();
                 break;
             }
@@ -210,8 +233,8 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
         $countriesTab = $editor->find('xpath', $xp->getXTabContainerForLabel('Länder Auswahl'));
         $countriesTab->click();
 
-        $availableCountriesRowsXPath = $xp->getXGridBodyForLabel('Verfügbar').$xp->tr('desc', ['~class' => 'x-grid-row'])->get();
-        $addButton = $editor->find('xpath', $xp->button('desc', ['@data-qtip' => 'Add to Selected'])->get());
+        $availableCountriesRowsXPath = $xp->getXGridBodyForLabel('Verfügbar') . $xp->tr('desc', ['~class' => 'x-grid-row'])->get();
+        $addButton = $this->waitForSelectorPresent('xpath', $xp->button('desc', ['@data-qtip' => 'Add to Selected'])->get());
 
         foreach ($data as $payment) {
             /** @var NodeElement[] $availableCountriesRows */
@@ -222,7 +245,11 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
                 if ($text != trim($payment)) {
                     continue;
                 }
-                $row->click();
+                $paymentRowXpath = $xp->div(['@text' => $text, 'and', '~class' => 'x-grid-cell-inner'])->tr('asc', [], 1)->get();
+                $countryRow = $this->waitForSelectorPresent('xpath', $paymentRowXpath);
+
+                $this->assertNotNull($countryRow, print_r($row->getXpath(), true));
+                $countryRow->click();
                 $addButton->click();
                 break;
             }
