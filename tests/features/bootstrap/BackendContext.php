@@ -584,6 +584,16 @@ class BackendContext extends SubContext
     }
 
     /**
+     * @Given the shipping method :method has the following shipping costs:
+     */
+    public function theShippingMethodHasTheFollowingShippingCosts($method, TableNode $table)
+    {
+        /** @var Shipping $page */
+        $page = $this->getPage('Shipping');
+        $page->setShippingCosts($method, $table->getHash());
+    }
+
+    /**
      * @Given the shipping method :method is active for the following payment methods:
      */
     public function theShippingMethodIsActiveForTheFollowingPamentMethods($method, TableNode $table)

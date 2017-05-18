@@ -35,7 +35,8 @@ class CheckoutCart extends Page implements HelperSelectorInterface
             'aggregationLabels' => 'ul.aggregation--list .entry--label',
             'aggregationValues' => 'ul.aggregation--list .entry--value',
             'shippingPaymentForm' => 'form.payment',
-            'articleDeleteButtons' => '.column--actions-link[title="Löschen"]'
+            'articleDeleteButtons' => '.column--actions-link[title="Löschen"]',
+            'dispatchSelect' => '#basket_dispatch_list',
         ];
     }
 
@@ -52,6 +53,7 @@ class CheckoutCart extends Page implements HelperSelectorInterface
             'sumWithoutVat' => ['de' => 'Gesamtsumme ohne MwSt.:', 'en' => 'Proceed to checkout'],
             'tax' => ['de' => 'zzgl. %d %% MwSt.:', 'en' => 'Proceed to checkout'],
             'changePaymentButton'   => ['de' => 'Weiter', 'en' => 'Next'],
+            'Versandkosten'   => ['de' => 'Versandkosten', 'en' => 'Shipping costs'],
         ];
     }
 
@@ -219,6 +221,21 @@ class CheckoutCart extends Page implements HelperSelectorInterface
         }
 
         $this->path = $originalPath;
+    }
+
+    public function changeDispatchOrPaymentMethod($subject, $method, $data)
+    {
+        Helper::clickNamedLink($this, 'Versandkosten');
+
+        if ($subject === 'dispatch') {
+            $elements = Helper::findElements($this, ['dispatchSelect']);
+
+            if (empty($elements)) {
+                Helper::throwException('Could not find dispatch select element on cart page.');
+            }
+
+            $elements['dispatchSelect']->selectOption($method);
+        }
     }
 
     protected function verify(array $urlParameters)

@@ -125,4 +125,17 @@ class FrontendCheckoutContext extends SubContext
         $page = $this->getPage('CheckoutConfirm');
         $page->changeShippingOrPaymentMethod($subject, $method, $data);
     }
+
+    /**
+     * @Given /^I change the (payment|dispatch) method in cart to "([^"]*)"(?::)?$/
+     * @param $subject
+     * @param int|string $method
+     * @param TableNode $data
+     */
+    public function iChangeTheDispatchOrPaymentMethodInCartTo($subject, $method, TableNode $data = null)
+    {
+        /** @var CheckoutCart $page */
+        $page = $this->getPage('CheckoutCart');
+        $page->changeDispatchOrPaymentMethod($subject, $method, $data);
+    }
 }
