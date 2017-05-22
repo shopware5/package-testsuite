@@ -387,6 +387,11 @@ class XpathBuilder
         return $this->img($direction, ['~class' => 'sprite-pencil'])->get();
     }
 
+    public function getXMinusIcon($direction = 'desc')
+    {
+        return $this->img($direction, ['~class' => 'sprite-minus-circle-frame'])->get();
+    }
+
     public function getXGridBodyForLabel($label)
     {
         return $this

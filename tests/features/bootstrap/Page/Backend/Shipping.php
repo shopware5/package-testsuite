@@ -143,7 +143,82 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
         $focussedInput->setValue($shipping['costs']);
 
         $editor->find('xpath', $xPaths['editFormActiveCheckbox'])->click();
+
+        if (array_key_exists('shippingfree', $shipping)) {
+            $editor->find('xpath', $xp->getXFormElementForLabel('Versandkosten frei ab:', 'input'))->setValue($shipping['shippingfree']);
+        }
+
         $this->saveEditorAndClose($editor, 'Tracking-URL');
+    }
+
+    public function setShippingCosts($method, $data)
+    {
+        $xp = new XpathBuilder();
+
+        $xPaths = $this->getXPathSelectors();
+        $this->open();
+
+        $this->waitForText('Versandkosten Verwaltung');
+
+        $window = $this->find('xpath', $xPaths['window']);
+
+        $methodRow = $window->find('xpath', $xp->strong(['@text' => $method])->tr('asc', ['~class' => 'x-grid-row'])->get());
+
+        if ($methodRow == null) {
+            throw new \Exception(sprintf('Missing shipping method "%s"', $method));
+        }
+
+        $editIcon = $methodRow->find('xpath', $xp->getXPencilIcon());
+        $this->assertNotNull($editIcon, print_r($xp->getXPencilIcon(), true));
+        $editIcon->click();
+
+        $this->waitForText('Tracking-URL');
+
+        $editor = $this->find('xpath', $xPaths['editorWindow']);
+
+        $rowsXPath = $xp->tr('desc', ['~class' => 'x-grid-row'])->get();
+        $rows = $editor->findAll('xpath', $rowsXPath);
+        array_shift($rows);
+
+        foreach ($rows as $row) {
+            $deleteIcon = $row->find('xpath', $xp->getXMinusIcon());
+            $this->assertNotNull($deleteIcon, print_r($xp->getXMinusIcon(), true));
+            $deleteIcon->click();
+
+            $messageBox = $this->getSession()->getPage()->find('xpath',
+                "//span[text()='Den ausgewählten Eintrag löschen?']/ancestor::div[" . XpathBuilder::getContainsClassString('x-message-box') . "][1]");
+
+            $messageBox->find('xpath', "/descendant::span[text()='Ja']")->click();
+        }
+
+        $columnMapping = [
+            'from' => 1,
+            'to' => 2,
+            'costs' => 3,
+            'factor' => 4
+        ];
+
+        foreach ($data as $rowIndex => $row) {
+            foreach ($row as $columnKey => $columnValue) {
+                $columnIndex = $columnMapping[$columnKey];
+
+                $cellXPath = $xp
+                    ->tr('desc', ['~class' => 'x-grid-row'], $rowIndex + 1)
+                    ->div('desc', ['~class' => 'x-grid-cell-inner'], $columnIndex)
+                    ->get();
+
+                $cell = $editor->find('xpath', $cellXPath);
+                $this->assertNotNull($cell, print_r($cellXPath, true));
+                $cell->doubleClick();
+
+                /** @var NodeElement $focussedInput */
+                $focussedInput = $this->waitForSelectorPresent('xpath', $xp->getXFocussedInput());
+                $this->assertNotNull($focussedInput, print_r($xp->getXFocussedInput(), true));
+                $focussedInput->setValue($columnValue);
+
+                $editor->find('xpath', $xPaths['editFormActiveCheckbox'])->click();
+            }
+        }
     }
 
     public function activatePaymentMethodsForShippingMethod($method, $data)
