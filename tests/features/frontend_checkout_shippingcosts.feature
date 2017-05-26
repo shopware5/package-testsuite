@@ -3,8 +3,8 @@ Feature: I can place an order with an existing account
 
   Background:
     Given the following products exist in the store:
-      | number  | name               | price | supplier  | categories                               |
-      | SWT0005 | Quantum Buster 2k9 | 49,99 | Acme Inc. | Root > Deutsch > Trickfilm > Gefahrengut |
+      | number  | name        | price | supplier  | categories                               |
+      | SWT0022 | Dong Sontax | 49,99 | Acme Inc. | Root > Deutsch > Trickfilm > Gefahrengut |
     And the following shipping options exist:
       | name             | costs | calculationType | shippingType        | surchargeCalculation          |
       | Standard Versand | 3,9   | Preis           | Standard Versandart | Als eigene Warenkorb-Position |
@@ -12,8 +12,8 @@ Feature: I can place an order with an existing account
 
   Scenario: MwSt calculation with default setup
     Given the cart contains the following products:
-      | number  | name               | quantity |
-      | SWT0005 | Quantum Buster 2k9 | 1        |
+      | number  | name        | quantity |
+      | SWT0022 | Dong Sontax | 1        |
     And the shipping method "Standard Versand" has the following shipping costs:
       | from | to       | costs |
       | 0    | beliebig | 3,9   |
@@ -45,8 +45,8 @@ Feature: I can place an order with an existing account
       | name        |
       | Deutschland |
     And the cart contains the following products:
-      | number  | name               | quantity |
-      | SWT0005 | Quantum Buster 2k9 | 1        |
+      | number  | name        | quantity |
+      | SWT0022 | Dong Sontax | 1        |
     And I change the dispatch method in cart to "Shipping Free from 40"
     Then the cart should contain 1 articles with a value of "49,99 €"
     And the aggregations should look like this:
@@ -77,8 +77,8 @@ Feature: I can place an order with an existing account
       | Deutschland |
     And the payment method "Vorkasse" does not have risk management rules and has a surcharge of "5"
     And the cart contains the following products:
-      | number  | name               | quantity |
-      | SWT0005 | Quantum Buster 2k9 | 1        |
+      | number  | name        | quantity |
+      | SWT0022 | Dong Sontax | 1        |
     And I change the dispatch method in cart to "Shipping Free from 40"
     Then the cart should contain 1 articles with a value of "49,99 €"
     And the aggregations should look like this:
