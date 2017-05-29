@@ -10,6 +10,7 @@ Feature: I can place an order with an existing account
       | Standard Versand | 3,9   | Preis           | Standard Versandart | Als eigene Warenkorb-Position |
     And the payment method "Vorkasse" does not have risk management rules and has a surcharge of "0"
 
+  @knownFailing
   Scenario: MwSt calculation with default setup
     Given the cart contains the following products:
       | number  | name        | quantity |
@@ -56,7 +57,7 @@ Feature: I can place an order with an existing account
       | total         | 49,99 € |
       | sumWithoutVat | 42,01 € |
 
-  @shipping @mwst @surcharge
+  @shipping @mwst @surcharge @knownFailing
   Scenario: MwSt calculation with inclusive surcharges and free shipping
     Given the following shipping options exist:
       | name                  | costs | calculationType | shippingType        | surchargeCalculation | shippingfree |

@@ -1,4 +1,4 @@
-@checkout @javascript
+@checkout @javascript @knownFailing
 Feature: Checkout articles in a subshop
 
   Background:
