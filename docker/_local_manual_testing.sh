@@ -26,7 +26,7 @@ echo "Create configuration"
 [ -f "$BEHAT" ] && rm "$BEHAT"
 cp ${ENV_TESTS_DIST} ${ENV_TESTS}
 cp ${BEHAT_DIST} ${BEHAT}
-alias docker-compose="docker-compose -f docker-compose-local.yml"
+alias docker-compose="docker-compose -f docker-compose.yml -f docker-compose.local.yml"
 
 echo "Starting docker"
 docker-compose down -v --remove-orphans
