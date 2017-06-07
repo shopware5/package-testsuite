@@ -13,7 +13,7 @@ Feature: Checkout articles in a subshop
       | email            |
       | test@example.com |
 
-  Scenario: I can place an order in a shubshop
+  Scenario: I can place an order in a subshop
     Given I am in subshop with URL "/subshop1"
     And I am logged in with account "test@example.com"
     And the cart contains the following products:

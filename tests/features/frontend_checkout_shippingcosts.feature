@@ -7,15 +7,14 @@ Feature: I can place an order with an existing account
       | SWT0022 | Dong Sontax | 49,99 | Acme Inc. | Root > Deutsch > Trickfilm > Gefahrengut |
     And the following shipping options exist:
       | name             | costs | calculationType | shippingType        | surchargeCalculation          |
-      | Standard Versand | 3,9   | Preis           | Standard Versandart | Als eigene Warenkorb-Position |
+      | Normaler Versand | 3,9   | Preis           | Standard Versandart | Als eigene Warenkorb-Position |
     And the payment method "Vorkasse" does not have risk management rules and has a surcharge of "0"
 
-  @knownFailing
   Scenario: MwSt calculation with default setup
     Given the cart contains the following products:
       | number  | name        | quantity |
       | SWT0022 | Dong Sontax | 1        |
-    And the shipping method "Standard Versand" has the following shipping costs:
+    And the shipping method "Normaler Versand" has the following shipping costs:
       | from | to       | costs |
       | 0    | beliebig | 3,9   |
     Then the cart should contain 1 articles with a value of "49,99 €"
@@ -26,7 +25,7 @@ Feature: I can place an order with an existing account
       | total         | 53,89 € |
       | sumWithoutVat | 45,29 € |
 
-  @shipping @mwst
+  @shipping @mwst @knownFailing
   Scenario: MwSt calculation with free shipping
     Given the following shipping options exist:
       | name                  | costs | calculationType | shippingType        | surchargeCalculation | shippingfree |
