@@ -8,14 +8,15 @@ Feature: I can place an order with an existing account
     And the payment method "Vorkasse" does not have risk management rules and has a surcharge of "0"
 
   Scenario: MwSt calculation with default setup
+    Given the shipping method "Standard Versand" has the following shipping costs:
+      | from | to       | costs |
+      | 0    | beliebig | 3,9   |
     Given the cart contains the following products:
       | number  | name        | quantity |
       | SWT0022 | Dong Sontax | 1        |
-    And the shipping method "Standard Versand" has the following shipping costs:
-      | from | to       | costs |
-      | 0    | beliebig | 3,9   |
-    Then the cart should contain 1 articles with a value of "49,99 €"
-    And   the aggregations should look like this:
+    Then I change the dispatch method in cart to "Standard Versand"
+    And the cart should contain 1 articles with a value of "49,99 €"
+    And the aggregations should look like this:
       | label         | value   |
       | sum           | 49,99 € |
       | shipping      | 3,90 €  |
