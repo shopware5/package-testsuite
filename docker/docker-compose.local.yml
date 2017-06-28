@@ -9,8 +9,7 @@ services:
     ports:
       - 8025:8025
   selenium:
-    build: ./build-selenium-debug
-    image: swag/selenium-debug
+    image: shopware/package-testsuite:selenium-debug
     shm_size: 1G
     links:
       - apache:assetgenerator.example

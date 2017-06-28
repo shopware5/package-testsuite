@@ -15,8 +15,7 @@ services:
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
   apache:
-    build: ./build-apache
-    image: swag/apache-packagetests
+    image: shopware/package-testsuite:apache
     volumes:
       - ../www/assetgenerator:/var/www/assetgenerator
       - ../www/updates:/var/www/updates
@@ -37,15 +36,13 @@ services:
   smtp:
     image: mailhog/mailhog
   selenium:
-    build: ./build-selenium
-    image: swag/selenium
+    image: shopware/package-testsuite:selenium
     links:
       - apache:assetgenerator.example
       - apache:shopware-subshop-01.test
       - apache:shopware.test
   tools:
-    build: ./build-tools
-    image: swag/tools-packagetests
+    image: shopware/package-testsuite:tools
     volumes:
       - ../tests:/tests
       - datavolume:/var/www/shopware
