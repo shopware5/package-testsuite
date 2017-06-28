@@ -29,7 +29,7 @@ cp ${BEHAT_DIST} ${BEHAT}
 
 echo "Starting docker"
 docker-compose down -v --remove-orphans
-docker-compose build
+docker-compose pull
 docker-compose up -d
 
 echo "Wait for MySQL"

@@ -30,7 +30,7 @@ alias docker-compose="docker-compose -f docker-compose.yml -f docker-compose.loc
 
 echo "Starting docker"
 docker-compose down -v --remove-orphans
-docker-compose build
+docker-compose pull
 docker-compose up -d
 
 echo "Wait for MySQL"
