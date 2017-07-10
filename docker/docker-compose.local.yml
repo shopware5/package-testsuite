@@ -19,3 +19,6 @@ services:
       - apache:shopware-subshop-01.test
     ports:
       - 5900:5900
+  tools:
+    volumes:
+      - ./php:/php-config

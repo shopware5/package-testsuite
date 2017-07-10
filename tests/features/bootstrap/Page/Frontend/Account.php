@@ -5,13 +5,12 @@ namespace Shopware\Tests\Mink\Page\Frontend;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\WebAssert;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Tests\Mink\Element\AccountOrder;
 use Shopware\Tests\Mink\Element\AccountPayment;
 use Shopware\Tests\Mink\Element\AddressBox;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Tests\Mink\Element\AddressManagementAddressBox;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
@@ -323,28 +322,44 @@ class Account extends Page implements HelperSelectorInterface
         Helper::pressNamedButton($this, 'changePaymentButton');
     }
 
+    /**
+     *
+     *
+     * @param string $subject
+     * @param string $methodName
+     * @return string
+     * @throws \Exception
+     */
     private function getMethodId($subject, $methodName)
     {
-        if ($subject == 'shipping') {
-            $classPrefix = 'dispatch';
-            $inputName = 'sDispatch';
-        } elseif ($subject == 'payment') {
-            $classPrefix = 'payment';
-            $inputName = $classPrefix;
-        } else {
-            throw new \Exception(sprintf('Unknown subject: %s', $subject));
+        // Set prefixes
+        switch ($subject) {
+            case 'shipping':
+                $classPrefix = 'dispatch';
+                $inputName = 'sDispatch';
+                break;
+            case 'payment':
+                $classPrefix = 'payment';
+                $inputName = $classPrefix;
+                break;
+            default:
+                throw new \Exception(sprintf('Unknown subject: %s', $subject));
         }
 
-        $xp = new XpathBuilder();
-        $inputXpath = $xp
-            ->label(['@text' => $methodName, 'and', '~class' => 'method--name'])
-            ->div('asc', ['~class' => $classPrefix.'--method'], 1)
-            ->input('desc', ['@name' => $inputName])
-            ->get();
+        // Find element on page
+        $builder = new BaseXpathBuilder();
+        $inputXpath = $builder
+            ->child('label', ['@text' => $methodName, 'and', '~class' => 'method--name'])
+            ->ancestor('div', ['~class' => $classPrefix.'--method'], 1)
+            ->descendant('input', ['@name' => $inputName])
+            ->getXpath();
         $input = $this->find('xpath', $inputXpath);
+
         if (null === $input) {
             throw new \Exception(sprintf("Could not find ID for %s '%s' on current page", $subject, $methodName));
         }
+
+        // Get ID attribute
         return $input->getAttribute('value');
     }
 

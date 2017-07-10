@@ -4,7 +4,7 @@ namespace Shopware\Helper;
 
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 
 class ContextAwarePage extends Page
 {
@@ -156,7 +156,7 @@ class ContextAwarePage extends Page
      */
     protected function setBackendDropdownValue($editor, $pebble, $action, $option)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         /** @var NodeElement $calculationSelectorPebble */
         $typeSelectorPebble = $editor->find('xpath', $pebble);
@@ -169,7 +169,7 @@ class ContextAwarePage extends Page
 
     protected function waitForModalOverlayClosed()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         $modalXPath = $xp
             ->div(['~class' => ['js--overlay']])
             ->get();
@@ -232,7 +232,7 @@ class ContextAwarePage extends Page
      */
     protected function selectFromXDropdown(NodeElement $parent, $label, $action, $optionText)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         $pebbleXpath = $xp->getXSelectorPebbleForLabel($label);
         $pebble = $parent->find('xpath', $pebbleXpath);
         $pebble->click();

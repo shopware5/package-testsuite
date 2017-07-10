@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Backend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\HelperSelectorInterface;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 
 class RiskManagement extends Page implements HelperSelectorInterface
 {
@@ -34,7 +34,7 @@ class RiskManagement extends Page implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         return [
             'window' => $xp
                 ->xWindowByTitle('Risk-Management')

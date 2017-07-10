@@ -9,39 +9,27 @@ use Shopware\Helper\ApiClient;
 
 class ApiContext extends SubContext
 {
-
-    /** @var  ApiClient */
+    /** @var ApiClient $apiClient */
     private $apiClient;
+
     private $generatedUsers;
 
     /**
-     * @return ApiClient
-     * @throws MissingRequirementException
+     * @AfterScenario
      */
-    private function getApiClient()
+    public function cleanGeneratedUsers(AfterScenarioScope $scope)
     {
-        if ($this->apiClient !== null) {
-            return $this->apiClient;
-        }
-        $baseUrl = $this->getMinkParameter('base_url');
-        $apiUser = "demo";
-        $apiKey = getenv("api_key");
-        if (empty($apiKey)) {
-            throw new MissingRequirementException("Please set the api_key parameter in .env");
+        if ($this->generatedUsers == null || !is_array($this->generatedUsers)) {
+            return;
         }
 
-        if (empty($baseUrl)) {
-            throw new MissingRequirementException("Please set the base_url parameter in behat.yml");
+        $api = $this->getApiClient();
+
+        foreach ($this->generatedUsers as $email) {
+            if ($api->customerExists($email)) {
+                $api->deleteCustomerByEmail($email);
+            }
         }
-
-        $assetUrl = getenv('assets_url');
-        if (empty($assetUrl)) {
-            throw new MissingRequirementException("Please set the asset_url parameter in .env");
-        }
-
-        $this->apiClient = new ApiClient($baseUrl, $assetUrl, $apiUser, $apiKey);
-
-        return $this->apiClient;
     }
 
     /**
@@ -80,49 +68,6 @@ class ApiContext extends SubContext
     {
         $this->generatedUsers[] = $email;
         $this->recreateCustomerAccount($email, $password, $group);
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function cleanGeneratedUsers(AfterScenarioScope $scope)
-    {
-        if ($this->generatedUsers == null || !is_array($this->generatedUsers)) {
-            return;
-        }
-
-        $api = $this->getApiClient();
-
-        foreach ($this->generatedUsers as $email) {
-            if ($api->customerExists($email)) {
-                $api->deleteCustomerByEmail($email);
-            }
-        }
-    }
-
-    /**
-     * @param string $email
-     * @param string $password
-     * @param string $group
-     */
-    private function recreateCustomerAccount($email, $password = '', $group = '')
-    {
-        $api = $this->getApiClient();
-
-        if ($api->customerExists($email) === true) {
-            $api->deleteCustomerByEmail($email);
-        }
-
-        $data = [
-            'email' => $email,
-            'password' => $password ?: $this->slugify($email),
-        ];
-
-        if (!empty($group)) {
-            $data['groupKey'] = $group;
-        }
-
-        $api->createCustomer($data);
     }
 
     /**
@@ -171,5 +116,60 @@ class ApiContext extends SubContext
     {
         $api = $this->getApiClient();
         $api->createCategoryTree($tree);
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @param string $group
+     */
+    private function recreateCustomerAccount($email, $password = '', $group = '')
+    {
+        $api = $this->getApiClient();
+
+        if ($api->customerExists($email) === true) {
+            $api->deleteCustomerByEmail($email);
+        }
+
+        $data = [
+            'email' => $email,
+            'password' => $password ?: $this->slugify($email),
+        ];
+
+        if (!empty($group)) {
+            $data['groupKey'] = $group;
+        }
+
+        $api->createCustomer($data);
+    }
+
+    /**
+     * @return ApiClient
+     * @throws MissingRequirementException
+     */
+    private function getApiClient()
+    {
+        if ($this->apiClient !== null) {
+            return $this->apiClient;
+        }
+        $baseUrl = $this->getMinkParameter('base_url');
+        $apiUser = "demo";
+        $apiKey = getenv("api_key");
+        if (empty($apiKey)) {
+            throw new MissingRequirementException("Please set the api_key parameter in .env");
+        }
+
+        if (empty($baseUrl)) {
+            throw new MissingRequirementException("Please set the base_url parameter in behat.yml");
+        }
+
+        $assetUrl = getenv('assets_url');
+        if (empty($assetUrl)) {
+            throw new MissingRequirementException("Please set the asset_url parameter in .env");
+        }
+
+        $this->apiClient = new ApiClient($baseUrl, $assetUrl, $apiUser, $apiKey);
+
+        return $this->apiClient;
     }
 }

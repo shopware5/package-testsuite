@@ -120,3 +120,80 @@ You may need to adjust the parameter `assets_url` if you're not using the built 
 #### tests/behat.yml
 
 You may need to adjust the parameters `base_url` and `wd_host` if you're not using the built in container structure.
+
+## Writing Tests
+
+### How to use the XpathBuilder
+
+The `Shopware\Component\XpathBuilder` namespace contains a few classes that can be helpful when writing tests that rely 
+on complicated xpath queries. It is recommended to use either the `FrontendXpathBuilder` or the `BackendXpathBuilder`, 
+which both inherit from the `BaseXpathBuilder` but additionally provide useful shortcuts for often-needed functionality, 
+like e.g. selecting an ExtJS window by its title.
+
+
+#### Using the BaseXpathBuilder
+
+The XpathBuilder can be used with a fluent, method-chain-style interface:
+```
+<?php
+
+use Shopware\Component\XpathBuilder\BaseXpathBuilder;
+
+$builder = new BaseXpathBuilder();
+
+/*  Would match the following:
+ *
+ *      <ul class="x-dropdown col-xs-12">
+ *          <li>Demo Text</li>
+ *      </ul>
+ */
+$builder
+    ->child('li', ['~text' => 'Demo Text'])
+    ->ancestor('ul', ['~class' => 'x-dropdown'], 1)
+    ->getXpath();
+
+```
+The BaseXpathBuilder comes pre-configured with a single `/` as its path. There is *no implicit resetting* with the base builder. 
+If you configured a path and want to reuse the same Builder-instance, you need to call `$builder->reset()` on it again in 
+order to reset the path to its default value. It is recommended that you explicitly call `->reset()` explicitly at the 
+beginning of every xpath build to mitigate any possible, hard-to-debug mistakes.
+
+All builder support building xpaths fluently by chaining calls such as `->child([...])`, `->descendant([...])` or 
+`->followingSibling([...])`. Those public methods all have the same signature of `->child($tag, $predicates, $index)`, with
+the latter two being optional.
+
+To retrieve the currently configured xpath, call the `->getXpath()` method. Please note that in contrast to the LegacyXpathBuilder,
+the BaseXpathBuilder() *does not* implicitly reset the builder when you get the path. 
+
+There is a static shorthand method useful for creating xpaths inline:
+```
+<?php
+
+use Shopware\Component\XpathBuilder\BaseXpathBuilder;
+
+$iconXpath = BackendXpathBuilder::create()->child('img', ['@class' => 'icon-smiley'])->getXpath();
+```
+
+#### Using the BackendXpathBuilder
+
+The BackendXpathBuilder class has some helpful shorthand methods that provide easy access to common xpaths. They can
+be accessed statically and always return the resulting Xpath as a ready-to-use xpath string.
+
+The following (non exhaustive) list contains some of these methods:
+```
+<?php
+
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+
+[...]
+
+$window = $this->find('xpath', BackendXpathBuilder::getWindowXpathByTitle('Kundenverwaltung'));
+
+$textInput = $this->find('xpath', BackendXpathBuilder::getInputXpathByLabel('Email:'));
+
+$textarea = $this->find('xpath', BackendXpathBuilder::getFormElementXpathByLabel('Kommentar:'));
+
+$combobox = $this->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel('Steuersatz:'));
+
+$saveButton = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Speichern'));
+```

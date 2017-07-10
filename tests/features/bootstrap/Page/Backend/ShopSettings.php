@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
@@ -44,8 +44,8 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      */
     public function clickOnMenuElement($elementName)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $elementXpath = $xp->span(['@text' => $elementName, 'and', '~class' => 'x-menu-item-text'])->a('asc', [], 1)->get();
         $element = $this->find('xpath', $elementXpath);
@@ -59,8 +59,8 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      */
     public function clickOnSettingsMenuElement($elementName)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
         $elementXpath = $xp->div(['@text' => $elementName, 'and', '~class' => 'x-grid-cell-inner'])->td('asc', [], 1)->get();
         $element = $this->find('xpath', $elementXpath);
 
@@ -74,8 +74,8 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      */
     public function fillConfigurationForm($data)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
         $windowXP = $xp->xWindowByExactTitle($this->shopConfigurationLabel)->get();
 
         foreach ($data as $entry) {
@@ -111,7 +111,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      *
      * @param NodeElement $window
      * @param string $entry Data which should be used for the combobox
-     * @param XpathBuilder $xp Window, which is currently opened
+     * @param LegacyXpathBuilder $xp Window, which is currently opened
      */
     private function fillCombobox($window, $entry, $xp)
     {
@@ -134,7 +134,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      *
      * @param NodeElement $window Window, which is currently opened
      * @param string $entry Data which should be used for the selection
-     * @param XpathBuilder $xp
+     * @param LegacyXpathBuilder $xp
      */
     private function fillSelecttree($window, $entry, $xp)
     {
@@ -162,7 +162,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      *
      * @param NodeElement $window
      * @param string $entry Data which should be used for the checkbox
-     * @param XpathBuilder $xp Window, which is currently opened
+     * @param LegacyXpathBuilder $xp Window, which is currently opened
      */
     private function fillCheckbox($window, $entry, $xp)
     {
@@ -186,7 +186,7 @@ class ShopSettings extends ContextAwarePage implements HelperSelectorInterface
      * Clicks the corresponding button to submit a form
      *
      * @param string $elementName Name of the element
-     * @param XpathBuilder $xp
+     * @param LegacyXpathBuilder $xp
      */
     public function submitForm($elementName, $xp)
     {

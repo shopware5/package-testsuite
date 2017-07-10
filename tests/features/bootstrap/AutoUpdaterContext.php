@@ -2,12 +2,16 @@
 
 namespace Shopware\Tests\Mink;
 
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Testwork\Tester\Result\TestResult;
 use Shopware\Tests\Mink\Page\Updater\AutoUpdaterIndex;
 
 class AutoUpdaterContext extends SubContext
 {
+    /** @var string Path to shopware installation */
     private $testPath;
+
     private $testPathApache;
 
     public function __construct()
@@ -15,6 +19,71 @@ class AutoUpdaterContext extends SubContext
         parent::__construct();
         $this->testPath = getenv('base_path');
         $this->testPathApache = getenv('base_path_apache');
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function onAfterScenario()
+    {
+        $this->repairRequirements();
+    }
+
+    /**
+     * @Given the auto update requirements are not met
+     */
+    public function theAutoUpdateRequirementsAreNotMet()
+    {
+        $this->breakRequirements();
+    }
+
+    /**
+     * @When I correct the auto update requirements
+     */
+    public function iCorrectTheAutoUpdateRequirements()
+    {
+        $this->repairRequirements();
+    }
+
+    /**
+     * Break the requirements needed by the auto-updater
+     */
+    private function breakRequirements()
+    {
+        if (!$this->areRequirementsBroken()) {
+            rename($this->testPath . '/recovery', $this->testPath . '/recovery_broken');
+        }
+    }
+
+    /**
+     * Repair the requirements needed by the auto-updater
+     */
+    private function repairRequirements()
+    {
+        if ($this->areRequirementsBroken()) {
+            rename($this->testPath . '/recovery_broken', $this->testPath . '/recovery');
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function areRequirementsBroken()
+    {
+        return !is_dir($this->testPath . '/recovery') && is_dir($this->testPath . '/recovery_broken');
+    }
+
+    /**
+     * @AfterStep
+     *
+     * @param AfterStepScope $scope
+     */
+    public function waitToDebugInBrowserOnStepErrorHook(AfterStepScope $scope)
+    {
+        if ($scope->getTestResult()->getResultCode() == TestResult::FAILED) {
+            echo PHP_EOL . "PAUSING ON FAIL" . PHP_EOL;
+            $this->getSession()->wait(10000000000);
+        }
     }
 
     /**
@@ -110,14 +179,6 @@ class AutoUpdaterContext extends SubContext
         $page->checkIfShopIsAvailable($linktext, $target);
     }
 
-    /**
-     * @Given the auto update requirements are not met
-     */
-    public function theAutoUpdateRequirementsAreNotMet()
-    {
-        $this->setRequirementsFullfillment(false);
-    }
-
 
     /**
      * @Given the listed requirements are not fullfilled
@@ -130,15 +191,6 @@ class AutoUpdaterContext extends SubContext
         if ($page->checkSystemRequirementsUnfullfilled('Voraussetzungen') === false) {
             throw new \Exception('Requirement well met.');
         }
-    }
-
-
-    /**
-     * @When I correct the auto update requirements
-     */
-    public function iCorrectTheAutoUpdateRequirements()
-    {
-        $this->setRequirementsFullfillment(true);
     }
 
     /**
@@ -161,18 +213,5 @@ class AutoUpdaterContext extends SubContext
         /** @var AutoUpdaterIndex $page */
         $page = $this->getPage('AutoUpdaterIndex');
         $page->clickOnUpdaterElement($text);
-    }
-
-    /**
-     * Fakes an unfullfilled requirement or undoes it
-     * @param bool $meetRequirements Determines if the requirement should be met or not
-     */
-    private function setRequirementsFullfillment($meetRequirements)
-    {
-        if ($meetRequirements === false) {
-            rename($this->testPath . '/recovery', $this->testPath . '/recovery-new');
-            return;
-        }
-        rename($this->testPath . '/recovery-new', $this->testPath . '/recovery');
     }
 }

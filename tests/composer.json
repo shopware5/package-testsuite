@@ -18,6 +18,7 @@
     "psr-4": {
       "Shopware\\Tests\\Mink\\": "features/bootstrap",
       "Shopware\\Helper\\": "Helper",
+      "Shopware\\Component\\": "Component",
       "Shopware\\Exception\\": "Exception"
     }
   }

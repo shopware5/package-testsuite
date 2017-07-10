@@ -2,7 +2,6 @@
 
 namespace Shopware\Tests\Mink;
 
-use Behat\Gherkin\Node\TableNode;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class GeneralContext extends SubContext
@@ -28,18 +27,10 @@ class GeneralContext extends SubContext
     }
 
     /**
-     * @When /^I do stuff$/
+     * @Then /^I should eventually not see "([^"]*)"/
      */
-    public function iDoStuff()
+    public function iShouldEventuallyNotSee($text)
     {
-        echo "Foo";
-    }
-
-    /**
-     * @Then /^I want to be happy$/
-     */
-    public function iWantToBeHappy()
-    {
-        echo "Foo";
+        $this->waitForTextNotPresent($text);
     }
 }
