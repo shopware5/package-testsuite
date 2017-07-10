@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink\Page\Installer;
 
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
@@ -20,7 +20,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         return [
             'backwardDbButton' => $xp->a(['~class' => 'btn-arrow-left'])->get(),
             'c_config_admin_email' => $xp->input(['@id' => 'c_config_admin_email'])->get(),

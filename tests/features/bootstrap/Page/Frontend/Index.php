@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class Index extends Page implements HelperSelectorInterface
@@ -37,37 +37,48 @@ class Index extends Page implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new XpathBuilder();
+        $builder = new FrontendXpathBuilder();
+
         return [
-            'templateMainNav' => $xp
-                ->nav(['@class' => 'navigation-main'])
-                ->ul('dsc', ['~class' => 'navigation--list'])
-                ->li('dsc', ['~text' => '{NAVTITLE}'])
-                ->get(),
-            'templateSubNav' => $xp
-                ->li(['~class' => 'is--active'])
-                ->a('dsc', ['@class' => 'navigation--link', 'and', '~text' => '{NAVTITLE}'])
-                ->get(),
-            'templateListingProductByOrderNumber' => $xp
-                ->div(['@class' => 'listing--container'])
-                ->div('dsc', ['@data-ordernumber' => '{ORDERNUMBER}'])
-                ->get(),
-            'templateListingProductBoxByName' => $xp
-                ->div(['@class' => 'listing--container'])
-                ->div('dsc', ['@class' => 'product--info'])
-                ->a('dsc', ['@class' => 'product--title', 'and', '@title'=>'{PRODUCTNAME}'])
-                ->div('asc', ['~class' => 'product--box'], 1)
-                ->get(),
-            'logoPictureSourceElements' => $xp
-                ->div(['~class' => 'logo--shop'])
-                ->picture('desc', [], 1)
-                ->source('desc', [])
-                ->get(),
-            'logoPictureimgElement' => $xp
-                ->div(['~class' => 'logo--shop'])
-                ->picture('desc', [], 1)
-                ->img('desc', [], 1)
-                ->get(),
+            'templateMainNav' => $builder
+                ->reset()
+                ->child('nav', ['@class' => 'navigation-main'])
+                ->descendant('ul', ['~class' => 'navigation--list'])
+                ->descendant('li', ['~text' => '{NAVTITLE}'])
+                ->getXpath(),
+
+            'templateSubNav' => $builder
+                ->reset()
+                ->child('li', ['~class' => 'is--active'])
+                ->descendant('a', ['@class' => 'navigation--link', 'and', '~text' => '{NAVTITLE}'])
+                ->getXpath(),
+
+            'templateListingProductByOrderNumber' => $builder
+                ->reset()
+                ->child('div', ['@class' => 'listing--container'])
+                ->descendant('div', ['@data-ordernumber' => '{ORDERNUMBER}']),
+
+            'templateListingProductBoxByName' => $builder
+                ->reset()
+                ->child('div', ['@class' => 'listing--container'])
+                ->descendant('div', ['@class' => 'product--info'])
+                ->descendant('a', ['@class' => 'product--title', 'and', '@title' => '{PRODUCTNAME}'])
+                ->ancestor('div', ['~class' => 'product--box'], 1)
+                ->getXpath(),
+
+            'logoPictureSourceElements' => $builder
+                ->reset()
+                ->child('div', ['~class' => 'logo--shop'])
+                ->descendant('picture', [], 1)
+                ->descendant('source')
+                ->getXpath(),
+
+            'logoPictureimgElement' => $builder
+                ->reset()
+                ->child('div', ['~class' => 'logo--shop'])
+                ->descendant('picture', [], 1)
+                ->descendant('img', [], 1)
+                ->getXpath(),
         ];
     }
 

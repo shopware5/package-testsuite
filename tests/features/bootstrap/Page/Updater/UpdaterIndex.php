@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink\Page\Updater;
 
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
@@ -19,7 +19,7 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         return [
             'forwardButton' => $xp->input(['@value' => 'Weiter'])->get(),
             'requirementForwardButton' => $xp->button(['@type' => 'submit'])->get(),

@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Updater;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
@@ -14,7 +14,7 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
      */
     public function getXPathSelectors()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         return [
             'shopBackend' => $xp->a(['~class' => 'is--right', 'and', '@text' => 'Zum Shop-Backend (Administration)'])->get(),
             'shopFrontend' => $xp->a(['~class' => 'is--left'])->get(),
@@ -46,8 +46,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
 
     public function clickOnElement($elementName)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $elementXpath = $xp->span(['@text' => $elementName, 'and', '~class' => 'x-btn-inner'])->button('asc', [], 1)->get();
 
@@ -63,8 +63,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
 
     public function clickOnTab($tabName)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $elementXpath = $xp->span(['@text' => $tabName, 'and', '~class' => 'x-tab-inner'])->button('asc', [], 1)->get();
 
@@ -79,8 +79,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
 
     public function refreshElement()
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $windowXpath = $xp->xWindowByExactTitle('Softwareaktualisierung')->get();
         $window = $this->find('xpath', $windowXpath);
@@ -102,8 +102,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
 
     public function checkIfEnabled($selector, $locator, $desiredMode)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $elementXpath = $xp->span(['@text' => $locator, 'and', '~class' => 'x-btn-inner'])->button('asc', [], 1)->get();
         $element = $this->find($selector, $elementXpath);
@@ -129,8 +129,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
      **/
     public function checkSystemRequirements($item, $pathApache)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $windowXpath = $xp->xWindowByExactTitle('Softwareaktualisierung')->get();
         $window = $this->find('xpath', $windowXpath);
@@ -185,8 +185,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
      */
     public function checkSystemRequirementsUnfullfilled($tabName)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $windowXpath = $xp->xWindowByExactTitle('Softwareaktualisierung')->get();
         $window = $this->find('xpath', $windowXpath);
@@ -210,8 +210,8 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
      **/
     public function checkTabRequirementFullfilled($tab)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $windowXpath = $xp->xWindowByExactTitle('Softwareaktualisierung')->get();
         $window = $this->find('xpath', $windowXpath);
@@ -233,7 +233,7 @@ class AutoUpdaterIndex extends ContextAwarePage implements HelperSelectorInterfa
      **/
     public function tickConfirmationCheckbox()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         $elementXpath = $xp->label(['@text' => 'Ich habe ein Backup angelegt und möchte das Update durchführen.', 'and', '~class' => 'x-form-cb-label'])->td('asc', [], 1)->get();
 

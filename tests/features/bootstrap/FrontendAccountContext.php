@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\WebAssert;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Element\AddressManagementAddressBox;
 use Shopware\Tests\Mink\Page\Frontend\Account;
 

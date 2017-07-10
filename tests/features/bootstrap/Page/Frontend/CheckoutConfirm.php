@@ -1,13 +1,13 @@
 <?php
 
-namespace  Shopware\Tests\Mink\Page\Frontend;
+namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ResponseTextException;
 use Behat\Mink\WebAssert;
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\Element\AddressManagementAddressBox;
 use Shopware\Tests\Mink\Element\CheckoutPayment;
 use Shopware\Tests\Mink\Element\CheckoutShipping;
@@ -20,6 +20,20 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
      * @var string $path
      */
     protected $path = '/checkout/confirm';
+
+    /**
+     * @inheritdoc
+     */
+    public function getXPathSelectors()
+    {
+        return [
+            'changePaymentButton' => (new FrontendXpathBuilder())
+                ->reset()
+                ->child('form', ['@id' => 'confirm--form'])
+                ->descendant('a', ['~class' => 'btn--change-payment'])
+                ->getXpath(),
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -171,8 +185,7 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     {
         $element = $this->getElement('CheckoutPayment');
 
-        $xp = new XpathBuilder();
-        $changeButtonXpath = $xp->form(['@id' => 'confirm--form'])->a('desc', ['~class' => 'btn--change-payment'])->get();
+        $changeButtonXpath = $this->getXPathSelectors()['changePaymentButton'];
 
         $this->waitForSelectorPresent('xpath', $changeButtonXpath);
 
@@ -259,23 +272,6 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
         $button->press();
     }
 
-    /**
-     * Returns an array of all xpath selectors of the element/page
-     *
-     * Example:
-     * return [
-     *  'loginform' = "//input[@id='email']/ancestor::form[1]",
-     *  'loginemail' = "//input[@name='email']",
-     *  'password' = "//input[@name='password']",
-     * ]
-     *
-     * @return string[]
-     */
-    public function getXPathSelectors()
-    {
-        return [];
-    }
-
     private function getMethodId($subject, $methodName)
     {
         if ($subject == 'shipping') {
@@ -288,16 +284,18 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
             throw new \Exception(sprintf('Unknown subject: %s', $subject));
         }
 
-        $xp = new XpathBuilder();
-        $inputXpath = $xp
-            ->label(['@text' => $methodName, 'and', '~class' => 'method--name'])
-            ->div('asc', ['~class' => $classPrefix.'--method'], 1)
-            ->input('desc', ['@name' => $inputName])
-            ->get();
+        $inputXpath = (new FrontendXpathBuilder())
+            ->reset()
+            ->child('label', ['@text' => $methodName, 'and', '~class' => 'method--name'])
+            ->ancestor('div', ['~class' => $classPrefix . '--method'], 1)
+            ->descendant('input', ['@name' => $inputName])
+            ->getXpath();
+
         $input = $this->find('xpath', $inputXpath);
         if (null === $input) {
             throw new \Exception(sprintf("Could not find ID for %s '%s' on current page", $subject, $methodName));
         }
+
         return $input->getAttribute('value');
     }
 }

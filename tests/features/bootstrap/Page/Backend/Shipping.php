@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
@@ -44,7 +44,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
     public function getXPathSelectors()
     {
         if (count($this->xPaths) == 0) {
-            $xp = new XpathBuilder();
+            $xp = new LegacyXpathBuilder();
             $this->xPaths = [
                 'window' => $xp
                     ->xWindowByTitle('Versandkosten Verwaltung')
@@ -92,7 +92,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
 
     public function createShippingMethodIfNotExists(array $shipping)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         $xPaths = $this->getXPathSelectors();
         $this->open();
@@ -153,7 +153,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
 
     public function setShippingCosts($method, $data)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         $xPaths = $this->getXPathSelectors();
         $this->open();
@@ -186,7 +186,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
             $deleteIcon->click();
 
             $messageBox = $this->getSession()->getPage()->find('xpath',
-                "//span[text()='Den ausgewählten Eintrag löschen?']/ancestor::div[" . XpathBuilder::getContainsClassString('x-message-box') . "][1]");
+                "//span[text()='Den ausgewählten Eintrag löschen?']/ancestor::div[" . LegacyXpathBuilder::getContainsClassString('x-message-box') . "][1]");
 
             $messageBox->find('xpath', "/descendant::span[text()='Ja']")->click();
         }
@@ -225,7 +225,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
     {
         $data = Helper::flattenArray($data);
 
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         $xPaths = $this->getXPathSelectors();
         $this->open();
@@ -283,7 +283,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
     {
         $data = Helper::flattenArray($data);
 
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         $xPaths = $this->getXPathSelectors();
         $this->open();
@@ -339,7 +339,7 @@ class Shipping extends ContextAwarePage implements HelperSelectorInterface
      */
     private function saveEditorAndClose(NodeElement $editor, $editorIdentifier)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         /** @var NodeElement $saveButton */
         $saveButton = $editor->find('xpath', $xp->span(['@text' => 'Speichern'])->get());
         $saveButton->click();

@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Tests\Mink\Element\HeaderCart;
 use Shopware\Tests\Mink\Page\Frontend\Account;
 use Shopware\Tests\Mink\Page\Frontend\CheckoutCart;
@@ -96,14 +96,17 @@ class FrontendContext extends SubContext
     {
         /** @var Index $page */
         $page = $this->getPage('Index');
+
         $product = $page->getProductListingBoxElement($name);
         if ($product == null) {
             throw new ElementNotFoundException(sprintf("Product with ordernumber %s not found!", $name));
         }
-        $xp = new XpathBuilder();
-        $price = $product->find('xpath', $xp->span('desc', ['~class' => 'price--default'])->get());
+
+        $price = $product->find('xpath', (new BaseXpathBuilder())->descendant('span', ['~class' => 'price--default'])->getXpath());
+
         $priceText = $price->getText();
         $priceText = explode(' ', $priceText)[0];
+
         if (!is_numeric($priceText)) {
             $priceText = str_replace(',', '.', str_replace('.', '', $priceText));
         }

@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class SystemInfo extends ContextAwarePage implements HelperSelectorInterface
@@ -56,7 +56,7 @@ class SystemInfo extends ContextAwarePage implements HelperSelectorInterface
      */
     private function checkStatus($item, $class)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         $grid = $this->getSystemGrid($item);
 
         $statusXpath = $xp->div('desc', ['@text' => $item])->tr('asc', [], 1)->get();
@@ -74,8 +74,8 @@ class SystemInfo extends ContextAwarePage implements HelperSelectorInterface
      */
     private function getSystemGrid($item)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        /** @var LegacyXpathBuilder $xp */
+        $xp = new LegacyXpathBuilder();
 
         $windowXpath = $xp->xWindowByExactTitle($this->windowTitle)->get();
 

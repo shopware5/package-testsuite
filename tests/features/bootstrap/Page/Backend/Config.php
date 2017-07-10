@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink\Page\Backend;
 
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class Config extends ContextAwarePage implements HelperSelectorInterface
@@ -37,7 +37,7 @@ class Config extends ContextAwarePage implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         return [
             'window' => $xp->xWindowByExactTitle('Grundeinstellungen')->get(),
             'windowShops' => $xp->xWindowByExactTitle('Grundeinstellungen - Shops')->get(),
@@ -93,7 +93,7 @@ class Config extends ContextAwarePage implements HelperSelectorInterface
     {
         $data = $this->checkSubShopData($data, $this->subShopDefaults);
 
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         $x = $this->getXPathSelectors();
 
         $this->waitForText('Weitere Einstellungen');

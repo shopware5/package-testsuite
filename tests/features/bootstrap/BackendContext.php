@@ -6,8 +6,9 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Exception\NotFoundByXpathException;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Page\Backend\BackendLogin;
 use Shopware\Tests\Mink\Page\Backend\Config;
 use Shopware\Tests\Mink\Page\Backend\Payment;
@@ -17,7 +18,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class BackendContext extends SubContext
 {
-
     /**
      * @When I log in with user :user and password :password
      */
@@ -69,7 +69,7 @@ class BackendContext extends SubContext
      */
     public function iActivateTheAPIAccessForTheUserWithEMail($email)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
 
         $this->login();
 
@@ -109,7 +109,7 @@ class BackendContext extends SubContext
         }
 
         $saveButton = $this->getSession()->getPage()->find('xpath',
-            "//div[text()='API-Zugang']/ancestor::div[" . XpathBuilder::getContainsClassString('x-window') . "][1]/descendant::span[text()='Speichern']");
+            "//div[text()='API-Zugang']/ancestor::div[" . LegacyXpathBuilder::getContainsClassString('x-window') . "][1]/descendant::span[text()='Speichern']");
         $saveButton->click();
 
         $this->confirmPasswordDialog();
@@ -146,7 +146,7 @@ class BackendContext extends SubContext
         $page = $this->getSession()->getPage();
 
         $window = $page->find('xpath',
-            "//label[text()='Hersteller-Name:']/ancestor::div[" . XpathBuilder::getContainsClassString('x-window') . "][1]");
+            "//label[text()='Hersteller-Name:']/ancestor::div[" . LegacyXpathBuilder::getContainsClassString('x-window') . "][1]");
         $this->assertNotNull($window, "Manufacturer Window");
 
         $nameInput = $page->find('xpath',
@@ -207,11 +207,11 @@ class BackendContext extends SubContext
 
         /** @var NodeElement $window */
         $window = $page->find('xpath',
-            "//label[text()='Artikel-Bezeichnung:']/ancestor-or-self::div[" . XpathBuilder::getContainsClassString('x-window') . "][1]");
+            "//label[text()='Artikel-Bezeichnung:']/ancestor-or-self::div[" . LegacyXpathBuilder::getContainsClassString('x-window') . "][1]");
         $this->assertNotNull($window, "Create Article Window");
 
         $manufacturerSelector = $window->find('xpath',
-            "//label[text()='Hersteller:']/ancestor::td[1]/following-sibling::td[1]//descendant::div[" . XpathBuilder::getContainsClassString('x-form-arrow-trigger') . "][1]");
+            "//label[text()='Hersteller:']/ancestor::td[1]/following-sibling::td[1]//descendant::div[" . LegacyXpathBuilder::getContainsClassString('x-form-arrow-trigger') . "][1]");
         $this->assertNotNull($manufacturerSelector, "Manufacturer Selector Pebble");
 
         $nameInput = $window->find('xpath',
@@ -227,12 +227,12 @@ class BackendContext extends SubContext
 
         /** @var NodeElement $priceCell */
         $priceCell = $priceFieldset->find('xpath',
-            "//span[text()='Shopkunden Brutto']/ancestor::fieldset[1]/descendant::table[" . XpathBuilder::getContainsClassString('x-grid-table') . "][1]/descendant::td[3]");
+            "//span[text()='Shopkunden Brutto']/ancestor::fieldset[1]/descendant::table[" . LegacyXpathBuilder::getContainsClassString('x-grid-table') . "][1]/descendant::td[3]");
         $this->assertNotNull($priceCell, "Price Cell");
 
         /** @var NodeElement $priceCell */
         $pseudoPriceCell = $priceFieldset->find('xpath',
-            "//span[text()='Shopkunden Brutto']/ancestor::fieldset[1]/descendant::table[" . XpathBuilder::getContainsClassString('x-grid-table') . "][1]/descendant::td[5]");
+            "//span[text()='Shopkunden Brutto']/ancestor::fieldset[1]/descendant::table[" . LegacyXpathBuilder::getContainsClassString('x-grid-table') . "][1]/descendant::td[5]");
         $this->assertNotNull($pseudoPriceCell, "Pseudo Price Cell");
 
         foreach ($data as $tr) {
@@ -285,17 +285,17 @@ class BackendContext extends SubContext
     {
         $file = dirname(dirname(dirname(__FILE__))) . '/assets/images/article/' . $localName;
         $imageTab = $window->find('xpath',
-            "//span[text()='Bilder' and " . XpathBuilder::getContainsClassString('x-tab-inner') . "]");
+            "//span[text()='Bilder' and " . LegacyXpathBuilder::getContainsClassString('x-tab-inner') . "]");
         $imageTab->click();
         $addImageButton = $window->find('xpath',
-            "//span[text()='Bild hinzufügen' and " . XpathBuilder::getContainsClassString('x-btn-inner') . "]");
+            "//span[text()='Bild hinzufügen' and " . LegacyXpathBuilder::getContainsClassString('x-btn-inner') . "]");
         $addImageButton->click();
 
         // waitForText() is defined in Trait
         $this->waitForText('Eigene Medien hinzufügen');
 
         $imageUploadField = $this->getSession()->getPage()->find('xpath',
-            "//span[text()='Eigene Medien hinzufügen' and " . XpathBuilder::getContainsClassString('x-btn-inner') . "]/ancestor::div[1]/descendant::input[@type='file']");
+            "//span[text()='Eigene Medien hinzufügen' and " . LegacyXpathBuilder::getContainsClassString('x-btn-inner') . "]/ancestor::div[1]/descendant::input[@type='file']");
 
         $tempZip = tempnam('', 'WebDriverZip');
         $zip = new \ZipArchive();
@@ -350,7 +350,7 @@ class BackendContext extends SubContext
         $this->waitForText('Benutzername:');
 
         $window = $this->getSession()->getPage()->find('xpath',
-            "//label[text()='Benutzername:'][1]/ancestor::div[" . XpathBuilder::getContainsClassString('x-window') . "][1]");
+            "//label[text()='Benutzername:'][1]/ancestor::div[" . LegacyXpathBuilder::getContainsClassString('x-window') . "][1]");
 
         $usernameInput = $window->find('xpath', "/descendant::input[@name='username']");
         $username = $this->slugify($email);
@@ -366,7 +366,7 @@ class BackendContext extends SubContext
         $passwordconfirmationInput->setValue($password);
 
         $activateAccountCheckbox = $window->find('xpath',
-            "/descendant::div[contains(.,'Account aktivieren oder deaktivieren')]/ancestor::tbody[1]/descendant::input[@type='button' and " . XpathBuilder::getContainsClassString('x-form-checkbox') . "]");
+            "/descendant::div[contains(.,'Account aktivieren oder deaktivieren')]/ancestor::tbody[1]/descendant::input[@type='button' and " . LegacyXpathBuilder::getContainsClassString('x-form-checkbox') . "]");
         $activateAccountCheckbox->click();
 
         $nameInput = $window->find('xpath', "/descendant::input[@name='name']");
@@ -376,7 +376,7 @@ class BackendContext extends SubContext
         $emailInput->setValue($email);
 
         $languageSelector = $window->find('xpath',
-            "//label[text()='Standardsprache:']/ancestor::td[1]/following-sibling::td[1]//descendant::div[" . XpathBuilder::getContainsClassString('x-form-arrow-trigger') . "][1]");
+            "//label[text()='Standardsprache:']/ancestor::td[1]/following-sibling::td[1]//descendant::div[" . LegacyXpathBuilder::getContainsClassString('x-form-arrow-trigger') . "][1]");
         $this->assertNotNull($languageSelector, "Language Selector Pebble");
         $languageSelector->click();
         $languageListEntry = $this->getSession()->getPage()->find('xpath',
@@ -385,7 +385,7 @@ class BackendContext extends SubContext
         $languageListEntry->click();
 
         $roleSelector = $window->find('xpath',
-            "//label[text()='Mitglied der Rolle:']/ancestor::td[1]/following-sibling::td[1]//descendant::div[" . XpathBuilder::getContainsClassString('x-form-arrow-trigger') . "][1]");
+            "//label[text()='Mitglied der Rolle:']/ancestor::td[1]/following-sibling::td[1]//descendant::div[" . LegacyXpathBuilder::getContainsClassString('x-form-arrow-trigger') . "][1]");
         $this->assertNotNull($roleSelector, "Role Selector Pebble");
         $roleSelector->click();
         $roleListEntry = $this->getSession()->getPage()->find('xpath',
@@ -431,7 +431,7 @@ class BackendContext extends SubContext
         $this->waitForText('Bitte geben Sie Ihr Passwort ein:');
 
         $messageBox = $this->getSession()->getPage()->find('xpath',
-            "//span[text()='Passwort Überprüfung']/ancestor::div[" . XpathBuilder::getContainsClassString('x-message-box') . "][1]");
+            "//span[text()='Passwort Überprüfung']/ancestor::div[" . LegacyXpathBuilder::getContainsClassString('x-message-box') . "][1]");
 
         $passwordField = $messageBox->find('xpath', "/descendant::input[@type='password']");
         $passwordField->setValue($password);
@@ -496,7 +496,7 @@ class BackendContext extends SubContext
         $page->open();
         $this->waitForText('Zahlungsarten');
 
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         $windowXPath = $xp->xWindowByTitle('Zahlungsarten')->get();
         /** @var NodeElement $window */
         $window = $page->find('xpath', $windowXPath);
@@ -553,7 +553,7 @@ class BackendContext extends SubContext
 
     private function setPaymentOption($key, $value, NodeElement $window)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         switch ($key) {
             case 'surcharge':
                 $surchargeInputXPath = $xp->label('desc', ['@text' => 'Pauschaler Aufschlag:'])->tr('asc', [],
@@ -629,5 +629,16 @@ class BackendContext extends SubContext
             $page->open();
             $page->createSubShop($subshop);
         }
+    }
+
+    /**
+     * @When /^I click the "([^"]*)" Button$/
+     */
+    public function clickButtonByLabel($label)
+    {
+        $page = $this->getPage('Backend');
+        $buttonXpath = (new BackendXpathBuilder())->getButtonXpathByLabel($label);
+        $button = $page->find('xpath', $buttonXpath);
+        $button->click();
     }
 }

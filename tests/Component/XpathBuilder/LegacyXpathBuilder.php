@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Helper;
+namespace Shopware\Component\XpathBuilder;
 
 use Shopware\Tests\Mink\Helper;
 
@@ -25,35 +25,37 @@ use Shopware\Tests\Mink\Helper;
  *
  * Any HTML or XML Tag can be used as function name since these are handled via __call
  *
+ * @deprecated
  * @package Shopware\Tests\Mink
- * @method XpathBuilder div(...$args)
- * @method XpathBuilder a(...$args)
- * @method XpathBuilder strong(...$args)
- * @method XpathBuilder span(...$args)
- * @method XpathBuilder spanWithText(...$args)
- * @method XpathBuilder ul(...$args)
- * @method XpathBuilder li(...$args)
- * @method XpathBuilder liWithText(...$args)
- * @method XpathBuilder img(...$args)
- * @method XpathBuilder nav(...$args)
- * @method XpathBuilder fieldset(...$args)
- * @method XpathBuilder button(...$args)
- * @method XpathBuilder input(...$args)
- * @method XpathBuilder label(...$args)
- * @method XpathBuilder table(...$args)
- * @method XpathBuilder tr(...$args)
- * @method XpathBuilder td(...$args)
- * @method XpathBuilder picture(...$args)
- * @method XpathBuilder source(...$args)
- * @method XpathBuilder form(...$args)
- * @method XpathBuilder textarea(...$args)
+ * @method LegacyXpathBuilder div(...$args)
+ * @method LegacyXpathBuilder a(...$args)
+ * @method LegacyXpathBuilder strong(...$args)
+ * @method LegacyXpathBuilder span(...$args)
+ * @method LegacyXpathBuilder spanWithText(...$args)
+ * @method LegacyXpathBuilder ul(...$args)
+ * @method LegacyXpathBuilder li(...$args)
+ * @method LegacyXpathBuilder liWithText(...$args)
+ * @method LegacyXpathBuilder img(...$args)
+ * @method LegacyXpathBuilder nav(...$args)
+ * @method LegacyXpathBuilder fieldset(...$args)
+ * @method LegacyXpathBuilder button(...$args)
+ * @method LegacyXpathBuilder input(...$args)
+ * @method LegacyXpathBuilder label(...$args)
+ * @method LegacyXpathBuilder table(...$args)
+ * @method LegacyXpathBuilder tr(...$args)
+ * @method LegacyXpathBuilder td(...$args)
+ * @method LegacyXpathBuilder picture(...$args)
+ * @method LegacyXpathBuilder source(...$args)
+ * @method LegacyXpathBuilder form(...$args)
+ * @method LegacyXpathBuilder textarea(...$args)
  */
-class XpathBuilder
+class LegacyXpathBuilder extends BaseXpathBuilder
 {
     /** @var string */
     private $path;
 
     /**
+     * @deprecated
      * @param string[]|string $string
      * @return string
      */
@@ -63,31 +65,19 @@ class XpathBuilder
     }
 
     /**
-     * @param string[]|string $string
-     * @param string $attribute
-     * @return string
+     * LegacyXpathBuilder constructor.
+     * @deprecated
      */
-    public static function getContainsAttributeString($string, $attribute)
-    {
-        if (!is_array($string)) {
-            $string = [$string];
-        }
-        $result = '';
-        foreach ($string as $part) {
-            $result .= "contains(concat(' ', normalize-space(@$attribute), ' '), ' $part ') and ";
-        }
-        return rtrim($result, ' and ');
-    }
-
     public function __construct()
     {
         $this->path = '';
     }
 
     /**
+     * @deprecated
      * @param string $tag
      * @param array $conditions
-     * @return XpathBuilder
+     * @return LegacyXpathBuilder
      */
     public function __call($tag, array $conditions)
     {
@@ -134,41 +124,7 @@ class XpathBuilder
     }
 
     /**
-     * @param string $target
-     * @param string[]|string $text
-     * @return string
-     */
-    protected function getContainsString($target, $text)
-    {
-        if (!is_array($text)) {
-            $text = [$text];
-        }
-
-        switch ($target) {
-            case 'text':
-                $result = '';
-                foreach ($text as $part) {
-                    $result .= "./descendant-or-self::*[text()[contains(.,'$part')]] and ";
-                }
-                return rtrim($result, ' and ');
-                break;
-            default:
-                return self::getContainsAttributeString($text, $target);
-        }
-    }
-
-    protected function equals($target, $text)
-    {
-        switch ($target) {
-            case 'text':
-                return "text()='$text'";
-                break;
-            default:
-                return "@$target='$text'";
-        }
-    }
-
-    /**
+     * @deprecated
      * @param bool $reset If true (default), the current path will be emptied
      * @return string
      */
@@ -193,8 +149,9 @@ class XpathBuilder
     }
 
     /**
+     * @deprecated
      * @param string $title
-     * @return XpathBuilder
+     * @return LegacyXpathBuilder
      */
     public function xWindowByTitle($title)
     {
@@ -202,99 +159,30 @@ class XpathBuilder
     }
 
     /**
+     * @deprecated
      * @param string $title
-     * @return XpathBuilder
+     * @return LegacyXpathBuilder
      */
     public function xWindowByExactTitle($title)
     {
         return $this->span(['@text' => $title])->div('asc', ['~class' => 'x-window'], 1);
     }
 
-    private function parseConditions($conditions)
-    {
-        $conditionString = '';
-
-        $targetModifiersPrefixes = ['!'];
-        $targetModifiers = ['@', '~'];
-        $subConditionHandlers = ['starts-with', 'ends-with', 'visible'];
-
-        foreach ($conditions as $target => $condition) {
-            if (in_array($target, $subConditionHandlers, true)) {
-                switch ($target) {
-                    case 'starts-with':
-                        if (!is_array($condition) || count($condition) !== 2) {
-                            throw new \Exception('Invalid number of arguments for SubConditionHandler starts-with: '
-                                . "\n" . print_r($target, true)
-                                . "\n" . print_r($condition, true)
-                                . "\n" . print_r($conditions, true) . "\n");
-                        }
-                        $conditionString .= $target . "(" . $condition[0] . ", '" . $condition[1] . "') ";
-                        break;
-                    case 'ends-with':
-                        if (!is_array($condition) || count($condition) !== 2) {
-                            throw new \Exception('Invalid number of arguments for SubConditionHandler: ' . $target);
-                        }
-                        $attr = $condition[0];
-                        $text = $condition[1];
-                        $conditionString .= "'" . $text . "'=substring(" . $attr . ", string-length(" . $attr . ")- string-length('" . $text . "') +1) ";
-                        break;
-                    default:
-                        throw new \Exception('SubConditionHandler not implemented: ' . $target);
-                }
-                continue;
-            }
-
-            $targetModifiersPrefix = substr($target, 0, 1);
-            if (in_array($targetModifiersPrefix, $targetModifiersPrefixes)) {
-                $target = substr($target, 1);
-            } else {
-                $targetModifiersPrefix = null;
-            }
-
-            $targetModifier = substr($target, 0, 1);
-            if (in_array($targetModifier, $targetModifiers)) {
-                $target = substr($target, 1);
-            } else {
-                $targetModifier = null;
-            }
-
-            if ($targetModifiersPrefix) {
-                switch ($targetModifiersPrefix) {
-                    case '!':
-                        $conditionString .= 'not(';
-                        break;
-                    default:
-                        throw new \Exception('TargetModifiersPrefixHandler not implemented: ' . $targetModifiersPrefix);
-                }
-            }
-
-            switch ($targetModifier) {
-                case '@':
-                    $conditionString .= $this->equals($target, $condition) . ' ';
-                    break;
-                case '~':
-                    $conditionString .= $this->getContainsString($target, $condition) . ' ';
-                    break;
-                default:
-                    $conditionString .= $condition . ' ';
-            }
-
-            if ($targetModifiersPrefix) {
-                switch ($targetModifiersPrefix) {
-                    case '!':
-                        $conditionString .= ')';
-                        break;
-                }
-            }
-        }
-        return $conditionString;
-    }
-
+    /**
+     * @deprecated
+     * @param $label
+     * @return string
+     */
     public function getXTabContainerForLabel($label)
     {
         return $this->span('desc', ['@text' => $label])->div('asc', ['~class' => 'x-tab'], 1)->get();
     }
 
+    /**
+     * @deprecated
+     * @param $label
+     * @return string
+     */
     public function getXSelectorPebbleForLabel($label)
     {
         return $this->label('desc', ['@text' => $label])
@@ -305,9 +193,10 @@ class XpathBuilder
     }
 
     /**
+     * @deprecated
      * @param string $action
      * @param string $optionText
-     * @return XpathBuilder
+     * @return LegacyXpathBuilder
      */
     public function xDropdown($action, $optionText = "")
     {
@@ -320,16 +209,32 @@ class XpathBuilder
         return $this;
     }
 
+    /**
+     * @deprecated
+     * @param $label
+     * @return mixed
+     */
     public function getXInputForLabel($label)
     {
         return $this->getXFormElementForLabel($label, 'input');
     }
 
+    /**
+     * @deprecated
+     * @param $label
+     * @return mixed
+     */
     public function getXTextareaForLabel($label)
     {
         return $this->getXFormElementForLabel($label, 'textarea');
     }
 
+    /**
+     * @deprecated
+     * @param $label
+     * @param $tag
+     * @return mixed
+     */
     public function getXFormElementForLabel($label, $tag)
     {
         return $this->label('desc', ['@text' => $label])
@@ -339,6 +244,10 @@ class XpathBuilder
             ->get();
     }
 
+    /**
+     * @deprecated
+     * @return string
+     */
     public function getXFocussedInput()
     {
         return $this
@@ -347,6 +256,7 @@ class XpathBuilder
     }
 
     /**
+     * @deprecated
      * @param string $prefix
      * @return string
      */
@@ -382,16 +292,31 @@ class XpathBuilder
         }
     }
 
+    /**
+     * @deprecated
+     * @param string $direction
+     * @return string
+     */
     public function getXPencilIcon($direction = 'desc')
     {
         return $this->img($direction, ['~class' => 'sprite-pencil'])->get();
     }
 
+    /**
+     * @deprecated
+     * @param string $direction
+     * @return string
+     */
     public function getXMinusIcon($direction = 'desc')
     {
         return $this->img($direction, ['~class' => 'sprite-minus-circle-frame'])->get();
     }
 
+    /**
+     * @deprecated
+     * @param $label
+     * @return string
+     */
     public function getXGridBodyForLabel($label)
     {
         return $this
@@ -402,6 +327,7 @@ class XpathBuilder
     }
 
     /**
+     * @deprecated
      * @param string $selectString
      * @return array
      */

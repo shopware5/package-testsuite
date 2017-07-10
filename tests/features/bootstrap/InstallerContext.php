@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Helper\XpathBuilder;
+use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Page\Installer\InstallerIndex;
 
 class InstallerContext extends SubContext
@@ -112,7 +112,7 @@ class InstallerContext extends SubContext
      */
     public function iShouldSeeAfterImportIsFinished($text)
     {
-        $xp = new XpathBuilder();
+        $xp = new LegacyXpathBuilder();
         $this->waitForTextInElement($xp->div(['@class' => 'counter-text'])->get(), $text, 0, 120);
     }
 

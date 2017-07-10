@@ -3,14 +3,14 @@
 namespace Shopware\Tests\Mink\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Helper\XpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class ProductExport extends ContextAwarePage implements HelperSelectorInterface
 {
     private $feedConfigurationLabel = 'Feed - Konfiguration';
-    private $overViewWindowLabel = 'Produktexporte';
+    private $overviewWindowLabel = 'Produktexporte';
     private $startCategoryName = 'Deutsch';
 
     /**
@@ -40,23 +40,20 @@ class ProductExport extends ContextAwarePage implements HelperSelectorInterface
     /**
      * Fills in and submits the configuration form
      *
-     * @param array $data Defines the form field and their data
+     * @param array $formData Defines the form field and their data
      */
-    public function fillConfigurationForm($data)
+    public function fillConfigurationForm($formData)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
-        $windowXP = $xp->xWindowByExactTitle($this->feedConfigurationLabel)->get();
+        $builder = new BackendXpathBuilder();
+        $feedConfigWindowXpath = BackendXpathBuilder::getWindowXpathByTitle($this->feedConfigurationLabel, false);
 
-        foreach ($data as $entry) {
-
+        foreach ($formData as $entry) {
             /** @var NodeElement $window */
-            $window = $this->find('xpath', $windowXP);
+            $window = $this->find('xpath', $feedConfigWindowXpath);
 
             switch ($entry['type']) {
                 case 'input':
-                    $field = $window->find('xpath', $xp->getXInputForLabel($entry['label']));
-                    $field->setValue($entry['value']);
+                    $this->fillInput($window, $entry['label'], $entry['value']);
                     break;
                 case 'combobox':
                     $this->fillCombobox($window, $entry);
@@ -68,11 +65,25 @@ class ProductExport extends ContextAwarePage implements HelperSelectorInterface
                     $this->fillSelecttree($window, $entry);
                     break;
                 case 'textarea':
-                    $field = $window->find('xpath', $xp->getXFormElementForLabel($entry['label'], 'textarea'));
+                    $field = $window->find('xpath', BackendXpathBuilder::getFormElementXpathByLabel($entry['label'], 'textarea'));
                     $field->setValue($entry['value']);
                     break;
             }
         }
+    }
+
+    /**
+     * Helper method to fill in an extJS input field
+     *
+     * @param NodeElement $window
+     * @param string $label Label of the input field
+     * @param string $value
+     */
+    private function fillInput(NodeElement $window, $label, $value)
+    {
+        $inputXpath = (new BackendXpathBuilder())->reset()->getInputXpathByLabel($label);
+        $field = $window->find('xpath', $inputXpath);
+        $field->setValue($value);
     }
 
     /**
@@ -83,13 +94,13 @@ class ProductExport extends ContextAwarePage implements HelperSelectorInterface
      */
     private function fillCombobox($window, $entry)
     {
-        $xp = new XpathBuilder();
+        $builder = new BackendXpathBuilder();
 
-        $pebble = $window->find('xpath', $xp->getXSelectorPebbleForLabel($entry['label']));
+        $pebble = $window->find('xpath', $builder->getSelectorPebbleXpathByLabel($entry['label']));
         $this->assertNotNull($pebble, print_r($entry, true));
         $pebble->click();
 
-        $optionXP = $xp->xDropdown($entry['action'], $entry['value'])->get();
+        $optionXP = $builder->reset()->getDropdownXpathByAction($entry['action'], $entry['value']);
         $this->waitForXpathElementPresent($optionXP);
         $option = $this->find('xpath', $optionXP);
 
@@ -104,22 +115,26 @@ class ProductExport extends ContextAwarePage implements HelperSelectorInterface
      */
     private function fillSelecttree($window, $entry)
     {
-        $xp = new XpathBuilder();
-        $xpathsCategory = $xp->getSelectTreeElements($entry['value']);
+        $builder = new BackendXpathBuilder();
 
-        $pebble = $window->find('xpath', $xp->getXSelectorPebbleForLabel($entry['label']));
+        $categoryXpaths = $builder->getSelectTreeElementXpaths($entry['value']);
+
+        $pebble = $window->find('xpath', $builder->reset()->getSelectorPebbleXpathByLabel($entry['label']));
         $pebble->click();
 
-        foreach ($xpathsCategory as $xpath) {
-            $dropdownXP = $xp->div('desc', ['@text' => $this->startCategoryName])->div('asc', ['~class' => 'x-tree-panel'])->get();
-            $this->waitForXpathElementPresent($dropdownXP);
+        foreach ($categoryXpaths as $xpath) {
+            $dropdownXpath = $builder
+                ->reset()
+                ->descendant('div', ['@text' => $this->startCategoryName])
+                ->ancestor('div', ['~class' => 'x-tree-panel'])
+                ->getXpath();
+            $this->waitForXpathElementPresent($dropdownXpath);
 
-            $dropdown = $this->find('xpath', $dropdownXP);
+            $dropdown = $this->find('xpath', $dropdownXpath);
             $option = $dropdown->find('xpath', $xpath);
             $option->click();
         }
     }
-
 
     /**
      * Fills in a checkbox
@@ -129,21 +144,12 @@ class ProductExport extends ContextAwarePage implements HelperSelectorInterface
      */
     private function fillCheckbox($window, $entry)
     {
-        $xp = new XpathBuilder();
+        $builder = new BackendXpathBuilder();
 
-        $checkboxXpath = $xp->getXFormElementForLabel($entry['label'], 'input');
-        $tableXpath = $checkboxXpath . $xp->table('asc', [], 1)->get();
+        $checkboxXpath = $builder->reset()->getInputXpathByLabel($entry['label']);
 
         $field = $window->find('xpath', $checkboxXpath);
-        $table = $this->find('xpath', $tableXpath);
         $field->click();
-
-        $this->spin(function () use ($tableXpath, $table) {
-            if ($table !== null && $table->hasClass('x-form-cb-checked')) {
-                return true;
-            }
-            return false;
-        }, 5);
     }
 
     /**
@@ -153,60 +159,67 @@ class ProductExport extends ContextAwarePage implements HelperSelectorInterface
      */
     public function enterTemplate($template)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
-        $windowXP = $xp->xWindowByExactTitle($this->feedConfigurationLabel)->get();
+        $builder = new BackendXpathBuilder();
+        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($this->feedConfigurationLabel);
 
-        /** @var NodeElement $window */
-        $window = $this->find('xpath', $windowXP);
+        $window = $this->find('xpath', $windowXpath);
 
-        $templateAreaXpath = $xp->div(['~class' => 'cm-s-default'])->get();
-        $textAreaXpath = $xp->textarea('desc', [], 1)->get();
+        $templateAreaXpath = $builder->reset()->child('div', ['~class' => 'cm-s-default'])->getXpath();
+        $textareaXpath = $builder->reset()->descendant('textarea', [], 1)->getXpath();
         $this->waitForXpathElementPresent($templateAreaXpath);
 
         $templateArea = $window->find('xpath', $templateAreaXpath);
         $this->assertNotNull($templateArea, print_r($templateAreaXpath, true));
 
-        $textarea = $templateArea->find('xpath', $textAreaXpath);
-        $this->assertNotNull($textarea, print_r($textAreaXpath, true));
+        $textarea = $templateArea->find('xpath', $textareaXpath);
+        $this->assertNotNull($textarea, print_r($textareaXpath, true));
 
         $templateArea->click();
         $textarea->setValue($template);
     }
 
+    /**
+     * Start a product export
+     */
     public function startExport()
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
-        $windowXP = $xp->xWindowByExactTitle($this->overViewWindowLabel)->get();
+        $builder = new BackendXpathBuilder();
+        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($this->overviewWindowLabel);
 
-        /** @var NodeElement $window */
-        $window = $this->find('xpath', $windowXP);
+        $window = $this->find('xpath', $windowXpath);
 
-        $exportRowXpath = $xp->div(['@text' => 'Erster Test-Export'])->tr('asc', [], 1)->get();
+        $exportRowXpath = $builder
+            ->reset()
+            ->child('div', ['@text' => 'Erster Test-Export'])
+            ->ancestor('tr', [], 1)
+            ->getXpath();
+
         $exportRow = $window->find('xpath', $exportRowXpath);
 
-        $startIconXpath = $xp->img(['~class' => 'sprite-lightning'])->get();
+        $startIconXpath = $builder->reset()->child('img', ['~class' => 'sprite-lightning'])->getXpath();
         $startIcon = $exportRow->find('xpath', $startIconXpath);
+
         $this->assertNotNull($startIcon, print_r($startIcon->getXpath(), true));
 
         $startIcon->click();
     }
 
+    /**
+     * Open a product export byt
+     *
+     * @param $exportTitle
+     */
     public function openExport($exportTitle)
     {
-        /** @var XpathBuilder $xp */
-        $xp = new XpathBuilder();
+        $builder = new BackendXpathBuilder();
+        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($this->overviewWindowLabel);
 
-        $windowXP = $xp->xWindowByExactTitle($this->overViewWindowLabel)->get();
+        $window = $this->find('xpath', $windowXpath);
 
-        /** @var NodeElement $window */
-        $window = $this->find('xpath', $windowXP);
-
-        $exportRowXpath = $xp->div(['@text' => $exportTitle])->tr('asc', [], 1)->get();
+        $exportRowXpath = $builder->reset()->child('div', ['@text' => $exportTitle])->ancestor('tr', [], 1)->getXpath();
         $exportRow = $window->find('xpath', $exportRowXpath);
 
-        $fileLinkXpath = $xp->a('desc', [], 1)->get();
+        $fileLinkXpath = $builder->reset()->descendant('a', [], 1)->getXpath();
         $fileLink = $exportRow->find('xpath', $fileLinkXpath);
         $this->assertNotNull($fileLink, print_r($fileLinkXpath, true));
 
