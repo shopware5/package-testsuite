@@ -29,9 +29,10 @@ default:
             template: Responsive
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
-                - Shopware\Tests\Mink\FeatureContext
-                - Shopware\Tests\Mink\GeneralContext
-                - Shopware\Tests\Mink\BackendContext
+                - Shopware\Context\DebugContext
+                - Shopware\Context\FeatureContext
+                - Shopware\Context\GeneralContext
+                - Shopware\Context\BackendContext
                 - Shopware\Tests\Mink\FrontendContext
                 - Shopware\Tests\Mink\FrontendCheckoutContext
                 - Shopware\Tests\Mink\FrontendAccountContext

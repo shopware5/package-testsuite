@@ -2,10 +2,9 @@
 
 namespace Shopware\Tests\Mink\Page\Backend;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Helper\ContextAwarePage;
 
-class BackendLogin extends Page implements HelperSelectorInterface
+class BackendLogin extends ContextAwarePage
 {
     /**
      * @var string $path
@@ -13,38 +12,25 @@ class BackendLogin extends Page implements HelperSelectorInterface
     protected $path = '/backend/';
 
     /**
-     * @inheritdoc
+     * Log user into the backend
+     *
+     * @param string $user
+     * @param string $password
      */
-    public function getCssSelectors()
+    public function login($user = 'demo', $password = 'demo')
     {
-        return [];
-    }
+        $this->open();
 
-    /**
-     * @inheritdoc
-     */
-    public function getNamedSelectors()
-    {
-        return [];
-    }
+        // Are we already logged in?
+        if ($this->waitIfThereIsText('Marketing', 5)) {
+            return;
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function getXPathSelectors()
-    {
-        return [
-            'loginUsernameInput' => "//input[@name='username']",
-            'loginUsernamepassword' => "//input[@name='password']",
-            'loginLoginButton' => "//button[@data-action='login']",
-        ];
-    }
+        // Fill and submit login form
+        $this->find('xpath', "//input[@name='username']")->setValue($user);
+        $this->find('xpath', "//input[@name='password']")->setValue($password);
+        $this->find('xpath', "//button[@data-action='login']")->click();
 
-    public function login($user, $password)
-    {
-        $xpath = $this->getXPathSelectors();
-        $this->find('xpath', $xpath['loginUsernameInput'])->setValue($user);
-        $this->find('xpath', $xpath['loginUsernamepassword'])->setValue($password);
-        $this->find('xpath', $xpath['loginLoginButton'])->click();
+        $this->waitForText('Marketing');
     }
 }

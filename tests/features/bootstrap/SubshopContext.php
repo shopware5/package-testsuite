@@ -14,6 +14,23 @@ class SubshopContext extends SubContext
     private static $mainCategoryName = 'Subshop-Kategorie';
     private static $minorCategoryName = 'Subshop-Unterkategorie';
 
+    /**
+     * @Given I am in subshop with URL :url
+     * @param $url
+     */
+    public function iAmInSubshopWithURL($url)
+    {
+        if (substr($url, 0, 4) === "http") {
+            $this->setMinkParameters([
+                'base_url' => $url,
+            ]);
+            return;
+        }
+        $baseUrl = $this->getMinkParameter('base_url');
+        $this->setMinkParameters([
+            'base_url' => rtrim($baseUrl, "/") . "/" . ltrim($url, "/"),
+        ]);
+    }
 
     /**
      * @Then I should be able to access the subshop via using :url
@@ -76,7 +93,7 @@ class SubshopContext extends SubContext
         $deleteCategoriesStmt = self::getDbConnection()->prepare('DELETE FROM s_categories WHERE `description` IN (:categoryMain, :categoryMinor)');
         $deleteCategoriesStmt->execute([
             ':categoryMain' => self::$mainCategoryName,
-            ':categoryMinor' => self::$minorCategoryName
+            ':categoryMinor' => self::$minorCategoryName,
         ]);
     }
 

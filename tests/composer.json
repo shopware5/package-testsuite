@@ -17,6 +17,7 @@
   "autoload": {
     "psr-4": {
       "Shopware\\Tests\\Mink\\": "features/bootstrap",
+      "Shopware\\Context\\": "Context",
       "Shopware\\Helper\\": "Helper",
       "Shopware\\Component\\": "Component",
       "Shopware\\Exception\\": "Exception"

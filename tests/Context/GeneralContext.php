@@ -1,25 +1,25 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Shopware\Tests\Mink\SubContext;
 
 class GeneralContext extends SubContext
 {
-
     /**
-     * @Given /^I am on the page "([^"]*)"$/
-     * @When /^I go to the page "([^"]*")$/
+     * @Given I am on the page :page
+     * @When I go to the page :page
+     * @param string $page
      */
     public function iAmOnThePage($page)
     {
-        /** @var Page $page */
         $page = $this->getPage($page);
         $page->open();
     }
 
     /**
-     * @Then /^I should see "([^"]*)" eventually$/
+     * @Then I should see :text eventually
+     * @param string $text
      */
     public function iShouldSeeEventually($text)
     {
@@ -27,7 +27,8 @@ class GeneralContext extends SubContext
     }
 
     /**
-     * @Then /^I should eventually not see "([^"]*)"/
+     * @Then I should eventually not see :text
+     * @param string $text
      */
     public function iShouldEventuallyNotSee($text)
     {

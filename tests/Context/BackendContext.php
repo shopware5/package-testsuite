@@ -1,25 +1,16 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Tests\Mink\Page\Backend\Backend;
 use Shopware\Tests\Mink\Page\Backend\BackendLogin;
 use Shopware\Tests\Mink\Page\Backend\ShippingModule;
+use Shopware\Tests\Mink\SubContext;
 
 class BackendContext extends SubContext
 {
-    /**
-     * @BeforeScenario
-     *
-     * Make sure that scenarios that run in the backend use a sufficiently large browser size.
-     */
-    public function enlargeBrowserWindow()
-    {
-        $this->getSession()->resizeWindow(1920, 1080, 'current');
-    }
-
     /**
      * @When I log in with user :user and password :password
      * @param string $user
@@ -27,7 +18,9 @@ class BackendContext extends SubContext
      */
     public function iLogInWithUserAndPassword($user, $password)
     {
-        $this->login($user, $password);
+        /** @var BackendLogin $page */
+        $page = $this->getPage('BackendLogin');
+        $page->login($user, $password);
     }
 
     /**
@@ -60,36 +53,14 @@ class BackendContext extends SubContext
     }
 
     /**
-     * Login to backend
-     *
-     * @param string $user
-     * @param string $password
-     */
-    public function login($user = 'demo', $password = 'demo')
-    {
-        /** @var BackendLogin $page */
-        $page = $this->getPage('BackendLogin');
-        $page->open();
-
-        // See if we already are logged in
-        if ($this->waitIfThereIsText('Marketing', 5)) {
-            return;
-        }
-
-        // waitForText() is defined in Trait
-        $this->waitForText('Shopware Backend Login', 10);
-
-        $page->login($user, $password);
-        $this->waitForText('Marketing');
-    }
-
-    /**
      * @Given the following shipping options exist:
      * @param TableNode $table
      */
     public function theFollowingShippingOptionsExist(TableNode $table)
     {
-        $this->login();
+        /** @var BackendLogin $page */
+        $page = $this->getPage('BackendLogin');
+        $page->login();
 
         /** @var ShippingModule $page */
         $page = $this->getPage('ShippingModule');

@@ -38,6 +38,31 @@ class ContextAwarePage extends Page
     }
 
     /**
+     * Checks via spin function if a string exists, with sleep at the beginning (default 2)
+     * @param string $text
+     * @param int $wait
+     * @return bool
+     */
+    protected function waitIfThereIsText($text, $wait = 5)
+    {
+        return $this->spinWithNoException(function (self $context) use ($text) {
+            return $this->checkIfThereIsText($text, $context);
+        }, $wait);
+    }
+
+    /**
+     * Checks via a string exists
+     * @param string $text
+     * @param ContextAwarePage $context
+     * @return bool
+     */
+    protected function checkIfThereIsText($text, ContextAwarePage $context)
+    {
+        $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(., '$text')]");
+        return !empty($result);
+    }
+
+    /**
      * Checks via spin function if a locator is present on page, with sleep at the beginning (default 2)
      * @param string $selector css, xpath...
      * @param string $locator
