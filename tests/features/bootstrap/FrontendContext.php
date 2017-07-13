@@ -17,42 +17,26 @@ class FrontendContext extends SubContext
      */
     public function iAmLoggedInWithAccount($email, $password = '')
     {
+        /** @var Account $accountPage */
+        $accountPage = $this->getPage('Account');
+        $accountPage->open();
+
+        // We are logged in
+        if($this->waitIfThereIsText($email)) {
+            return;
+        }
+
+        // We are logged in as the wrong customer
+        if ($this->checkIfThereIsText('Abmelden', $this)) {
+            $accountPage->clickLink('Abmelden');
+        }
+
         if (empty($password)) {
             $password = $this->slugify($email);
         }
 
-        /** @var Index $frontendIndex */
-        $frontendIndex = $this->getPage('Index');
-        /** @var Account $accountPage */
-        $accountPage = $this->getPage('Account');
-
-        $frontendIndex->open();
-
-        $cssSelectors = $frontendIndex->getCssSelectors();
-
-        $frontendIndex->find('css', $cssSelectors['myAccount'])->click();
-
-        $alreadyLoggedIn = $this->waitIfThereIsText($email);
-        $wrongCustomer = $this->checkIfThereIsText('Willkommen', $this);
-
-        if ($alreadyLoggedIn) {
-            if (!$wrongCustomer) {
-                return;
-            }
-        }
-
-        if ($wrongCustomer) {
-            $accountPage->open();
-            $accountPage->logout();
-            $this->waitForText('Logout erfolgreich');
-            $frontendIndex->open();
-            $frontendIndex->find('css', $cssSelectors['myAccount'])->click();
-        }
-
-        $this->waitForText('Ich bin bereits Kunde');
-
-        /** @var Account $accountPage */
         $accountPage->login($email, $password);
+
         $this->waitForText('Willkommen');
     }
 

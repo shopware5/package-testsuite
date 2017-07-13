@@ -39,8 +39,8 @@ default:
                 - Shopware\Tests\Mink\DetailContext
                 - Shopware\Tests\Mink\InstallerContext
                 - Shopware\Tests\Mink\UpdaterContext
-                - Shopware\Tests\Mink\AutoUpdaterContext
                 - Shopware\Tests\Mink\SubshopContext
                 - Shopware\Tests\Mink\FileCheckContext
                 - Shopware\Tests\Mink\ProductExportContext
                 - Shopware\Tests\Mink\BackendCustomerContext
+                - Shopware\Tests\Mink\BackendPaymentContext

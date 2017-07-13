@@ -2,14 +2,13 @@
 
 namespace Shopware\Tests\Mink\Page\Installer;
 
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
 {
-
     /**
      * @var string $path
      */
@@ -20,25 +19,26 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new LegacyXpathBuilder();
+        $builder = new FrontendXpathBuilder();
+
         return [
-            'backwardDbButton' => $xp->a(['~class' => 'btn-arrow-left'])->get(),
-            'c_config_admin_email' => $xp->input(['@id' => 'c_config_admin_email'])->get(),
-            'c_config_admin_name' => $xp->input(['@id' => 'c_config_admin_name'])->get(),
-            'c_config_admin_password' => $xp->input(['@id' => 'c_config_admin_password'])->get(),
-            'c_config_admin_username' => $xp->input(['@id' => 'c_config_admin_username'])->get(),
-            'c_config_mail' => $xp->input(['@id' => 'c_config_mail'])->get(),
-            'c_config_shopName' => $xp->input(['@id' => 'c_config_shopName'])->get(),
-            'c_database_user' => $xp->input(['@name' => 'c_database_user'])->get(),
-            'c_database_schema' => $xp->input(['@name' => 'c_database_schema'])->get(),
-            'databaseForm' => $xp->form(['@action' => '/recovery/install/database-configuration/'])->get(),
-            'forwardButton' => $xp->button(['@type' => 'submit', 'and', '~class' => 'btn-arrow-right'])->get(),
-            'licenseCheckbox' => $xp->input(['@type' => 'checkbox', 'and', '@name' => 'eula'])->get(),
-            'licenseForm' => $xp->form(['@action' => '/recovery/install/edition/'])->get(),
-            'shopBackend' => $xp->a(['~class' => 'is--right'])->get(),
-            'shopBasicConfiguration' => $xp->form(['@action' => '/recovery/install/configuration/'])->get(),
-            'shopFrontend' => $xp->a(['~class' => 'is--left'])->get(),
-            'start' => $xp->button(['@id' => 'start-ajax', 'and', '~class' => 'btn-database-right'])->get(),
+            'c_config_admin_email' => FrontendXpathBuilder::getInputById('c_config_admin_email'),
+            'c_config_admin_name' => FrontendXpathBuilder::getInputById('c_config_admin_name'),
+            'c_config_admin_password' => FrontendXpathBuilder::getInputById('c_config_admin_password'),
+            'c_config_admin_username' => FrontendXpathBuilder::getInputById('c_config_admin_username'),
+            'c_config_mail' => FrontendXpathBuilder::getInputById('c_config_mail'),
+            'c_config_shopName' => FrontendXpathBuilder::getInputById('c_config_shopName'),
+            'c_database_user' => FrontendXpathBuilder::getInputById('c_database_user'),
+            'c_database_schema' => FrontendXpathBuilder::getInputById('c_database_schema'),
+            'databaseForm' => FrontendXpathBuilder::getFormByAction('/recovery/install/database-configuration/'),
+            'licenseForm' => FrontendXpathBuilder::getFormByAction('/recovery/install/edition/'),
+            'shopBasicConfiguration' => FrontendXpathBuilder::getFormByAction('/recovery/install/configuration/'),
+            'backwardDbButton' => $builder->reset()->child('a', ['~class' => 'btn-arrow-left'])->getXpath(),
+            'forwardButton' => $builder->reset()->child('button', ['@type' => 'submit', 'and', '~class' => 'btn-arrow-right'])->getXpath(),
+            'licenseCheckbox' => $builder->reset()->child('input', ['@type' => 'checkbox', 'and', '@name' => 'eula'])->getXpath(),
+            'shopFrontend' => $builder->reset()->child('a', ['~text' => 'Zum Shop-Frontend'])->getXpath(),
+            'shopBackend' => $builder->reset()->child('a', ['~text' => 'Zum Shop-Backend'])->getXpath(),
+            'start' => $builder->reset()->child('button', ['@id' => 'start-ajax', 'and', '~class' => 'btn-primary'])->getXpath(),
         ];
     }
 
@@ -66,12 +66,10 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
 
     /**
      * Advances to the next page
-     *
      */
     public function advance()
     {
-        $xpath = $this->getXPathSelectors();
-        $forwardButton = $this->find('xpath', $xpath['forwardButton']);
+        $forwardButton = $this->find('xpath', $this->getXPathSelectors()['forwardButton']);
         $forwardButton->click();
     }
 
@@ -82,9 +80,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function tickCheckbox($identifier)
     {
-        $xpath = $this->getXPathSelectors();
-        $checkboxButton = $this->find('xpath', $xpath[$identifier]);
-
+        $checkboxButton = $this->find('xpath', $this->getXPathSelectors()[$identifier]);
         $checkboxButton->check();
     }
 
@@ -95,8 +91,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function checkRequiredFields($field)
     {
-        $xpath = $this->getXPathSelectors();
-        $this->find('xpath', $xpath[$field['fieldname']])->hasAttribute('required');
+        $this->find('xpath', $this->getXPathSelectors()[$field['fieldname']])->hasAttribute('required');
     }
 
     /**
@@ -108,7 +103,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
     public function fillInAndSubmitForm($formname, $data)
     {
         Helper::fillForm($this, $formname, $data, [
-            'c_database_schema' => function($form, $fieldValue) {
+            'c_database_schema' => function ($form, $fieldValue) {
                 usleep(750000);
             }
         ]);
@@ -121,8 +116,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function clickOnElementWithText($text)
     {
-        $xpath = $this->getXPathSelectors();
-        $element = $this->find('xpath', $xpath[$text]);
+        $element = $this->find('xpath', $this->getXPathSelectors()[$text]);
         $element->click();
     }
 
@@ -132,8 +126,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function returnToPreviousDbPage()
     {
-        $xpath = $this->getXPathSelectors();
-        $forwardButton = $this->find('xpath', $xpath['backwardDbButton']);
+        $forwardButton = $this->find('xpath', $this->getXPathSelectors()['backwardDbButton']);
         $forwardButton->click();
     }
 
@@ -177,8 +170,7 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      **/
     public function checkIfShopIsAvailable($type, $target)
     {
-        $xpath = $this->getXPathSelectors();
-        $shopLink = $this->find('xpath', $xpath[$type]);
+        $shopLink = $this->find('xpath', $this->getXPathSelectors()[$type]);
 
         $shopLink->hasLink($target);
         $shopLink->click();

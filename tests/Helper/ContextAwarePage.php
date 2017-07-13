@@ -4,7 +4,7 @@ namespace Shopware\Helper;
 
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
+use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 
 class ContextAwarePage extends Page
 {
@@ -137,42 +137,19 @@ class ContextAwarePage extends Page
      * @throws \Exception
      */
     protected function waitForClassNotPresent($parent, $xPath, $class)
-{
-    $this->spin(function (NodeElement $parent, $xPath, $class) use ($parent, $xPath, $class) {
-        $element = $parent->find('xpath', $xPath);
-        if($element->hasClass($class)) {
-            return false;
-        }
-        return true;
-    });
-}
-
-    /**
-     * For use in backend forms, sets the dropdown value in an editor window
-     * @param NodeElement $editor The NodeElement of the editor window
-     * @param string $pebble The Xpath for the dropdown pebble
-     * @param string $action The action name of the fake ExtJS dropdown list
-     * @param string $option The name of the entry to select
-     */
-    protected function setBackendDropdownValue($editor, $pebble, $action, $option)
     {
-        $xp = new LegacyXpathBuilder();
-
-        /** @var NodeElement $calculationSelectorPebble */
-        $typeSelectorPebble = $editor->find('xpath', $pebble);
-        $typeSelectorPebble->click();
-
-        /** @var NodeElement $calculationList */
-        $calculationOption = $this->find('xpath', $xp->xDropdown($action)->liWithText($option)->get());
-        $calculationOption->click();
+        $this->spin(function (NodeElement $parent, $xPath, $class) use ($parent, $xPath, $class) {
+            $element = $parent->find('xpath', $xPath);
+            if ($element->hasClass($class)) {
+                return false;
+            }
+            return true;
+        });
     }
 
     protected function waitForModalOverlayClosed()
     {
-        $xp = new LegacyXpathBuilder();
-        $modalXPath = $xp
-            ->div(['~class' => ['js--overlay']])
-            ->get();
+        $modalXPath = BaseXpathBuilder::create()->child('div', ['~class' => 'js--overlay']);
         $this->waitForSelectorInvisible('xpath', $modalXPath);
     }
 
@@ -221,23 +198,5 @@ class ContextAwarePage extends Page
             $elem = $context->getSession()->getPage()->find($selector, $locator);
             return empty($elem) || !$elem->isVisible();
         }, 90);
-    }
-
-    /**
-     * @param NodeElement $parent
-     * @param string $label
-     * @param string $action
-     * @param string $optionText
-     * @throws \Exception
-     */
-    protected function selectFromXDropdown(NodeElement $parent, $label, $action, $optionText)
-    {
-        $xp = new LegacyXpathBuilder();
-        $pebbleXpath = $xp->getXSelectorPebbleForLabel($label);
-        $pebble = $parent->find('xpath', $pebbleXpath);
-        $pebble->click();
-
-        $dropdownOption = $this->waitForSelectorPresent('xpath', $xp->xDropdown($action, $optionText)->get());
-        $dropdownOption->click();
     }
 }

@@ -5,7 +5,7 @@ namespace Shopware\Tests\Mink;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Exception\MissingRequirementException;
-use Shopware\Helper\ApiClient;
+use Shopware\Component\Api\ApiClient;
 
 class ApiContext extends SubContext
 {
@@ -48,16 +48,19 @@ class ApiContext extends SubContext
     }
 
     /**
-     * @Given the following customer Accounts exist:
+     * @Given the following customer accounts exist:
      */
     public function theFollowingCustomerAccountsExist(TableNode $table)
     {
         $data = $table->getHash();
         foreach ($data as $item) {
             $this->generatedUsers[] = $item['email'];
+
             $password = (array_key_exists('password', $item) && !empty($item['password'])) ? $item['password'] : '';
             $group = (array_key_exists('group', $item) && !empty($item['group'])) ? $item['group'] : 'EK';
-            $this->recreateCustomerAccount($item['email'], $password, $group);
+            $country = (array_key_exists('country', $item) && !empty($item['country'])) ? $item['country'] : '';
+
+            $this->recreateCustomerAccount($item['email'], $password, $group, $country);
         }
     }
 
@@ -122,8 +125,9 @@ class ApiContext extends SubContext
      * @param string $email
      * @param string $password
      * @param string $group
+     * @param string $country
      */
-    private function recreateCustomerAccount($email, $password = '', $group = '')
+    private function recreateCustomerAccount($email, $password = '', $group = '', $country = '')
     {
         $api = $this->getApiClient();
 
@@ -138,6 +142,10 @@ class ApiContext extends SubContext
 
         if (!empty($group)) {
             $data['groupKey'] = $group;
+        }
+
+        if (!empty($country)) {
+            $data['country'] = $this->getApiClient()->getCountryIdByISO($country);
         }
 
         $api->createCustomer($data);

@@ -2,7 +2,7 @@
 
 namespace Shopware\Tests\Mink;
 
-use Shopware\Tests\Mink\Page\Backend\SystemInfo;
+use Shopware\Tests\Mink\Page\Backend\SystemInfoModule;
 
 class FileCheckContext extends SubContext
 {
@@ -41,8 +41,8 @@ class FileCheckContext extends SubContext
      */
     public function aRequirementShouldOwnAsStatus($requirement, $icon)
     {
-        /** @var SystemInfo $page */
-        $page = $this->getPage('SystemInfo');
+        /** @var SystemInfoModule $page */
+        $page = $this->getPage('SystemInfoModule');
         $requirementLabel = $requirement === 'folder' ? $this->folderRequirementLabel : $this->fileRequirementLabel;
 
         $page->checkRequirements(

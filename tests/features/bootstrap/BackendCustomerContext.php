@@ -8,6 +8,19 @@ use Shopware\Tests\Mink\Page\Backend\CustomerModule;
 class BackendCustomerContext extends SubContext
 {
     /**
+     * @Then I might need to close the welcome wizard
+     */
+    public function iMightNeedToCloseTheWelcomeWizard()
+    {
+        /** @var CustomerModule $page */
+        $page = $this->getPage('CustomerModule');
+
+        if($this->waitIfThereIsText('Überspringen')) {
+            $page->skipIntroWizard();
+        }
+    }
+
+    /**
      * @When I fill out the new customer form:
      */
     public function fillNewCustomerForm(TableNode $table)

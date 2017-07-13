@@ -4,14 +4,17 @@ namespace Shopware\Tests\Mink;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Tests\Mink\Element\CartPosition;
+use Shopware\Tests\Mink\Page\Backend\ShippingModule;
+use Shopware\Tests\Mink\Page\Frontend\Account;
 use Shopware\Tests\Mink\Page\Frontend\CheckoutCart;
 use Shopware\Tests\Mink\Page\Frontend\CheckoutConfirm;
+use Shopware\Tests\Mink\Page\Frontend\CheckoutShippingPayment;
 
 class FrontendCheckoutContext extends SubContext
 {
-
     /**
      * @Given the aggregations should look like this:
+     * @param TableNode $aggregations
      */
     public function theAggregationsShouldLookLikeThis(TableNode $aggregations)
     {
@@ -22,7 +25,8 @@ class FrontendCheckoutContext extends SubContext
     }
 
     /**
-     * @When /^I add the article "(?P<articleNr>[^"]*)" to my basket$/
+     * @When I add the article :article to my basket
+     * @param string $article
      */
     public function iAddTheArticleToMyBasket($article)
     {
@@ -123,7 +127,34 @@ class FrontendCheckoutContext extends SubContext
     {
         /** @var CheckoutConfirm $page */
         $page = $this->getPage('CheckoutConfirm');
+        $page->open();
         $page->changeShippingOrPaymentMethod($subject, $method, $data);
+    }
+
+    /**
+     * @Given I change my payment method to :paymentMethod
+     *
+     * @param string $paymentMethod
+     */
+    public function changePaymentMethodTo($paymentMethod)
+    {
+        /** @var CheckoutShippingPayment $page */
+        $page = $this->getPage('CheckoutShippingPayment');
+        $page->open();
+        $page->changePaymentMethodTo($paymentMethod);
+    }
+
+    /**
+     * @Given I change my shipping method to :shippingMethod
+     *
+     * @param string $shippingMethod
+     */
+    public function changeShippingMethodTo($shippingMethod)
+    {
+        /** @var CheckoutShippingPayment $page */
+        $page = $this->getPage('CheckoutShippingPayment');
+        $page->open();
+        $page->changeShippingMethodTo($shippingMethod);
     }
 
     /**
@@ -137,5 +168,36 @@ class FrontendCheckoutContext extends SubContext
         /** @var CheckoutCart $page */
         $page = $this->getPage('CheckoutCart');
         $page->changeDispatchOrPaymentMethod($subject, $method, $data);
+    }
+
+    /**
+     * @Given I am not logged in
+     * @And I am not logged in
+     */
+    public function iAmNotLoggedIn()
+    {
+        /** @var Account $page */
+        $page = $this->getPage('Account');
+        $page->open();
+
+        // See if we already are logged out
+        if ($this->waitIfThereIsText('Einloggen', 3)) {
+            return;
+        }
+
+        $page->logout();
+    }
+
+    /**
+     * @Then /^I delete the shipping method "([^"]*)"$/
+     * @param string $shippingMethod
+     */
+    public function iDeleteTheShippingMethod($shippingMethod)
+    {
+        /** @var ShippingModule $page */
+        $page = $this->getPage('ShippingModule');
+        $page->open();
+
+        $page->deleteShippingMethod($shippingMethod);
     }
 }

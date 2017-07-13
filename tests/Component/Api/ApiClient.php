@@ -1,10 +1,9 @@
 <?php
 
-namespace Shopware\Helper;
+namespace Shopware\Component\Api;
 
 use Faker\Factory as FakerFactory;
 use GuzzleHttp\Client as Guzzle;
-use Shopware\Bundle\StoreFrontBundle\Struct\Country;
 use Shopware\Exception\CategoryPathNotStartingAtRootException;
 use Shopware\Exception\MissingRequirementException;
 use Shopware\Exception\MultipleChoicesException;
@@ -12,22 +11,40 @@ use Shopware\Exception\NoArticleNameException;
 
 class ApiClient
 {
+    /** Supported HTTP methods */
     const METHOD_GET = 'GET';
     const METHOD_PUT = 'PUT';
     const METHOD_POST = 'POST';
     const METHOD_DELETE = 'DELETE';
-    private $validMethods = array(
+
+    private $validMethods = [
         self::METHOD_GET,
         self::METHOD_PUT,
         self::METHOD_POST,
-        self::METHOD_DELETE
-    );
+        self::METHOD_DELETE,
+    ];
+
+    /** @var string */
     private $apiUrl;
+
+    /** @var string */
     private $assetUrl;
+
+    /** @var array */
     private $auth;
+
     /** @var \Faker\Generator */
     private $faker;
 
+    /**
+     * ApiClient constructor.
+     *
+     * @param string $apiUrl
+     * @param string $assetUrl
+     * @param string $username
+     * @param string $apiKey
+     * @throws MissingRequirementException
+     */
     public function __construct($apiUrl, $assetUrl, $username, $apiKey)
     {
         $this->apiUrl = rtrim($apiUrl, '/') . '/';
@@ -47,88 +64,56 @@ class ApiClient
         $this->faker = FakerFactory::create('de_DE');
     }
 
-    public function call($url, $method = self::METHOD_GET, $data = array(), $params = array())
+    /**
+     * Perform GET request on API
+     *
+     * @param string $url
+     * @param array $params
+     * @return array
+     */
+    public function get($url, $params = [])
     {
-        if (!in_array($method, $this->validMethods)) {
-            throw new \Exception('Invalid HTTP-Method: ' . $method);
-        }
-        $queryString = '';
-        if (!empty($params)) {
-            $queryString = http_build_query($params);
-        }
-        $url = rtrim($url, '?') . '?';
-        $url = $this->apiUrl . $url . $queryString;
-        $url = rtrim($url, '?');
-
-        $data['auth'] = $this->auth;
-        $data['debug'] = false;
-
-        $response = $this->client->request($method, $url, $data);
-        $httpCode = $response->getStatusCode();
-        $result = $response->getBody()->getContents();
-
-        return $this->prepareResponse($result, $httpCode);
+        return $this->call($url, self::METHOD_GET, [], $params);
     }
 
-    public function get($url, $params = array())
-    {
-        return $this->call($url, self::METHOD_GET, array(), $params);
-    }
-
-    public function post($url, $data = array(), $params = array())
+    /**
+     * Perform POST request on API
+     *
+     * @param $url
+     * @param array $data
+     * @param array $params
+     * @return array
+     */
+    public function post($url, $data = [], $params = [])
     {
         return $this->call($url, self::METHOD_POST, ['json' => $data], $params);
     }
 
-    public function put($url, $data = array(), $params = array())
+    /**
+     * Perform PUT request on API
+     *
+     * @param $url
+     * @param array $data
+     * @param array $params
+     * @return array
+     */
+    public function put($url, $data = [], $params = [])
     {
         return $this->call($url, self::METHOD_PUT, $data, $params);
     }
 
-    public function delete($url, $params = array())
-    {
-        return $this->call($url, self::METHOD_DELETE, array(), $params);
-    }
-
-    protected function prepareResponse($result, $httpCode)
-    {
-        if (null === $decodedResult = json_decode($result, true)) {
-            $jsonErrors = array(
-                JSON_ERROR_NONE => 'No error occurred',
-                JSON_ERROR_DEPTH => 'The maximum stack depth has been reached',
-                JSON_ERROR_CTRL_CHAR => 'Control character issue, maybe wrong encoded',
-                JSON_ERROR_SYNTAX => 'Syntaxerror',
-            );
-            $error = "<h2>Could not decode json</h2>";
-            $error .= "json_last_error: " . $jsonErrors[json_last_error()];
-            $error .= "<br>Raw:<br>";
-            $error .= "<pre>" . print_r($result, true) . "</pre>";
-            throw new \Exception($error);
-        }
-        if (!isset($decodedResult['success'])) {
-            throw new \Exception("Invalid Response");
-        }
-        if (!$decodedResult['success']) {
-            $error = "<h2>No Success</h2>";
-            $error .= "<p>" . $decodedResult['message'] . "</p>";
-            throw new \Exception($error);
-        }
-        return $decodedResult;
-    }
-
     /**
-     * @param array $array
-     * @param array $expectedFields
-     * @throws \Exception
+     * Perform DELETE request on API
+     *
+     * @param $url
+     * @param array $params
+     * @return array
      */
-    private function throwExceptionWhenEmpty(array $array, array $expectedFields)
+    public function delete($url, $params = [])
     {
-        foreach ($expectedFields as $field) {
-            if (empty($array[$field])) {
-                throw new \Exception("Field $field is required.");
-            }
-        }
+        return $this->call($url, self::METHOD_DELETE, [], $params);
     }
+
 
     /**
      * @param string $name
@@ -155,6 +140,11 @@ class ApiClient
         return false;
     }
 
+    /**
+     * Create new product in shop
+     *
+     * @param $product
+     */
     public function createArticle($product)
     {
         $categories = $product['categories'];
@@ -179,6 +169,12 @@ class ApiClient
         return $categoryIds;
     }
 
+    /**
+     * @param $categories
+     * @return int
+     * @throws CategoryPathNotStartingAtRootException
+     * @throws MultipleChoicesException
+     */
     public function createCategoryTree($categories)
     {
         $categories = explode('>', $categories);
@@ -195,7 +191,7 @@ class ApiClient
                 'filter' => [
                     'name' => $category,
                     'parentId' => $parentId,
-                ]
+                ],
             ]);
 
             if ($existsResponse['total'] === 0) {
@@ -264,7 +260,7 @@ class ApiClient
                             $product) ? $product['customerGroupKey'] : 'EK',
                         'price' => array_key_exists('price', $product) ? $product['price'] : 99.34,
                     ],
-                ]
+                ],
             ],
         ];
         if (!empty($categories)) {
@@ -274,6 +270,20 @@ class ApiClient
             }
         }
         return $articleData;
+    }
+
+    /**
+     * @param array $array
+     * @param array $expectedFields
+     * @throws \Exception
+     */
+    private function throwExceptionWhenEmpty(array $array, array $expectedFields)
+    {
+        foreach ($expectedFields as $field) {
+            if (empty($array[$field])) {
+                throw new \Exception("Field $field is required.");
+            }
+        }
     }
 
     /**
@@ -291,6 +301,9 @@ class ApiClient
         return $response['total'] > 0;
     }
 
+    /**
+     * @param array $customer
+     */
     public function createCustomer(array $customer)
     {
         $this->throwExceptionWhenEmpty($customer, ['email', 'password']);
@@ -322,7 +335,8 @@ class ApiClient
             'lastname' => array_key_exists('lastname', $customer) ? $customer['lastname'] : $faker->lastName,
             'birthday' => array_key_exists('birthday', $customer) ? $customer['birthday'] : $birthday,
             'country' => array_key_exists('country', $customer) ? $customer['country'] : 2,
-            'street' => array_key_exists('street', $customer) ? $customer['street'] : $faker->streetName . ' ' . rand(1,
+            'street' => array_key_exists('street',
+                $customer) ? $customer['street'] : $faker->streetName . ' ' . rand(1,
                     101),
             'city' => array_key_exists('city', $customer) ? $customer['city'] : $faker->city,
             'zipcode' => array_key_exists('zip', $customer) ? $customer['zip'] : rand(11111, 99999),
@@ -337,10 +351,33 @@ class ApiClient
                 'city' => array_key_exists('city', $customer) ? $customer['city'] : $faker->city,
                 'zipcode' => array_key_exists('zip', $customer) ? $customer['zip'] : rand(11111, 99999),
                 'country' => array_key_exists('country', $customer) ? $customer['country'] : 2,
-            ]
+            ],
         ];
     }
 
+    /**
+     * Get the internal country id for a given ISO
+     *
+     * @param string $iso
+     * @return int
+     * @throws \Exception
+     */
+    public function getCountryIdByISO($iso)
+    {
+        $countries = $this->get('api/countries')['data'];
+
+        foreach ($countries as $country) {
+            if (array_key_exists('iso', $country) && $country['iso'] === $iso) {
+                return $country['id'];
+            }
+        }
+
+        throw new \Exception('Could not find country by ISO ' . $iso);
+    }
+
+    /**
+     * @param array $data
+     */
     public function setCountryData(array $data)
     {
         $countries = [];
@@ -362,13 +399,20 @@ class ApiClient
                     'iso' => $country['iso'],
                     'iso3' => $country['iso3'],
                     'isoName' => $country['isoName'],
-                    'shippingFree' => (bool)(array_key_exists('shippingFree', $countryData) ? $countryData['shippingFree'] : false),
-                    'taxFree' => (bool)(array_key_exists('taxFree', $countryData) ? $countryData['taxFree'] : false),
-                    'taxFreeUstId' => (bool)(array_key_exists('taxFreeUstId', $countryData) ? $countryData['taxFreeUstId'] : false),
-                    'taxFreeUstIdChecked' => (bool)(array_key_exists('taxFreeUstIdChecked', $countryData) ? $countryData['taxFreeUstIdChecked'] : false),
-                    'active' => (bool)(array_key_exists('active', $countryData) ? $countryData['active'] : true),
-                    'displayStateInRegistration' => (bool)(array_key_exists('displayStateInRegistration', $countryData) ? $countryData['displayStateInRegistration'] : true),
-                    'forceStateInRegistration' => (bool)(array_key_exists('forceStateInRegistration', $countryData) ? $countryData['forceStateInRegistration'] : false),
+                    'shippingFree' => (bool)(array_key_exists('shippingFree',
+                        $countryData) ? $countryData['shippingFree'] : false),
+                    'taxFree' => (bool)(array_key_exists('taxFree',
+                        $countryData) ? $countryData['taxFree'] : false),
+                    'taxFreeUstId' => (bool)(array_key_exists('taxFreeUstId',
+                        $countryData) ? $countryData['taxFreeUstId'] : false),
+                    'taxFreeUstIdChecked' => (bool)(array_key_exists('taxFreeUstIdChecked',
+                        $countryData) ? $countryData['taxFreeUstIdChecked'] : false),
+                    'active' => (bool)(array_key_exists('active',
+                        $countryData) ? $countryData['active'] : true),
+                    'displayStateInRegistration' => (bool)(array_key_exists('displayStateInRegistration',
+                        $countryData) ? $countryData['displayStateInRegistration'] : true),
+                    'forceStateInRegistration' => (bool)(array_key_exists('forceStateInRegistration',
+                        $countryData) ? $countryData['forceStateInRegistration'] : false),
                 ];
 
                 $this->put('api/countries/' . $country['id'], ['json' => $data]);
@@ -380,6 +424,10 @@ class ApiClient
         }
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function customerGroupExistsByKey($key)
     {
         $id = $this->getCustomerGroupIdByKey($key);
@@ -416,12 +464,19 @@ class ApiClient
         return (int)$response['data'][0]['id'];
     }
 
+    /**
+     * @param $customerGroup
+     */
     public function createCustomerGroup($customerGroup)
     {
         $this->throwExceptionWhenEmpty($customerGroup, ['key', 'name']);
         $this->post('api/customerGroups', $this->buildCustomerGroupDataArray($customerGroup));
     }
 
+    /**
+     * @param array $group
+     * @return array
+     */
     private function buildCustomerGroupDataArray(array $group)
     {
         return [
@@ -432,10 +487,14 @@ class ApiClient
             'mode' => array_key_exists('mode', $group) ? $group['mode'] : false,
             'discount' => array_key_exists('discount', $group) ? $group['discount'] : 0,
             'minimumOrder' => array_key_exists('minimumOrder', $group) ? $group['minimumOrder'] : 10,
-            'minimumOrderSurcharge' => array_key_exists('minimumOrderSurcharge', $group) ? $group['minimumOrderSurcharge'] : 5,
+            'minimumOrderSurcharge' => array_key_exists('minimumOrderSurcharge',
+                $group) ? $group['minimumOrderSurcharge'] : 5,
         ];
     }
 
+    /**
+     * @param $customerGroup
+     */
     public function updateCustomerGroup($customerGroup)
     {
         $this->throwExceptionWhenEmpty($customerGroup, ['key', 'name']);
@@ -473,5 +532,78 @@ class ApiClient
     public function deleteCustomerById($id)
     {
         $this->delete('api/customers/' . $id);
+    }
+
+    /**
+     * @param $url
+     * @param string $method
+     * @param array $data
+     * @param array $params
+     * @param int $retries Number of times the request is repeated if it was unsuccessful
+     * @return mixed
+     * @throws \Exception
+     */
+    public function call($url, $method = self::METHOD_GET, $data = [], $params = [], $retries = 1)
+    {
+        if (!in_array($method, $this->validMethods)) {
+            throw new \Exception('Invalid HTTP-Method: ' . $method);
+        }
+
+        $queryString = '';
+        if (!empty($params)) {
+            $queryString = http_build_query($params);
+        }
+        $url = rtrim($url, '?') . '?';
+        $url = $this->apiUrl . $url . $queryString;
+        $url = rtrim($url, '?');
+
+        $data['auth'] = $this->auth;
+        $data['debug'] = false;
+
+        $response = null;
+
+        // Retry API requests for enhanced test stability
+        do {
+            $response = $this->client->request($method, $url, $data);
+            $statusCode = $response->getStatusCode();
+            $retries -= 1;
+        } while ($statusCode !== 200 && $retries > 0);
+
+        $httpCode = $response->getStatusCode();
+        $result = $response->getBody()->getContents();
+
+        return $this->prepareResponse($result, $httpCode);
+    }
+
+    /**
+     * @param $result
+     * @param $httpCode
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function prepareResponse($result, $httpCode)
+    {
+        if (null === $decodedResult = json_decode($result, true)) {
+            $jsonErrors = [
+                JSON_ERROR_NONE => 'No error occurred',
+                JSON_ERROR_DEPTH => 'The maximum stack depth has been reached',
+                JSON_ERROR_CTRL_CHAR => 'Control character issue, maybe wrong encoded',
+                JSON_ERROR_SYNTAX => 'Syntaxerror',
+            ];
+            $error = "<h2>Could not decode json</h2>";
+            $error .= "json_last_error: " . $jsonErrors[json_last_error()];
+            $error .= "<br>Raw:<br>";
+            $error .= "<pre>" . print_r($result, true) . "</pre>";
+            throw new \Exception($error);
+        }
+        if (!isset($decodedResult['success'])) {
+            throw new \Exception("Invalid Response");
+        }
+        if (!$decodedResult['success']) {
+            $error = "<h2>No Success</h2>";
+            $error .= "<p>" . $decodedResult['message'] . "</p>";
+            throw new \Exception($error);
+        }
+        return $decodedResult;
     }
 }

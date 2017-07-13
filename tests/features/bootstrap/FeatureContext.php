@@ -3,12 +3,10 @@
 namespace Shopware\Tests\Mink;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\Exception as MinkException;
 use Behat\Mink\Session;
-use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use Behat\Testwork\Tester\Result\TestResult;
 
 /**

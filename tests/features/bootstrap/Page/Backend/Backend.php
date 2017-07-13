@@ -3,6 +3,7 @@
 namespace Shopware\Tests\Mink\Page\Backend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class Backend extends Page implements HelperSelectorInterface
@@ -35,4 +36,21 @@ class Backend extends Page implements HelperSelectorInterface
     {
         return [];
     }
+
+    /**
+     * Click on a tab identified by its label
+     *
+     * @param string $label
+     */
+    public function clickOnTabWithName($label)
+    {
+        $tabXpath = BackendXpathBuilder::create()
+            ->child('span', ['@text' => $label, 'and', '~class' => 'x-tab-inner'])
+            ->ancestor('button', [], 1)
+            ->getXpath();
+
+        $element = $this->find('xpath', $tabXpath);
+        $element->click();
+    }
+
 }

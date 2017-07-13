@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Page\Backend\ProductExport;
+use Shopware\Tests\Mink\Page\Backend\ProductExportModule;
 
 class ProductExportContext extends SubContext
 {
@@ -19,11 +19,12 @@ class ProductExportContext extends SubContext
 
     /**
      * @When I fill in the product export configuration:
+     * @param TableNode $table
      */
     public function iFillInTheProductExportGeneralConfiguration(TableNode $table)
     {
-        /** @var ProductExport $page */
-        $page = $this->getPage('ProductExport');
+        /** @var ProductExportModule $page */
+        $page = $this->getPage('ProductExportModule');
 
         $data = $table->getHash();
         $page->fillConfigurationForm($data);
@@ -34,8 +35,8 @@ class ProductExportContext extends SubContext
      */
     public function iStartTheProductExport()
     {
-        /** @var ProductExport $page */
-        $page = $this->getPage('ProductExport');
+        /** @var ProductExportModule $page */
+        $page = $this->getPage('ProductExportModule');
         $page->startExport();
     }
 
@@ -44,18 +45,19 @@ class ProductExportContext extends SubContext
      */
     public function iShouldBeAbleToEnterMyBasicTemplate($smalltemplate)
     {
-        /** @var ProductExport $page */
-        $page = $this->getPage('ProductExport');
+        /** @var ProductExportModule $page */
+        $page = $this->getPage('ProductExportModule');
         $page->enterTemplate($smalltemplate);
     }
 
     /**
      * @Then it should contain the following product data:
+     * @param TableNode $table
      */
     public function itShouldContainTheFollowingProductData(TableNode $table)
     {
-        /** @var ProductExport $page */
-        $page = $this->getPage('ProductExport');
+        /** @var ProductExportModule $page */
+        $page = $this->getPage('ProductExportModule');
 
         $data = $table->getHash();
         $page->checkExportResult($data);
@@ -63,19 +65,25 @@ class ProductExportContext extends SubContext
 
     /**
      * @Given I open the :title export file
+     * @param string $title
      */
     public function iOpenTheCreatedExportFile($title)
     {
-        /** @var ProductExport $page */
-        $page = $this->getPage('ProductExport');
+        /** @var ProductExportModule $page */
+        $page = $this->getPage('ProductExportModule');
         $page->openExport($title);
     }
 
     /**
      * @AfterFeature @productexport
+     * @param AfterFeatureScope $scope
      */
     public static function cleanupFeature(AfterFeatureScope $scope)
     {
+        if(!in_array('productexport', $scope->getFeature()->getTags())) {
+            return;
+        }
+
         foreach (self::$orderNumbers as $articleId) {
             self::doDbArticleCleanUp($articleId);
         }

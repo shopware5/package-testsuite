@@ -4,7 +4,6 @@ namespace Shopware\Tests\Mink;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\WebAssert;
-use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Element\AddressManagementAddressBox;
 use Shopware\Tests\Mink\Page\Frontend\Account;
 
@@ -12,14 +11,19 @@ class FrontendAccountContext extends SubContext
 {
 
     /**
-     * @Given /^I log in with email "(?P<email>[^"]*)" and password "(?P<password>[^"]*)"$/
+     * @Given I log in with email :email and password :password
+     * @param string $email
+     * @param string $password
      */
     public function iLogInAsWithPassword($email, $password)
     {
-        $this->getPage('Account')->login($email, $password);
+        /** @var Account $page */
+        $page = $this->getPage('Account');
+        $page->login($email, $password);
     }
 
     /**
+     * @todo delete?
      * @Given /^I log in successful as "(?P<username>[^"]*)" with email "(?P<email>[^"]*)" and password "(?P<password>[^"]*)"$/
      */
     public function iLogInSuccessfulAsWithPassword($username, $email, $password)
@@ -29,6 +33,7 @@ class FrontendAccountContext extends SubContext
     }
 
     /**
+     * @todo delete?
      * @When /^I log me out$/
      */
     public function iLogMeOut()
@@ -37,6 +42,7 @@ class FrontendAccountContext extends SubContext
     }
 
     /**
+     * @todo delete?
      * @Then /^I change my email with password "(?P<password>[^"]*)" to "(?P<new>[^"]*)"$/
      * @Then /^I change my email with password "(?P<password>[^"]*)" to "(?P<new>[^"]*)" with confirmation "(?P<confirmation>[^"]*)"$/
      */
@@ -46,6 +52,7 @@ class FrontendAccountContext extends SubContext
     }
 
     /**
+     * @todo delete?
      * @Then /^I change my password from "(?P<old>[^"]*)" to "(?P<new>[^"]*)"$/
      * @Then /^I change my password from "(?P<old>[^"]*)" to "(?P<new>[^"]*)" with confirmation "(?P<confirmation>[^"]*)"$/
      */
@@ -104,9 +111,9 @@ class FrontendAccountContext extends SubContext
     }
 
     /**
-     * @Given /^I register me:$/
+     * @Given I register myself:
      */
-    public function iRegisterMe(\Behat\Gherkin\Node\TableNode $table)
+    public function iRegisterMe(TableNode $table)
     {
         $data = $table->getHash();
         /** @var Account $page */

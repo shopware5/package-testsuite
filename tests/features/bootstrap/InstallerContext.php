@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Tests\Mink\Page\Installer\InstallerIndex;
 
 class InstallerContext extends SubContext
@@ -26,15 +26,16 @@ class InstallerContext extends SubContext
     public function iShouldSeeText(TableNode $table)
     {
         $data = $table->getHash();
+
         foreach ($data as $text) {
             $this->checkIfThereIsText($text['text'], $this);
         }
     }
 
     /**
-     * @When I check the :labeltext checkbox to agree to the terms
+     * @When I check the license checkbox to agree to the terms
      */
-    public function iCheckTheCheckbox($labeltext)
+    public function iCheckTheCheckbox()
     {
         /** @var InstallerIndex $page */
         $page = $this->getPage('InstallerIndex');
@@ -42,9 +43,9 @@ class InstallerContext extends SubContext
     }
 
     /**
-     * @Then the following :formname form fields must be required:
+     * @Then the following form fields must be required:
      */
-    public function theFollowingFormFieldsMustBeRequired($formname, TableNode $table)
+    public function theFollowingFormFieldsMustBeRequired(TableNode $table)
     {
         /** @var InstallerIndex $page */
         $page = $this->getPage('InstallerIndex');
@@ -112,8 +113,19 @@ class InstallerContext extends SubContext
      */
     public function iShouldSeeAfterImportIsFinished($text)
     {
-        $xp = new LegacyXpathBuilder();
-        $this->waitForTextInElement($xp->div(['@class' => 'counter-text'])->get(), $text, 0, 120);
+        $builder = new BackendXpathBuilder();
+        $this->waitForTextInElement($builder->child('div', ['@class' => 'counter-container'])->getXpath(), $text, 0, 120);
+    }
+
+    /**
+     * Just for Shopware 5.2
+     *
+     * @Then I should see :text after the database import has finished
+     */
+    public function iShouldSeeTextAfterTheDatabaseImportHasFinished($text)
+    {
+        $builder = new BackendXpathBuilder();
+        $this->waitForTextInElement($builder->child('div', ['@class' => 'counter-text'])->getXpath(), $text, 0, 120);
     }
 
     /**

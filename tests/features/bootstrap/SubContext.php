@@ -11,8 +11,8 @@ use Cocur\Slugify\Slugify;
 use Dotenv\Dotenv;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\SpinTrait;
-use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\Element\MultipleElement;
 
 class SubContext extends PageObjectContext implements MinkAwareContext
@@ -154,10 +154,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     protected function waitForModalOverlayClosed()
     {
-        $xp = new LegacyXpathBuilder();
-        $modalXPath = $xp
-            ->div(['~class' => ['js--overlay']])
-            ->get();
+        $modalXPath = FrontendXpathBuilder::create()->child('div', ['~class' => 'js--overlay']);
         $this->waitForSelectorInvisible('xpath', $modalXPath);
     }
 

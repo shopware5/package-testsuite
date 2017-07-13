@@ -2,8 +2,8 @@
 
 namespace Shopware\Tests\Mink\Page\Updater;
 
+use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Component\XpathBuilder\LegacyXpathBuilder;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
 class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
@@ -19,11 +19,14 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function getXPathSelectors()
     {
-        $xp = new LegacyXpathBuilder();
         return [
-            'forwardButton' => $xp->input(['@value' => 'Weiter'])->get(),
-            'requirementForwardButton' => $xp->button(['@type' => 'submit'])->get(),
-            'cleanupStatusElement' => $xp->div(['@class' => 'fileCounterContainer', 'and', '~class' => 'is--left'])->get(),
+            'forwardButton' => BaseXpathBuilder::create()->child('input', ['@value' => 'Weiter'])->getXpath(),
+            'requirementForwardButton' => BaseXpathBuilder::create()
+                ->child('button', ['@type' => 'submit'])
+                ->getXpath(),
+            'cleanupStatusElement' => BaseXpathBuilder::create()
+                ->child('div', ['@class' => 'fileCounterContainer', 'and', '~class' => 'is--left'])
+                ->getXpath(),
         ];
     }
 

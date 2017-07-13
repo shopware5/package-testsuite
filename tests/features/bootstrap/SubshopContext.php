@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Page\Backend\ShopSettings;
+use Shopware\Tests\Mink\Page\Backend\SettingsModule;
 
 class SubshopContext extends SubContext
 {
@@ -28,8 +28,8 @@ class SubshopContext extends SubContext
      */
     public function iClickTheMenuElement($label)
     {
-        /** @var ShopSettings $page */
-        $page = $this->getPage('ShopSettings');
+        /** @var SettingsModule $page */
+        $page = $this->getPage('SettingsModule');
         $page->clickOnMenuElement($label);
     }
 
@@ -38,8 +38,8 @@ class SubshopContext extends SubContext
      */
     public function iClickTheSettingsElement($label)
     {
-        /** @var ShopSettings $page */
-        $page = $this->getPage('ShopSettings');
+        /** @var SettingsModule $page */
+        $page = $this->getPage('SettingsModule');
         $page->clickOnSettingsMenuElement($label);
     }
 
@@ -48,11 +48,11 @@ class SubshopContext extends SubContext
      */
     public function iFillTheConfigurationForm($formname, TableNode $table)
     {
-        /** @var ShopSettings $page */
-        $page = $this->getPage('ShopSettings');
+        /** @var SettingsModule $page */
+        $page = $this->getPage('SettingsModule');
 
         $data = $table->getHash();
-        $page->fillConfigurationForm($data);
+        $page->fillShopConfigurationForm($data);
     }
 
     /**

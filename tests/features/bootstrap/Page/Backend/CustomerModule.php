@@ -8,6 +8,15 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 class CustomerModule extends BackendModule
 {
     /**
+     * Helper function that skips the intro wizard of the customer module
+     */
+    public function skipIntroWizard()
+    {
+        $skipButton = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Überspringen'));
+        $skipButton->click();
+    }
+
+    /**
      * Fill the new customer form of the backend module with
      * the supplied data.
      *
@@ -84,50 +93,25 @@ class CustomerModule extends BackendModule
      */
     private function fillCustomerForm(NodeElement $window, array $data)
     {
+        // Fill most form elements
+        $this->fillExtJsForm($window, $data);
+
+        // Fill custom payment combobox element
         foreach ($data as $entry) {
-            /** @var NodeElement $parent */
-            $parent = $window->find('xpath', (new BackendXpathBuilder())->getFieldsetXpathByLabel($entry['fieldset']));
-
-            if(!$parent) {
-                throw new \Exception('Could not find fieldset with name ' . $entry['fieldset']);
+            if($entry['type'] !== 'paymentbox') {
+                continue;
             }
 
-            switch ($entry['type']) {
-                case 'input':
-                    $input = $parent->find('xpath', (new BackendXpathBuilder())->getInputXpathByLabel($entry['label']));
-
-                    if(!$input) {
-                        throw new \Exception('Could not find input with label ' . $entry['label']);
-                    }
-
-                    $this->fillInput($input, $entry['value']);
-                    break;
-                case 'combobox':
-                    $combobox = $parent->find('xpath', (new BackendXpathBuilder())->getComboboxXpathByLabel($entry['label']));
-
-                    if(!$combobox) {
-                        throw new \Exception('Could not find input with label ' . $entry['label']);
-                    }
-
-                    $this->fillCombobox($combobox, $entry['value']);
-                    break;
-                case 'paymentbox':
-                    $combobox = $parent->find('xpath', (new BackendXpathBuilder())->getComboboxXpathByLabel($entry['label']));
-
-                    if(!$combobox) {
-                        throw new \Exception('Could not find input with label ' . $entry['label']);
-                    }
-
-                    $this->fillPaymentCombobox($combobox, $entry['value']);
-                    break;
-            }
+            $combobox = $window->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($entry['label']));
+            $this->fillPaymentCombobox($combobox, $entry['value']);
         }
     }
 
     /**
      * Special helper method that fills an extJS payment info combobox
      *
-     * @param NodeElement $parent
+     * @param NodeElement $combobox
+     * @param string $value
      */
     private function fillPaymentCombobox(NodeElement $combobox, $value)
     {

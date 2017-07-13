@@ -4,37 +4,38 @@ Feature: I can manage my customers with the backend customer module
   Background:
     Given there is no customer registered with e-mail address "test@tester.com"
 
-  Scenario: I can create, edit and delete customers from the customer listing
+  Scenario: I can create, edit and delete customers from the customer module
 
     ## Opening the module
     Given I am on the page "BackendLogin"
     When I log in with user "demo" and password "demo"
     And I hover backend menu item "Kunden"
     And I click on backend menu item that contains "Kunden"
-    Then I should see "Hinzufügen" eventually
+    Then I might need to close the welcome wizard
+    And I should see "Hinzufügen" eventually
 
     ## Creating a new customer
     When I click the "Hinzufügen" Button
     Then I should see "Kunden-Administration" eventually
 
     When I fill out the new customer form:
-      | label                 | value           | type       | action     | fieldset          |
-      | E-Mail:               | test@tester.com | input      |            | Stammdaten        |
-      | Kundengruppe:         | Shopkunden      | combobox   | groupKey   | Stammdaten        |
-      | Shop:                 | Demo shop       | combobox   | languageId | Stammdaten        |
-      | Passwort:             | 12345678        | input      |            | Stammdaten        |
-      | Passwort bestätigen:  | 12345678        | input      |            | Stammdaten        |
-      | Anrede:               | Herr            | combobox   | salutation | Persönliche Daten |
-      | Vorname:              | Pep             | input      |            | Persönliche Daten |
-      | Nachname:             | Eroni           | input      |            | Persönliche Daten |
-      | Anrede:               | Herr            | combobox   | salutation | Adressdaten       |
-      | Vorname:              | Pep             | input      |            | Adressdaten       |
-      | Nachname:             | Eroni           | input      |            | Adressdaten       |
-      | Straße:               | Drake Circus 1  | input      |            | Adressdaten       |
-      | Postleitzahl:         | PL4 1BB         | input      |            | Adressdaten       |
-      | Stadt:                | Plymouth        | input      |            | Adressdaten       |
-      | Land:                 | Großbritannien  | combobox   | country_id | Adressdaten       |
-      | Aktuelle Zahlungsart: | Vorkasse        | paymentbox | paymentId  | Zahlungsdaten     |
+      | label                 | value           | type       | fieldset          |
+      | E-Mail:               | test@tester.com | input      | Stammdaten        |
+      | Kundengruppe:         | Shopkunden      | combobox   | Stammdaten        |
+      | Shop:                 | Demo shop       | combobox   | Stammdaten        |
+      | Passwort:             | 12345678        | input      | Stammdaten        |
+      | Passwort bestätigen:  | 12345678        | input      | Stammdaten        |
+      | Anrede:               | Herr            | combobox   | Persönliche Daten |
+      | Vorname:              | Pep             | input      | Persönliche Daten |
+      | Nachname:             | Eroni           | input      | Persönliche Daten |
+      | Anrede:               | Herr            | combobox   | Adressdaten       |
+      | Vorname:              | Pep             | input      | Adressdaten       |
+      | Nachname:             | Eroni           | input      | Adressdaten       |
+      | Straße:               | Drake Circus 1  | input      | Adressdaten       |
+      | Postleitzahl:         | PL4 1BB         | input      | Adressdaten       |
+      | Stadt:                | Plymouth        | input      | Adressdaten       |
+      | Land:                 | Großbritannien  | combobox   | Adressdaten       |
+      | Aktuelle Zahlungsart: | Vorkasse        | paymentbox | Zahlungsdaten     |
 
     And I click the "Speichern" Button
     Then I should see "Pep" eventually
