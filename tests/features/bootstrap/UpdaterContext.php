@@ -6,12 +6,18 @@ use Shopware\Tests\Mink\Page\Updater\UpdaterIndex;
 
 class UpdaterContext extends SubContext
 {
+    /**
+     * @var string
+     */
     private $testPath;
 
+    /**
+     * UpdaterContext constructor override.
+     */
     public function __construct()
     {
         parent::__construct();
-        $this->testPath = getenv('base_path').'/files/';
+        $this->testPath = getenv('base_path') . '/files/';
     }
 
     /**
@@ -19,7 +25,6 @@ class UpdaterContext extends SubContext
      */
     public function iAdvanceToTheNextUpdaterPage()
     {
-
         /** @var UpdaterIndex $page */
         $page = $this->getPage('UpdaterIndex');
         $page->advance();
@@ -60,6 +65,7 @@ class UpdaterContext extends SubContext
 
     /**
      * @Given I should see the reminder :hint to remove the update-assets folder
+     * @param string $hint
      */
     public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder($hint)
     {
@@ -73,7 +79,7 @@ class UpdaterContext extends SubContext
      */
     public function theUpdateRequirementsAreMet()
     {
-        $this->setRequirementsFullfillment(true);
+        $this->setRequirementsFulfillment(true);
     }
 
     /**
@@ -81,14 +87,14 @@ class UpdaterContext extends SubContext
      */
     public function theUpdateRequirementsAreNotMet()
     {
-        $this->setRequirementsFullfillment(false);
+        $this->setRequirementsFulfillment(false);
     }
 
     /**
      * Sets the access privileges of a directory according to the situation to simulate system requirements
-     *
+     * @param bool $meetRequirements
      */
-    private function setRequirementsFullfillment($meetRequirements)
+    private function setRequirementsFulfillment($meetRequirements)
     {
         if ($meetRequirements === false) {
             chmod($this->testPath, 0444);
@@ -102,11 +108,12 @@ class UpdaterContext extends SubContext
      */
     public function iCorrectTheRequirements()
     {
-        $this->setRequirementsFullfillment(true);
+        $this->setRequirementsFulfillment(true);
     }
 
     /**
-     * @When I advance to the next step via :stepame
+     * @When I advance to the next step via :stepName
+     * @param $stepName
      */
     public function iAdvanceToTheNextRequirementsStep($stepName)
     {
