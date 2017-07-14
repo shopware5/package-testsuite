@@ -129,15 +129,7 @@ class ApiClient
             'limit' => 1,
         ]);
 
-        if ($response['success'] !== true) {
-            throw new \Exception('API communication unsuccessful: ' . print_r($response, true));
-        }
-
-        if ($response['total'] > 0) {
-            return true;
-        }
-
-        return false;
+        return $response['total'] > 0;
     }
 
     /**
@@ -522,6 +514,17 @@ class ApiClient
             return;
         }
         $this->deleteCustomerById((int)$response['data'][0]['id']);
+    }
+
+    /**
+     * Helper function that deletes all existing customers
+     */
+    public function deleteAllCustomers()
+    {
+        $response = $this->get('api/customers');
+        foreach($response['data'] as $customer) {
+            $this->deleteCustomerById($customer['id']);
+        }
     }
 
     /**
