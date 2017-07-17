@@ -1,17 +1,10 @@
 <?php
 
-namespace Shopware\Tests\Mink\Element;
+namespace Shopware\Element\Frontend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
-/**
- * Element: CheckoutShipping
- * Location: Billing address box on checkout confirm page
- *
- * Available retrievable properties:
- * - ???
- */
 class CheckoutShipping extends Element implements HelperSelectorInterface
 {
     /**

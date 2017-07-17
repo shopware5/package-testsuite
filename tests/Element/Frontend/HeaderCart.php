@@ -1,18 +1,11 @@
 <?php
 
-namespace Shopware\Tests\Mink\Element;
+namespace Shopware\Element\Frontend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
-/**
- * Element: HeaderCart
- * Location: Cart on the top right of the shop
- *
- * Available retrievable properties:
- * - address (Element[], please use Account::checkAddress())
- */
 class HeaderCart extends Element implements HelperSelectorInterface
 {
     /**

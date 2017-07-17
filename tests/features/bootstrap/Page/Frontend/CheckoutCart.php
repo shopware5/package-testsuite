@@ -2,9 +2,9 @@
 
 namespace Shopware\Tests\Mink\Page\Frontend;
 
+use Shopware\Element\Frontend\CartPosition;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Tests\Mink\Element\CartPosition;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;

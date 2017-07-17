@@ -1,20 +1,10 @@
 <?php
 
-namespace Shopware\Tests\Mink\Element;
+namespace Shopware\Element\Frontend;
 
+use Shopware\Element\MultipleElement;
 use Shopware\Tests\Mink\Helper;
 
-/**
- * Element: CartPosition
- * Location: Cart positions on cart and checkout confirm page
- *
- * Available retrievable properties:
- * - number (string, e.g. "SW10181")
- * - name (string, e.g. "Reisekoffer Set")
- * - quantity (float, e.g. "1")
- * - itemPrice (float, e.g. "139,99")
- * - sum (float, e.g. "139,99")
- */
 class CartPosition extends MultipleElement
 {
     /**

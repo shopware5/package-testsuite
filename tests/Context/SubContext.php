@@ -13,7 +13,7 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\SpinTrait;
-use Shopware\Tests\Mink\Element\MultipleElement;
+use Shopware\Element\MultipleElement;
 
 class SubContext extends PageObjectContext implements MinkAwareContext
 {

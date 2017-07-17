@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink\Element;
+namespace Shopware\Element;
 
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
@@ -9,9 +9,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
-/**
- * Class MultipleElement
- */
+
 abstract class MultipleElement extends Element implements \Countable, \Iterator, HelperSelectorInterface
 {
 

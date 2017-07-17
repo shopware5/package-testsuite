@@ -4,7 +4,7 @@ namespace Shopware\Context;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
-use Shopware\Tests\Mink\Element\HeaderCart;
+use Shopware\Element\Frontend\HeaderCart;
 use Shopware\Tests\Mink\Page\Frontend\Account;
 use Shopware\Tests\Mink\Page\Frontend\CheckoutCart;
 use Shopware\Tests\Mink\Page\Frontend\Index;

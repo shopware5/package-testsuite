@@ -8,7 +8,7 @@ use Behat\Mink\Exception\ResponseTextException;
 use Behat\Mink\WebAssert;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
-use Shopware\Tests\Mink\Element\CheckoutShipping;
+use Shopware\Element\Frontend\CheckoutShipping;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 

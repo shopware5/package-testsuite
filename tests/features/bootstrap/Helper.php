@@ -6,16 +6,13 @@ use \Behat\Behat\Tester\Exception\PendingException;
 use \SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use \SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use Shopware\Component\Helper\HelperSelectorInterface;
-use Shopware\Tests\Mink\Element\MultipleElement;
+use Shopware\Element\MultipleElement;
 
 /**
  * @deprecated
  */
 class Helper
 {
-
-
-
     /**
      * Helper function to check each row of an array.
      * If each second sub-element of a row is equal or in its first, function returns true

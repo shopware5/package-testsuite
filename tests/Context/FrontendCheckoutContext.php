@@ -3,7 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Element\CartPosition;
+use Shopware\Element\Frontend\CartPosition;
 use Shopware\Tests\Mink\Page\Backend\ShippingModule;
 use Shopware\Tests\Mink\Page\Frontend\Account;
 use Shopware\Tests\Mink\Page\Frontend\CheckoutCart;
