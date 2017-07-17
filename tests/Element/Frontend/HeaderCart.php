@@ -3,7 +3,7 @@
 namespace Shopware\Element\Frontend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-use Shopware\Tests\Mink\Helper;
+use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class HeaderCart extends Element implements HelperSelectorInterface

@@ -3,7 +3,7 @@
 namespace Shopware\Element\Frontend;
 
 use Shopware\Element\MultipleElement;
-use Shopware\Tests\Mink\Helper;
+use Shopware\Component\Helper\Helper;
 
 class CartPosition extends MultipleElement
 {

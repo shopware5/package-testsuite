@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Tests\Mink\Helper;
+use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class Account extends Page implements HelperSelectorInterface

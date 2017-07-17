@@ -9,7 +9,7 @@ use Behat\Mink\WebAssert;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
 use Shopware\Element\Frontend\CheckoutShipping;
-use Shopware\Tests\Mink\Helper;
+use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterface

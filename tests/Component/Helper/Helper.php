@@ -1,11 +1,10 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Component\Helper;
 
 use \Behat\Behat\Tester\Exception\PendingException;
 use \SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use \SensioLabs\Behat\PageObjectExtension\PageObject\Element;
-use Shopware\Component\Helper\HelperSelectorInterface;
 use Shopware\Element\MultipleElement;
 
 /**
