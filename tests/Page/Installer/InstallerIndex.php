@@ -3,7 +3,7 @@
 namespace Shopware\Page\Installer;
 
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Helper\ContextAwarePage;
+use Shopware\Page\ContextAwarePage;
 use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 

@@ -21,7 +21,8 @@
       "Shopware\\Helper\\": "Helper",
       "Shopware\\Component\\": "Component",
       "Shopware\\Exception\\": "Exception",
-      "Shopware\\Element\\": "Element"
+      "Shopware\\Element\\": "Element",
+      "Shopware\\Page\\": "Page"
     }
   }
 }

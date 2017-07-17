@@ -2,7 +2,7 @@
 
 namespace Shopware\Page\Backend;
 
-use Shopware\Helper\ContextAwarePage;
+use Shopware\Page\ContextAwarePage;
 
 class BackendLogin extends ContextAwarePage
 {

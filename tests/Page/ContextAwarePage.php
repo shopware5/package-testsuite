@@ -1,9 +1,10 @@
 <?php
 
-namespace Shopware\Helper;
+namespace Shopware\Page;
 
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Shopware\Component\SpinTrait\SpinTrait;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 
 class ContextAwarePage extends Page

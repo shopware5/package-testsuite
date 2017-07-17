@@ -4,7 +4,7 @@ namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
-use Shopware\Helper\ContextAwarePage;
+use Shopware\Page\ContextAwarePage;
 
 class BackendModule extends ContextAwarePage
 {

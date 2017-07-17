@@ -4,7 +4,7 @@ namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Helper\ContextAwarePage;
+use Shopware\Page\ContextAwarePage;
 
 class CheckoutShippingPayment extends ContextAwarePage
 {

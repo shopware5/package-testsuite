@@ -7,7 +7,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ResponseTextException;
 use Behat\Mink\WebAssert;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Helper\ContextAwarePage;
+use Shopware\Page\ContextAwarePage;
 use Shopware\Element\Frontend\CheckoutShipping;
 use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;

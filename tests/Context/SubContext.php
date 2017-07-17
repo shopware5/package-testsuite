@@ -12,7 +12,7 @@ use Dotenv\Dotenv;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Helper\SpinTrait;
+use Shopware\Component\SpinTrait\SpinTrait;
 use Shopware\Element\MultipleElement;
 
 class SubContext extends PageObjectContext implements MinkAwareContext

@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: niklas
- * Date: 24.10.16
- * Time: 15:08
- */
 
-namespace Shopware\Helper;
+namespace Shopware\Component\SpinTrait;
 
 trait SpinTrait
 {

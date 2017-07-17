@@ -8,7 +8,7 @@ default:
                   - Shopware\Page\Backend
                   - Shopware\Page\Installer
                   - Shopware\Page\Updater
-                element: Shopware\Tests\Mink\Element
+                element: Shopware\Element
         Behat\MinkExtension:
             base_url: 'http://shopware.test/'
             default_session: 'goutte'
