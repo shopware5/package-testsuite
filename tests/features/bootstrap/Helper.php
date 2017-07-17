@@ -8,6 +8,9 @@ use \SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use Shopware\Component\Helper\HelperSelectorInterface;
 use Shopware\Tests\Mink\Element\MultipleElement;
 
+/**
+ * @deprecated
+ */
 class Helper
 {
 
@@ -21,6 +24,7 @@ class Helper
      * @param array $check
      * @param bool $strict
      * @return bool|int|string
+     * @deprecated
      * @throws \Exception
      */
     public static function checkArray(array $check, $strict = false)
@@ -62,6 +66,7 @@ class Helper
     /**
      * Converts the value to a float
      * @param string $value
+     * @deprecated
      * @return float
      */
     public static function floatValue($value)
@@ -80,6 +85,7 @@ class Helper
      * Converts values with key in $keys to floats
      * @param array $values
      * @param array $keys
+     * @deprecated
      * @return array
      */
     public static function floatArray(array $values, array $keys = [])
@@ -111,6 +117,7 @@ class Helper
      * @param Page|Element|HelperSelectorInterface $parent
      * @param array $keys
      * @return Element[]
+     * @deprecated
      * @throws \Exception|PendingException
      */
     public static function findElements(HelperSelectorInterface $parent, array $keys)
@@ -214,6 +221,7 @@ class Helper
      * @param string $formKey
      * @param array $values
      * @param array $callables Array of callable functions ['formFieldName' => function(NodeElement $form, $fieldValue){}]
+     * @throws \Exception
      */
     public static function fillForm(HelperSelectorInterface $parent, $formKey, $values, array $callables = [])
     {
