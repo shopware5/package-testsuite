@@ -6,7 +6,7 @@ then
     exit 1
 fi
 
-source sh/_pre-stage.sh
+source $(dirname $0)/sh/_pre-stage.sh
 
 echo "Unzipping installer"
 docker-compose run --rm tools find /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
@@ -29,4 +29,4 @@ if [ "$PACKAGE_VERSION" = "5.2" ]
         docker-compose run tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@shopware52&&@installer&&~@knownFailing'
 fi
 
-source sh/_post-stage.sh
+source $(dirname $0)/sh/_post-stage.sh
