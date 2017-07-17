@@ -79,7 +79,7 @@ class HeaderCart extends Element implements HelperSelectorInterface
                 'The %s of the header cart is wrong! (%s instead of %s)',
                 $result, $check[$result][0], $check[$result][1]
             );
-            Helper::throwException($message);
+            throw new \Exception($message);
         }
     }
 

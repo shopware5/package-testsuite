@@ -272,14 +272,14 @@ class Account extends Page implements HelperSelectorInterface
             return;
         }
 
-        $messages = ['The address "' . $name . '" is not available. Available are:'];
+        $messages = 'The address "' . $name . '" is not available. Available are: \n';
 
         /** @var AddressBox $address */
         foreach ($addresses as $address) {
-            $messages[] = $address->getProperty('title');
+            $messages .= $address->getProperty('title') . '\n';
         }
 
-        Helper::throwException($messages);
+        throw new \Exception($messages);
     }
 
     /**

@@ -360,5 +360,3 @@ Feature: I can buy products using the store frontend
       | regular.customer@shopware.de.test | shopware | Rechnung      | Standard Versand | 3,90 €        | 48,89 €  |
       | b2b.customer@shopware.de.test     | shopware | Rechnung      | Express Versand  | 9,90 €        | 54,89 €  |
       | regular.customer@shopware.ch.test | shopware | Vorkasse      | Express Versand  | 8,32 €        | 46,13 €  |
-
-

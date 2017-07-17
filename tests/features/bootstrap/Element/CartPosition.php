@@ -91,12 +91,12 @@ class CartPosition extends MultipleElement
         }
 
         if ($result !== true) {
-            $messages = ['The cart item has different names!'];
+            $messages = 'The cart item has different names! \n';
             foreach ($name as $key => $value) {
-                $messages[] = sprintf('"%s" (Key: "%s")', $value, $key);
+                $messages .= sprintf('"%s" (Key: "%s") \n', $value, $key);
             }
 
-            Helper::throwException($messages);
+            throw new \Exception($messages);
         }
 
         return $name['articleTitle'];

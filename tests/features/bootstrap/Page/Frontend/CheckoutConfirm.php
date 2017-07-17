@@ -91,7 +91,7 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
             $assert->pageTextContains($namedSelectors['gtc'][$language]);
         } catch (ResponseTextException $e) {
             $message = ['You are not on the checkout confirmation page!', 'Current URL: ' . $this->getDriver()->getCurrentUrl()];
-            Helper::throwException($message);
+            throw new \Exception($message);
         }
     }
 

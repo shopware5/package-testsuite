@@ -107,7 +107,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
                 $check[$result][0]
             );
 
-            Helper::throwException($message);
+            throw new \Exception($message);
         }
     }
 
@@ -132,7 +132,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         }
 
         $message = sprintf('Label "%s" is not defined for language key "%s"', $key, $language);
-        Helper::throwException($message, Helper::EXCEPTION_PENDING);
+        throw new \Exception($message);
     }
 
     /**
@@ -164,7 +164,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         } while ($key <= $lastKey);
 
         $message = sprintf('Label "%s" does not exist on the page! ("%s")', $labelKey, $givenLabel);
-        Helper::throwException($message);
+        throw new \Exception($message);
     }
 
     /**
@@ -252,7 +252,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
             $elements = Helper::findElements($this, ['dispatchSelect']);
 
             if (empty($elements)) {
-                Helper::throwException('Could not find dispatch select element on cart page.');
+                throw new \Exception('Could not find dispatch select element on cart page.');
             }
 
             $elements['dispatchSelect']->selectOption($method);
@@ -282,10 +282,10 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         $result = Helper::assertElements($items, $cartPositions);
 
         if ($result !== true) {
-            $messages = ['The following articles are wrong:'];
+            $messages = 'The following articles are wrong: \n';
             foreach ($result as $product) {
-                $messages[] = sprintf(
-                    '%s - %s (%s is "%s", should be "%s")',
+                $messages .= sprintf(
+                    '%s - %s (%s is "%s", should be "%s") \n',
                     $product['properties']['number'],
                     $product['properties']['name'],
                     $product['result']['key'],
@@ -293,7 +293,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
                     $product['result']['value2']
                 );
             }
-            Helper::throwException($messages);
+            throw new \Exception($messages);
         }
     }
 

@@ -24,7 +24,7 @@ class Helper
     {
         foreach ($check as $key => $comparison) {
             if ((!is_array($comparison)) || (count($comparison) != 2)) {
-                self::throwException('Each comparison have to be an array with exactly two values!');
+                throw new \Exception('Each comparison have to be an array with exactly two values!');
             }
 
             $comparison = array_values($comparison);
@@ -128,18 +128,6 @@ class Helper
             $elements[$key] = $element;
         }
 
-        if ($throwExceptions) {
-            $messages = ['The following elements of ' . get_class($parent) . ' were not found:'];
-
-            foreach ($notFound as $key => $locator) {
-                $messages[] = sprintf('%s ("%s")', $key, $locator);
-            }
-
-            if (count($messages) > 1) {
-                self::throwException($messages);
-            }
-        }
-
         return $elements;
     }
 
@@ -167,18 +155,6 @@ class Helper
             }
 
             $elements[$key] = $element;
-        }
-
-        if ($throwExceptions) {
-            $messages = ['The following elements of ' . get_class($parent) . ' were not found:'];
-
-            foreach ($notFound as $key => $locator) {
-                $messages[] = sprintf('%s ("%s")', $key, $locator);
-            }
-
-            if (count($messages) > 1) {
-                self::throwException($messages);
-            }
         }
 
         return $elements;
@@ -227,62 +203,7 @@ class Helper
             $message[] = sprintf('%s (empty)', implode(', ', $errors['emptySelector']));
         }
 
-        self::throwException($message, self::EXCEPTION_PENDING);
-    }
-
-    const EXCEPTION_GENERIC = 1;
-    const EXCEPTION_PENDING = 2;
-
-    /**
-     * Throws a generic or pending exception, shows the backtrace to the first context class call
-     * @deprecated
-     * @param array|string $messages
-     * @param int $type
-     * @throws \Exception|PendingException
-     */
-    public static function throwException($messages = [], $type = self::EXCEPTION_GENERIC)
-    {
-        if (!is_array($messages)) {
-            $messages = [$messages];
-        }
-
-        $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-
-        $message = [<<<EOD
-Exception thrown in {$debug[1]['class']}{$debug[1]['type']}{$debug[1]['function']}():{$debug[0]['line']}
-
-Stacktrace:
-EOD
-        ];
-
-        foreach ($debug as $key => $call) {
-            $next = $debug[$key + 1];
-
-            if (!isset($next['class'])) {
-                break;
-            }
-
-            $message[] = "{$next['class']}{$next['type']}{$next['function']}():{$call['line']}";
-        }
-
-        $message[] = "\r\nException:";
-
-        $messages = array_merge($message, $messages);
-        $message = implode("\r\n", $messages);
-
-        switch ($type) {
-            case self::EXCEPTION_GENERIC:
-                throw new \Exception($message);
-                break;
-
-            case self::EXCEPTION_PENDING:
-                throw new PendingException($message);
-                break;
-
-            default:
-                self::throwException('Invalid exception type!', self::EXCEPTION_PENDING);
-                break;
-        }
+        throw new \Exception($message);
     }
 
     /**
@@ -346,7 +267,7 @@ EOD
             }
         }
 
-        self::throwException('No content block found!');
+        throw new \Exception('No content block found!');
     }
 
     /**
@@ -388,7 +309,7 @@ EOD
                     }
 
                     $message = sprintf('The form "%s" has no field "%s"!', $formKey, $fieldName);
-                    self::throwException($message);
+                    throw new \Exception($message);
                 }
 
                 if (!$field->isVisible()) {
