@@ -3,6 +3,7 @@
 namespace Shopware\Tests\Mink\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 /**
  * Element: CheckoutBilling
@@ -11,7 +12,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
  * Available retrievable properties:
  * - ???
  */
-class CheckoutBilling extends Element implements \Shopware\Tests\Mink\HelperSelectorInterface
+class CheckoutBilling extends Element implements HelperSelectorInterface
 {
     /**
      * @var array $selector
@@ -35,7 +36,6 @@ class CheckoutBilling extends Element implements \Shopware\Tests\Mink\HelperSele
     {
         return [
             'changeButton'  => ['de' => 'Adresse ändern', 'en' => 'Change address'],
-            'otherButton'  => ['de' => 'Andere', 'en' => 'Others']
         ];
     }
 

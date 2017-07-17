@@ -2,9 +2,6 @@
 
 namespace Shopware\Tests\Mink\Element;
 
-use Shopware\Tests\Mink\Helper;
-use Symfony\Component\Config\Definition\Exception\Exception;
-
 /**
  * Element: AddressManagementAddressBox
  * Location: Account address boxes

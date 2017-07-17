@@ -43,63 +43,7 @@ class CartPosition extends MultipleElement
      */
     public function getNamedSelectors()
     {
-        return [
-            'remove'  => ['de' => 'Löschen',   'en' => 'Delete']
-        ];
-    }
-
-    /**
-     * Returns the product name
-     * @return string
-     */
-    public function getNameProperty()
-    {
-        $elements = Helper::findElements($this, ['name', 'thumbnailLink', 'thumbnailImage']);
-
-        $names = [
-            'articleTitle' => $elements['name']->getAttribute('title'),
-            'articleThumbnailLinkTitle' => $elements['thumbnailLink']->getAttribute('title'),
-            'articleName' => rtrim($elements['name']->getText(), '.')
-        ];
-
-        return $this->getUniqueName($names);
-    }
-
-    /**
-     * @param array $names
-     * @return string
-     * @throws \Exception
-     */
-    protected function getUniqueName(array $names)
-    {
-        $name = array_unique($names);
-
-        switch (count($name)) {
-            //normal case
-            case 1:
-                return current($name);
-
-            //if articleName is too long, it will be cut. So it's different from the other and has to be checked separately
-            case 2:
-                $check = array($name);
-                $result = Helper::checkArray($check);
-                break;
-
-            default:
-                $result = false;
-                break;
-        }
-
-        if ($result !== true) {
-            $messages = 'The cart item has different names! \n';
-            foreach ($name as $key => $value) {
-                $messages .= sprintf('"%s" (Key: "%s") \n', $value, $key);
-            }
-
-            throw new \Exception($messages);
-        }
-
-        return $name['articleTitle'];
+        return [];
     }
 
     /**
