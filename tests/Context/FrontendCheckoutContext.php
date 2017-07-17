@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Tests\Mink\Element\CartPosition;
@@ -38,6 +38,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @When I remove the article on position :position
+     * @param string $position
      */
     public function iRemoveTheArticleOnPosition($position)
     {
@@ -93,6 +94,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @Given the cart contains the following products:
+     * @param TableNode $items
      */
     public function theCartContainsTheFollowingProducts(TableNode $items)
     {
@@ -106,6 +108,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @Then the cart should contain the following products:
+     * @param TableNode $items
      */
     public function theCartShouldContainTheFollowingProducts(TableNode $items)
     {

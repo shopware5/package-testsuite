@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Gherkin\Node\TableNode;
@@ -34,6 +34,7 @@ class SubshopContext extends SubContext
 
     /**
      * @Then I should be able to access the subshop via using :url
+     * @param string $url
      */
     public function iShouldBeAbleToAccessTheSubshopViaUsing($url)
     {
@@ -42,6 +43,7 @@ class SubshopContext extends SubContext
 
     /**
      * @When I click the :label menu element
+     * @param string $label
      */
     public function iClickTheMenuElement($label)
     {
@@ -52,6 +54,7 @@ class SubshopContext extends SubContext
 
     /**
      * @When I click the :label settings element
+     * @param string $label
      */
     public function iClickTheSettingsElement($label)
     {
@@ -62,6 +65,8 @@ class SubshopContext extends SubContext
 
     /**
      * @Given I fill in and submit the :formname configuration form:
+     * @param $formname
+     * @param TableNode $table
      */
     public function iFillTheConfigurationForm($formname, TableNode $table)
     {
@@ -74,6 +79,7 @@ class SubshopContext extends SubContext
 
     /**
      * @AfterFeature @subshop
+     * @param AfterFeatureScope $scope
      */
     public static function cleanupFeature(AfterFeatureScope $scope)
     {

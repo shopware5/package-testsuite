@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Tests\Mink\Page\Backend\CustomerModule;
@@ -22,6 +22,7 @@ class BackendCustomerContext extends SubContext
 
     /**
      * @When I fill out the new customer form:
+     * @param TableNode $table
      */
     public function fillNewCustomerForm(TableNode $table)
     {
@@ -34,6 +35,7 @@ class BackendCustomerContext extends SubContext
 
     /**
      * @When I click the edit icon on customer :firstname
+     * @param string $firstname
      */
     public function iClickTheEditIconOnCustomer($firstname)
     {
@@ -44,6 +46,7 @@ class BackendCustomerContext extends SubContext
 
     /**
      * @When I change the following information:
+     * @param TableNode $table
      */
     public function iChangeTheFollowingInformation(TableNode $table)
     {
@@ -56,6 +59,7 @@ class BackendCustomerContext extends SubContext
 
     /**
      * @When I click the delete icon on customer :firstname
+     * @param string $firstname
      */
     public function iClickTheDeleteIconOnCustomer($firstname)
     {

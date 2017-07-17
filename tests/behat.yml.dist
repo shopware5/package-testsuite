@@ -33,15 +33,15 @@ default:
                 - Shopware\Context\FeatureContext
                 - Shopware\Context\GeneralContext
                 - Shopware\Context\BackendContext
-                - Shopware\Tests\Mink\FrontendContext
-                - Shopware\Tests\Mink\FrontendCheckoutContext
-                - Shopware\Tests\Mink\FrontendAccountContext
+                - Shopware\Context\FrontendContext
+                - Shopware\Context\FrontendCheckoutContext
+                - Shopware\Context\FrontendAccountContext
                 - Shopware\Context\ApiContext
-                - Shopware\Tests\Mink\DetailContext
-                - Shopware\Tests\Mink\InstallerContext
-                - Shopware\Tests\Mink\UpdaterContext
-                - Shopware\Tests\Mink\SubshopContext
-                - Shopware\Tests\Mink\FileCheckContext
-                - Shopware\Tests\Mink\ProductExportContext
-                - Shopware\Tests\Mink\BackendCustomerContext
-                - Shopware\Tests\Mink\BackendPaymentContext
+                - Shopware\Context\DetailContext
+                - Shopware\Context\InstallerContext
+                - Shopware\Context\UpdaterContext
+                - Shopware\Context\SubshopContext
+                - Shopware\Context\FileCheckContext
+                - Shopware\Context\ProductExportContext
+                - Shopware\Context\BackendCustomerContext
+                - Shopware\Context\BackendPaymentContext

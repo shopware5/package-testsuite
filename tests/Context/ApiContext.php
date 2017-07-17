@@ -6,7 +6,6 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Exception\MissingRequirementException;
 use Shopware\Component\Api\ApiClient;
-use Shopware\Tests\Mink\SubContext;
 
 class ApiContext extends SubContext
 {

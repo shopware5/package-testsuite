@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Gherkin\Node\TableNode;
@@ -41,13 +41,14 @@ class ProductExportContext extends SubContext
     }
 
     /**
-     * @Then I should be able to enter my basic template :smalltemplate
+     * @Then I should be able to enter my basic template :template
+     * @param string $template
      */
-    public function iShouldBeAbleToEnterMyBasicTemplate($smalltemplate)
+    public function iShouldBeAbleToEnterMyBasicTemplate($template)
     {
         /** @var ProductExportModule $page */
         $page = $this->getPage('ProductExportModule');
-        $page->enterTemplate($smalltemplate);
+        $page->enterTemplate($template);
     }
 
     /**
@@ -80,7 +81,7 @@ class ProductExportContext extends SubContext
      */
     public static function cleanupFeature(AfterFeatureScope $scope)
     {
-        if(!in_array('productexport', $scope->getFeature()->getTags())) {
+        if (!in_array('productexport', $scope->getFeature()->getTags())) {
             return;
         }
 
@@ -157,7 +158,7 @@ class ProductExportContext extends SubContext
         $deleteCategoriesStmt = self::getDbConnection()->prepare('DELETE FROM s_categories WHERE `description` IN (:categoryMain, :categoryMinor)');
         $deleteCategoriesStmt->execute([
             ':categoryMain' => self::$mainCategoryName,
-            ':categoryMinor' => self::$minorCategoryName
+            ':categoryMinor' => self::$minorCategoryName,
         ]);
     }
 

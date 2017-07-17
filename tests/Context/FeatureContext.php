@@ -3,7 +3,6 @@
 namespace Shopware\Context;
 
 use Behat\Mink\Driver\Selenium2Driver;
-use Shopware\Tests\Mink\SubContext;
 
 class FeatureContext extends SubContext
 {

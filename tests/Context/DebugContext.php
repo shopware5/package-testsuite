@@ -7,7 +7,6 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\Exception;
 use Behat\Mink\Session;
 use Behat\Testwork\Tester\Result\TestResult;
-use Shopware\Tests\Mink\SubContext;
 
 class DebugContext extends SubContext
 {

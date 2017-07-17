@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 class DetailContext extends SubContext
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Context;
 
 use Behat\Mink\Driver\DriverInterface;
 use Behat\Mink\Element\NodeElement;

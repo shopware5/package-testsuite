@@ -2,8 +2,6 @@
 
 namespace Shopware\Context;
 
-use Shopware\Tests\Mink\SubContext;
-
 class GeneralContext extends SubContext
 {
     /**

@@ -7,7 +7,6 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Tests\Mink\Page\Backend\Backend;
 use Shopware\Tests\Mink\Page\Backend\BackendLogin;
 use Shopware\Tests\Mink\Page\Backend\ShippingModule;
-use Shopware\Tests\Mink\SubContext;
 
 class BackendContext extends SubContext
 {
