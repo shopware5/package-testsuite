@@ -5,7 +5,7 @@ namespace Shopware\Tests\Mink\Page\Installer;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
 {

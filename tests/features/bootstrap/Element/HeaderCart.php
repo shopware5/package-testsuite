@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Element;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 /**
  * Element: HeaderCart

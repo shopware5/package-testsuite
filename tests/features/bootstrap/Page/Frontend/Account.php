@@ -3,16 +3,13 @@
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\WebAssert;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
-use Shopware\Tests\Mink\Element\AccountOrder;
 use Shopware\Tests\Mink\Element\AccountPayment;
 use Shopware\Tests\Mink\Element\AddressBox;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class Account extends Page implements HelperSelectorInterface
 {
@@ -71,111 +68,6 @@ class Account extends Page implements HelperSelectorInterface
     }
 
     /**
-     * Verify if we're on an expected page. Throw an exception if not.
-     * @param string $action
-     * @return bool
-     * @throws \Exception
-     */
-    public function verifyPage($action = '')
-    {
-        if ($action === 'Dashboard' || empty($action)) {
-            if ($this->verifyPageDashboard()) {
-                return true;
-            }
-        }
-
-        if ($action === 'Login' || empty($action)) {
-            if ($this->verifyPageLogin()) {
-                return true;
-            }
-        }
-
-        if ($action === 'Register' || empty($action)) {
-            if ($this->verifyPageRegister()) {
-                return true;
-            }
-        }
-
-        if ($action) {
-            return false;
-        }
-
-        $message = ['You are not on Account page! Action:' . $action, 'Current URL: ' . $this->getSession()->getCurrentUrl()];
-        Helper::throwException($message);
-    }
-
-    /**
-     * Helper function to check weather we are on the account dashboard
-     * @return bool
-     */
-    protected function verifyPageDashboard()
-    {
-        return (Helper::hasNamedLinks($this, [
-                'myAccountLink',
-                'profileLink',
-                'addressesLink',
-                'myOrdersLink',
-                'myEsdDownloadsLink',
-                'changePaymentLink',
-                'noteLink',
-                'logoutLink',
-            ]) === true) ?: false;
-    }
-
-    /**
-     * Helper function to check weather we are on the login page
-     * @return bool
-     */
-    protected function verifyPageLogin()
-    {
-        return (
-            $this->hasField('email') &&
-            $this->hasField('password') &&
-            Helper::hasNamedLink($this, 'forgotPasswordLink') &&
-            Helper::hasNamedButton($this, 'loginButton') &&
-            $this->verifyPageRegister()
-        );
-    }
-
-    /**
-     * Helper function to check weather we are on the register page
-     * @return bool
-     */
-    protected function verifyPageRegister()
-    {
-        return (
-            $this->hasSelect('register[personal][customer_type]') &&
-            $this->hasSelect('register[personal][salutation]') &&
-            $this->hasField('register[personal][firstname]') &&
-            $this->hasField('register[personal][lastname]') &&
-            $this->hasField('register[personal][email]') &&
-            $this->hasField('register[personal][password]') &&
-
-            $this->hasField('register[billing][company]') &&
-            $this->hasField('register[billing][department]') &&
-            $this->hasField('register[billing][vatId]') &&
-
-            $this->hasField('register[billing][street]') &&
-            $this->hasField('register[billing][zipcode]') &&
-            $this->hasField('register[billing][city]') &&
-            $this->hasSelect('register[billing][country]') &&
-            $this->hasField('register[billing][shippingAddress]') &&
-
-            $this->hasSelect('register[shipping][salutation]') &&
-            $this->hasField('register[shipping][company]') &&
-            $this->hasField('register[shipping][department]') &&
-            $this->hasField('register[shipping][firstname]') &&
-            $this->hasField('register[shipping][lastname]') &&
-            $this->hasField('register[shipping][street]') &&
-            $this->hasField('register[shipping][zipcode]') &&
-            $this->hasField('register[shipping][city]') &&
-            $this->hasSelect('register[shipping][country]') &&
-
-            Helper::hasNamedButton($this, 'sendButton')
-        );
-    }
-
-    /**
      * Logins a user
      * @param string $email
      * @param string $password
@@ -188,33 +80,13 @@ class Account extends Page implements HelperSelectorInterface
         Helper::pressNamedButton($this, 'loginButton');
     }
 
-    /**
-     * Check if the user was successfully logged in
-     * @param string $username
-     * @throws \Behat\Mink\Exception\ResponseTextException
-     */
-    public function verifyLogin($username)
-    {
-        $assert = new WebAssert($this->getSession());
-        $assert->pageTextContains(
-            'Dies ist Ihr Konto Dashboard, wo Sie die Möglichkeit haben, Ihre letzten Kontoaktivitäten einzusehen'
-        );
-        $assert->pageTextContains('Willkommen, ' . $username);
-    }
 
     /**
      * Logout a customer (important when using the Selenium driver)
-     * @return bool
      */
     public function logout()
     {
-        if ($this->verifyPage('Dashboard') === true) {
-            Helper::clickNamedLink($this, 'logoutLink');
-
-            return true;
-        }
-
-        return false;
+        $this->getDriver()->visit('/account/logout');
     }
 
     /**
@@ -364,42 +236,11 @@ class Account extends Page implements HelperSelectorInterface
     }
 
     /**
-     * Checks the name of the payment method
-     * @param string $paymentMethod
-     * @throws \Exception
-     */
-    public function checkPaymentMethod($paymentMethod)
-    {
-        /** @var AccountPayment $element */
-        $element = $this->getElement('AccountPayment');
-
-        $properties = [
-            'paymentMethod' => $paymentMethod
-        ];
-
-        $result = Helper::assertElementProperties($element, $properties);
-
-        if ($result === true) {
-            return;
-        }
-
-        $message = sprintf(
-            'The current payment method is "%s" (should be "%s")',
-            $result['value'],
-            $result['value2']
-        );
-
-        Helper::throwException($message);
-    }
-
-    /**
      * Fills the fields of the registration form and submits it
      * @param array $data
      */
     public function register(array $data)
     {
-        $this->verifyPage();
-
         Helper::fillForm($this, 'registrationForm', $data);
         Helper::pressNamedButton($this, 'sendButton');
     }

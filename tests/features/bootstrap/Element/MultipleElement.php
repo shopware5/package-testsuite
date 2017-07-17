@@ -7,7 +7,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 /**
  * Class MultipleElement

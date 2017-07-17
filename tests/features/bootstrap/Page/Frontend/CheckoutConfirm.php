@@ -12,7 +12,7 @@ use Shopware\Tests\Mink\Element\AddressManagementAddressBox;
 use Shopware\Tests\Mink\Element\CheckoutPayment;
 use Shopware\Tests\Mink\Element\CheckoutShipping;
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterface
 {
@@ -84,7 +84,7 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
         }
 
         $namedSelectors = $this->getNamedSelectors();
-        $language = Helper::getCurrentLanguage();
+        $language = 'de';
 
         try {
             $assert = new WebAssert($this->getSession());
@@ -219,35 +219,6 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
             }
             return true;
         }, 10);
-    }
-
-    /**
-     * Checks the name of the current payment method
-     * @param string $paymentMethod
-     * @throws \Exception
-     */
-    public function checkPaymentMethod($paymentMethod)
-    {
-        /** @var CheckoutPayment $element */
-        $element = $this->getElement('CheckoutPayment');
-
-        $properties = [
-            'paymentMethod' => $paymentMethod
-        ];
-
-        $result = Helper::assertElementProperties($element, $properties);
-
-        if ($result === true) {
-            return;
-        }
-
-        $message = sprintf(
-            'The current payment method is "%s" (should be "%s")',
-            $result['value'],
-            $result['value2']
-        );
-
-        Helper::throwException($message);
     }
 
     /**

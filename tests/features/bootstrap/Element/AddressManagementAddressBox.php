@@ -64,34 +64,6 @@ class AddressManagementAddressBox extends MultipleElement
         ];
     }
 
-    /**
-     * @param $givenAddress
-     * @return bool
-     */
-    public function containsAdress($givenAddress)
-    {
-        $testAddress = [];
-        if (count($givenAddress) === 5) {
-            $testAddress[] = $this->getCompanyOrNull();
-        }
-
-        $testAddress[] = Helper::getElementProperty($this, 'firstname') . ' ' . Helper::getElementProperty($this, 'lastname');
-        $testAddress[] = Helper::getElementProperty($this, 'street');
-        $testAddress[] = Helper::getElementProperty($this, 'zipcode') . ' ' . Helper::getElementProperty($this, 'city');
-        $testAddress[] = Helper::getElementProperty($this, 'countryName');
-        
-        return Helper::compareArrays($givenAddress, $testAddress) === true;
-    }
-
-    private function getCompanyOrNull()
-    {
-        if ($this->has('css', $this->getCssSelectors()['company'])) {
-            return $this->getCompanyProperty();
-        }
-
-        return null;
-    }
-
     public function hasTitle($title)
     {
         if ($this->has('css', $this->getCssSelectors()['title'])) {

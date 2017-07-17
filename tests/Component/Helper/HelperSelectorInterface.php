@@ -1,12 +1,7 @@
 <?php
 
-namespace Shopware\Tests\Mink;
+namespace Shopware\Component\Helper;
 
-/**
- * Interface: HelperSelectorInterface
- *
- * Required to use Helper class
- */
 interface HelperSelectorInterface
 {
     /**

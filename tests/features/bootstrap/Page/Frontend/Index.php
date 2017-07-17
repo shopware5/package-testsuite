@@ -5,7 +5,7 @@ namespace Shopware\Tests\Mink\Page\Frontend;
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class Index extends Page implements HelperSelectorInterface
 {

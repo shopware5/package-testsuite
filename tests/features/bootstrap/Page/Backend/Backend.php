@@ -4,7 +4,7 @@ namespace Shopware\Tests\Mink\Page\Backend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class Backend extends Page implements HelperSelectorInterface
 {

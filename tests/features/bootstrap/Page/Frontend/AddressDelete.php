@@ -3,7 +3,7 @@
 namespace Shopware\Tests\Mink\Page\Frontend;
 
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class AddressDelete extends Account implements HelperSelectorInterface
 {

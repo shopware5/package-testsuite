@@ -5,6 +5,7 @@ namespace Shopware\Tests\Mink\Page\Frontend;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Helper\ContextAwarePage;
 use Shopware\Tests\Mink\Element\CartPosition;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
@@ -47,14 +48,14 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function getNamedSelectors()
     {
         return [
-            'checkout' => ['de' => 'Zur Kasse', 'en' => 'Checkout'],
+            'checkout' => ['de' => 'Zur Kasse',   'en' => 'Checkout'],
             'sum' => ['de' => 'Summe:', 'en' => 'Proceed to checkout'],
             'shipping' => ['de' => 'Versandkosten:', 'en' => 'Proceed to checkout'],
             'total' => ['de' => 'Gesamtsumme:', 'en' => 'Proceed to checkout'],
             'sumWithoutVat' => ['de' => 'Gesamtsumme ohne MwSt.:', 'en' => 'Proceed to checkout'],
             'tax' => ['de' => 'zzgl. %d %% MwSt.:', 'en' => 'Proceed to checkout'],
-            'changePaymentButton' => ['de' => 'Weiter', 'en' => 'Next'],
-            'Versandkosten' => ['de' => 'Versandkosten', 'en' => 'Shipping costs'],
+            'changePaymentButton'   => ['de' => 'Weiter', 'en' => 'Next'],
+            'Versandkosten'   => ['de' => 'Versandkosten', 'en' => 'Shipping costs'],
         ];
     }
 
@@ -81,7 +82,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function checkAggregation($aggregation)
     {
         $elements = Helper::findAllOfElements($this, ['aggregationLabels', 'aggregationValues']);
-        $lang = Helper::getCurrentLanguage();
+        $lang = 'de';
         $check = [];
 
         foreach ($aggregation as $property) {
@@ -269,10 +270,14 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
      * Available properties are: number (required), name (required), quantity, itemPrice, sum
      * @param CartPosition $cartPositions
      * @param array $items
+     * @throws \Exception
      */
     public function checkCartProducts(CartPosition $cartPositions, array $items)
     {
-        Helper::assertElementCount($cartPositions, count($items));
+        if (count($items) !== count($cartPositions)) {
+            throw new \Exception('The number of cart positions is incorrect.');
+        }
+
         $items = Helper::floatArray($items, ['quantity', 'itemPrice', 'sum']);
         $result = Helper::assertElements($items, $cartPositions);
 
@@ -300,16 +305,11 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
      */
     public function verifyPage($language = '')
     {
-        $info = Helper::getPageInfo($this, ['controller', 'action']);
-
-        if (($info['controller'] === 'checkout') && ($info['action'] === 'cart')) {
-            return Helper::hasNamedLink($this, 'checkout');
+        if(!strpos($this->getText(), 'is--ctl-checkout is--act-cart')) {
+            throw new \Exception('Could not verify page - expected to be on checkout/cart.');
         }
 
-        $message = ['You are not on the cart!', 'Current URL: ' . $this->getSession()->getCurrentUrl()];
-        Helper::throwException($message);
-
-        return false;
+        return true;
     }
 
     /**
