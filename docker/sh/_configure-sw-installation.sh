@@ -27,3 +27,5 @@ fi
 echo "Chown directories to www-data"
 docker-compose run --rm tools chown -R www-data:www-data /var/www/shopware
 
+echo "Saving clean database state to sql dump"
+docker-compose run --rm tools mysqldump -u root -ptoor -h mysql shopware > ../tests/clean_db.sql

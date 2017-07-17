@@ -305,7 +305,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
      */
     public function verifyPage($language = '')
     {
-        if(!strpos($this->getText(), 'is--ctl-checkout is--act-cart')) {
+        if(!strpos($this->getHtml(), 'is--ctl-checkout is--act-cart')) {
             throw new \Exception('Could not verify page - expected to be on checkout/cart.');
         }
 

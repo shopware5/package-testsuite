@@ -73,6 +73,7 @@ Feature: I can buy products using the store frontend
   #   - Creating shipping methods in the backend
   #   - Basic cart calculation
   #
+  @isolated
   Scenario: My cart can handle free shipping methods
 
     Given the following shipping options exist:

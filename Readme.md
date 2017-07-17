@@ -65,6 +65,19 @@ to your host machine. With Vagrant, add the following port forwarding rule to yo
 
 ## Writing Tests
 
+### Using Tags
+
+Additional functionality for tests can be enabled by tagging either single scenarios or whole features
+with special tags.
+
+#### @knownFailing
+This tag prevents features from being tested completely, useful to be able to commit WIP features
+that would otherwise cause a breaking CI build.
+
+#### @isolated
+When a scenario is tagged with this tag, the database gets wiped before and after the scenario is run.
+Per default, the database is being reset to a clean state after every feature.
+
 ### How to use the XpathBuilder
 The `Shopware\Component\XpathBuilder` namespace contains a few classes that can be helpful when writing tests that rely 
 on complicated xpath queries. It is recommended to use either the `FrontendXpathBuilder` or the `BackendXpathBuilder`, 
