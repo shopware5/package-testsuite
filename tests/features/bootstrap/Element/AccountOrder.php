@@ -5,39 +5,8 @@ namespace Shopware\Tests\Mink\Element;
 use Behat\Mink\Element\NodeElement;
 use Shopware\Tests\Mink\Helper;
 
-/**
- * Element: AccountOrder
- * Location: Billing address box on account dashboard
- *
- * Available retrievable properties:
- * - address (Element[], please use Account::checkAddress())
- */
 class AccountOrder extends MultipleElement
 {
-    /**
-     * @var array $selector
-     */
-    protected $selector = ['css' => '.order--item'];
-
-    /**
-     * @inheritdoc
-     */
-    public function getCssSelectors()
-    {
-        return [
-            'date' => '.order--date > .column--value',
-            'number' => '.order--number > .column--value',
-            'footerDate' => 'div + .order--details .column--info-data > p:nth-of-type(1)',
-            'footerNumber' => 'div + .order--details .column--info-data > p:nth-of-type(2)',
-            'positions' => 'div + .order--details > .orders--table-header ~ .panel--tr:not(.is--odd):not(.order--repeat)',
-            'product' => '.order--name',
-            'currentPrice' => '.order--current-price',
-            'quantity' => '.order--quantity > .column--value',
-            'price' => '.order--price > .column--value',
-            'sum' => '.order--amount > .column--value'
-        ];
-    }
-
     /**
      * @inheritdoc
      */
@@ -51,22 +20,6 @@ class AccountOrder extends MultipleElement
         ];
 
         return Helper::getUnique($dates);
-    }
-
-    /**
-     * Returns the order number
-     * @return string
-     */
-    public function getNumberProperty()
-    {
-        $elements = Helper::findElements($this, ['number', 'footerNumber']);
-
-        $numbers = [
-            'orderNumber' => $elements['number']->getText(),
-            'footerNumber' => $elements['footerNumber']->getText()
-        ];
-
-        return Helper::getUnique($numbers);
     }
 
     /**

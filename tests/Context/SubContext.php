@@ -31,7 +31,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     public function __construct()
     {
-        $dotenv = new Dotenv(dirname(dirname(__DIR__)));
+        $dotenv = new Dotenv(dirname(__DIR__));
         $dotenv->load();
     }
 
@@ -252,28 +252,10 @@ class SubContext extends PageObjectContext implements MinkAwareContext
         }, $wait);
     }
 
-    protected function slugify($text, $seperator = '')
+    protected function slugify($text, $separator = '')
     {
         $slugify = new Slugify();
         $slugify->addRule('@', 'at');
-        return $slugify->slugify($text, $seperator);
-    }
-
-    protected function passwordFromEmail($email)
-    {
-        $password = $this->slugify($email);
-        return str_pad($password, 8, 'X');
-    }
-
-    /**
-     * ExtJS specific implementation.
-     *
-     * @param NodeElement $element The ExtJS <input type="button"... Element of the checkbox in question
-     * @return bool
-     */
-    protected function isChecked(NodeElement $element)
-    {
-        $table = $element->find('xpath', '/ancestor::table[1]');
-        return $table->hasClass('x-form-cb-checked');
+        return $slugify->slugify($text, $separator);
     }
 }
