@@ -2,11 +2,6 @@
 
 namespace Shopware\Tests\Mink\Page\Frontend;
 
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\WebAssert;
-use Shopware\Component\XpathBuilder\BaseXpathBuilder;
-use Shopware\Tests\Mink\Element\AccountPayment;
-use Shopware\Tests\Mink\Element\AddressBox;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
@@ -67,7 +62,15 @@ class Account extends Page implements HelperSelectorInterface
     }
 
     /**
-     * Logs a user in
+     * @inheritdoc
+     */
+    public function getXPathSelectors()
+    {
+        return [];
+    }
+
+    /**
+     * Logs a user into the frontend
      * @param string $email
      * @param string $password
      */
@@ -79,67 +82,12 @@ class Account extends Page implements HelperSelectorInterface
         $this->findButton('Anmelden')->click();
     }
 
-
     /**
-     * Logout a customer (important when using the Selenium driver)
+     * Log the currently authenticated user out of the frontend
      */
     public function logout()
     {
         $this->getDriver()->visit('/account/logout');
-    }
-
-    /**
-     * Changes the password of the user
-     * @param string $currentPassword
-     * @param string $password
-     * @param string $passwordConfirmation
-     */
-    public function changePassword($currentPassword, $password, $passwordConfirmation = null)
-    {
-        $data = [
-            [
-                'field' => 'password[currentPassword]',
-                'value' => $currentPassword
-            ],
-            [
-                'field' => 'password[password]',
-                'value' => $password
-            ],
-            [
-                'field' => 'password[passwordConfirmation]',
-                'value' => ($passwordConfirmation !== null) ? $passwordConfirmation : $password
-            ]
-        ];
-
-        Helper::fillForm($this, 'passwordForm', $data);
-        $this->find('css', $this->getCssSelectors()['changePasswordButton'])->press();
-    }
-
-    /**
-     * Changes the email address of the user
-     * @param string $password
-     * @param string $email
-     * @param string $emailConfirmation
-     */
-    public function changeEmail($password, $email, $emailConfirmation = null)
-    {
-        $data = [
-            [
-                'field' => 'email[currentPassword]',
-                'value' => $password
-            ],
-            [
-                'field' => 'email[email]',
-                'value' => $email
-            ],
-            [
-                'field' => 'email[emailConfirmation]',
-                'value' => ($emailConfirmation !== null) ? $emailConfirmation : $email
-            ]
-        ];
-
-        Helper::fillForm($this, 'emailForm', $data);
-        $this->find('css', $this->getCssSelectors()['changeEmailButton'])->press();
     }
 
     /**
@@ -150,48 +98,5 @@ class Account extends Page implements HelperSelectorInterface
     {
         Helper::fillForm($this, 'registrationForm', $data);
         $this->findButton('Weiter')->click();
-    }
-
-    /**
-     * @param string $salutation
-     * @param string $firstname
-     * @param string $lastname
-     */
-    public function changeProfile($salutation, $firstname, $lastname)
-    {
-        $data = [
-            [
-                'field' => 'profile[salutation]',
-                'value' => $salutation
-            ],
-            [
-                'field' => 'profile[firstname]',
-                'value' => $firstname
-            ],
-            [
-                'field' => 'profile[lastname]',
-                'value' => $lastname
-            ]
-        ];
-
-        Helper::fillForm($this, 'profileForm', $data);
-        $this->find('css', $this->getCssSelectors()['changeProfileButton'])->press();
-    }
-
-    /**
-     * Returns an array of all xpath selectors of the element/page
-     *
-     * Example:
-     * return [
-     *  'loginform' = "//input[@id='email']/ancestor::form[1]",
-     *  'loginemail' = "//input[@name='email']",
-     *  'password' = "//input[@name='password']",
-     * ]
-     *
-     * @return string[]
-     */
-    public function getXPathSelectors()
-    {
-        return [];
     }
 }

@@ -10,6 +10,9 @@ use Shopware\Tests\Mink\Element\MultipleElement;
 
 class Helper
 {
+
+
+
     /**
      * Helper function to check each row of an array.
      * If each second sub-element of a row is equal or in its first, function returns true
@@ -107,11 +110,10 @@ class Helper
      * Finds elements by their selectors
      * @param Page|Element|HelperSelectorInterface $parent
      * @param array $keys
-     * @param bool $throwExceptions
      * @return Element[]
      * @throws \Exception|PendingException
      */
-    public static function findElements(HelperSelectorInterface $parent, array $keys, $throwExceptions = true)
+    public static function findElements(HelperSelectorInterface $parent, array $keys)
     {
         $notFound = [];
         $elements = [];
@@ -136,11 +138,10 @@ class Helper
      * @deprecated
      * @param Page|Element|HelperSelectorInterface $parent
      * @param array $keys
-     * @param bool $throwExceptions
      * @return array
      * @throws \Exception|PendingException
      */
-    public static function findAllOfElements(HelperSelectorInterface $parent, array $keys, $throwExceptions = true)
+    public static function findAllOfElements(HelperSelectorInterface $parent, array $keys)
     {
         $notFound = [];
         $elements = [];
