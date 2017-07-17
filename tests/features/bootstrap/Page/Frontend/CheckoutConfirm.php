@@ -68,7 +68,6 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     {
         return [
             'gtc' => ['de' => 'AGB und Widerrufsbelehrung', 'en' => 'Terms, conditions and cancellation policy'],
-            'confirmButton' => ['de' => 'Zahlungspflichtig bestellen', 'en' => 'Send order'],
             'changePaymentButton' => ['de' => 'Weiter', 'en' => 'Next'],
             'saveAsNewAddressButton' => ['de' => 'Als neue Adresse speichern'],
         ];
@@ -117,21 +116,7 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     public function proceedToCheckout()
     {
         $this->checkField('sAGB');
-        Helper::pressNamedButton($this, 'confirmButton');
-    }
-
-    /**
-     * Changes the billing address
-     * @param array $data
-     */
-    public function changeBillingAddress(array $data = [])
-    {
-        $element = $this->getElement('CheckoutBilling');
-        Helper::clickNamedLink($element, 'changeButton');
-
-        $account = $this->getPage('Account');
-        Helper::fillForm($account, 'billingForm', $data);
-        Helper::pressNamedButton($account, 'changeBillingButton');
+        $this->findButton('Zahlungspflichtig bestellen')->click();
     }
 
     /**
@@ -151,31 +136,6 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     }
 
     /**
-     * Fills the shipping address in an already open form
-     * @param array $data
-     */
-    public function changeAddress(array $data = [])
-    {
-        /** @var AddressManagementAddressBox $element */
-        $element = $this->getElement('AddressManagementAddressBox');
-
-        Helper::fillForm($element, 'form', $data);
-        Helper::pressNamedButton($element, 'saveAddressButton');
-    }
-
-    /**
-     * Fills the shipping address in an already open form
-     * @param array $data
-     */
-    public function changeShippingAddress(array $data = [])
-    {
-        $account = $this->getPage('Account');
-
-        Helper::fillForm($account, 'shippingForm', $data);
-        Helper::pressNamedButton($account, 'changeShippingButton');
-    }
-
-    /**
      * Changes the shipping or payment method
      * @param string $subject shipping or payment
      * @param int|string $method
@@ -183,13 +143,11 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
      */
     public function changeShippingOrPaymentMethod($subject, $method, TableNode $table = null)
     {
-        $element = $this->getElement('CheckoutPayment');
-
         $changeButtonXpath = $this->getXPathSelectors()['changePaymentButton'];
 
         $this->waitForSelectorPresent('xpath', $changeButtonXpath);
 
-        Helper::clickNamedLink($element, 'changeButton');
+        $this->clickLink('Ändern');
 
         $this->waitForSelectorNotPresent('xpath', $changeButtonXpath);
 
@@ -213,7 +171,7 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
 
         $this->spin(function (ContextAwarePage $context) {
             try {
-                Helper::pressNamedButton($this, 'changePaymentButton');
+                $this->findButton('Weiter')->click();
             } catch (\Exception $e) {
                 return false;
             }

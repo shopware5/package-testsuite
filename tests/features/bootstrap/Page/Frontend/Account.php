@@ -47,7 +47,6 @@ class Account extends Page implements HelperSelectorInterface
     public function getNamedSelectors()
     {
         return [
-            'loginButton'           => ['de' => 'Anmelden',                 'en' => 'Login'],
             'forgotPasswordLink'    => ['de' => 'Passwort vergessen?',      'en' => 'Forgot your password?'],
             'sendButton'            => ['de' => 'Weiter',                   'en' => 'Continue'],
 
@@ -68,7 +67,7 @@ class Account extends Page implements HelperSelectorInterface
     }
 
     /**
-     * Logins a user
+     * Logs a user in
      * @param string $email
      * @param string $password
      */
@@ -77,7 +76,7 @@ class Account extends Page implements HelperSelectorInterface
         $this->fillField('email', $email);
         $this->fillField('password', $password);
 
-        Helper::pressNamedButton($this, 'loginButton');
+        $this->findButton('Anmelden')->click();
     }
 
 
@@ -144,142 +143,13 @@ class Account extends Page implements HelperSelectorInterface
     }
 
     /**
-     * Changes the billing address of the user
-     * @param array $values
-     */
-    public function changeBillingAddress($values)
-    {
-        Helper::fillForm($this, 'addressForm', $values);
-        Helper::pressNamedButton($this, 'saveAddressButton');
-    }
-
-    /**
-     * Changes the shipping address of the user
-     * @param array $values
-     */
-    public function changeShippingAddress($values)
-    {
-        Helper::fillForm($this, 'addressForm', $values);
-        Helper::pressNamedButton($this, 'saveAddressButton');
-    }
-
-    /**
-     * Creates a new address used neither as billing nor as shipping address
-     * @param array $values
-     */
-    public function createArbitraryAddress($values)
-    {
-        Helper::fillForm($this, 'addressForm', $values);
-        Helper::pressNamedButton($this, 'saveAddressButton');
-    }
-
-    /**
-     * Changes the payment method
-     * @param array $data
-     * @param TableNode $table
-     */
-    public function changePaymentMethod($data, TableNode $table = null)
-    {
-        if (!is_numeric($data[0]['value'])) {
-            $data[0]['value'] = $this->getMethodId('payment', $data[0]['value']);
-        }
-        $element = $this->getElement('AccountPayment');
-        Helper::clickNamedLink($element, 'changeButton');
-
-        Helper::fillForm($this, 'paymentForm', $data);
-        if ($table) {
-            
-//            throw new \Exception(print_r($table,true));
-        }
-        Helper::pressNamedButton($this, 'changePaymentButton');
-    }
-
-    /**
-     *
-     *
-     * @param string $subject
-     * @param string $methodName
-     * @return string
-     * @throws \Exception
-     */
-    private function getMethodId($subject, $methodName)
-    {
-        // Set prefixes
-        switch ($subject) {
-            case 'shipping':
-                $classPrefix = 'dispatch';
-                $inputName = 'sDispatch';
-                break;
-            case 'payment':
-                $classPrefix = 'payment';
-                $inputName = $classPrefix;
-                break;
-            default:
-                throw new \Exception(sprintf('Unknown subject: %s', $subject));
-        }
-
-        // Find element on page
-        $builder = new BaseXpathBuilder();
-        $inputXpath = $builder
-            ->child('label', ['@text' => $methodName, 'and', '~class' => 'method--name'])
-            ->ancestor('div', ['~class' => $classPrefix.'--method'], 1)
-            ->descendant('input', ['@name' => $inputName])
-            ->getXpath();
-        $input = $this->find('xpath', $inputXpath);
-
-        if (null === $input) {
-            throw new \Exception(sprintf("Could not find ID for %s '%s' on current page", $subject, $methodName));
-        }
-
-        // Get ID attribute
-        return $input->getAttribute('value');
-    }
-
-    /**
      * Fills the fields of the registration form and submits it
      * @param array $data
      */
     public function register(array $data)
     {
         Helper::fillForm($this, 'registrationForm', $data);
-        Helper::pressNamedButton($this, 'sendButton');
-    }
-
-    /**
-     * @param AddressBox $addresses
-     * @param string $name
-     */
-    public function chooseAddress(AddressBox $addresses, $name)
-    {
-        $this->searchAddress($addresses, $name);
-    }
-
-    /**
-     * @param AddressBox $addresses
-     * @param string $name
-     * @throws \Exception
-     */
-    protected function searchAddress(AddressBox $addresses, $name)
-    {
-        /** @var AddressBox $address */
-        foreach ($addresses as $address) {
-            if (strpos($address->getProperty('title'), $name) === false) {
-                continue;
-            }
-
-            Helper::pressNamedButton($address, 'chooseButton');
-
-            return;
-        }
-
-        $messages = 'The address "' . $name . '" is not available. Available are: \n';
-
-        /** @var AddressBox $address */
-        foreach ($addresses as $address) {
-            $messages .= $address->getProperty('title') . '\n';
-        }
-
-        throw new \Exception($messages);
+        $this->findButton('Weiter')->click();
     }
 
     /**

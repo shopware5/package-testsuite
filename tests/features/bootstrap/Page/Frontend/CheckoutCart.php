@@ -7,7 +7,7 @@ use Shopware\Helper\ContextAwarePage;
 use Shopware\Tests\Mink\Element\CartPosition;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\Helper;
-use Shopware\Tests\Mink\HelperSelectorInterface;
+use Shopware\Component\Helper\HelperSelectorInterface;
 
 class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
 {
@@ -54,8 +54,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
             'total' => ['de' => 'Gesamtsumme:', 'en' => 'Proceed to checkout'],
             'sumWithoutVat' => ['de' => 'Gesamtsumme ohne MwSt.:', 'en' => 'Proceed to checkout'],
             'tax' => ['de' => 'zzgl. %d %% MwSt.:', 'en' => 'Proceed to checkout'],
-            'changePaymentButton'   => ['de' => 'Weiter', 'en' => 'Next'],
-            'Versandkosten'   => ['de' => 'Versandkosten', 'en' => 'Shipping costs'],
+            'changePaymentButton' => ['de' => 'Weiter', 'en' => 'Next'],
         ];
     }
 
@@ -201,7 +200,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
      */
     public function removeProduct(CartPosition $item)
     {
-        Helper::pressNamedButton($item, 'remove');
+        $item->findButton('Löschen')->click();
     }
 
     /**
@@ -244,9 +243,9 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         $this->path = $originalPath;
     }
 
-    public function changeDispatchOrPaymentMethod($subject, $method, $data)
+    public function changeDispatchOrPaymentMethod($subject, $method)
     {
-        Helper::clickNamedLink($this, 'Versandkosten');
+        $this->clickLink('Versandkosten');
 
         if ($subject === 'dispatch') {
             $elements = Helper::findElements($this, ['dispatchSelect']);
@@ -318,7 +317,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function proceedToOrderConfirmation()
     {
         if ($this->verifyPage()) {
-            Helper::clickNamedLink($this, 'checkout');
+            $this->clickLink('Zur Kasse');
         }
 
         $this->getPage('CheckoutConfirm')->verifyPage();
@@ -332,7 +331,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function proceedToOrderConfirmationWithLogin($eMail, $password)
     {
         if ($this->verifyPage()) {
-            Helper::clickNamedLink($this, 'checkout');
+            $this->clickLink('Zur Kasse');
         }
 
         $this->getPage('Account')->login($eMail, $password);
@@ -346,30 +345,10 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function proceedToOrderConfirmationWithRegistration(array $data)
     {
         if ($this->verifyPage()) {
-            Helper::clickNamedLink($this, 'checkout');
+            $this->clickLink('Zur Kasse');
         }
 
         $this->getPage('Account')->register($data);
-    }
-
-    /**
-     * Changes the payment method
-     * @param array $data
-     */
-    public function changePaymentMethod($data = [])
-    {
-        $data[0]['field'] = 'payment';
-        $this->changeShippingMethod($data);
-    }
-
-    /**
-     * Changes the shipping method
-     * @param array $data
-     */
-    public function changeShippingMethod($data = [])
-    {
-        Helper::fillForm($this, 'shippingPaymentForm', $data);
-        Helper::pressNamedButton($this, 'changePaymentButton');
     }
 
     public function resetCart()
