@@ -4,11 +4,11 @@ namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Element\Frontend\CartPosition;
-use Shopware\Tests\Mink\Page\Backend\ShippingModule;
-use Shopware\Tests\Mink\Page\Frontend\Account;
-use Shopware\Tests\Mink\Page\Frontend\CheckoutCart;
-use Shopware\Tests\Mink\Page\Frontend\CheckoutConfirm;
-use Shopware\Tests\Mink\Page\Frontend\CheckoutShippingPayment;
+use Shopware\Page\Backend\ShippingModule;
+use Shopware\Page\Frontend\Account;
+use Shopware\Page\Frontend\CheckoutCart;
+use Shopware\Page\Frontend\CheckoutConfirm;
+use Shopware\Page\Frontend\CheckoutShippingPayment;
 
 class FrontendCheckoutContext extends SubContext
 {

@@ -4,9 +4,9 @@ namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
-use Shopware\Tests\Mink\Page\Backend\Backend;
-use Shopware\Tests\Mink\Page\Backend\BackendLogin;
-use Shopware\Tests\Mink\Page\Backend\ShippingModule;
+use Shopware\Page\Backend\Backend;
+use Shopware\Page\Backend\BackendLogin;
+use Shopware\Page\Backend\ShippingModule;
 
 class BackendContext extends SubContext
 {

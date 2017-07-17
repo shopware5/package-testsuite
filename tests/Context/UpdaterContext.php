@@ -2,7 +2,7 @@
 
 namespace Shopware\Context;
 
-use Shopware\Tests\Mink\Page\Updater\UpdaterIndex;
+use Shopware\Page\Updater\UpdaterIndex;
 
 class UpdaterContext extends SubContext
 {

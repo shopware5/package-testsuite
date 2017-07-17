@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink\Page\Frontend;
+namespace Shopware\Page\Frontend;
 
 use Shopware\Element\Frontend\CartPosition;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;

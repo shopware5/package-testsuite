@@ -3,7 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Page\Backend\ProductExportModule;
+use Shopware\Page\Backend\ProductExportModule;
 
 class ProductExportContext extends SubContext
 {

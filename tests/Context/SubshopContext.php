@@ -3,7 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Page\Backend\SettingsModule;
+use Shopware\Page\Backend\SettingsModule;
 
 class SubshopContext extends SubContext
 {

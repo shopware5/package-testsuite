@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink\Page\Backend;
+namespace Shopware\Page\Backend;
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 

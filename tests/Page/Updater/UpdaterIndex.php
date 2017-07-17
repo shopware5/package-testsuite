@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink\Page\Updater;
+namespace Shopware\Page\Updater;
 
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Helper\ContextAwarePage;

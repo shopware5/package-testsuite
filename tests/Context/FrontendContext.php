@@ -5,9 +5,9 @@ namespace Shopware\Context;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Element\Frontend\HeaderCart;
-use Shopware\Tests\Mink\Page\Frontend\Account;
-use Shopware\Tests\Mink\Page\Frontend\CheckoutCart;
-use Shopware\Tests\Mink\Page\Frontend\Index;
+use Shopware\Page\Frontend\Account;
+use Shopware\Page\Frontend\CheckoutCart;
+use Shopware\Page\Frontend\Index;
 
 class FrontendContext extends SubContext
 {

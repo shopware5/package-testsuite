@@ -3,8 +3,8 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Page\Backend\BackendLogin;
-use Shopware\Tests\Mink\Page\Backend\PaymentModule;
+use Shopware\Page\Backend\BackendLogin;
+use Shopware\Page\Backend\PaymentModule;
 
 class BackendPaymentContext extends SubContext
 {

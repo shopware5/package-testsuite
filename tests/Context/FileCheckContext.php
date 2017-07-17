@@ -2,7 +2,7 @@
 
 namespace Shopware\Context;
 
-use Shopware\Tests\Mink\Page\Backend\SystemInfoModule;
+use Shopware\Page\Backend\SystemInfoModule;
 
 class FileCheckContext extends SubContext
 {

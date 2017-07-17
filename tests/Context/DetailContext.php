@@ -10,7 +10,7 @@ class DetailContext extends SubContext
      */
     public function iAmOnTheDetailPageForArticleWithOrdernumber($ordernumber)
     {
-        /** @var \Shopware\Tests\Mink\Page\Frontend\Detail $page */
+        /** @var \Shopware\Page\Frontend\Detail $page */
         $page = $this->getPage('Search');
         $page->open(['searchTerm' => $ordernumber]);
     }
@@ -21,7 +21,7 @@ class DetailContext extends SubContext
      */
     public function iPutTheArticleTimesIntoTheBasket($quantity)
     {
-        /** @var \Shopware\Tests\Mink\Page\Frontend\Detail $page */
+        /** @var \Shopware\Page\Frontend\Detail $page */
         $page = $this->getPage('Detail');
         $page->toBasket($quantity);
         $this->waitForText("Der Artikel wurde erfolgreich in den Warenkorb gelegt");

@@ -4,7 +4,7 @@ namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
-use Shopware\Tests\Mink\Page\Installer\InstallerIndex;
+use Shopware\Page\Installer\InstallerIndex;
 
 class InstallerContext extends SubContext
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopware\Tests\Mink\Page\Backend;
+namespace Shopware\Page\Backend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;

@@ -3,7 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Tests\Mink\Page\Frontend\Account;
+use Shopware\Page\Frontend\Account;
 
 class FrontendAccountContext extends SubContext
 {

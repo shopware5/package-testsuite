@@ -3,11 +3,11 @@ default:
         SensioLabs\Behat\PageObjectExtension:
             namespaces:
                 page:
-                  - Shopware\Tests\Mink\Page
-                  - Shopware\Tests\Mink\Page\Frontend
-                  - Shopware\Tests\Mink\Page\Backend
-                  - Shopware\Tests\Mink\Page\Installer
-                  - Shopware\Tests\Mink\Page\Updater
+                  - Shopware\Page
+                  - Shopware\Page\Frontend
+                  - Shopware\Page\Backend
+                  - Shopware\Page\Installer
+                  - Shopware\Page\Updater
                 element: Shopware\Tests\Mink\Element
         Behat\MinkExtension:
             base_url: 'http://shopware.test/'
