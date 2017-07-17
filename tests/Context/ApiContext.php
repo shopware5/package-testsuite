@@ -2,7 +2,6 @@
 
 namespace Shopware\Context;
 
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Exception\MissingRequirementException;
 use Shopware\Component\Api\ApiClient;
@@ -13,15 +12,6 @@ class ApiContext extends SubContext
      * @var ApiClient $apiClient
      */
     private $apiClient;
-
-    /**
-     * @AfterScenario
-     * @param AfterScenarioScope $scope
-     */
-    public function onAfterScenario(AfterScenarioScope $scope)
-    {
-        $this->getApiClient()->deleteAllCustomers();
-    }
 
     /**
      * @Given the following products exist in the store:

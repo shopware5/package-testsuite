@@ -37,7 +37,7 @@ class UpdaterContext extends SubContext
     {
         /** @var UpdaterIndex $page */
         $page = $this->getPage('UpdaterIndex');
-        $page->clickOnDbStart('');
+        $page->clickOnDbStart();
     }
 
     /**

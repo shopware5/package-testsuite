@@ -62,14 +62,10 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
 
     /**
      * Starts the database migration
-     *
-     * @param string $text Text of the button which starts the database migration
-     *
      */
-    public function clickOnDbStart($text)
+    public function clickOnDbStart()
     {
-        $cssSelectors = $this->getCssSelectors();
-        $forwardButton = $this->find('css', $cssSelectors[$text]);
+        $forwardButton = $this->find('css', $this->getCssSelectors()['startDbMigrationButton']);
         $forwardButton->click();
     }
 
