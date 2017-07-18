@@ -4,8 +4,7 @@ namespace Shopware\Page\Frontend;
 
 use Shopware\Element\Frontend\CartPosition;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Helper\ContextAwarePage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Shopware\Page\ContextAwarePage;
 use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
