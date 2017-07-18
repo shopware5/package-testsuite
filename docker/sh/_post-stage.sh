@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 echo "Cleanup"
 [ -f "$ENV_TESTS" ] && rm "$ENV_TESTS"

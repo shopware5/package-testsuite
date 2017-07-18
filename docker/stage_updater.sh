@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [ "$1" = "" ]
 then
@@ -6,7 +6,7 @@ then
     exit 1
 fi
 
-source $(dirname $0)/sh/_pre-stage.sh
+. ./sh/_pre-stage.sh
 
 echo "Starting sw install:release"
 
@@ -42,4 +42,4 @@ if [ "$PACKAGE_VERSION" = "5.2" ]
         docker-compose run tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater&&~@knownFailing&&~@shopware52'
 fi
 
-source $(dirname $0)/sh/_post-stage.sh
+. ./sh/_post-stage.sh

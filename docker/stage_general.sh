@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [ "$1" = "" ]
 then
@@ -6,7 +6,7 @@ then
     exit 1
 fi
 
-source $(dirname $0)/sh/_pre-stage.sh
+. ./sh/_pre-stage.sh
 
 echo "Unzipping installer"
 docker-compose run --rm tools find /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
@@ -27,7 +27,7 @@ docker-compose run --rm tools php /var/www/shopware/recovery/install/index.php \
     --admin-locale="de_DE" \
     --admin-name="Demouser"
 
-source $(dirname $0)/sh/_configure-sw-installation.sh
+. ./sh/_configure-sw-installation.sh
 
 if [ "$PACKAGE_VERSION" = "5.2" ]
     then
@@ -38,4 +38,4 @@ if [ "$PACKAGE_VERSION" = "5.2" ]
         docker-compose run tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware52'
 fi
 
-source $(dirname $0)/sh/_post-stage.sh
+. ./sh/_post-stage.sh

@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Include testing config for docker-compose
 shopt -s expand_aliases
 alias docker-compose="docker-compose -f docker-compose.yml -f docker-compose.local.yml"
 
-source $(dirname $0)/sh/_pre-stage.sh
+. ./sh/_pre-stage.sh
 
 echo "Unzipping installer"
 docker-compose run --rm tools find /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
@@ -28,6 +28,6 @@ docker-compose run --rm tools php /var/www/shopware/recovery/install/index.php \
     --admin-locale="de_DE" \
     --admin-name="Demouser"
 
-source $(dirname $0)/sh/_configure-sw-installation.sh
+. ./sh/_configure-sw-installation.sh
 
 unalias docker-compose

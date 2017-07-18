@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 export COMPOSE_PROJECT_NAME=$1
 echo "COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}"

@@ -4,11 +4,12 @@ Feature: I can buy products using the store frontend
   Background:
 
     Given the following products exist in the store:
-      | number  | name                         | price | supplier                | categories                                                             |
-      | SWT0001 | BienenhoniK - Karl Süßkleber | 5.20  | Bienenstock             | Root > Deutsch > Nahrungsmittel > Süß                                  |
-      | SWT0002 | Sushi-Reis                   | 12    | KendalJP Inc.           | Root > Deutsch > Nahrungsmittel > Getreide                             |
-      | SWT0003 | Sommerhandschuhe "Sansibar"  | 35.50 | Kunstschneerasen AG     | Root > Deutsch > Kleidung > Herren ; Root > Deutsch > Kleidung > Damen |
-      | SWT0004 | Kaviar vom Rind              | 44,99 | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
+      | number  | name                         | price | tax | supplier                | categories                                                             |
+      | SWT0001 | BienenhoniK - Karl Süßkleber | 5.20  | 19  | Bienenstock             | Root > Deutsch > Nahrungsmittel > Süß                                  |
+      | SWT0002 | Sushi-Reis                   | 12    | 19  | KendalJP Inc.           | Root > Deutsch > Nahrungsmittel > Getreide                             |
+      | SWT0003 | Sommerhandschuhe "Sansibar"  | 35.50 | 19  | Kunstschneerasen AG     | Root > Deutsch > Kleidung > Herren ; Root > Deutsch > Kleidung > Damen |
+      | SWT0004 | Kaviar vom Rind              | 44,99 | 19  | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
+      | SWT0005 | Kaviar vom Rind (das Buch)   | 10,99 | 7   | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
 
     And the following countries are active for checkout:
       | iso | shippingFree | taxFree | taxFreeUstId | active | displayStateInRegistration | forceStateInRegistration |
@@ -21,6 +22,33 @@ Feature: I can buy products using the store frontend
       | regular.customer@shopware.ch.test | shopware |       | CH      |
       | b2b.customer@shopware.ch.test     | shopware | H     | CH      |
 
+
+  ##
+  # The cart can work with products that have different tax rates defined
+  #
+  # Tested functionality:
+  #   - Adding and removing products with different tax rates, so:
+  #     Carts with 7% & 19% products as well as 7% only.
+  #
+  Scenario: I can buy products that have different tax rates
+    Given the cart contains the following products:
+      | number  | quantity |
+      | SWT0005 | 2        |
+
+    Then the aggregations should look like this:
+      | label         | value   |
+      | sum           | 21,98 € |
+      | shipping      | 3,90 €  |
+      | total         | 25,88 € |
+      | sumWithoutVat | 24,18 € |
+
+    When I add the article "SWT0004" to my basket
+    Then the aggregations should look like this:
+      | label         | value   |
+      | sum           | 66,97 € |
+      | shipping      | 3,90 €  |
+      | total         | 70,87 € |
+      | sumWithoutVat | 61,63 € |
 
   ##
   # Unregistered user puts products in cart and chooses free shipping method
@@ -78,9 +106,6 @@ Feature: I can buy products using the store frontend
   #   - Basic cart calculation
   #   - Swiss and German customers (incl. and excl. VAT)
   #
-  # Scenario Variables:
-  #   - Regular customers and business customers
-  #
   Scenario Outline: I can register and order products
     Given there is no customer registered with e-mail address "<email>"
     And I register myself:
@@ -115,11 +140,9 @@ Feature: I can buy products using the store frontend
     Then  I should see "Vielen Dank für Ihre Bestellung bei"
 
     Examples:
-      | customer_type | email                                  | country     | sum      | shipping | total    |
-      | private       | regular.new-customer@shopware.de.test  | Deutschland | 134,97 € | 3,90 €   | 138,87 € |
-      | business      | business.new-customer@shopware.de.test | Deutschland | 134,97 € | 3,90 €   | 138,87 € |
-      | private       | regular.new-customer@shopware.ch.test  | Schweiz     | 113,43 € | 3,28 €   | 116,71 € |
-      | business      | business.new-customer@shopware.ch.test | Schweiz     | 113,43 € | 3,28 €   | 116,71 € |
+      | customer_type | email                                 | country     | sum      | shipping | total    |
+      | private       | regular.new-customer@shopware.de.test | Deutschland | 134,97 € | 3,90 €   | 138,87 € |
+      | private       | regular.new-customer@shopware.ch.test | Schweiz     | 113,43 € | 3,28 €   | 116,71 € |
 
   ##
   # Already logged-in user puts items into cart and completes checkout
@@ -290,39 +313,6 @@ Feature: I can buy products using the store frontend
       | account.email                     | account.password |
       | regular.customer@shopware.de.test | shopware         |
       | b2b.customer@shopware.de.test     | shopware         |
-
-  ##
-  # Already logged-in, Swiss customer (no VAT) buys a product from its detail page
-  #
-  # Tested functionality:
-  #   - Buying products from detail page
-  #
-  # Scenario variables:
-  #   - Regular customer / Business customer
-  #
-  Scenario Outline: I can buy an article from its detail page and complete checkout
-    Given I am logged in with account "<account.email>" with password "<account.password>"
-
-    When  I am on the detail page for article with ordernumber "SWT0001"
-    Then  I should see "BienenhoniK - Karl Süßkleber"
-
-    When  I put the current article "3" times into the basket
-    Then  the cart should contain 1 articles with a value of "13,11€"
-    And   the aggregations should look like this:
-      | label    | value  |
-      | sum      | 13,11€ |
-      | shipping | 3,28€  |
-      | total    | 16,39€ |
-
-    When  I proceed to order confirmation
-    And   I proceed to checkout
-    Then  I should see "Vielen Dank für Ihre Bestellung bei"
-
-    Examples:
-      | account.email                     | account.password |
-      | regular.customer@shopware.ch.test | shopware         |
-      | b2b.customer@shopware.ch.test     | shopware         |
-
 
   Scenario Outline: I can finish my order with different payment and delivery methods
     Given the following payment methods are activated:
