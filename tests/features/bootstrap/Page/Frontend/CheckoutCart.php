@@ -1,13 +1,14 @@
 <?php
 
-namespace  Shopware\Tests\Mink\Page\Frontend;
+namespace Shopware\Tests\Mink\Page\Frontend;
 
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
+use Shopware\Helper\ContextAwarePage;
 use Shopware\Tests\Mink\Element\CartPosition;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Tests\Mink\Helper;
 use Shopware\Tests\Mink\HelperSelectorInterface;
 
-class CheckoutCart extends Page implements HelperSelectorInterface
+class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
 {
     /**
      * @var string $path
@@ -46,14 +47,29 @@ class CheckoutCart extends Page implements HelperSelectorInterface
     public function getNamedSelectors()
     {
         return [
-            'checkout' => ['de' => 'Zur Kasse',   'en' => 'Checkout'],
+            'checkout' => ['de' => 'Zur Kasse', 'en' => 'Checkout'],
             'sum' => ['de' => 'Summe:', 'en' => 'Proceed to checkout'],
             'shipping' => ['de' => 'Versandkosten:', 'en' => 'Proceed to checkout'],
             'total' => ['de' => 'Gesamtsumme:', 'en' => 'Proceed to checkout'],
             'sumWithoutVat' => ['de' => 'Gesamtsumme ohne MwSt.:', 'en' => 'Proceed to checkout'],
             'tax' => ['de' => 'zzgl. %d %% MwSt.:', 'en' => 'Proceed to checkout'],
-            'changePaymentButton'   => ['de' => 'Weiter', 'en' => 'Next'],
-            'Versandkosten'   => ['de' => 'Versandkosten', 'en' => 'Shipping costs'],
+            'changePaymentButton' => ['de' => 'Weiter', 'en' => 'Next'],
+            'Versandkosten' => ['de' => 'Versandkosten', 'en' => 'Shipping costs'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getXPathSelectors()
+    {
+        return [
+            'addProductInput' => FrontendXpathBuilder::create()
+                ->child('input', ['~class' => 'add-product--field'])
+                ->getXpath(),
+            'addProductSubmit' => FrontendXpathBuilder::create()
+                ->child('button', ['~class' => 'add-product--button'])
+                ->getXpath(),
         ];
     }
 
@@ -73,7 +89,7 @@ class CheckoutCart extends Page implements HelperSelectorInterface
 
             $check[$property['label']] = Helper::floatArray([
                 $property['value'],
-                $elements['aggregationValues'][$key]->getText()
+                $elements['aggregationValues'][$key]->getText(),
             ]);
 
             unset($elements['aggregationLabels'][$key]);
@@ -168,10 +184,14 @@ class CheckoutCart extends Page implements HelperSelectorInterface
      */
     public function addArticle($article)
     {
-        $elements = Helper::findElements($this, ['addArticleInput', 'addArticleSubmit']);
+        $addProductInputXpath = $this->getXPathSelectors()['addProductInput'];
+        $addProductSubmitXpath = $this->getXPathSelectors()['addProductSubmit'];
 
-        $elements['addArticleInput']->setValue($article);
-        $elements['addArticleSubmit']->press();
+        $this->waitForSelectorPresent('xpath', $addProductInputXpath);
+        $this->waitForSelectorPresent('xpath', $addProductSubmitXpath);
+
+        $this->find('xpath', $addProductInputXpath)->setValue($article);
+        $this->find('xpath', $addProductSubmitXpath)->click();
     }
 
     /**
@@ -334,7 +354,7 @@ class CheckoutCart extends Page implements HelperSelectorInterface
 
     /**
      * Changes the payment method
-     * @param array   $data
+     * @param array $data
      */
     public function changePaymentMethod($data = [])
     {
@@ -366,26 +386,9 @@ class CheckoutCart extends Page implements HelperSelectorInterface
         $this->open();
     }
 
-    /**
-     * Returns an array of all xpath selectors of the element/page
-     *
-     * Example:
-     * return [
-     *  'loginform' = "//input[@id='email']/ancestor::form[1]",
-     *  'loginemail' = "//input[@name='email']",
-     *  'password' = "//input[@name='password']",
-     * ]
-     *
-     * @return string[]
-     */
-    public function getXPathSelectors()
-    {
-        return [];
-    }
-
     private function hasCartProductWithQuantity($number, $quantity)
     {
-        $xPath = "//p[contains(text(), '".$number."')]//ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' row--product ')]//input[@name='sArticle' and @value='".$quantity."']";
+        $xPath = "//p[contains(text(), '" . $number . "')]//ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' row--product ')]//input[@name='sArticle' and @value='" . $quantity . "']";
         return $this->has('xpath', $xPath);
     }
 }
