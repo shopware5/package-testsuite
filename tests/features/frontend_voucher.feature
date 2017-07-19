@@ -92,3 +92,21 @@ Feature:
     And I click the delete icon on the voucher named "Neuer Relativer Testgutschein"
     And I click the "Ja" Button
 
+  Scenario: I can create and use vouchers with individual codes
+    Given I am on the page "BackendLogin"
+    And I log in with user "demo" and password "demo"
+    And I am on the page "VoucherModule"
+    And I click the "Hinzufügen" Button
+    Then I should see "Gutschein-Konfiguration" eventually
+
+    When I fill out the voucher form:
+      | label                | value                             | type     |
+      | Beschreibung:        | Neuer Individueller Testgutschein | input    |
+      | Gutscheincode Modus: | Individuell                       | combobox |
+      | Mindestumsatz:       | 10                                | input    |
+      | Wert:                | 5                                 | input    |
+      | Bestellnummer:       | PLYM19                            | input    |
+    And I click the "Speichern" Button
+    And I click on the "Individuelle Gutscheincodes" tab
+    And I click the "Neue Codes generieren" Button
+    Then I should see "Nein" eventually
