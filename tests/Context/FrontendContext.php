@@ -4,14 +4,12 @@ namespace Shopware\Context;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
-use Shopware\Element\Frontend\HeaderCart;
 use Shopware\Page\Frontend\Account;
 use Shopware\Page\Frontend\CheckoutCart;
 use Shopware\Page\Frontend\Index;
 
 class FrontendContext extends SubContext
 {
-
     /**
      * @Given /^I am logged in with account "([^"]*)"(?: with password "([^"]*)")?$/
      * @param string $email
@@ -24,7 +22,7 @@ class FrontendContext extends SubContext
         $accountPage->open();
 
         // We are logged in
-        if($this->waitIfThereIsText($email)) {
+        if ($this->waitIfThereIsText($email)) {
             return;
         }
 
@@ -46,15 +44,15 @@ class FrontendContext extends SubContext
      * @Then the cart should contain :quantity articles with a value of :amount
      * @param string $quantity
      * @param string $amount
+     * @throws \Exception
      */
     public function theCartShouldContainArticlesWithAValueOf($quantity, $amount)
     {
         /** @var CheckoutCart $page */
         $page = $this->getPage('CheckoutCart');
         $page->open();
-        /** @var HeaderCart $headerCart */
-        $headerCart = $this->getElement('HeaderCart');
-        $headerCart->checkCart($quantity, $amount);
+
+        $page->checkPositionCountAndCartSum($quantity, $amount);
     }
 
     /**
@@ -93,7 +91,8 @@ class FrontendContext extends SubContext
             throw new ElementNotFoundException(sprintf("Product with ordernumber %s not found!", $name));
         }
 
-        $price = $product->find('xpath', (new BaseXpathBuilder())->descendant('span', ['~class' => 'price--default'])->getXpath());
+        $price = $product->find('xpath',
+            (new BaseXpathBuilder())->descendant('span', ['~class' => 'price--default'])->getXpath());
 
         $priceText = $price->getText();
         $priceText = explode(' ', $priceText)[0];

@@ -2,10 +2,10 @@
 
 namespace Shopware\Page\Frontend;
 
-use Shopware\Element\Frontend\CartPosition;
+use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
+use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
-use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
@@ -47,7 +47,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function getNamedSelectors()
     {
         return [
-            'checkout' => ['de' => 'Zur Kasse',   'en' => 'Checkout'],
+            'checkout' => ['de' => 'Zur Kasse', 'en' => 'Checkout'],
             'sum' => ['de' => 'Summe:', 'en' => 'Proceed to checkout'],
             'shipping' => ['de' => 'Versandkosten:', 'en' => 'Proceed to checkout'],
             'total' => ['de' => 'Gesamtsumme:', 'en' => 'Proceed to checkout'],
@@ -69,112 +69,37 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
             'addProductSubmit' => FrontendXpathBuilder::create()
                 ->child('button', ['~class' => 'add-product--button'])
                 ->getXpath(),
+            'cartPositionRow' => FrontendXpathBuilder::create()
+                ->child('div', ['~class' => 'row--product'])
+                ->getXpath(),
+            'cartPositionName' => FrontendXpathBuilder::create()
+                ->child('a', ['~class' => 'content--title'])
+                ->getXpath(),
+            'cartPositionNumber' => FrontendXpathBuilder::create()
+                ->child('p', ['~class' => 'content--sku'])
+                ->getXpath(),
+            'cartPositionItemPrice' => FrontendXpathBuilder::create()
+                ->child('div', ['~class' => 'column--unit-price'])
+                ->getXpath(),
+            'cartPositionTotalPrice' => FrontendXpathBuilder::create()
+                ->child('div', ['~class' => 'column--total-price'])
+                ->getXpath(),
         ];
     }
 
     /**
-     * Checks the aggregation
-     * @param $aggregation
-     * @throws \Exception
+     * Validate the cart contains the given expected cart positions
+     * @param array $positionData
      */
-    public function checkAggregation($aggregation)
+    public function validateCart(array $positionData)
     {
-        $elements = Helper::findAllOfElements($this, ['aggregationLabels', 'aggregationValues']);
-        $lang = 'de';
-        $check = [];
-
-        foreach ($aggregation as $property) {
-            $key = $this->getAggregationPosition($elements['aggregationLabels'], $property['label'], $lang);
-
-            $check[$property['label']] = Helper::floatArray([
-                $property['value'],
-                $elements['aggregationValues'][$key]->getText(),
-            ]);
-
-            unset($elements['aggregationLabels'][$key]);
-            unset($elements['aggregationValues'][$key]);
+        $expectedPositions = [];
+        foreach ($positionData as $position) {
+            $expectedPositions[] = CartPosition::fromArray($position);
         }
 
-        $result = Helper::checkArray($check);
-
-        if ($result !== true) {
-            $message = sprintf(
-                'The value of "%s" is "%s"! (should be "%s")',
-                $result,
-                $check[$result][1],
-                $check[$result][0]
-            );
-
-            throw new \Exception($message);
-        }
-    }
-
-    /**
-     * @param string $key
-     * @param string $language
-     * @return string
-     */
-    private function getLabel($key, $language)
-    {
-        $language = $language ?: 'de';
-
-        $labels = $this->getNamedSelectors();
-
-        if (strpos($key, '%') !== false) {
-            $taxRate = intval($key);
-            return sprintf($labels['tax'][$language], $taxRate);
-        }
-
-        if (isset($labels[$key][$language])) {
-            return $labels[$key][$language];
-        }
-
-        $message = sprintf('Label "%s" is not defined for language key "%s"', $key, $language);
-        throw new \Exception($message);
-    }
-
-    /**
-     * @param array $labels
-     * @param string $labelKey
-     * @param string $language
-     * @return int
-     * @throws \Exception
-     */
-    private function getAggregationPosition(array $labels, $labelKey, $language)
-    {
-        $language = $language ?: 'de';
-
-        $givenLabel = $this->getLabel($labelKey, $language);
-
-        $key = 0;
-        $lastKey = max(array_keys($labels));
-
-        do {
-            if (array_key_exists($key, $labels)) {
-                $readLabel = $labels[$key]->getText();
-
-                if ($givenLabel === $readLabel) {
-                    return $key;
-                }
-            }
-
-            $key++;
-        } while ($key <= $lastKey);
-
-        $message = sprintf('Label "%s" does not exist on the page! ("%s")', $labelKey, $givenLabel);
-        throw new \Exception($message);
-    }
-
-    /**
-     * Adds a voucher to the cart
-     * @param string $voucher
-     */
-    public function addVoucher($voucher)
-    {
-        $elements = Helper::findElements($this, ['addVoucherInput', 'addVoucherSubmit']);
-
-        $elements['addVoucherInput']->setValue($voucher);
-        $elements['addVoucherSubmit']->press();
+        $actualPositions = $this->extractActualCartPositions();
+        $this->assertCartPositionListsAreEqual($expectedPositions, $actualPositions);
     }
 
     /**
@@ -194,33 +119,66 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * Remove a product from the cart
-     * @param CartPosition $item
+     * Remove the cart position at the specified index
+     *
+     * @param int $position
+     * @throws \Exception
      */
-    public function removeProduct(CartPosition $item)
+    public function removeCartPositionAtIndex($position)
     {
-        $item->findButton('Löschen')->click();
+        $this->open();
+        $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
+        $position = (int)$position;
+
+        if ($position > count($rows)) {
+            throw new \Exception(sprintf('Can\'t delete cart position #%s - no such position', $position));
+        }
+
+        /** @var NodeElement $row */
+        $row = $rows[$position - 1];
+        $row->findButton('Löschen')->click();
     }
 
     /**
-     * Remove the voucher from the cart
-     * @throws \Behat\Mink\Exception\ResponseTextException
+     * Checks the aggregation
+     * @param $aggregation
+     * @throws \Exception
      */
-    public function removeVoucher()
+    public function checkAggregation($aggregation)
     {
-        $elements = Helper::findElements($this, ['removeVoucher']);
-        $elements['removeVoucher']->click();
-    }
+        $this->open();
 
-    /**
-     * Removes all products from the cart
-     * @param CartPosition $items
-     */
-    public function emptyCart(CartPosition $items)
-    {
-        /** @var CartPosition $item */
-        foreach ($items as $item) {
-            $this->removeProduct($item);
+        foreach ($aggregation as $row) {
+            switch ($row['label']) {
+                case 'sum':
+                    $element = $this->find('css', $this->getCssSelectors()['sum']);
+                    $value = $element->getText();
+                    if (self::toFloat($value) !== self::toFloat($row['value'])) {
+                        throw new \Exception('Expected cart sum to be ' . $row['value'] . ', got ' . $value);
+                    }
+                    break;
+                case 'shipping':
+                    $element = $this->find('css', $this->getCssSelectors()['shipping']);
+                    $value = $element->getText();
+                    if (self::toFloat($value) !== self::toFloat($row['value'])) {
+                        throw new \Exception('Expected shipping to be ' . $row['value'] . ', got ' . $value);
+                    }
+                    break;
+                case 'total':
+                    $element = $this->find('css', $this->getCssSelectors()['total']);
+                    $value = $element->getText();
+                    if (self::toFloat($value) !== self::toFloat($row['value'])) {
+                        throw new \Exception('Expected total to be ' . $row['value'] . ', got ' . $value);
+                    }
+                    break;
+                case 'sumWithoutVat':
+                    $element = $this->find('css', $this->getCssSelectors()['sumWithoutVat']);
+                    $value = $element->getText();
+                    if (self::toFloat($value) !== self::toFloat($row['value'])) {
+                        throw new \Exception('Expected sum without vat to be ' . $row['value'] . ', got ' . $value);
+                    }
+                    break;
+            }
         }
     }
 
@@ -242,72 +200,33 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         $this->path = $originalPath;
     }
 
-    public function changeDispatchOrPaymentMethod($subject, $method)
-    {
-        $this->clickLink('Versandkosten');
-
-        if ($subject === 'dispatch') {
-            $elements = Helper::findElements($this, ['dispatchSelect']);
-
-            if (empty($elements)) {
-                throw new \Exception('Could not find dispatch select element on cart page.');
-            }
-
-            $elements['dispatchSelect']->selectOption($method);
-        }
-    }
-
-    protected function verify(array $urlParameters)
-    {
-        $this->verifyResponse();
-        $this->verifyPage();
-    }
-
     /**
-     * Checks the cart positions
-     * Available properties are: number (required), name (required), quantity, itemPrice, sum
-     * @param CartPosition $cartPositions
-     * @param array $items
-     * @throws \Exception
+     * Remove all products from the cart
      */
-    public function checkCartProducts(CartPosition $cartPositions, array $items)
+    public function emptyCart()
     {
-        if (count($items) !== count($cartPositions)) {
-            throw new \Exception('The number of cart positions is incorrect.');
-        }
+        $this->open();
+        $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
 
-        $items = Helper::floatArray($items, ['quantity', 'itemPrice', 'sum']);
-        $result = Helper::assertElements($items, $cartPositions);
-
-        if ($result !== true) {
-            $messages = 'The following articles are wrong: \n';
-            foreach ($result as $product) {
-                $messages .= sprintf(
-                    '%s - %s (%s is "%s", should be "%s") \n',
-                    $product['properties']['number'],
-                    $product['properties']['name'],
-                    $product['result']['key'],
-                    $product['result']['value'],
-                    $product['result']['value2']
-                );
-            }
-            throw new \Exception($messages);
+        /** @var NodeElement $row */
+        foreach ($rows as $row) {
+            $row->findButton('Löschen')->click();
         }
     }
 
     /**
-     * Verify if we're on an expected page. Throw an exception if not.
-     * @param string $language
-     * @return bool
+     * Check the cart position count and cart sum
+     *
+     * @param string $quantity
+     * @param string $amount
      * @throws \Exception
      */
-    public function verifyPage($language = '')
+    public function checkPositionCountAndCartSum($quantity, $amount)
     {
-        if(!strpos($this->getHtml(), 'is--ctl-checkout is--act-cart')) {
-            throw new \Exception('Could not verify page - expected to be on checkout/cart.');
+        if ($this->getCartPositionCount() !== (int)$quantity || $this->getCartSum() !== self::toFloat($amount)) {
+            throw new \Exception(sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
+                $quantity, $amount, $this->getCartPositionCount(), $this->getCartSum()));
         }
-
-        return true;
     }
 
     /**
@@ -323,50 +242,144 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * Proceeds to the confirmation page with login
-     * @param string $eMail
-     * @param string $password
+     * Return number of positions in cart
+     *
+     * @return int
      */
-    public function proceedToOrderConfirmationWithLogin($eMail, $password)
+    private function getCartPositionCount()
     {
-        if ($this->verifyPage()) {
-            $this->clickLink('Zur Kasse');
-        }
-
-        $this->getPage('Account')->login($eMail, $password);
-        $this->getPage('CheckoutConfirm')->verifyPage();
+        $this->open();
+        $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
+        return count($rows);
     }
 
     /**
-     * Proceeds to the confirmation page with registration
-     * @param array $data
+     * Return current cart sum
+     *
+     * @return float
      */
-    public function proceedToOrderConfirmationWithRegistration(array $data)
+    private function getCartSum()
     {
-        if ($this->verifyPage()) {
-            $this->clickLink('Zur Kasse');
-        }
-
-        $this->getPage('Account')->register($data);
-    }
-
-    public function resetCart()
-    {
-        try {
-            $elements = Helper::findElements($this, ['articleDeleteButtons']);
-            $elements[0]->click();
-            if (count($elements) > 1) {
-                $this->resetCart();
-            }
-        } catch (\Exception $ex) {
-        }
-
         $this->open();
+        $element = $this->find('css', $this->getCssSelectors()['sum']);
+        return self::toFloat($element->getText());
     }
 
+    /**
+     * Extract the positions currently in the user's cart
+     *
+     * @return CartPosition[]
+     */
+    private function extractActualCartPositions()
+    {
+        $this->open();
+        $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
+
+        $positions = [];
+
+        /** @var NodeElement $row */
+        foreach ($rows as $row) {
+            $positions[] = CartPosition::fromArray([
+                'name' => $row->find('xpath', $this->getXPathSelectors()['cartPositionName'])->getText(),
+                'number' => $row->find('xpath', $this->getXPathSelectors()['cartPositionNumber'])->getText(),
+                'quantity' => $row->find('css', 'div.column--quantity option[selected]')->getText(),
+                'itemPrice' => $row->find('xpath', $this->getXPathSelectors()['cartPositionItemPrice'])->getText(),
+                'sum' => $row->find('xpath', $this->getXPathSelectors()['cartPositionTotalPrice'])->getText(),
+            ]);
+        }
+
+        return $positions;
+    }
+
+    /**
+     * Compare two lists of cart positions for equality
+     *
+     * @param CartPosition[] $expected
+     * @param CartPosition[] $actual
+     * @throws \Exception
+     */
+    private function assertCartPositionListsAreEqual(array $expected, array $actual)
+    {
+        if (count($expected) !== count($actual)) {
+            throw new \Exception('Expected %s cart positions, got %s.', count($expected), count($actual));
+        }
+
+        /** @var CartPosition $expectedPosition */
+        foreach ($expected as $expectedPosition) {
+            /** @var CartPosition $actualPosition */
+            foreach ($actual as $actualPosition) {
+                if ($expectedPosition->getName() === $actualPosition->getName()) {
+                    if ($this->compareCartPositions($expectedPosition, $actualPosition)) {
+                        continue 2;
+                    }
+
+                    throw new \Exception(sprintf('Cart positions not as expected: Expected: %s Got: %s',
+                            print_r($expectedPosition, true),
+                            print_r($actualPosition, true))
+                    );
+                }
+            }
+
+            throw new \Exception(sprintf('Could not find position %s', print_r($expectedPosition, true)));
+        }
+    }
+
+    /**
+     * Compare two cart positions for equality
+     *
+     * @param CartPosition $expected
+     * @param CartPosition $actual
+     * @return bool
+     */
+    private function compareCartPositions(CartPosition $expected, CartPosition $actual)
+    {
+        return $actual->getName() === $expected->getName() &&
+            strpos($actual->getNumber(), $expected->getNumber()) &&
+            $actual->getQuantity() === $expected->getQuantity() &&
+            $actual->getItemPrice() === $expected->getItemPrice() &&
+            $actual->getSum() === $expected->getSum();
+    }
+
+    /**
+     * Returns true if the cart contains a product with a given number and a given quantity
+     *
+     * @param $number
+     * @param $quantity
+     * @return bool
+     */
     private function hasCartProductWithQuantity($number, $quantity)
     {
         $xPath = "//p[contains(text(), '" . $number . "')]//ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' row--product ')]//input[@name='sArticle' and @value='" . $quantity . "']";
         return $this->has('xpath', $xPath);
+    }
+
+    /**
+     * Convert a given string value to a float
+     *
+     * @param $string
+     * @return float
+     */
+    private static function toFloat($string)
+    {
+        if (is_float($string)) {
+            return $string;
+        }
+
+        $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
+        preg_match("/([0-9]+[\\.]?[0-9]*)/", $float, $matches);
+
+        return floatval($matches[0]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function verifyPage()
+    {
+        if (!strpos($this->getHtml(), 'is--ctl-checkout is--act-cart')) {
+            throw new \Exception('Could not verify page - expected to be on checkout/cart.');
+        }
+
+        return true;
     }
 }

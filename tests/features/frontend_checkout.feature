@@ -46,8 +46,8 @@ Feature: I can buy products using the store frontend
   #
   Scenario: I can buy products that have different tax rates
     Given the cart contains the following products:
-      | number  | quantity |
-      | SWT0005 | 2        |
+      | name                       | number  | quantity | itemPrice | sum   |
+      | Kaviar vom Rind (das Buch) | SWT0005 | 2        | 10,99     | 21,98 |
 
     Then the aggregations should look like this:
       | label         | value   |
@@ -80,18 +80,18 @@ Feature: I can buy products using the store frontend
       | name                  | costs | calculationType | shippingType        | surchargeCalculation | shippingfree | activePaymentMethods | activeCountries |
       | Shipping Free from 40 | 3,9   | Preis           | Standard Versandart | Immer berechnen      | 40           | Rechnung, Vorkasse   | Deutschland     |
 
-    And I am not logged in
-
     And the shipping method "Shipping Free from 40" has the following shipping costs:
       | from  | to       | costs |
       | 0     | 40       | 3,9   |
       | 40,01 | beliebig | 0     |
 
-    And the cart contains the following products:
-      | number  | name            | quantity |
-      | SWT0004 | Kaviar vom Rind | 1        |
+    And I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
 
-    And I change the dispatch method in cart to "Shipping Free from 40"
+    And the cart contains the following products:
+      | number  | name            | quantity | itemPrice | sum   |
+      | SWT0004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
+
+    And I change my shipping method to "Shipping Free from 40":
 
     Then the cart should contain 1 articles with a value of "44,99 €"
     And the aggregations should look like this:
@@ -101,7 +101,7 @@ Feature: I can buy products using the store frontend
       | total         | 44,99 € |
       | sumWithoutVat | 37,81 € |
 
-    When I change the dispatch method in cart to "Standard Versand"
+    When I change my shipping method to "Standard Versand":
     Then the aggregations should look like this:
       | label         | value   |
       | sum           | 44,99 € |
@@ -180,8 +180,8 @@ Feature: I can buy products using the store frontend
       | Vorkasse |
 
     And the cart contains the following products:
-      | number                | quantity                |
-      | <cart.product.number> | <cart.product.quantity> |
+      | name                         | number  | quantity | itemPrice                 | sum                 |
+      | BienenhoniK - Karl Süßkleber | SWT0001 | 3        | <cart.position.itemPrice> | <cart.position.sum> |
 
     Then the cart should contain 1 articles with a value of "<cart.sum>"
     And the aggregations should look like this:
@@ -191,16 +191,16 @@ Feature: I can buy products using the store frontend
       | total    | <cart.total>    |
 
     When I proceed to order confirmation
-    And I change the payment method in checkout to "<payment>"
+    And I change my payment method to "<payment>"
     And I proceed to checkout
     Then I should see "Vielen Dank für Ihre Bestellung bei"
 
     Examples:
-      | account.email                     | account.password | cart.product.number | cart.product.quantity | payment  | cart.sum | cart.shipping | cart.total |
-      | regular.customer@shopware.de.test | shopware         | SWT0001             | 3                     | Rechnung | 15,60 €  | 3,90 €        | 19,50 €    |
-      | b2b.customer@shopware.de.test     | shopware         | SWT0001             | 3                     | Vorkasse | 15,60 €  | 3,90 €        | 19,50 €    |
-      | regular.customer@shopware.ch.test | shopware         | SWT0001             | 3                     | Vorkasse | 13,11 €  | 3,28 €        | 16,39 €    |
-      | b2b.customer@shopware.ch.test     | shopware         | SWT0001             | 3                     | Rechnung | 13,11 €  | 3,28 €        | 16,39 €    |
+      | account.email                     | account.password | cart.position.itemPrice | cart.position.sum | payment  | cart.sum | cart.shipping | cart.total |
+      | regular.customer@shopware.de.test | shopware         | 5,20                    | 15,60             | Rechnung | 15,60 €  | 3,90 €        | 19,50 €    |
+      | b2b.customer@shopware.de.test     | shopware         | 5,20                    | 15,60             | Vorkasse | 15,60 €  | 3,90 €        | 19,50 €    |
+      | regular.customer@shopware.ch.test | shopware         | 4,37                    | 13,11             | Vorkasse | 13,11 €  | 3,28 €        | 16,39 €    |
+      | b2b.customer@shopware.ch.test     | shopware         | 4,37                    | 13,11             | Rechnung | 13,11 €  | 3,28 €        | 16,39 €    |
 
   ##
   # Already logged-in, German customer (incl. VAT) adds & removes item from cart before completing checkout
@@ -213,8 +213,8 @@ Feature: I can buy products using the store frontend
   Scenario: I can add and remove products from the cart while logged in as a regular, German customer:
     Given I am logged in with account "regular.customer@shopware.de.test " with password "shopware"
     And the cart contains the following products:
-      | number  | name       | quantity |
-      | SWT0002 | Sushi-Reis | 2        |
+      | number  | name       | quantity | itemPrice | sum |
+      | SWT0002 | Sushi-Reis | 2        | 12        | 24  |
 
     Then the cart should contain 1 articles with a value of "24,00 €"
     And   the aggregations should look like this:
@@ -223,7 +223,6 @@ Feature: I can buy products using the store frontend
       | shipping      | 3,90 €  |
       | total         | 27,90 € |
       | sumWithoutVat | 23,45 € |
-      | 19 %          | 4,45 €  |
 
     When  I add the article "SWT0001" to my basket
     Then  the cart should contain 2 articles with a value of "29,20 €"
@@ -233,7 +232,6 @@ Feature: I can buy products using the store frontend
       | shipping      | 3,90 €  |
       | total         | 33,10 € |
       | sumWithoutVat | 27,82 € |
-      | 19 %          | 5,28 €  |
 
     When  I remove the article on position 1
     And  I add the article "SWT0001" to my basket
@@ -244,7 +242,6 @@ Feature: I can buy products using the store frontend
       | shipping      | 3,90 €  |
       | total         | 14,30 € |
       | sumWithoutVat | 12,02 € |
-      | 19 %          | 2,28 €  |
 
     When  I proceed to order confirmation
     And  I proceed to checkout
@@ -261,8 +258,8 @@ Feature: I can buy products using the store frontend
   Scenario: I can add and remove products from the cart while logged in as a regular, Swiss customer:
     Given I am logged in with account "regular.customer@shopware.ch.test " with password "shopware"
     And the cart contains the following products:
-      | number  | name       | quantity |
-      | SWT0002 | Sushi-Reis | 2        |
+      | number  | name       | quantity | itemPrice | sum     |
+      | SWT0002 | Sushi-Reis | 2        | 10,08 €   | 20,16 € |
 
     # Technically, this should be "20,17€", but there appears to be a rounding error
     Then the cart should contain 1 articles with a value of "20,16 €"
@@ -318,7 +315,6 @@ Feature: I can buy products using the store frontend
       | shipping      | 3,90€  |
       | total         | 19,50€ |
       | sumWithoutVat | 16,39€ |
-      | 19 %          | 3,11€  |
 
     When  I proceed to order confirmation
     And   I proceed to checkout
@@ -341,8 +337,8 @@ Feature: I can buy products using the store frontend
 
     When I am logged in with account "<email>" with password "<password>"
     And the cart contains the following products:
-      | number  | name            | quantity |
-      | SWT0004 | Kaviar vom Rind | 1        |
+      | number  | name            | quantity | itemPrice | sum   |
+      | SWT0004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
 
     And I proceed to checkout cart
     And I change my payment method to "<paymentMethod>"

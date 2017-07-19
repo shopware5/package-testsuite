@@ -10,10 +10,8 @@ use Behat\MinkExtension\Context\MinkAwareContext;
 use Cocur\Slugify\Slugify;
 use Dotenv\Dotenv;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Component\SpinTrait\SpinTrait;
-use Shopware\Element\MultipleElement;
 
 class SubContext extends PageObjectContext implements MinkAwareContext
 {
@@ -89,25 +87,6 @@ class SubContext extends PageObjectContext implements MinkAwareContext
     public function getDriver()
     {
         return $this->getSession()->getDriver();
-    }
-
-    /**
-     * @param Page $page Parent page
-     * @param string $elementName Name of the element
-     * @param int $instance Instance of the element
-     * @return MultipleElement
-     */
-    protected function getMultipleElement(Page $page, $elementName, $instance = 1)
-    {
-        /** @var MultipleElement $element */
-        $element = $this->getElement($elementName);
-        $element->setParent($page);
-
-        if ($instance > 1) {
-            $element = $element->setInstance($instance);
-        }
-
-        return $element;
     }
 
     /**

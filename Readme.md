@@ -65,6 +65,14 @@ to your host machine. With Vagrant, add the following port forwarding rule to yo
 
 ## Writing Tests
 
+### What goes where?
+The `*.feature` files should only contain human-readable, english sentences, assumptions and actions.
+
+The `*Context.php` files all live in the `Shopware\Context` namespace and may only contain step definitions for
+steps used the feature files. All logic should be handled by the `Pages`. Step definitions should be short and expressive. 
+Only use regular expressions in step name definitions when absolutely necessary. Most of the time it might be better to
+refactor steps into smaller sub-steps that only handle one single functionality.
+
 ### Using Tags
 
 Additional functionality for tests can be enabled by tagging either single scenarios or whole features

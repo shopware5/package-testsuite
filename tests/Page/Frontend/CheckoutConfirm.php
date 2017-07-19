@@ -2,14 +2,11 @@
 
 namespace Shopware\Page\Frontend;
 
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ResponseTextException;
 use Behat\Mink\WebAssert;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
-use Shopware\Element\Frontend\CheckoutShipping;
-use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterface
@@ -93,136 +90,12 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     }
 
     /**
-     * Returns the order number from finish page
-     * @return int
-     */
-    public function getOrderNumber()
-    {
-        $elements = Helper::findElements($this, ['orderNumber']);
-
-        $orderDetails = $elements['orderNumber']->getText();
-
-        preg_match("/\d+/", $orderDetails, $orderNumber);
-        $orderNumber = intval($orderNumber[0]);
-
-        return $orderNumber;
-    }
-
-    /**
      * Proceeds the checkout
      */
     public function proceedToCheckout()
     {
+        $this->open();
         $this->checkField('sAGB');
         $this->findButton('Zahlungspflichtig bestellen')->click();
-    }
-
-    /**
-     * Opens the address change form
-     */
-    public function openAddressChangeForm()
-    {
-        /** @var CheckoutShipping $element */
-        $element = $this->getElement('CheckoutShipping');
-
-        $xPath = $element->getXPathSelectors();
-
-        $combinedChangeButton = $xPath['combinedChangeButton'];
-
-        $changeButton = $this->find('xpath', $combinedChangeButton);
-        $changeButton->click();
-    }
-
-    /**
-     * Changes the shipping or payment method
-     * @param string $subject shipping or payment
-     * @param int|string $method
-     * @param TableNode $table
-     */
-    public function changeShippingOrPaymentMethod($subject, $method, TableNode $table = null)
-    {
-        $changeButtonXpath = $this->getXPathSelectors()['changePaymentButton'];
-
-        $this->waitForSelectorPresent('xpath', $changeButtonXpath);
-
-        $this->clickLink('Ändern');
-
-        $this->waitForSelectorNotPresent('xpath', $changeButtonXpath);
-
-        if (!is_numeric($method)) {
-            $this->waitForText($method);
-            $method = $this->getMethodId($subject, $method);
-        }
-
-        $data = [
-            [
-                'field' => $subject == 'payment' ? 'payment' : 'sDispatch',
-                'value' => $method
-            ]
-        ];
-
-        if ($table) {
-            $data = array_merge($data, $table->getHash());
-        }
-
-        Helper::fillForm($this, 'shippingPaymentForm', $data);
-
-        $this->spin(function (ContextAwarePage $context) {
-            try {
-                $this->findButton('Weiter')->click();
-            } catch (\Exception $e) {
-                return false;
-            }
-            return true;
-        }, 10);
-    }
-
-    /**
-     * Creates a new address and saves it
-     * @param $values
-     */
-    public function createArbitraryAddress($values)
-    {
-        Helper::fillForm($this, 'addressForm', $values);
-        $button = $this->find('css', '.address--form-actions > button');
-        $button->press();
-    }
-
-    /**
-     * Changes the values in a modal address form and saves the form
-     * @param $values
-     */
-    public function changeModalAddress($values)
-    {
-        Helper::fillForm($this, 'addressForm', $values);
-        $button = $this->find('named', ['button', 'Adresse speichern']);
-        $button->press();
-    }
-
-    private function getMethodId($subject, $methodName)
-    {
-        if ($subject == 'shipping') {
-            $classPrefix = 'dispatch';
-            $inputName = 'sDispatch';
-        } elseif ($subject == 'payment') {
-            $classPrefix = 'payment';
-            $inputName = $classPrefix;
-        } else {
-            throw new \Exception(sprintf('Unknown subject: %s', $subject));
-        }
-
-        $inputXpath = (new FrontendXpathBuilder())
-            ->reset()
-            ->child('label', ['@text' => $methodName, 'and', '~class' => 'method--name'])
-            ->ancestor('div', ['~class' => $classPrefix . '--method'], 1)
-            ->descendant('input', ['@name' => $inputName])
-            ->getXpath();
-
-        $input = $this->find('xpath', $inputXpath);
-        if (null === $input) {
-            throw new \Exception(sprintf("Could not find ID for %s '%s' on current page", $subject, $methodName));
-        }
-
-        return $input->getAttribute('value');
     }
 }

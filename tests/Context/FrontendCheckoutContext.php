@@ -3,7 +3,6 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Element\Frontend\CartPosition;
 use Shopware\Page\Backend\ShippingModule;
 use Shopware\Page\Frontend\Account;
 use Shopware\Page\Frontend\CheckoutCart;
@@ -16,7 +15,7 @@ class FrontendCheckoutContext extends SubContext
      * @Given the aggregations should look like this:
      * @param TableNode $aggregations
      */
-    public function theAggregationsShouldLookLikeThis(TableNode $aggregations)
+    public function theCartAggregationsShouldLookLikeThis(TableNode $aggregations)
     {
         $aggregations = $aggregations->getHash();
         /** @var CheckoutCart $checkoutCart */
@@ -25,15 +24,15 @@ class FrontendCheckoutContext extends SubContext
     }
 
     /**
-     * @When I add the article :article to my basket
-     * @param string $article
+     * @When I add the article :number to my basket
+     * @param string $number
      */
-    public function iAddTheArticleToMyBasket($article)
+    public function iAddTheArticleToMyBasket($number)
     {
         /** @var CheckoutCart $checkoutCart */
         $checkoutCart = $this->getPage('CheckoutCart');
-        $checkoutCart->addArticle($article);
-        $this->waitForText($article);
+        $checkoutCart->addArticle($number);
+        $this->waitForText($number);
     }
 
     /**
@@ -44,10 +43,7 @@ class FrontendCheckoutContext extends SubContext
     {
         /** @var CheckoutCart $page */
         $page = $this->getPage('CheckoutCart');
-
-        /** @var CartPosition $cartPosition */
-        $cartPosition = $this->getMultipleElement($page, 'CartPosition', $position);
-        $page->removeProduct($cartPosition);
+        $page->removeCartPositionAtIndex($position);
     }
 
     /**
@@ -100,43 +96,14 @@ class FrontendCheckoutContext extends SubContext
     {
         /** @var CheckoutCart $page */
         $page = $this->getPage('CheckoutCart')->open();
-        $page->resetCart();
+        $page->emptyCart();
         $page->fillCartWithProducts($items->getHash());
         $page->open();
-        $this->theCartShouldContainTheFollowingProducts($items);
-    }
-
-    /**
-     * @Then the cart should contain the following products:
-     * @param TableNode $items
-     */
-    public function theCartShouldContainTheFollowingProducts(TableNode $items)
-    {
-        /** @var CheckoutCart $page */
-        $page = $this->getPage('CheckoutCart');
-
-        /** @var CartPosition $cartPositions */
-        $cartPositions = $this->getMultipleElement($page, 'CartPosition');
-        $page->checkCartProducts($cartPositions, $items->getHash());
-    }
-
-    /**
-     * @Given /^I change the (payment|shipping) method in checkout to "([^"]*)"(?::)?$/
-     * @param $subject
-     * @param int|string $method
-     * @param TableNode $data
-     */
-    public function iChangeTheShippingOrPaymentMethodTo($subject, $method, TableNode $data = null)
-    {
-        /** @var CheckoutConfirm $page */
-        $page = $this->getPage('CheckoutConfirm');
-        $page->open();
-        $page->changeShippingOrPaymentMethod($subject, $method, $data);
+        $page->validateCart($items->getHash());
     }
 
     /**
      * @Given I change my payment method to :paymentMethod
-     *
      * @param string $paymentMethod
      */
     public function changePaymentMethodTo($paymentMethod)
@@ -148,8 +115,7 @@ class FrontendCheckoutContext extends SubContext
     }
 
     /**
-     * @Given I change my shipping method to :shippingMethod
-     *
+     * @Given /^I change my shipping method to "([^"]*)"(?::)?$/
      * @param string $shippingMethod
      */
     public function changeShippingMethodTo($shippingMethod)
@@ -158,19 +124,6 @@ class FrontendCheckoutContext extends SubContext
         $page = $this->getPage('CheckoutShippingPayment');
         $page->open();
         $page->changeShippingMethodTo($shippingMethod);
-    }
-
-    /**
-     * @Given /^I change the (payment|dispatch) method in cart to "([^"]*)"(?::)?$/
-     * @param $subject
-     * @param int|string $method
-     * @param TableNode $data
-     */
-    public function iChangeTheDispatchOrPaymentMethodInCartTo($subject, $method, TableNode $data = null)
-    {
-        /** @var CheckoutCart $page */
-        $page = $this->getPage('CheckoutCart');
-        $page->changeDispatchOrPaymentMethod($subject, $method, $data);
     }
 
     /**
