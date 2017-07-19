@@ -31,17 +31,4 @@ interface HelperSelectorInterface
      * @return string[]
      */
     public function getCssSelectors();
-
-    /**
-     * Returns an array of all named selectors of the element/page
-     *
-     * Example:
-     * return [
-     *  'submit' = ['de' = 'Absenden',     'en' = 'Submit'],
-     *  'reset'  = ['de' = 'Zurücksetzen', 'en' = 'Reset']
-     * ]
-     *
-     * @return array[]
-     */
-    public function getNamedSelectors();
 }

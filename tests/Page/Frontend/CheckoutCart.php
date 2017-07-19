@@ -44,22 +44,6 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     /**
      * @inheritdoc
      */
-    public function getNamedSelectors()
-    {
-        return [
-            'checkout' => ['de' => 'Zur Kasse', 'en' => 'Checkout'],
-            'sum' => ['de' => 'Summe:', 'en' => 'Proceed to checkout'],
-            'shipping' => ['de' => 'Versandkosten:', 'en' => 'Proceed to checkout'],
-            'total' => ['de' => 'Gesamtsumme:', 'en' => 'Proceed to checkout'],
-            'sumWithoutVat' => ['de' => 'Gesamtsumme ohne MwSt.:', 'en' => 'Proceed to checkout'],
-            'tax' => ['de' => 'zzgl. %d %% MwSt.:', 'en' => 'Proceed to checkout'],
-            'changePaymentButton' => ['de' => 'Weiter', 'en' => 'Next'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getXPathSelectors()
     {
         return [
@@ -234,11 +218,8 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
      */
     public function proceedToOrderConfirmation()
     {
-        if ($this->verifyPage()) {
-            $this->clickLink('Zur Kasse');
-        }
-
-        $this->getPage('CheckoutConfirm')->verifyPage();
+        $this->open();
+        $this->clickLink('Zur Kasse');
     }
 
     /**

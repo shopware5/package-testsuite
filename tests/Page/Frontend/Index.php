@@ -27,14 +27,6 @@ class Index extends Page implements HelperSelectorInterface
     /**
      * @inheritdoc
      */
-    public function getNamedSelectors()
-    {
-        return [];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getXPathSelectors()
     {
         $builder = new FrontendXpathBuilder();

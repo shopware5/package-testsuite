@@ -41,14 +41,6 @@ class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getNamedSelectors()
-    {
-        return [];
-    }
-
-    /**
      * Advances to the next updater page
      *
      */

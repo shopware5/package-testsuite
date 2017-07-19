@@ -39,31 +39,6 @@ class Account extends ContextAwarePage implements HelperSelectorInterface
     /**
      * @inheritdoc
      */
-    public function getNamedSelectors()
-    {
-        return [
-            'forgotPasswordLink' => ['de' => 'Passwort vergessen?', 'en' => 'Forgot your password?'],
-            'sendButton' => ['de' => 'Weiter', 'en' => 'Continue'],
-
-            'myAccountLink' => ['de' => 'Übersicht', 'en' => 'Overview'],
-            'profileLink' => ['de' => 'Persönliche Daten', 'en' => 'Profile'],
-            'addressesLink' => ['de' => 'Adressen', 'en' => 'Addresses'],
-            'myOrdersLink' => ['de' => 'Bestellungen', 'en' => 'orders'],
-            'myEsdDownloadsLink' => ['de' => 'Sofortdownloads', 'en' => 'Instant downloads'],
-            'changePaymentLink' => ['de' => 'Zahlungsarten', 'en' => 'Payment methods'],
-            'noteLink' => ['de' => 'Merkzettel', 'en' => 'Wish list'],
-            'logoutLink' => ['de' => 'Abmelden', 'en' => 'Logout'],
-
-            'changePaymentButton' => ['de' => 'Ändern', 'en' => 'Change'],
-            'changeBillingButton' => ['de' => 'Adresse speichern', 'en' => 'Change address'],
-            'changeShippingButton' => ['de' => 'Adresse speichern', 'en' => 'Change address'],
-            'saveAddressButton' => ['de' => 'Adresse speichern', 'en' => 'Save address'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getXPathSelectors()
     {
         return [];

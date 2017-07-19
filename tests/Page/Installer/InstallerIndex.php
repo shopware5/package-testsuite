@@ -4,7 +4,6 @@ namespace Shopware\Page\Installer;
 
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
-use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
@@ -54,14 +53,6 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
             'databaseForm' => 'form[action="/recovery/install/database-configuration/"]',
             'shopBasicConfiguration' => 'form[action="/recovery/install/configuration/"]',
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamedSelectors()
-    {
-        return [];
     }
 
     /**

@@ -2,9 +2,6 @@
 
 namespace Shopware\Page\Frontend;
 
-use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Exception\ResponseTextException;
-use Behat\Mink\WebAssert;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 use Shopware\Component\Helper\HelperSelectorInterface;
@@ -54,39 +51,6 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
             'stateName' => '.address--statename',
             'countryName' => '.address--countryname',
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNamedSelectors()
-    {
-        return [
-            'gtc' => ['de' => 'AGB und Widerrufsbelehrung', 'en' => 'Terms, conditions and cancellation policy'],
-            'changePaymentButton' => ['de' => 'Weiter', 'en' => 'Next'],
-            'saveAsNewAddressButton' => ['de' => 'Als neue Adresse speichern'],
-        ];
-    }
-
-    /**
-     * Verify if we're on an expected page. Throw an exception if not.
-     */
-    public function verifyPage()
-    {
-        if ($this->getDriver() instanceof Selenium2Driver) {
-            $this->getDriver()->wait(5000, '$("#sAGB").length > 0');
-        }
-
-        $namedSelectors = $this->getNamedSelectors();
-        $language = 'de';
-
-        try {
-            $assert = new WebAssert($this->getSession());
-            $assert->pageTextContains($namedSelectors['gtc'][$language]);
-        } catch (ResponseTextException $e) {
-            $message = ['You are not on the checkout confirmation page!', 'Current URL: ' . $this->getDriver()->getCurrentUrl()];
-            throw new \Exception($message);
-        }
     }
 
     /**
