@@ -19,11 +19,12 @@ class BaseXpathBuilder
     /**
      * Create and return empty Xpath Builder instance
      *
+     * @param string $xpath
      * @return BaseXpathBuilder
      */
-    public static function create()
+    public static function create($xpath = '/')
     {
-        return new self;
+        return new self($xpath);
     }
 
     /**
