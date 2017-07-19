@@ -97,16 +97,22 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
     /**
      * Fills in and submits the given form
      *
-     * @param string $formname The name of the given form
      * @param array $data The data of the form
      */
-    public function fillInAndSubmitForm($formname, $data)
+    public function fillInAndSubmitForm($data)
     {
-        Helper::fillForm($this, $formname, $data, [
-            'c_database_schema' => function ($form, $fieldValue) {
+        foreach ($data as $formElement) {
+            if($formElement['field'] === 'c_database_schema') {
                 usleep(750000);
             }
-        ]);
+
+            $elementXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
+            $this->waitForSelectorPresent('xpath', $elementXpath);
+            $element = $this->find('xpath', $elementXpath);
+            if ($element->isVisible()) {
+                $element->setValue($formElement['value']);
+            }
+        }
     }
 
     /**

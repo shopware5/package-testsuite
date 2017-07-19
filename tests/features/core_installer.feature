@@ -51,7 +51,7 @@ Feature: I can start and complete the installation process
       | fieldname         |
       | c_database_user   |
       | c_database_schema |
-    When I fill the "databaseForm" form:
+    When I fill the form:
       | field               | value    |
       | c_database_host     | mysql    |
       | c_database_port     | 3306     |
@@ -80,7 +80,7 @@ Feature: I can start and complete the installation process
       | c_config_admin_username |
       | c_config_admin_email    |
       | c_config_admin_password |
-    When I fill the "shopBasicConfiguration" form:
+    When I fill the form:
       | field                   | value               |
       | c_config_shopName       | Demoshop            |
       | c_config_mail           | your.email@shop.com |
@@ -114,7 +114,7 @@ Feature: I can start and complete the installation process
       | fieldname         |
       | c_database_user   |
       | c_database_schema |
-    When I fill the "databaseForm" form:
+    When I fill the form:
       | field               | value    |
       | c_database_host     | mysql    |
       | c_database_port     | 3306     |
@@ -143,7 +143,7 @@ Feature: I can start and complete the installation process
       | c_config_admin_username |
       | c_config_admin_email    |
       | c_config_admin_password |
-    When I fill the "shopBasicConfiguration" form:
+    When I fill the form:
       | field                   | value               |
       | c_config_shopName       | Demoshop            |
       | c_config_mail           | your.email@shop.com |

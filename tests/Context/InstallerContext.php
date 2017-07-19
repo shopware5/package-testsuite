@@ -59,17 +59,16 @@ class InstallerContext extends SubContext
     }
 
     /**
-     * @When I fill the :formname form:
-     * @param string $formname
+     * @When I fill the form:
      * @param TableNode $table
      */
-    public function iFillTheForm($formname, TableNode $table)
+    public function iFillTheForm(TableNode $table)
     {
         /** @var InstallerIndex $page */
         $page = $this->getPage('InstallerIndex');
         $data = $table->getHash();
 
-        $page->fillInAndSubmitForm($formname, $data);
+        $page->fillInAndSubmitForm($data);
     }
 
     /**
