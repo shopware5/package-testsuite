@@ -116,8 +116,9 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
      */
     public function clickOnElementWithText($text)
     {
-        $element = $this->find('xpath', $this->getXPathSelectors()[$text]);
-        $element->click();
+        $elementXpath = $this->getXPathSelectors()[$text];
+        $this->waitForSelectorPresent('xpath', $elementXpath);
+        $this->find('xpath', $this->getXPathSelectors()[$text])->click();
     }
 
     /**
