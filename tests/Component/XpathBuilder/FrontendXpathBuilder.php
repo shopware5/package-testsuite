@@ -16,6 +16,18 @@ class FrontendXpathBuilder extends BaseXpathBuilder
     }
 
     /**
+     * Return xpath to an element by its name
+     *
+     * @param string $tag
+     * @param string $name
+     * @return string
+     */
+    public static function getElementXpathByName($tag, $name)
+    {
+        return (new self)->child($tag, ['~name' => $name])->getXpath();
+    }
+
+    /**
      * Returns xpath that selects a form based on its action
      *
      * @param string $action

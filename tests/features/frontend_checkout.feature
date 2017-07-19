@@ -44,6 +44,7 @@ Feature: I can buy products using the store frontend
   #   - Adding and removing products with different tax rates, so:
   #     Carts with 7% & 19% products as well as 7% only.
   #
+  @isolated
   Scenario: I can buy products that have different tax rates
     Given the cart contains the following products:
       | name                       | number  | quantity | itemPrice | sum   |
@@ -124,20 +125,20 @@ Feature: I can buy products using the store frontend
   Scenario Outline: I can register and order products
     Given there is no customer registered with e-mail address "<email>"
     And I register myself:
-      | field         | register[personal] | register[billing] |
-      | customer_type | <customer_type>    |                   |
-      | salutation    | mr                 |                   |
-      | firstname     | Max                |                   |
-      | lastname      | Mustermann         |                   |
-      | email         | <email>            |                   |
-      | password      | shopware           |                   |
-      | company       |                    | Muster GmbH       |
-      | street        |                    | Musterstr. 55     |
-      | zipcode       |                    | 55555             |
-      | city          |                    | Musterhausen      |
-      | country       |                    | <country>         |
+      | name                              | value           | type   |
+      | register[personal][customer_type] | <customer_type> | select |
+      | register[personal][salutation]    | mr              | select |
+      | register[personal][firstname]     | David           | input  |
+      | register[personal][lastname]      | Bowie           | input  |
+      | register[personal][email]         | <email>         | input  |
+      | register[personal][password]      | shopware        | input  |
+      | register[billing][company]        | Vue Cinema      | input  |
+      | register[billing][street]         | Drake Circus 1  | input  |
+      | register[billing][zipcode]        | PL4 012         | input  |
+      | register[billing][city]           | Plymouth        | input  |
+      | register[billing][country]        | <country>       | select  |
 
-    Then  I should see "Willkommen, Max Mustermann"
+    Then  I should see "Willkommen, David Bowie"
 
     When  I am on the detail page for article with ordernumber "SWT0004"
     Then  I should see "Kaviar vom Rind"
@@ -337,8 +338,8 @@ Feature: I can buy products using the store frontend
 
     When I am logged in with account "<email>" with password "<password>"
     And the cart contains the following products:
-      | number  | name            | quantity | itemPrice | sum   |
-      | SWT0004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
+      | number  | name            | quantity | itemPrice                | sum                |
+      | SWT0004 | Kaviar vom Rind | 1        | <cartPosition.itemPrice> | <cartPosition.sum> |
 
     And I proceed to checkout cart
     And I change my payment method to "<paymentMethod>"
@@ -352,7 +353,7 @@ Feature: I can buy products using the store frontend
     When  I proceed to checkout
     Then  I should see "Vielen Dank für Ihre Bestellung bei"
     Examples:
-      | email                             | password | paymentMethod | shippingMethod   | shippingCosts | totalSum |
-      | regular.customer@shopware.de.test | shopware | Rechnung      | Standard Versand | 3,90 €        | 48,89 €  |
-      | b2b.customer@shopware.de.test     | shopware | Rechnung      | Express Versand  | 9,90 €        | 54,89 €  |
-      | regular.customer@shopware.ch.test | shopware | Vorkasse      | Express Versand  | 8,32 €        | 46,13 €  |
+      | email                             | password | paymentMethod | cartPosition.itemPrice | cartPosition.sum | shippingMethod   | shippingCosts | totalSum |
+      | regular.customer@shopware.de.test | shopware | Rechnung      | 44,99                  | 44,99            | Standard Versand | 3,90 €        | 48,89 €  |
+      | b2b.customer@shopware.de.test     | shopware | Rechnung      | 44,99                  | 44,99            | Express Versand  | 9,90 €        | 54,89 €  |
+      | regular.customer@shopware.ch.test | shopware | Vorkasse      | 37,81                  | 37,81            | Express Versand  | 8,32 €        | 46,13 €  |

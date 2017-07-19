@@ -2,11 +2,11 @@
 
 namespace Shopware\Page\Frontend;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Shopware\Component\Helper\Helper;
 use Shopware\Component\Helper\HelperSelectorInterface;
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
+use Shopware\Page\ContextAwarePage;
 
-class Account extends Page implements HelperSelectorInterface
+class Account extends ContextAwarePage implements HelperSelectorInterface
 {
     /**
      * @var string $path
@@ -32,7 +32,7 @@ class Account extends Page implements HelperSelectorInterface
             'changeEmailButton' => 'div.profile-email--container button',
             'changeProfileButton' => 'div.account--profile > form button',
             'esdDownloads' => '.downloads--table-header ~ .panel--tr',
-            'esdDownloadName' => '.download--name'
+            'esdDownloadName' => '.download--name',
         ];
     }
 
@@ -42,22 +42,22 @@ class Account extends Page implements HelperSelectorInterface
     public function getNamedSelectors()
     {
         return [
-            'forgotPasswordLink'    => ['de' => 'Passwort vergessen?',      'en' => 'Forgot your password?'],
-            'sendButton'            => ['de' => 'Weiter',                   'en' => 'Continue'],
+            'forgotPasswordLink' => ['de' => 'Passwort vergessen?', 'en' => 'Forgot your password?'],
+            'sendButton' => ['de' => 'Weiter', 'en' => 'Continue'],
 
-            'myAccountLink'         => ['de' => 'Übersicht',                'en' => 'Overview'],
-            'profileLink'           => ['de' => 'Persönliche Daten',        'en' => 'Profile'],
-            'addressesLink'         => ['de' => 'Adressen',                 'en' => 'Addresses'],
-            'myOrdersLink'          => ['de' => 'Bestellungen',             'en' => 'orders'],
-            'myEsdDownloadsLink'    => ['de' => 'Sofortdownloads',          'en' => 'Instant downloads'],
-            'changePaymentLink'     => ['de' => 'Zahlungsarten',            'en' => 'Payment methods'],
-            'noteLink'              => ['de' => 'Merkzettel',               'en' => 'Wish list'],
-            'logoutLink'            => ['de' => 'Abmelden',                 'en' => 'Logout'],
+            'myAccountLink' => ['de' => 'Übersicht', 'en' => 'Overview'],
+            'profileLink' => ['de' => 'Persönliche Daten', 'en' => 'Profile'],
+            'addressesLink' => ['de' => 'Adressen', 'en' => 'Addresses'],
+            'myOrdersLink' => ['de' => 'Bestellungen', 'en' => 'orders'],
+            'myEsdDownloadsLink' => ['de' => 'Sofortdownloads', 'en' => 'Instant downloads'],
+            'changePaymentLink' => ['de' => 'Zahlungsarten', 'en' => 'Payment methods'],
+            'noteLink' => ['de' => 'Merkzettel', 'en' => 'Wish list'],
+            'logoutLink' => ['de' => 'Abmelden', 'en' => 'Logout'],
 
-            'changePaymentButton'   => ['de' => 'Ändern',                   'en' => 'Change'],
-            'changeBillingButton'   => ['de' => 'Adresse speichern',        'en' => 'Change address'],
-            'changeShippingButton'  => ['de' => 'Adresse speichern',        'en' => 'Change address'],
-            'saveAddressButton'     => ['de' => 'Adresse speichern',        'en' => 'Save address']
+            'changePaymentButton' => ['de' => 'Ändern', 'en' => 'Change'],
+            'changeBillingButton' => ['de' => 'Adresse speichern', 'en' => 'Change address'],
+            'changeShippingButton' => ['de' => 'Adresse speichern', 'en' => 'Change address'],
+            'saveAddressButton' => ['de' => 'Adresse speichern', 'en' => 'Save address'],
         ];
     }
 
@@ -96,7 +96,31 @@ class Account extends Page implements HelperSelectorInterface
      */
     public function register(array $data)
     {
-        Helper::fillForm($this, 'registrationForm', $data);
+        $this->fillRegistrationForm($data);
         $this->findButton('Weiter')->click();
+    }
+
+    /**
+     * Fill in the customer registration form
+     *
+     * @param array $data
+     */
+    private function fillRegistrationForm(array $data)
+    {
+        $this->open();
+
+        foreach ($data as $formElement) {
+            $elementXpath = FrontendXpathBuilder::getElementXpathByName($formElement['type'], $formElement['name']);
+            $this->waitForSelectorPresent('xpath', $elementXpath);
+            $element = $this->find('xpath', $elementXpath);
+            if ($element->isVisible()) {
+                if($formElement['type'] === 'select') {
+                    $element->selectOption($formElement['value']);
+                    continue;
+                }
+
+                $element->setValue($formElement['value']);
+            }
+        }
     }
 }
