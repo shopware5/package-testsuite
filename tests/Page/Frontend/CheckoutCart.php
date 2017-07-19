@@ -282,7 +282,7 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     private function assertCartPositionListsAreEqual(array $expected, array $actual)
     {
         if (count($expected) !== count($actual)) {
-            throw new \Exception('Expected %s cart positions, got %s.', count($expected), count($actual));
+            throw new \Exception(sprintf('Expected %s cart positions, got %s.', count($expected), count($actual)));
         }
 
         /** @var CartPosition $expectedPosition */
@@ -350,6 +350,28 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         preg_match("/([0-9]+[\\.]?[0-9]*)/", $float, $matches);
 
         return floatval($matches[0]);
+    }
+
+    /**
+     * Add voucher to the cart
+     *
+     * @param string $code
+     */
+    public function addVoucher($code)
+    {
+        $this->open();
+
+        $voucherCheckboxXpath = FrontendXpathBuilder::getInputById('add-voucher--trigger');
+        $this->waitForSelectorPresent('xpath', $voucherCheckboxXpath);
+        $this->find('xpath', $voucherCheckboxXpath)->click();
+
+        $voucherInputXpath = FrontendXpathBuilder::getElementXpathByName('input', 'sVoucher');
+        $this->waitForSelectorPresent('xpath', $voucherInputXpath);
+        $this->find('xpath', $voucherInputXpath)->setValue($code);
+
+        $voucherSubmitXpath = FrontendXpathBuilder::create($voucherInputXpath)->followingSibling('button')->getXpath();
+        $this->waitForSelectorPresent('xpath', $voucherSubmitXpath);
+        $this->find('xpath', $voucherSubmitXpath)->click();
     }
 
     /**

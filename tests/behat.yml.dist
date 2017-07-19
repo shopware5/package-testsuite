@@ -47,3 +47,4 @@ default:
                 - Shopware\Context\ProductExportContext
                 - Shopware\Context\BackendCustomerContext
                 - Shopware\Context\BackendPaymentContext
+                - Shopware\Context\BackendVoucherContext
