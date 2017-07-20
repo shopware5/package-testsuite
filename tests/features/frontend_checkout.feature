@@ -23,6 +23,20 @@ Feature: I can buy products using the store frontend
       | b2b.customer@shopware.ch.test     | shopware | H     | CH      |
 
 
+  Scenario: I can order a product and pay using SEPA
+    Given I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
+    And the following payment methods are activated:
+      | name |
+      | SEPA |
+    And the cart contains the following products:
+      | number  | quantity |
+      | SWT0005 | 1        |
+
+    When I am on the page "CheckoutCart"
+    And I change my payment method to "SEPA"
+    And I proceed to checkout
+    Then I should see "Vielen Dank für Ihre Bestellung bei"
+
   ##
   # The cart can work with products that have different tax rates defined
   #

@@ -37,7 +37,20 @@ class CheckoutShippingPayment extends ContextAwarePage
         $element = $this->getMethodElement($paymentMethod);
         $element->click();
 
-        $this->getPage('CheckoutConfirm')->open();
+        // Fill out SEPA information if necessary
+        if($paymentMethod === 'SEPA') {
+            $ibanInputXpath = FrontendXpathBuilder::getInputById('iban');
+            $this->waitForSelectorPresent('xpath', $ibanInputXpath);
+            $this->find('xpath', $ibanInputXpath)->setValue('DE27100777770209299700');
+
+            $bicInputXpath = FrontendXpathBuilder::getInputById('bic');
+            $this->find('xpath', $bicInputXpath)->setValue('DEMOBIC');
+
+            $bankInputXpath = FrontendXpathBuilder::getInputById('bank');
+            $this->find('xpath', $bankInputXpath)->setValue('Bank');
+        }
+
+        $this->findButton('Weiter')->click();
     }
 
     /**
