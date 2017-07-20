@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ "$1" = "" ]
+then
+    echo "Missing argument. Should be 'bamboo.buildResultKey'"
+    exit 1
+fi
+
+export COMPOSE_PROJECT_NAME=$1
+echo "COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}"
+
 echo "Cleanup"
 [ -f "$ENV_TESTS" ] && rm "$ENV_TESTS"
 [ -f "$BEHAT" ] && rm "$BEHAT"
