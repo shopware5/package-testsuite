@@ -8,6 +8,11 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 class CustomerModule extends BackendModule
 {
     /**
+     * @var string
+     */
+    protected $path = '/backend/?app=Customer';
+
+    /**
      * Helper function that skips the intro wizard of the customer module
      */
     public function skipIntroWizard()

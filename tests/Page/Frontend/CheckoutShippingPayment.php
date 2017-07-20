@@ -17,7 +17,9 @@ class CheckoutShippingPayment extends ContextAwarePage
      */
     public function changeShippingMethodTo($shippingMethod)
     {
-        $this->open();
+        if(!$this->verifyUrl()) {
+            $this->open();
+        }
 
         $element = $this->getMethodElement($shippingMethod);
         $element->click();
@@ -32,7 +34,9 @@ class CheckoutShippingPayment extends ContextAwarePage
      */
     public function changePaymentMethodTo($paymentMethod)
     {
-        $this->open();
+        if(!$this->verifyUrl()) {
+            $this->open();
+        }
 
         $element = $this->getMethodElement($paymentMethod);
         $element->click();
@@ -59,7 +63,7 @@ class CheckoutShippingPayment extends ContextAwarePage
      * @param string $methodName
      * @return NodeElement|null
      */
-    private function getMethodElement($methodName)
+    public function getMethodElement($methodName)
     {
         $elementXpath = FrontendXpathBuilder::create()
             ->child('label', ['@text' => $methodName])
