@@ -2,12 +2,15 @@
 
 namespace Shopware\Page\Frontend;
 
+use Shopware\Component\Form\FormFillerTrait;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 use Shopware\Component\Helper\HelperSelectorInterface;
 
 class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterface
 {
+    use FormFillerTrait;
+
     /**
      * @var string $path
      */
@@ -61,5 +64,15 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
         $this->open();
         $this->checkField('sAGB');
         $this->findButton('Zahlungspflichtig bestellen')->click();
+    }
+
+    /**
+     * Fill out the registration form during checkout
+     *
+     * @param array $formData
+     */
+    public function fillOutRegistrationForm($formData)
+    {
+        $this->fillForm($this, $formData);
     }
 }

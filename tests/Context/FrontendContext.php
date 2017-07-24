@@ -103,4 +103,28 @@ class FrontendContext extends SubContext
 
         \PHPUnit_Framework_Assert::assertEquals(floatval($priceText), floatval($testPrice));
     }
+
+    /**
+     * @Given I click on :text
+     * @param $text
+     * @throws \Exception
+     */
+    public function iClickOn($text)
+    {
+        // Trt to find a button with the given text
+        $button = $this->getSession()->getPage()->findButton($text);
+        if ($button) {
+            $button->click();
+            return;
+        }
+
+        // If there is none, try to find a link
+        $link = $this->getSession()->getPage()->findLink($text);
+        if ($link) {
+            $link->click();
+            return;
+        }
+
+        throw new \Exception('Could not find element by content ' . $text);
+    }
 }

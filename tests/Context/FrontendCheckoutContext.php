@@ -24,6 +24,17 @@ class FrontendCheckoutContext extends SubContext
     }
 
     /**
+     * @When I fill in the registration form:
+     * @param TableNode $customerData
+     */
+    public function iFillInTheRegistrationForm(TableNode $customerData)
+    {
+        /** @var CheckoutConfirm $page */
+        $page = $this->getPage('CheckoutConfirm');
+        $page->fillOutRegistrationForm($customerData->getHash());
+    }
+
+    /**
      * @When I add the article :number to my basket
      * @param string $number
      */

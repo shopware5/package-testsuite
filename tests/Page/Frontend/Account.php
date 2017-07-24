@@ -2,12 +2,14 @@
 
 namespace Shopware\Page\Frontend;
 
+use Shopware\Component\Form\FormFillerTrait;
 use Shopware\Component\Helper\HelperSelectorInterface;
-use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 
 class Account extends ContextAwarePage implements HelperSelectorInterface
 {
+    use FormFillerTrait;
+
     /**
      * @var string $path
      */
@@ -71,31 +73,8 @@ class Account extends ContextAwarePage implements HelperSelectorInterface
      */
     public function register(array $data)
     {
-        $this->fillRegistrationForm($data);
-        $this->findButton('Weiter')->click();
-    }
-
-    /**
-     * Fill in the customer registration form
-     *
-     * @param array $data
-     */
-    private function fillRegistrationForm(array $data)
-    {
         $this->open();
-
-        foreach ($data as $formElement) {
-            $elementXpath = FrontendXpathBuilder::getElementXpathByName($formElement['type'], $formElement['name']);
-            $this->waitForSelectorPresent('xpath', $elementXpath);
-            $element = $this->find('xpath', $elementXpath);
-            if ($element->isVisible()) {
-                if($formElement['type'] === 'select') {
-                    $element->selectOption($formElement['value']);
-                    continue;
-                }
-
-                $element->setValue($formElement['value']);
-            }
-        }
+        $this->fillForm($this, $data);
+        $this->findButton('Weiter')->click();
     }
 }
