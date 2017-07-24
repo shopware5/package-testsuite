@@ -33,11 +33,14 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
             'licenseForm' => FrontendXpathBuilder::getFormByAction('/recovery/install/edition/'),
             'shopBasicConfiguration' => FrontendXpathBuilder::getFormByAction('/recovery/install/configuration/'),
             'backwardDbButton' => $builder->reset()->child('a', ['~class' => 'btn-arrow-left'])->getXpath(),
-            'forwardButton' => $builder->reset()->child('button', ['@type' => 'submit', 'and', '~class' => 'btn-arrow-right'])->getXpath(),
-            'licenseCheckbox' => $builder->reset()->child('input', ['@type' => 'checkbox', 'and', '@name' => 'eula'])->getXpath(),
+            'forwardButton' => $builder->reset()->child('button',
+                ['@type' => 'submit', 'and', '~class' => 'btn-arrow-right'])->getXpath(),
+            'licenseCheckbox' => $builder->reset()->child('input',
+                ['@type' => 'checkbox', 'and', '@name' => 'eula'])->getXpath(),
             'shopFrontend' => $builder->reset()->child('a', ['~text' => 'Zum Shop-Frontend'])->getXpath(),
             'shopBackend' => $builder->reset()->child('a', ['~text' => 'Zum Shop-Backend'])->getXpath(),
-            'start' => $builder->reset()->child('button', ['@id' => 'start-ajax', 'and', '~class' => 'btn-primary'])->getXpath(),
+            'start' => $builder->reset()->child('button',
+                ['@id' => 'start-ajax', 'and', '~class' => 'btn-primary'])->getXpath(),
         ];
     }
 
@@ -93,8 +96,24 @@ class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
     public function fillInAndSubmitForm($data)
     {
         foreach ($data as $formElement) {
-            if($formElement['field'] === 'c_database_schema') {
-                usleep(750000);
+            // Shopware 5.2 and 5.3 handle the database schema input differently
+            if ($formElement['field'] === 'c_database_schema') {
+                sleep(3);
+
+                // Try to find 5.3 input field
+                $schemaXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
+                $schemaInput = $this->find('xpath', $schemaXpath);
+
+                // Look for 5.2 select field otherwise
+                if(!$schemaInput) {
+                    $schemaXpath = FrontendXpathBuilder::getElementXpathByName('select', $formElement['field']);
+                    $schemaInput = $this->find('xpath', $schemaXpath);
+                    $schemaInput->selectOption($formElement['value']);
+                } else {
+                    $schemaInput->setValue($formElement['value']);
+                }
+
+                continue;
             }
 
             $elementXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
