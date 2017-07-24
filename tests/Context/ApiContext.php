@@ -154,4 +154,15 @@ class ApiContext extends SubContext
 
         return $this->apiClient;
     }
+
+    /**
+     * @Given the following orders exist:
+     * @param TableNode $orders
+     */
+    public function theFollowingOrdersExist(TableNode $orders)
+    {
+        foreach ($orders as $order) {
+            $this->getApiClient()->createOrder($order);
+        }
+    }
 }
