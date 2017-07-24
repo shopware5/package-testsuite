@@ -48,3 +48,4 @@ default:
                 - Shopware\Context\BackendCustomerContext
                 - Shopware\Context\BackendPaymentContext
                 - Shopware\Context\BackendVoucherContext
+                - Shopware\Context\BackendOrderContext

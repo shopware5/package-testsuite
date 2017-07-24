@@ -136,6 +136,7 @@ class ApiClient
      * Create new product in shop
      *
      * @param $product
+     * @return int the ID of the created product
      */
     public function createArticle($product)
     {
@@ -144,7 +145,9 @@ class ApiClient
         if (!empty($categories)) {
             $categoryIds = $this->createCategoryTrees($categories);
         }
-        $this->post('api/articles', $this->buildArticleDataArray($product, $categoryIds));
+
+        $response = $this->post('api/articles', $this->buildArticleDataArray($product, $categoryIds));
+        return $response['data']['id'];
     }
 
     /**
@@ -295,11 +298,14 @@ class ApiClient
 
     /**
      * @param array $customer
+     * @return int ID of the customer that was created
      */
     public function createCustomer(array $customer)
     {
         $this->throwExceptionWhenEmpty($customer, ['email', 'password']);
-        $this->post('api/customers', $this->buildCustomerDataArray($customer));
+        $response = $this->post('api/customers', $this->buildCustomerDataArray($customer));
+
+        return $response['data']['id'];
     }
 
     /**
@@ -417,6 +423,94 @@ class ApiClient
     }
 
     /**
+     * Create a new order
+     *
+     * @param array $orderData
+     */
+    public function createOrder(array $orderData)
+    {
+        if ($this->customerExists($orderData['customer.email'])) {
+            $this->deleteCustomerByEmail($orderData['customer.email']);
+        }
+
+        $customerId = $this->createCustomer(['email' => $orderData['customer.email'], 'password' => 'shopware']);
+
+        $articleId = $this->createArticle([
+            'name' => $orderData['position.name'],
+            'price' => $orderData['position.price'],
+            'categories' => [],
+        ]);
+
+        $countryId = array_key_exists('shipping.country', $orderData)
+            ? $this->getCountryIdByISO($orderData['shipping.country'])
+            : 2;
+
+        $this->post('api/orders', [
+            "customerId" => $customerId,
+            "paymentId" => 5, // "Vorkasse"
+            "dispatchId" => 9, // "Standard Versand"
+            "partnerId" => "",
+            "shopId" => 1,
+            "invoiceAmount" => $orderData['position.price'] * $orderData['position.quantity'],
+            "invoiceAmountNet" => $orderData['position.price'] * $orderData['position.quantity'] / 119 * 100,
+            "invoiceShipping" => 0,
+            "invoiceShippingNet" => 0,
+            "orderTime" => "2012-08-31 08:51:46",
+            "net" => 0,
+            "taxFree" => 0,
+            "languageIso" => "1",
+            "currency" => "EUR",
+            "currencyFactor" => 1,
+            "remoteAddress" => "217.86.205.141",
+            "details" => [
+                [
+                    "articleId" => $articleId,
+                    "taxId" => 1,
+                    "taxRate" => 19,
+                    "statusId" => 0,
+                    "articleNumber" => "BOT001",
+                    "price" => $orderData['position.price'],
+                    "quantity" => $orderData['position.quantity'],
+                    "articleName" => $orderData['position.name'],
+                    "shipped" => 0,
+                    "shippedGroup" => 0,
+                    "mode" => 0,
+                    "esdArticle" => 0,
+                ],
+            ],
+            "documents" => [],
+            "billing" => [
+                "id" => 2,
+                "customerId" => 1,
+                "countryId" => $countryId,
+                "stateId" => 3,
+                "company" => "shopware AG",
+                "salutation" => "mr",
+                "firstName" => "Max",
+                "lastName" => "Mustermann",
+                "street" => "Mustermannstr. 92",
+                "zipCode" => "48624",
+                "city" => "Schuppingen",
+            ],
+            "shipping" => [
+                "id" => 2,
+                "countryId" => $countryId,
+                "stateId" => 3,
+                "customerId" => 1,
+                "company" => "shopware AG",
+                "salutation" => "mr",
+                "firstName" => "Max",
+                "lastName" => "Mustermann",
+                "street" => "Mustermannstr 92",
+                "zipCode" => "48624",
+                "city" => "Schuppingen",
+            ],
+            "paymentStatusId" => 17,
+            "orderStatusId" => 0,
+        ]);
+    }
+
+    /**
      * @param $key
      * @return bool
      */
@@ -522,7 +616,7 @@ class ApiClient
     public function deleteAllCustomers()
     {
         $response = $this->get('api/customers');
-        foreach($response['data'] as $customer) {
+        foreach ($response['data'] as $customer) {
             $this->deleteCustomerById($customer['id']);
         }
     }
