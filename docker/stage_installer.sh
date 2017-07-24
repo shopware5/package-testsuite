@@ -28,3 +28,5 @@ if [ "$PACKAGE_VERSION" = "5.2" ]
         echo "Run Mink"
         docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@shopware52&&@installer&&~@knownFailing'
 fi
+
+. ./sh/_post-stage.sh
