@@ -29,8 +29,8 @@ Feature: I can buy products using the store frontend
       | name |
       | SEPA |
     And the cart contains the following products:
-      | number  | quantity |
-      | SWT0005 | 1        |
+      | name                       | number  | quantity | itemPrice | sum   |
+      | Kaviar vom Rind (das Buch) | SWT0005 | 1        | 10,99     | 10,99 |
 
     When I am on the page "CheckoutCart"
     And I change my payment method to "SEPA"
@@ -132,11 +132,10 @@ Feature: I can buy products using the store frontend
       | register[personal][lastname]      | Bowie           | input  |
       | register[personal][email]         | <email>         | input  |
       | register[personal][password]      | shopware        | input  |
-      | register[billing][company]        | Vue Cinema      | input  |
       | register[billing][street]         | Drake Circus 1  | input  |
       | register[billing][zipcode]        | PL4 012         | input  |
       | register[billing][city]           | Plymouth        | input  |
-      | register[billing][country]        | <country>       | select  |
+      | register[billing][country]        | <country>       | select |
 
     Then  I should see "Willkommen, David Bowie"
 

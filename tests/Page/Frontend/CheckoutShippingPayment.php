@@ -17,7 +17,7 @@ class CheckoutShippingPayment extends ContextAwarePage
      */
     public function changeShippingMethodTo($shippingMethod)
     {
-        if(!$this->verifyUrl()) {
+        if (!$this->verifyUrl()) {
             $this->open();
         }
 
@@ -34,7 +34,7 @@ class CheckoutShippingPayment extends ContextAwarePage
      */
     public function changePaymentMethodTo($paymentMethod)
     {
-        if(!$this->verifyUrl()) {
+        if (!$this->verifyUrl()) {
             $this->open();
         }
 
@@ -42,7 +42,7 @@ class CheckoutShippingPayment extends ContextAwarePage
         $element->click();
 
         // Fill out SEPA information if necessary
-        if($paymentMethod === 'SEPA') {
+        if ($paymentMethod === 'SEPA') {
             $ibanInputXpath = FrontendXpathBuilder::getInputById('iban');
             $this->waitForSelectorPresent('xpath', $ibanInputXpath);
             $this->find('xpath', $ibanInputXpath)->setValue('DE27100777770209299700');
@@ -53,6 +53,11 @@ class CheckoutShippingPayment extends ContextAwarePage
             $bankInputXpath = FrontendXpathBuilder::getInputById('bank');
             $this->find('xpath', $bankInputXpath)->setValue('Bank');
         }
+
+        $this->waitForSelectorInvisible('xpath', FrontendXpathBuilder::create()
+            ->child('div', ['~class' => 'js--overlay'])
+            ->getXpath()
+        );
 
         $this->findButton('Weiter')->click();
     }
@@ -72,5 +77,10 @@ class CheckoutShippingPayment extends ContextAwarePage
         $this->waitForSelectorPresent('xpath', $elementXpath);
 
         return $this->find('xpath', $elementXpath);
+    }
+
+    protected function verifyUrl(array $urlParameters = [])
+    {
+        return $this->getDriver()->getCurrentUrl() === $this->getUrl($urlParameters);
     }
 }
