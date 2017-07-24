@@ -89,6 +89,7 @@ class BackendContext extends SubContext
     {
         $page = $this->getPage('Backend');
         $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel($label);
+        $this->waitForSelectorPresent('xpath', $buttonXpath);
         $button = $page->find('xpath', $buttonXpath);
         $button->click();
     }
