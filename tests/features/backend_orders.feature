@@ -33,6 +33,7 @@ Feature: I can manage my orders with the backend order module
     When I click the email icon on the last generated document
     Then I should see "E-Mail an den Kunden senden" eventually
 
+  @shopware53
   Scenario: I can filter and sort orders in the backend
     Given the following orders exist:
       | customer.email              | position.name | position.quantity | position.price | shipping.country |
