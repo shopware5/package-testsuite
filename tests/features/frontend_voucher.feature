@@ -107,6 +107,7 @@ Feature:
       | Wert:                | 5                                 | input    |
       | Bestellnummer:       | PLYM19                            | input    |
     And I click the "Speichern" Button
+    And I wait for 2 seconds
     And I click on the "Individuelle Gutscheincodes" tab
     And I click the "Neue Codes generieren" Button
     Then I should see "Nein" eventually

@@ -2,6 +2,7 @@
 
 namespace Shopware\Context;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 
 class FeatureContext extends SubContext
@@ -18,5 +19,14 @@ class FeatureContext extends SubContext
             $driver->maximizeWindow();
             $this->getSession()->resizeWindow(1920, 1080, 'current');
         }
+    }
+
+    /**
+     * @Given I wait for :amount seconds
+     * @param $amount
+     */
+    public function iWaitForSeconds($amount)
+    {
+        sleep((int)$amount);
     }
 }
