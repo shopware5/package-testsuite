@@ -109,4 +109,14 @@ class BackendOrderContext extends SubContext
             throw new \Exception(sprintf('Expected order from %s would be at top of list.', $email));
         }
     }
+
+    /**
+     * @Then I should be able to send a notification to the customer
+     */
+    public function iShouldBeAbleToSendANotificationToTheCustomer()
+    {
+        /** @var OrderModule $page */
+        $page = $this->getPage('OrderModule');
+        $page->sendCustomerNotificationMail();
+    }
 }

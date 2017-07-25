@@ -24,10 +24,12 @@ Feature: I can buy products using the store frontend
 
 
   Scenario: I can order a product and pay using SEPA
-    Given I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
+    Given I am on the page "BackendLogin"
+    When I log in with user "demo" and password "demo"
     And the following payment methods are activated:
       | name |
       | SEPA |
+    And I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
     And the cart contains the following products:
       | name                       | number  | quantity | itemPrice | sum   |
       | Kaviar vom Rind (das Buch) | SWT0005 | 1        | 10,99     | 10,99 |

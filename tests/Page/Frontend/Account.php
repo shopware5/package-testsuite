@@ -4,6 +4,7 @@ namespace Shopware\Page\Frontend;
 
 use Shopware\Component\Form\FormFillerTrait;
 use Shopware\Component\Helper\HelperSelectorInterface;
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 
 class Account extends ContextAwarePage implements HelperSelectorInterface
@@ -53,10 +54,18 @@ class Account extends ContextAwarePage implements HelperSelectorInterface
      */
     public function login($email, $password)
     {
-        $this->fillField('email', $email);
-        $this->fillField('password', $password);
+        $this->open();
 
-        $this->findButton('Anmelden')->click();
+        $this->find('xpath', FrontendXpathBuilder::getElementXpathByName('input', 'email'))->setValue($email);
+        $this->find('xpath', FrontendXpathBuilder::getElementXpathByName('input', 'password'))->setValue($password);
+
+        $submitButtonXpath = FrontendXpathBuilder::create()
+            ->child('button', ['~class' => 'register--login-btn'])
+            ->contains('Anmelden')
+            ->getXpath();
+
+        $button = $this->find('xpath', $submitButtonXpath);
+        $button->submit();
     }
 
     /**
@@ -64,7 +73,8 @@ class Account extends ContextAwarePage implements HelperSelectorInterface
      */
     public function logout()
     {
-        $this->getDriver()->visit('/account/logout');
+        $this->open();
+        $this->getDriver()->visit($this->getDriver()->getCurrentUrl() . '/logout');
     }
 
     /**

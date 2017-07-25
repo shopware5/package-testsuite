@@ -20,7 +20,8 @@ Feature: I can manage my orders with the backend order module
     When I change the order status to "Komplett abgeschlossen"
     And I change the payment status to "Komplett bezahlt"
     And I click the "Speichern" Button
-    And I click on the "Status History" tab
+    Then I should be able to send a notification to the customer
+    When I click on the "Status History" tab
     And I reload the status history
     Then I should see "Komplett abgeschlossen" eventually
     And I should see "Komplett bezahlt" eventually
@@ -29,9 +30,6 @@ Feature: I can manage my orders with the backend order module
     When I click on the "Dokumente" tab
     And I click the "Dokument erstellen" Button
     Then I should eventually see a generated invoice
-
-    When I click the email icon on the last generated document
-    Then I should see "E-Mail an den Kunden senden" eventually
 
   @shopware53
   Scenario: I can filter and sort orders in the backend

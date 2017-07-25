@@ -58,6 +58,21 @@ class OrderModule extends BackendModule
     }
 
     /**
+     * Send a notification email to the customer using the email window opened after saving after a status history change
+     */
+    public function sendCustomerNotificationMail()
+    {
+        $this->waitForText("E-Mail an den Kunden senden");
+
+        $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel('E-Mail senden');
+        $this->waitForSelectorPresent('xpath', $buttonXpath);
+        $button = $this->find('xpath', $buttonXpath);
+        $button->click();
+
+        sleep(4);
+    }
+
+    /**
      * Reload the status history tab
      */
     public function reloadStatusHistory()

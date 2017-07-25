@@ -21,16 +21,8 @@ class BackendLogin extends ContextAwarePage
     {
         $this->open();
 
-        // Are we already logged in?
-        if ($this->waitIfThereIsText('Marketing', 5)) {
-            return;
-        }
-
-        // Fill and submit login form
         $this->find('xpath', "//input[@name='username']")->setValue($user);
         $this->find('xpath', "//input[@name='password']")->setValue($password);
         $this->find('xpath', "//button[@data-action='login']")->click();
-
-        $this->waitForText('Marketing');
     }
 }

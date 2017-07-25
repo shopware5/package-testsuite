@@ -14,14 +14,17 @@ class FrontendAccountContext extends SubContext
     public function iRegisterMyself(TableNode $table)
     {
         $data = $table->getHash();
+
         /** @var Account $page */
         $page = $this->getPage('Account');
         $page->open();
-        $alreadyLoggedIn = $this->waitIfThereIsText("Willkommen");
-        if ($alreadyLoggedIn) {
+
+        // Already logged in
+        if ($this->waitIfThereIsText("Willkommen")) {
             $page->logout();
             $this->waitForTextNotPresent("Willkommen");
         }
+
         $page->open();
         $page->register($data);
     }
