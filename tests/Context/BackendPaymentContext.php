@@ -14,6 +14,10 @@ class BackendPaymentContext extends SubContext
      */
     public function theFollowingPaymentMethodsAreActivated(TableNode $table)
     {
+        /** @var BackendLogin $backendPage */
+        $backendPage = $this->getPage('BackendLogin');
+        $backendPage->login();
+
         /** @var PaymentModule $page */
         $page = $this->getPage('PaymentModule');
 

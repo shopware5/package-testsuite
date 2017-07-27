@@ -63,7 +63,9 @@ class CheckoutConfirm extends ContextAwarePage implements HelperSelectorInterfac
     {
         $this->open();
         $this->checkField('sAGB');
-        $this->findButton('Zahlungspflichtig bestellen')->click();
+        $button = $this->findButton('Zahlungspflichtig bestellen');
+        $button->focus();
+        $button->click();
     }
 
     /**

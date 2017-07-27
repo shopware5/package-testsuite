@@ -19,6 +19,7 @@ class PaymentModule extends BackendModule
      */
     public function activatePaymentMethod($name)
     {
+        $this->open();
         $page = $this->getPage('PaymentModule');
         $window = $this->getModuleWindow();
 
