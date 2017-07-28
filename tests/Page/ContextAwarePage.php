@@ -215,10 +215,11 @@ class ContextAwarePage extends Page
      * Checks via spin function if a locator is invisible on page, with sleep at the beginning (default 2)
      * @param string $selector css, xpath...
      * @param string $locator
-     * @throws \Exception
+     * @param int $wait
      */
-    protected function waitForSelectorInvisible($selector, $locator)
+    protected function waitForSelectorInvisible($selector, $locator, $wait = 2)
     {
+        sleep(2);
         $this->spin(function (ContextAwarePage $context) use ($selector, $locator) {
             /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
