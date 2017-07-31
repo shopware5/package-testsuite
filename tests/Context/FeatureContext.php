@@ -2,7 +2,6 @@
 
 namespace Shopware\Context;
 
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 
 class FeatureContext extends SubContext
@@ -10,9 +9,9 @@ class FeatureContext extends SubContext
     /**
      * Maximize browser window before execution
      *
-     * @BeforeStep
+     * @BeforeScenario
      */
-    public function onBeforeStep()
+    public function onBeforeScenario()
     {
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof Selenium2Driver) {
