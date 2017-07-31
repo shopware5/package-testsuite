@@ -14,6 +14,7 @@ class GeneralContext extends SubContext
     public static function onAfterFeature()
     {
         self::cleanDatabase();
+        self::clearCache();
     }
 
     /**
@@ -27,8 +28,9 @@ class GeneralContext extends SubContext
     {
         $tags = $scope->getScenario()->getTags();
 
-        if(in_array('isolated', $tags)) {
+        if (in_array('isolated', $tags)) {
             self::cleanDatabase();
+            self::clearCache();
         }
     }
 
@@ -46,6 +48,16 @@ class GeneralContext extends SubContext
 
         echo "Resetting database to clean state..." . PHP_EOL;
         passthru(sprintf('mysql -u shopware -pshopware -h mysql shopware < %s', $dbDumpFile));
+    }
+
+    /**
+     * Helper method that clears the shopware cache
+     */
+    private static function clearCache()
+    {
+        echo "Clearing Shopware cache..." . PHP_EOL;
+        $swConsole = getenv('base_path') . '/bin/console';
+        shell_exec('php ' . $swConsole . ' sw:cache:clear');
     }
 
     /**

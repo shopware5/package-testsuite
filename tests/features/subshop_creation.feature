@@ -1,4 +1,4 @@
-@javascript @subshop @knownFailing
+@javascript @subshop
 Feature: I can create and access a subshop
 
   Background:
@@ -40,3 +40,6 @@ Feature: I can create and access a subshop
 
     Then I should be able to access the subshop via using "http://shopware-subshop-01.test"
     And I should see "Subshop-Unterkategorie" eventually
+
+    Then I should be able to access the subshop via using "http://shopware.test/"
+    And I should see "Newsletter" eventually
