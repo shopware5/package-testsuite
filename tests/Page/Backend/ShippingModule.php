@@ -192,7 +192,7 @@ class ShippingModule extends BackendModule
     private function clickAddShippingMethodButton()
     {
         $buttonXpath = '//button[@data-action="addShipping"]';
-        $this->waitForSelectorPresent('xpath', $buttonXpath, 3);
+        $this->waitForSelectorPresent('xpath', $buttonXpath, 7);
         $this->find('xpath', $buttonXpath)->click();
     }
 
