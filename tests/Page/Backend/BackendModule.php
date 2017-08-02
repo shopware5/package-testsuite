@@ -9,6 +9,70 @@ use Shopware\Page\ContextAwarePage;
 class BackendModule extends ContextAwarePage
 {
     /**
+     * @var string
+     */
+    protected $moduleWindowTitle = '';
+
+    /**
+     * @var string
+     */
+    protected $editorWindowTitle = '';
+
+    /**
+     * Fill a standard ExtJs form with data
+     *
+     * The $formParent should be a NodeElement that can act as a scoped parent for this method, such
+     * as the parent ExtJs window. $formElements needs to be an associative array containing the following
+     * keys:
+     *
+     * - label (required)    - The *exact* label of the form element
+     * - value (required)    - The value this field is supposed to hold
+     * - type (required)     - The type of input field; possible values are 'input', 'combobox', 'checkbox',
+     *                         'textarea'
+     * - fieldset (optional) - You can scope a single form element further by providing the parenting fieldset
+     *
+     * @param NodeElement $formParent
+     * @param array $formElements
+     */
+    public function fillExtJsForm(NodeElement $formParent, array $formElements)
+    {
+        foreach ($formElements as $element) {
+
+            // Change scope to fieldset if specified
+            $parent = isset($element['fieldset'])
+                ? $formParent->find('xpath', BackendXpathBuilder::getFieldsetXpathByLabel($element['fieldset']))
+                : $formParent;
+
+            switch ($element['type']) {
+                case 'input':
+                    $input = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
+                    if(!$input) {
+                        throw new \Exception('Could not find input element by label ' . $element['label']);
+                    }
+                    $this->fillInput($input, $element['value']);
+                    break;
+                case 'combobox':
+                    $combobox = $parent->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($element['label']));
+                    $this->fillCombobox($combobox, $element['value']);
+                    break;
+                case 'checkbox':
+                    $checkbox = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
+                    $this->toggleCheckbox($checkbox);
+                    break;
+                case 'textarea':
+                    $textarea = $parent->find('xpath',
+                        BackendXpathBuilder::getFormElementXpathByLabel($element['label'], 'textarea'));
+                    $this->fillInput($textarea, $element['value']);
+                    break;
+                case 'selecttree':
+                    $selecttree = $parent->find('xpath',
+                        BackendXpathBuilder::getSelectorPebbleXpathByLabel($element['label']));
+                    $this->fillSelecttree($selecttree, $element['value']);
+            }
+        }
+    }
+
+    /**
      * Helper method that fills an extJS input field
      *
      * @param NodeElement $input
@@ -49,7 +113,7 @@ class BackendModule extends ContextAwarePage
         $pebble->click();
 
         $dropdownsXpath = BackendXpathBuilder::create()->child('div', ['~class' => 'x-boundlist'])->getXpath();
-        $this->waitForSelectorPresent('xpath', $dropdownsXpath);
+        $this->waitForSelectorPresent('xpath', $dropdownsXpath, 5);
 
         $dropdowns = $this->findAll('xpath', $dropdownsXpath);
         /** @var NodeElement $dropdown */
@@ -93,54 +157,39 @@ class BackendModule extends ContextAwarePage
     }
 
     /**
-     * Fill a standard ExtJs form with data
+     * Helper method that returns the current module window
      *
-     * The $formParent should be a NodeElement that can act as a scoped parent for this method, such
-     * as the parent ExtJs window. $formElements needs to be an associative array containing the following
-     * keys:
-     *
-     * - label (required)    - The *exact* label of the form element
-     * - value (required)    - The value this field is supposed to hold
-     * - type (required)     - The type of input field; possible values are 'input', 'combobox', 'checkbox',
-     *                         'textarea'
-     * - fieldset (optional) - You can scope a single form element further by providing the parenting fieldset
-     *
-     * @param NodeElement $formParent
-     * @param array $formElements
+     * @param bool $exactMatch
+     * @return NodeElement|null
      */
-    public function fillExtJsForm(NodeElement $formParent, array $formElements)
+    protected function getModuleWindow($exactMatch = true)
     {
-        foreach ($formElements as $element) {
+        return $this->getWindowByTitle($this->moduleWindowTitle, $exactMatch);
+    }
 
-            // Change scope to fieldset if specified
-            $parent = isset($element['fieldset'])
-                ? $formParent->find('xpath', BackendXpathBuilder::getFieldsetXpathByLabel($element['fieldset']))
-                : $formParent;
+    /**
+     * Helper method that returns the current editor window
+     *
+     * @param bool $exactMatch
+     * @return NodeElement|null
+     */
+    protected function getEditorWindow($exactMatch = true)
+    {
+        return $this->getWindowByTitle($this->editorWindowTitle, $exactMatch);
+    }
 
-            switch ($element['type']) {
-                case 'input':
-                    $input = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
-                    $this->fillInput($input, $element['value']);
-                    break;
-                case 'combobox':
-                    $combobox = $parent->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($element['label']));
-                    $this->fillCombobox($combobox, $element['value']);
-                    break;
-                case 'checkbox':
-                    $checkbox = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
-                    $this->toggleCheckbox($checkbox);
-                    break;
-                case 'textarea':
-                    $textarea = $parent->find('xpath',
-                        BackendXpathBuilder::getFormElementXpathByLabel($element['label'], 'textarea'));
-                    $this->fillInput($textarea, $element['value']);
-                    break;
-                case 'selecttree':
-                    $selecttree = $parent->find('xpath',
-                        BackendXpathBuilder::getSelectorPebbleXpathByLabel($element['label']));
-                    $this->fillSelecttree($selecttree, $element['value']);
-            }
-        }
+    /**
+     * Helper method that returns the node element of an ExtJS window by it's title
+     *
+     * @param $title
+     * @param bool $exactMatch
+     * @return NodeElement|null
+     */
+    private function getWindowByTitle($title, $exactMatch)
+    {
+        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($title, $exactMatch);
+        $this->waitForSelectorPresent('xpath', $windowXpath);
+        return $this->find('xpath', $windowXpath);
     }
 
     /**

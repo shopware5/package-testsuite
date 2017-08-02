@@ -23,6 +23,48 @@ Feature: I can buy products using the store frontend
       | b2b.customer@shopware.ch.test     | shopware | H     | CH      |
 
 
+      # Tested functionality:
+  #   - Adding products to cart
+  #   - Free shipping methods (min value based)
+  #   - Creating shipping methods in the backend
+  #   - Basic cart calculation
+  #
+  @isolated
+  Scenario: My cart can handle free shipping methods
+
+    Given the following shipping options exist:
+      | name                  | costs | calculationType | shippingType        | surchargeCalculation | shippingfree | activePaymentMethods | activeCountries |
+      | Shipping Free from 40 | 3,9   | Preis           | Standard Versandart | Immer berechnen      | 40           | Rechnung, Vorkasse   | Deutschland     |
+
+    And the shipping method "Shipping Free from 40" has the following shipping costs:
+      | from  | to       | costs |
+      | 0     | 40       | 3,9   |
+      | 40,01 | beliebig | 0     |
+
+    And I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
+
+    And the cart contains the following products:
+      | number  | name            | quantity | itemPrice | sum   |
+      | SWT0004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
+
+    And I change my shipping method to "Shipping Free from 40":
+
+    Then the cart should contain 1 articles with a value of "44,99 €"
+    And the aggregations should look like this:
+      | label         | value   |
+      | sum           | 44,99 € |
+      | shipping      | 0,00 €  |
+      | total         | 44,99 € |
+      | sumWithoutVat | 37,81 € |
+
+    When I change my shipping method to "Standard Versand":
+    Then the aggregations should look like this:
+      | label         | value   |
+      | sum           | 44,99 € |
+      | shipping      | 3,90 €  |
+      | total         | 48,89 € |
+      | sumWithoutVat | 41,09 € |
+
   Scenario: I can order a product and pay using SEPA
     Given I am on the page "BackendLogin"
     When I log in with user "demo" and password "demo"
@@ -70,49 +112,6 @@ Feature: I can buy products using the store frontend
   ##
   # Unregistered user puts products in cart and chooses free shipping method
   #
-  # Tested functionality:
-  #   - Adding products to cart
-  #   - Free shipping methods (min value based)
-  #   - Creating shipping methods in the backend
-  #   - Basic cart calculation
-  #
-  @isolated
-  Scenario: My cart can handle free shipping methods
-
-    Given the following shipping options exist:
-      | name                  | costs | calculationType | shippingType        | surchargeCalculation | shippingfree | activePaymentMethods | activeCountries |
-      | Shipping Free from 40 | 3,9   | Preis           | Standard Versandart | Immer berechnen      | 40           | Rechnung, Vorkasse   | Deutschland     |
-
-    And the shipping method "Shipping Free from 40" has the following shipping costs:
-      | from  | to       | costs |
-      | 0     | 40       | 3,9   |
-      | 40,01 | beliebig | 0     |
-
-    And I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
-
-    And the cart contains the following products:
-      | number  | name            | quantity | itemPrice | sum   |
-      | SWT0004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
-
-    And I change my shipping method to "Shipping Free from 40":
-
-    Then the cart should contain 1 articles with a value of "44,99 €"
-    And the aggregations should look like this:
-      | label         | value   |
-      | sum           | 44,99 € |
-      | shipping      | 0,00 €  |
-      | total         | 44,99 € |
-      | sumWithoutVat | 37,81 € |
-
-    When I change my shipping method to "Standard Versand":
-    Then the aggregations should look like this:
-      | label         | value   |
-      | sum           | 44,99 € |
-      | shipping      | 3,90 €  |
-      | total         | 48,89 € |
-      | sumWithoutVat | 41,09 € |
-
-    Then I delete the shipping method "Shipping Free from 40"
 
   ##
   # New user registers, adds products to cart and completes checkout

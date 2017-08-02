@@ -1,4 +1,4 @@
-@javascript @frontend
+@javascript @frontend @voucher
 Feature:
 
   Background:
@@ -11,7 +11,7 @@ Feature:
     Then I should see "Hinzufügen" eventually
 
     ## Create a new voucher
-    When I click the "Hinzufügen" Button
+    When I click the "Hinzufügen" button
     Then I should see "Gutschein-Konfiguration" eventually
 
     When I fill out the voucher form:
@@ -22,7 +22,7 @@ Feature:
       | Code:          | PLYM17                  | input |
       | Wert:          | 4,55                    | input |
 
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     And I am on the page "VoucherModule"
     Then I should see "Absoluter Testgutschein" eventually
 
@@ -34,7 +34,7 @@ Feature:
       | label         | value                         | type  |
       | Beschreibung: | Neuer Absoluter Testgutschein | input |
       | Wert:         | 5,46                          | input |
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     And I am on the page "VoucherModule"
     Then I should see "Neuer Absoluter Testgutschein" eventually
 
@@ -70,7 +70,7 @@ Feature:
       | Abzug:        | Prozentual                    | combobox |
       | Wert:         | 10                            | input    |
       | Code:         | PLYM18                        | input    |
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     And I am on the page "VoucherModule"
     Then I should see "Neuer Relativer Testgutschein" eventually
 
@@ -90,13 +90,13 @@ Feature:
     ## Delete the voucher
     Given I am on the page "VoucherModule"
     And I click the delete icon on the voucher named "Neuer Relativer Testgutschein"
-    And I click the "Ja" Button
+    And I click the "Ja" button
 
   Scenario: I can create and use vouchers with individual codes
     Given I am on the page "BackendLogin"
     And I log in with user "demo" and password "demo"
     And I am on the page "VoucherModule"
-    And I click the "Hinzufügen" Button
+    And I click the "Hinzufügen" button
     Then I should see "Gutschein-Konfiguration" eventually
 
     When I fill out the voucher form:
@@ -106,8 +106,8 @@ Feature:
       | Mindestumsatz:       | 10                                | input    |
       | Wert:                | 5                                 | input    |
       | Bestellnummer:       | PLYM19                            | input    |
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     And I wait for 2 seconds
     And I click on the "Individuelle Gutscheincodes" tab
-    And I click the "Neue Codes generieren" Button
+    And I click the "Neue Codes generieren" button
     Then I should see "Nein" eventually

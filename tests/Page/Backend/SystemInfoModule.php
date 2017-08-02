@@ -7,15 +7,18 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class SystemInfoModule extends BackendModule
 {
+    /** @var string */
+    protected $moduleWindowTitle = 'System-Informationen';
+
     /**
      * Checks if all requirements are fulfilled
      *
      * @param string $item The requirement which should be checked
-     * @param bool $shouldBeOK Determines if the requirement should be met or not
+     * @param bool $expectedStatus Determines if the requirement should be met or not
      **/
-    public function checkRequirements($item, $shouldBeOK)
+    public function checkRequirements($item, $expectedStatus)
     {
-        if ($shouldBeOK) {
+        if ($expectedStatus) {
             $this->checkStatus($item, 'sprite-tick');
         } else {
             $this->checkStatus($item, 'sprite-cross');
@@ -51,23 +54,10 @@ class SystemInfoModule extends BackendModule
     {
         $window = $this->getModuleWindow();
         $gridXPath = BackendXpathBuilder::create()
-            ->child('div', ['~text' => $item])
+            ->child('div', ['@text' => $item])
             ->ancestor('table', [], 1)
             ->getXpath();
 
         return $window->find('xpath', $gridXPath);
-    }
-
-    /**
-     * Helper method that returns the module window
-     *
-     * @return NodeElement|null
-     */
-    private function getModuleWindow()
-    {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('System-Informationen');
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-
-        return $this->find('xpath', $windowXpath);
     }
 }

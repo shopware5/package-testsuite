@@ -154,17 +154,4 @@ class FrontendCheckoutContext extends SubContext
 
         $page->logout();
     }
-
-    /**
-     * @Then /^I delete the shipping method "([^"]*)"$/
-     * @param string $shippingMethod
-     */
-    public function iDeleteTheShippingMethod($shippingMethod)
-    {
-        /** @var ShippingModule $page */
-        $page = $this->getPage('ShippingModule');
-        $page->open();
-
-        $page->deleteShippingMethod($shippingMethod);
-    }
 }

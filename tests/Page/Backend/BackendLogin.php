@@ -43,8 +43,6 @@ class BackendLogin extends ContextAwarePage
         $button->focus();
         $button->click();
 
-        //$this->getDriver()->executeScript("document.getElementsByName('username')[0].value = '" . $user . "'; document.getElementsByName('password')[0].value = '" . $password . "';document.querySelectorAll(\"[data-action='login']\")[0].click();");
-
         $this->waitForText('Marketing', 5);
     }
 }

@@ -21,7 +21,7 @@ Feature: I can create and access a subshop
     Then I should see "Shops" eventually
     When I click the "Shops" settings element
     Then I should see "Hinzufügen" eventually
-    When I click the "Hinzufügen" Button
+    When I click the "Hinzufügen" button
 
     And I fill in and submit the "Details" configuration form:
       | label                | value                    | type       |
@@ -41,5 +41,5 @@ Feature: I can create and access a subshop
     Then I should be able to access the subshop via using "http://shopware-subshop-01.test"
     And I should see "Subshop-Unterkategorie" eventually
 
-    Then I should be able to access the subshop via using "http://shopware.test/"
+    Then I should be able to access the shop via using "http://shopware.test/"
     And I should see "Newsletter" eventually

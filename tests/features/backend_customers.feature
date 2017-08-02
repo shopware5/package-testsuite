@@ -1,4 +1,4 @@
-@javascript @backend
+@javascript @backend @customers
 Feature: I can manage my customers with the backend customer module
 
   Background:
@@ -15,7 +15,7 @@ Feature: I can manage my customers with the backend customer module
     And I should see "Hinzufügen" eventually
 
     ## Creating a new customer
-    When I click the "Hinzufügen" Button
+    When I click the "Hinzufügen" button
     Then I should see "Kunden-Administration" eventually
 
     When I fill out the new customer form:
@@ -37,7 +37,7 @@ Feature: I can manage my customers with the backend customer module
       | Land:                 | Großbritannien  | combobox   | Adressdaten       |
       | Aktuelle Zahlungsart: | Vorkasse        | paymentbox | Zahlungsdaten     |
 
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     Then I should see "Pep" eventually
 
     ## Editing the newly created user
@@ -49,7 +49,7 @@ Feature: I can manage my customers with the backend customer module
       | Vorname:  | David | input | Persönliche Daten |
       | Nachname: | Bowie | input | Persönliche Daten |
 
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     Then I should see "David" eventually
     And I should see "Bowie" eventually
 
@@ -57,5 +57,5 @@ Feature: I can manage my customers with the backend customer module
     When I click the delete icon on customer "David"
     Then I should see "Sind Sie sicher, dass" eventually
 
-    When I click the "Ja" Button
+    When I click the "Ja" button
     Then I should eventually not see "David"

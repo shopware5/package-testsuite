@@ -12,6 +12,9 @@ class PaymentModule extends BackendModule
      */
     protected $path = '/backend/?app=Payment';
 
+    /** @var string */
+    protected $moduleWindowTitle = 'Zahlungsarten';
+
     /**
      * Activate a given payment method
      *
@@ -52,22 +55,5 @@ class PaymentModule extends BackendModule
         $saveButton->click();
 
         $this->waitForText('Zahlungsart gespeichert', 1);
-    }
-
-    /**
-     * Helper method that returns the payment module window
-     *
-     * @return NodeElement|null
-     */
-    private function getModuleWindow()
-    {
-        /** @var PaymentModule $page */
-        $page = $this->getPage('PaymentModule');
-        $page->open();
-        $this->waitForText('Zahlungsarten');
-
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Zahlungsarten');
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-        return $page->find('xpath', $windowXpath);
     }
 }

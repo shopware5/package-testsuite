@@ -1,4 +1,4 @@
-@javascript @checkout @frontend
+@javascript @checkout @frontend @guestorder
 Feature: I can buy products using the store frontend
 
   Background:
@@ -37,9 +37,6 @@ Feature: I can buy products using the store frontend
     And I click on "Weiter"
     And I change my shipping method to "<shippingMethod>"
     And I change my payment method to "<paymentMethod>"
-
-    #And I click on payment method "<paymentMethod>"
-    #And I click on shipping method "<shippingMethod>"
 
     Then the aggregations should look like this:
       | label         | value               |

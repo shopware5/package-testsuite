@@ -2,7 +2,10 @@
 
 namespace Shopware\Context;
 
+use Behat\Gherkin\Node\TableNode;
+use PHPUnit_Framework_Assert;
 use Shopware\Page\Backend\OrderModule;
+use Smalot\PdfParser\Parser;
 
 class BackendOrderContext extends SubContext
 {
@@ -18,8 +21,9 @@ class BackendOrderContext extends SubContext
     }
 
     /**
-     * @When I change the :statustype status to :status
-     * @param $status
+     * @When I change the :type status to :status
+     * @param string $type
+     * @param string $status
      */
     public function iChangeTheOrderOrPaymentStatusTo($type, $status)
     {
@@ -118,5 +122,62 @@ class BackendOrderContext extends SubContext
         /** @var OrderModule $page */
         $page = $this->getPage('OrderModule');
         $page->sendCustomerNotificationMail();
+    }
+
+    /**
+     * @Given the invoice should contain the following:
+     * @param TableNode $content
+     * @throws \Exception
+     */
+    public function theInvoiceShouldContain(TableNode $content)
+    {
+        $documentsPath = $this->getDocumentsDirectory();
+
+        $documents = glob($documentsPath . '/*.pdf');
+        switch (count($documents)) {
+            case 0:
+                throw new \Exception('Could not find generated PDF document.');
+            case 1:
+                break;
+            default:
+                echo "Warning - more than one document found. Is the test running on a clean SW installation?";
+        }
+
+        $pdfContent = $this->getPdfTextContent($documents[0]);
+
+        foreach ($content->getHash() as $expectedString) {
+            PHPUnit_Framework_Assert::assertContains($expectedString['content'], $pdfContent);
+        }
+
+        unlink($documents[0]);
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    private function getDocumentsDirectory()
+    {
+        $documentsPath = getenv('base_path') . '/files/documents';
+
+        if (!is_dir($documentsPath)) {
+            throw new \Exception('Could not open document directory at ' . $documentsPath);
+        }
+
+        return $documentsPath;
+    }
+
+    /**
+     * @param string $filepath
+     * @return string
+     * @throws \Exception
+     */
+    private function getPdfTextContent($filepath)
+    {
+        if (!is_file($filepath)) {
+            throw new \Exception('Could not open file ' . $filepath);
+        }
+
+        return (new Parser())->parseFile($filepath)->getText();
     }
 }

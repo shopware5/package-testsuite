@@ -2,11 +2,16 @@
 
 namespace Shopware\Page\Backend;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ProductExportModule extends BackendModule
 {
+    /** @var string */
+    protected $moduleWindowTitle = 'Produktexporte';
+
+    /** @var string  */
+    protected $editorWindowTitle = 'Feed - Konfiguration';
+
     /**
      * Fills in and submits the configuration form
      *
@@ -14,7 +19,7 @@ class ProductExportModule extends BackendModule
      */
     public function fillConfigurationForm($formData)
     {
-        $editor = $this->getEditorWindow();
+        $editor = $this->getEditorWindow(false);
         $this->fillExtJsForm($editor, $formData);
     }
 
@@ -25,7 +30,7 @@ class ProductExportModule extends BackendModule
      */
     public function enterTemplate($template)
     {
-        $editor = $this->getEditorWindow();
+        $editor = $this->getEditorWindow(false);
 
         $templateAreaXpath = BackendXpathBuilder::create()->child('div', ['~class' => 'cm-s-default'])->getXpath();
         $textareaXpath = BackendXpathBuilder::create()->reset()->descendant('textarea', [], 1)->getXpath();
@@ -94,29 +99,5 @@ class ProductExportModule extends BackendModule
             $this->waitForText($product['price']);
             $this->waitForText($product['supplier']);
         }
-    }
-
-    /**
-     * Get editor window
-     *
-     * @return NodeElement
-     */
-    private function getEditorWindow()
-    {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Feed - Konfiguration', false);
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-        return $this->find('xpath', $windowXpath);
-    }
-
-    /**
-     * Get module window
-     *
-     * @return NodeElement
-     */
-    private function getModuleWindow()
-    {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Produktexporte', false);
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-        return $this->find('xpath', $windowXpath);
     }
 }

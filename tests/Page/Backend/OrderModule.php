@@ -13,6 +13,16 @@ class OrderModule extends BackendModule
     protected $path = '/backend/?app=Order';
 
     /**
+     * @var string
+     */
+    protected $moduleWindowTitle = 'Bestellungen';
+
+    /**
+     * @var string
+     */
+    protected $editorWindowTitle = 'Bestellungs-Details:';
+
+    /**
      * Open an order by email
      *
      * @param string $email
@@ -77,7 +87,7 @@ class OrderModule extends BackendModule
      */
     public function reloadStatusHistory()
     {
-        $window = $this->getEditorWindow();
+        $window = $this->getEditorWindow(false);
 
         $loadingButtonXpath = BackendXpathBuilder::create()
             ->child('div', ['~class' => 'x-order-history-grid'])
@@ -167,30 +177,6 @@ class OrderModule extends BackendModule
     }
 
     /**
-     * Helper method that returns the orders module window
-     *
-     * @return NodeElement|null
-     */
-    private function getModuleWindow()
-    {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Bestellungen');
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-        return $this->find('xpath', $windowXpath);
-    }
-
-    /**
-     * Helper method that returns the order editor window
-     *
-     * @return NodeElement|null
-     */
-    private function getEditorWindow()
-    {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Bestellungs-Details:', false);
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-        return $this->find('xpath', $windowXpath);
-    }
-
-    /**
      * Get the latest generated document grid row
      *
      * @return NodeElement|null
@@ -204,6 +190,6 @@ class OrderModule extends BackendModule
 
         $this->waitForSelectorPresent('xpath', $tableRowXpath);
 
-        return $this->getEditorWindow()->find('xpath', $tableRowXpath);
+        return $this->getEditorWindow(false)->find('xpath', $tableRowXpath);
     }
 }

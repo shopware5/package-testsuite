@@ -1,4 +1,4 @@
-@javascript @backend
+@javascript @backend @orders
 Feature: I can manage my orders with the backend order module
 
   @isolated
@@ -19,7 +19,7 @@ Feature: I can manage my orders with the backend order module
     ## Order status change
     When I change the order status to "Komplett abgeschlossen"
     And I change the payment status to "Komplett bezahlt"
-    And I click the "Speichern" Button
+    And I click the "Speichern" button
     Then I should be able to send a notification to the customer
     When I click on the "Status History" tab
     And I reload the status history
@@ -28,8 +28,14 @@ Feature: I can manage my orders with the backend order module
 
     ## Document creation
     When I click on the "Dokumente" tab
-    And I click the "Dokument erstellen" Button
+    And I click the "Dokument erstellen" button
     Then I should eventually see a generated invoice
+    And the invoice should contain the following:
+      | content                               |
+      | Gewählte Zahlungsart: Vorkasse        |
+      | Gewählte Versandart: Standard Versand |
+      | Gesamtkosten Netto: 18,47 €           |
+      | Gesamtkosten: 21,98 €                 |
 
   @shopware53
   Scenario: I can filter and sort orders in the backend
@@ -45,10 +51,10 @@ Feature: I can manage my orders with the backend order module
     When I filter the backend order list for shipping country "Deutschland"
     Then I should see exactly 1 order in the order list
 
-    When I click the "Zurücksetzen" Button
+    When I click the "Zurücksetzen" button
     And I filter the backend order list for shipping country "Großbritannien"
     Then I should see exactly 1 order in the order list
 
-    When I click the "Zurücksetzen" Button
+    When I click the "Zurücksetzen" button
     And I sort the backend order list by order value ascendingly
     Then I should see the order from "order.test@shopware.de.test" at the top of the order list

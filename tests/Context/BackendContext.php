@@ -82,7 +82,7 @@ class BackendContext extends SubContext
     }
 
     /**
-     * @When I click the :label Button
+     * @When I click the :label button
      * @param string $label
      */
     public function clickButtonByLabel($label)

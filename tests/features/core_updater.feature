@@ -48,15 +48,3 @@ Feature: I can start and complete the update process
 
     When I should see "Die Aktualisierung wurde erfolgreich abgeschlossen." eventually
     Then I should see the reminder "Ihr Shop befindet sich zurzeit im Wartungsmodus." to remove the update-assets folder
-
-
-
-
-
-
-
-
-
-
-
-

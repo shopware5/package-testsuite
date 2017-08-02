@@ -12,6 +12,12 @@ class ShippingModule extends BackendModule
      */
     protected $path = '/backend/?app=Shipping';
 
+    /** @var string */
+    protected $moduleWindowTitle = 'Versandkosten Verwaltung';
+
+    /** @var string */
+    protected $editorWindowTitle = 'Versandkosten';
+
     /**
      * Create a new shipping method from the details provided.
      *
@@ -28,47 +34,28 @@ class ShippingModule extends BackendModule
         $this->clickAddShippingMethodButton();
         $editor = $this->getEditorWindow();
 
-        $configFormData = [
-            ['label' => 'Name:', 'value' => $shipping['name'], 'type' => 'input'],
-            [
-                'label' => 'Versandkosten-Berechnung nach:',
-                'value' => $shipping['calculationType'],
-                'type' => 'combobox',
-            ],
-            ['label' => 'Versandart-Typ:', 'value' => $shipping['shippingType'], 'type' => 'combobox'],
-            ['label' => 'Zahlungsart-Aufschlag:', 'value' => $shipping['surchargeCalculation'], 'type' => 'combobox'],
-            ['label' => 'Aktiv:', 'value' => true, 'type' => 'checkbox'],
-        ];
+        $configFormData = $this->buildShippingConfigFormData($shipping);
         $this->fillExtJsForm($editor, $configFormData);
 
         // Fill shipping cost cell
-        $costCellXpath = BackendXpathBuilder::create()
-            ->child('tr', ['~class' => 'x-grid-row'], 1)
-            ->descendant('div', ['~class' => 'x-grid-cell-inner'], 3)
-            ->getXpath();
-        $costCell = $editor->find('xpath', $costCellXpath);
+        $costCell = $this->getShippingCostCell($editor);
         $this->fillCell($costCell, $shipping['costs']);
 
         // Set optional shipping free limit
         if (array_key_exists('shippingfree', $shipping)) {
-            $shippingFreeInputXpath = BackendXpathBuilder::getInputXpathByLabel('Versandkosten frei ab:');
-            $shippingFreeInput = $editor->find('xpath', $shippingFreeInputXpath);
+            $shippingFreeInput = $this->getShippingFreeInput($editor);
             $this->fillInput($shippingFreeInput, $shipping['shippingfree']);
         }
 
         // Activate payment methods if configured
         if (array_key_exists('activePaymentMethods', $shipping)) {
-            $paymentMethods = strpos($shipping['activePaymentMethods'], ',')
-                ? explode(', ', $shipping['activePaymentMethods'])
-                : [$shipping['activePaymentMethods']];
+            $paymentMethods = $this->extractPaymentMethodsToActivate($shipping);
             $this->activatePaymentMethods($editor, $paymentMethods);
         }
 
         // Activate countries if configured
         if (array_key_exists('activeCountries', $shipping)) {
-            $countries = strpos($shipping['activeCountries'], ',')
-                ? explode(', ', $shipping['activeCountries'])
-                : [$shipping['activeCountries']];
+            $countries = $this->extractShippingCountriesToActivate($shipping);
             $this->activateCountries($editor, $countries);
         }
 
@@ -93,9 +80,9 @@ class ShippingModule extends BackendModule
         $this->waitForSelectorPresent('xpath', $deleteButtonXpath);
         $this->find('xpath', $deleteButtonXpath)->click();
 
-        $confirmButton = $this->find('xpath',
-            BackendXpathBuilder::create()->child('button', ['~text' => 'Ja'])->getXpath());
-        $confirmButton->click();
+        $confirmButtonXpath = BackendXpathBuilder::create()->child('button', ['@text' => 'Ja'])->getXpath();
+        $this->waitForSelectorPresent('xpath', $confirmButtonXpath);
+        $this->find('xpath', $confirmButtonXpath)->click();
     }
 
     /**
@@ -161,29 +148,6 @@ class ShippingModule extends BackendModule
                 $this->fillCell($cell, $columnValue);
             }
         }
-    }
-
-    /**
-     * Helper method to get shipping module window
-     *
-     * @return NodeElement|null
-     */
-    private function getModuleWindow()
-    {
-        $this->waitForText('Versandkosten Verwaltung');
-        return $this->find('xpath', BackendXpathBuilder::getWindowXpathByTitle('Versandkosten Verwaltung'));
-    }
-
-    /**
-     * Helper method that returns the shipping module editor window (if it is opened)
-     *
-     * @return NodeElement|null
-     */
-    private function getEditorWindow()
-    {
-        $editorXpath = BackendXpathBuilder::getWindowXpathByTitle('Versandkosten');
-        $this->waitForSelectorPresent('xpath', $editorXpath);
-        return $this->find('xpath', $editorXpath);
     }
 
     /**
@@ -280,5 +244,73 @@ class ShippingModule extends BackendModule
         $cell->doubleClick();
         $focusedInput = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getFocusedElementXpath());
         $this->fillInput($focusedInput, $columnValue);
+    }
+
+    /**
+     * @param array $shipping
+     * @return array
+     */
+    private function buildShippingConfigFormData(array $shipping)
+    {
+        return [
+            ['label' => 'Name:', 'value' => $shipping['name'], 'type' => 'input'],
+            [
+                'label' => 'Versandkosten-Berechnung nach:',
+                'value' => $shipping['calculationType'],
+                'type' => 'combobox',
+            ],
+            ['label' => 'Versandart-Typ:', 'value' => $shipping['shippingType'], 'type' => 'combobox'],
+            ['label' => 'Zahlungsart-Aufschlag:', 'value' => $shipping['surchargeCalculation'], 'type' => 'combobox'],
+            ['label' => 'Aktiv:', 'value' => true, 'type' => 'checkbox'],
+        ];
+    }
+
+    /**
+     * @param NodeElement $editor
+     * @return NodeElement
+     */
+    private function getShippingCostCell(NodeElement $editor)
+    {
+        $costCellXpath = BackendXpathBuilder::create()
+            ->child('tr', ['~class' => 'x-grid-row'], 1)
+            ->descendant('div', ['~class' => 'x-grid-cell-inner'], 3)
+            ->getXpath();
+        $costCell = $editor->find('xpath', $costCellXpath);
+        return $costCell;
+    }
+
+    /**
+     * @param NodeElement $editor
+     * @return NodeElement
+     */
+    private function getShippingFreeInput(NodeElement $editor)
+    {
+        $shippingFreeInputXpath = BackendXpathBuilder::getInputXpathByLabel('Versandkosten frei ab:');
+        $shippingFreeInput = $editor->find('xpath', $shippingFreeInputXpath);
+        return $shippingFreeInput;
+    }
+
+    /**
+     * @param array $shipping
+     * @return array
+     */
+    private function extractPaymentMethodsToActivate(array $shipping)
+    {
+        $paymentMethods = strpos($shipping['activePaymentMethods'], ',')
+            ? explode(', ', $shipping['activePaymentMethods'])
+            : [$shipping['activePaymentMethods']];
+        return $paymentMethods;
+    }
+
+    /**
+     * @param array $shipping
+     * @return array
+     */
+    private function extractShippingCountriesToActivate(array $shipping)
+    {
+        $countries = strpos($shipping['activeCountries'], ',')
+            ? explode(', ', $shipping['activeCountries'])
+            : [$shipping['activeCountries']];
+        return $countries;
     }
 }

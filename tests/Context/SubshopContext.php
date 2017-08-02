@@ -27,6 +27,7 @@ class SubshopContext extends SubContext
 
     /**
      * @Then I should be able to access the subshop via using :url
+     * @Then I should be able to access the shop via using :url
      * @param string $url
      */
     public function iShouldBeAbleToAccessTheSubshopViaUsing($url)
