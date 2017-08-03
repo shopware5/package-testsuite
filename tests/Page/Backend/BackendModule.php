@@ -34,6 +34,7 @@ class BackendModule extends ContextAwarePage
      *
      * @param NodeElement $formParent
      * @param array $formElements
+     * @throws \Exception
      */
     public function fillExtJsForm(NodeElement $formParent, array $formElements)
     {
@@ -155,6 +156,33 @@ class BackendModule extends ContextAwarePage
             $option = $dropdown->find('xpath', $xpath);
             $option->click();
         }
+    }
+
+    /**
+     * Expands a collapsed element
+     *
+     * @param string $label
+     * @param null $fieldset
+     */
+    public function expandCollapsible($label, $fieldset = null)
+    {
+        $builder = new BackendXpathBuilder();
+
+        $collapsibleFieldXpath = $builder
+            ->child('div', ['@text' => $label], 1)
+            ->ancestor('tr', [], 1)
+            ->getXpath();
+
+        if ($fieldset) {
+            /** @var NodeElement $fieldset */
+            $element = $fieldset->find('xpath', $collapsibleFieldXpath);
+        } else {
+            $element = $this->find('xpath', $collapsibleFieldXpath);
+        }
+
+
+        $this->assertNotNull($element, $collapsibleFieldXpath);
+        $element->doubleClick();
     }
 
     /**

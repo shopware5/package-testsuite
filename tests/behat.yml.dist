@@ -45,6 +45,7 @@ default:
                 - Shopware\Context\SubshopContext
                 - Shopware\Context\FileCheckContext
                 - Shopware\Context\ProductExportContext
+                - Shopware\Context\BackendArticleContext
                 - Shopware\Context\BackendCustomerContext
                 - Shopware\Context\BackendPaymentContext
                 - Shopware\Context\BackendVoucherContext
