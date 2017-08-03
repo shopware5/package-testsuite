@@ -17,6 +17,17 @@ class BaseXpathBuilder
     }
 
     /**
+     * Create and return empty Xpath Builder instance
+     *
+     * @param string $xpath
+     * @return BaseXpathBuilder
+     */
+    public static function create($xpath = '/')
+    {
+        return new self($xpath);
+    }
+
+    /**
      * Get built xpath
      *
      * @return string
@@ -38,6 +49,8 @@ class BaseXpathBuilder
 
     /**
      * Explicitly reset the builder to start from anywhere
+     * @param string $xpath
+     * @return $this
      */
     public function reset($xpath = '/')
     {

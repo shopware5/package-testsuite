@@ -1,4 +1,5 @@
 /.php_cs.cache
+/tests/clean_db.sql
 /tests/.env
 /tests/behat.yml
 /tests/vendor/

@@ -17,7 +17,10 @@ class BackendXpathBuilder extends BaseXpathBuilder
     public static function getWindowXpathByTitle($title, $exactMatch = true)
     {
         $prefix = $exactMatch ? '@' : '~';
-        return (new self)->child('span', [$prefix . 'text' => $title])->ancestor('div', ['~class' => 'x-window'], 1)->getXpath();
+        return (new self)
+            ->child('span', [$prefix . 'text' => $title])
+            ->ancestor('div', ['~class' => 'x-window'], 1)
+            ->getXpath();
     }
 
     /**
@@ -37,12 +40,27 @@ class BackendXpathBuilder extends BaseXpathBuilder
     }
 
     /**
+     * Return an Xpath that finds a button by its label
+     *
+     * @param string $label
+     * @return string
+     */
+    public static function getButtonXpathByLabel($label)
+    {
+        return (new self)
+            ->child('span', ['@class' => 'x-btn-inner'])
+            ->contains($label)
+            ->ancestor('button')
+            ->getXpath();
+    }
+
+    /**
      * Shorthand function to get an extJS input field by its label
      *
      * @param string $label
      * @return string
      */
-    public function getInputXpathByLabel($label)
+    public static function getInputXpathByLabel($label)
     {
         return self::getFormElementXpathByLabel($label, 'input');
     }
@@ -53,9 +71,9 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * @param string $label
      * @return string
      */
-    public function getSelectorPebbleXpathByLabel($label)
+    public static function getSelectorPebbleXpathByLabel($label)
     {
-        return $this
+        return (new self)
             ->descendant('label', ['@text' => $label])
             ->ancestor('td', [], 1)
             ->followingSibling('td', [], 1)
@@ -63,14 +81,65 @@ class BackendXpathBuilder extends BaseXpathBuilder
             ->getXpath();
     }
 
-    public function getComboboxXpathByLabel($label)
+    /**
+     * Returns label-specific xpath for a combobox
+     *
+     * @param string $label
+     * @return string
+     */
+    public static function getComboboxXpathByLabel($label)
     {
         $builder = new BackendXpathBuilder();
-        $builder->setXpath($this->getSelectorPebbleXpathByLabel($label));
+        $builder->setXpath(self::getSelectorPebbleXpathByLabel($label));
 
         return $builder
             ->ancestor('tr', [], 2)
             ->getXpath();
+    }
+
+    /**
+     * Return xpath to the currently focused extJs input
+     *
+     * @return string
+     */
+    public static function getFocusedElementXpath()
+    {
+        return (new self)->child('input', ['~class' => 'x-form-focus'])->getXpath();
+    }
+
+    /**
+     * Return xpath to an extJs tab by its label
+     *
+     * @param string $label
+     * @return string
+     */
+    public static function getTabXpathByLabel($label)
+    {
+        return (new self)
+            ->child('span', ['@text' => $label])
+            ->ancestor('div', ['~class' => 'x-tab'], 1)
+            ->getXpath();
+    }
+
+    /**
+     * Return xpath to extJs icon by type
+     *
+     * @param string $type
+     * @return string
+     * @throws \Exception
+     */
+    public static function getIconXpathByType($type)
+    {
+        switch ($type) {
+            case 'edit':
+                return (new self)->child('img', ['~class' => 'sprite-pencil'])->getXpath();
+                break;
+            case 'delete':
+                return (new self)->child('img', ['~class' => 'sprite-minus-circle-frame'])->getXpath();
+                break;
+            default:
+                throw new \Exception('Unknown icon type ' . $type);
+        }
     }
 
     /**
@@ -95,7 +164,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * @param string $selectString
      * @return array
      */
-    public function getSelectTreeElementXpaths($selectString)
+    public static function getSelectTreeElementXpaths($selectString)
     {
         $xpaths = [];
 
@@ -104,14 +173,14 @@ class BackendXpathBuilder extends BaseXpathBuilder
 
         foreach ($categories as $key => $category) {
             if ($key === $lastKey) {
-                $xpaths[] = $this
+                $xpaths[] = (new self)
                     ->descendant('div', ['@text' => $category])
                     ->descendant('img', ['~class' => 'x-tree-icon'])
                     ->getXpath();
                 break;
             }
 
-            $xpaths[] = $this
+            $xpaths[] = (new self)
                 ->descendant('div', ['~class' => 'x-tree-panel'])
                 ->descendant('div', ['@text' => $category])
                 ->descendant('img', ['~class' => 'x-tree-expander'])
@@ -121,23 +190,15 @@ class BackendXpathBuilder extends BaseXpathBuilder
         return $xpaths;
     }
 
-    public function getButtonXpathByLabel($label) {
-        return (new BackendXpathBuilder())
-            ->child('span', ['@class' => 'x-btn-inner'])
-            ->contains($label)
-            ->ancestor('button')
-            ->getXpath();
-    }
-
     /**
-     * Return an Xpath that finds a fieldset by it's label
+     * Return an Xpath that finds a fieldset by its label
      *
      * @param string $label
      * @return string
      */
-    public function getFieldsetXpathByLabel($label)
+    public static function getFieldsetXpathByLabel($label)
     {
-        return (new BackendXpathBuilder())
+        return (new self)
             ->child('fieldset')
             ->descendant('legend')
             ->descendant('div')

@@ -3,12 +3,14 @@ default:
         SensioLabs\Behat\PageObjectExtension:
             namespaces:
                 page:
-                  - Shopware\Tests\Mink\Page
-                  - Shopware\Tests\Mink\Page\Frontend
-                  - Shopware\Tests\Mink\Page\Backend
-                  - Shopware\Tests\Mink\Page\Installer
-                  - Shopware\Tests\Mink\Page\Updater
-                element: Shopware\Tests\Mink\Element
+                  - Shopware\Page
+                  - Shopware\Page\Frontend
+                  - Shopware\Page\Backend
+                  - Shopware\Page\Installer
+                  - Shopware\Page\Updater
+                element:
+                  - Shopware\Element
+                  - Shopware\Element\Frontend
         Behat\MinkExtension:
             base_url: 'http://shopware.test/'
             default_session: 'goutte'
@@ -29,18 +31,21 @@ default:
             template: Responsive
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
-                - Shopware\Tests\Mink\FeatureContext
-                - Shopware\Tests\Mink\GeneralContext
-                - Shopware\Tests\Mink\BackendContext
-                - Shopware\Tests\Mink\FrontendContext
-                - Shopware\Tests\Mink\FrontendCheckoutContext
-                - Shopware\Tests\Mink\FrontendAccountContext
-                - Shopware\Tests\Mink\ApiContext
-                - Shopware\Tests\Mink\DetailContext
-                - Shopware\Tests\Mink\InstallerContext
-                - Shopware\Tests\Mink\UpdaterContext
-                - Shopware\Tests\Mink\AutoUpdaterContext
-                - Shopware\Tests\Mink\SubshopContext
-                - Shopware\Tests\Mink\FileCheckContext
-                - Shopware\Tests\Mink\ProductExportContext
-                - Shopware\Tests\Mink\BackendCustomerContext
+                - Shopware\Context\DebugContext
+                - Shopware\Context\FeatureContext
+                - Shopware\Context\GeneralContext
+                - Shopware\Context\BackendContext
+                - Shopware\Context\FrontendContext
+                - Shopware\Context\FrontendCheckoutContext
+                - Shopware\Context\FrontendAccountContext
+                - Shopware\Context\ApiContext
+                - Shopware\Context\DetailContext
+                - Shopware\Context\InstallerContext
+                - Shopware\Context\UpdaterContext
+                - Shopware\Context\SubshopContext
+                - Shopware\Context\FileCheckContext
+                - Shopware\Context\ProductExportContext
+                - Shopware\Context\BackendCustomerContext
+                - Shopware\Context\BackendPaymentContext
+                - Shopware\Context\BackendVoucherContext
+                - Shopware\Context\BackendOrderContext

@@ -22,26 +22,26 @@ Feature: I can use product exports
     And I click the "Produktexporte" menu element
     Then I should see "Letzter Export" eventually
 
-    When I click the "Hinzufügen" element
+    When I click the "Hinzufügen" button
     Then I should see "Feed - Konfiguration" eventually
     When I fill in the product export configuration:
-      | label                  | value                  | type       | action          |
-      | Titel:                 | Erster Test-Export     | input      |                 |
-      | Dateiname:             | SwagFirstProductExport | input      |                 |
-      | Aktiv:                 | true                   | checkbox   |                 |
-      | Cache-Zeit / Methode:  | Live                   | combobox   | interval        |
-      | Shop:                  | Demo shop              | combobox   | languageId      |
-      | Kundengruppe:          | Shopkunden             | combobox   | customerGroupId |
-      | Kategorie:             | Deutsch                | selecttree |                 |
-      | Varianten exportieren: | Nein                   | combobox   | variantExport   |
+      | label                  | value                  | type       |
+      | Titel:                 | Erster Test-Export     | input      |
+      | Dateiname:             | SwagFirstProductExport | input      |
+      | Aktiv:                 | true                   | checkbox   |
+      | Cache-Zeit / Methode:  | Live                   | combobox   |
+      | Shop:                  | Demo shop              | combobox   |
+      | Kundengruppe:          | Shopkunden             | combobox   |
+      | Kategorie:             | Deutsch                | selecttree |
+      | Varianten exportieren: | Nein                   | combobox   |
 
     And I fill in the product export configuration:
       | label        | value                        | type     | action   |
       | Dateiformat: | TXT mit Tab als Trennzeichen | combobox | formatId |
     And I click on the "Template" tab
-    Then I should be able to enter my basic template "{$sArticle|var_export}"
+    Then I should be able to enter my basic template "{$sArticle.ordernumber} {$sArticle.name} {$sArticle.price} {$sArticle.supplier}"
 
-    When I click the "Speichern und schließen" element
+    When I click the "Speichern und schließen" button
     Then I should see "Erster Test-Export" eventually
     When I start the product export
     And I open the "Erster Test-Export" export file

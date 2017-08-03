@@ -21,23 +21,25 @@ Feature: I can create and access a subshop
     Then I should see "Shops" eventually
     When I click the "Shops" settings element
     Then I should see "Hinzufügen" eventually
-    When I click the "Hinzufügen" element
+    When I click the "Hinzufügen" button
 
     And I fill in and submit the "Details" configuration form:
-      | label                | value                    | type       | action             |
-      | Shop-Typ:            | Subshop                  | combobox   | typeSwitch         |
-      | Name:                | SwagTestSubshop          | input      |                    |
-      | Titel:               | Mein Demosubshop         | input      |                    |
-      | Position:            | 1                        | input      |                    |
-      | Host:                | shopware-subshop-01.test | input      |                    |
-      | Hostalias:           | shopware-subshop-01.test | textarea   |                    |
-      | Währung:             | Euro                     | combobox   | currencyId         |
-      | Lokalisierung:       | Deutsch (Deutschland)    | combobox   | localeId           |
-      | Kategorie:           | Subshop-Kategorie        | selecttree |                    |
-      | Template:            | Responsive               | combobox   | templateId         |
-      | Dokumenten-Template: | Responsive               | combobox   | documentTemplateId |
-      | Kundengruppe:        | Shopkunden               | combobox   | customerGroupId    |
-      | Aktiv:               | true                     | checkbox   |                    |
+      | label                | value                    | type       |
+      | Shop-Typ:            | Subshop                  | combobox   |
+      | Name:                | SwagTestSubshop          | input      |
+      | Titel:               | Mein Demosubshop         | input      |
+      | Position:            | 1                        | input      |
+      | Host:                | shopware-subshop-01.test | input      |
+      | Hostalias:           | shopware-subshop-01.test | textarea   |
+      | Währung:             | Euro                     | combobox   |
+      | Lokalisierung:       | Deutsch (Deutschland)    | combobox   |
+      | Kategorie:           | Subshop-Kategorie        | selecttree |
+      | Template:            | Responsive               | combobox   |
+      | Dokumenten-Template: | Responsive               | combobox   |
+      | Kundengruppe:        | Shopkunden               | combobox   |
 
     Then I should be able to access the subshop via using "http://shopware-subshop-01.test"
     And I should see "Subshop-Unterkategorie" eventually
+
+    Then I should be able to access the shop via using "http://shopware.test/"
+    And I should see "Newsletter" eventually

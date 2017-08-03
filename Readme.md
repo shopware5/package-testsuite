@@ -1,140 +1,101 @@
-# Shopware Package Tests
-> Release package testing suite for Shopware 
+Shopware Package Test Suite
+===========================
 
-This project aims to automate QA work.
-It consists of docker containers to automatically install and test
-a shopware installation package from zipfile or release tag.
+This project automates rudimentary QA tasks to ensure the most basic features of the tested Shopware version all work
+as expected.
 
-## Installing / Getting started
+## Installation
+This project is only supported on Linux and requires that both [docker](https://docs.docker.com/engine/installation/linux/) 
+and [docker compose](https://docs.docker.com/compose/) are available on the system.
 
-This project is build on and for Linux systems.
-You need [docker](https://docs.docker.com/engine/installation/linux/) and [docker compose](https://docs.docker.com/compose/) installed on the system.
+Clone the project and copy the following .dist files:
 
-Then you can setup and run the project (after cloning of course):
-
-```shell
+```bash
 cp tests/.env.dist /tests/.env
 cp tests/behat.yml.dist /tests/behat.yml
 ```
 
-The `.env` and `behat.yml` are filled with defaults, you won't need to change them unless
-you're changing the way the project behaves, e.g. by not testing from zip/release tag or by
-using your own asset generator.
+Most of the time, the defaults provided in both files will work just fine. If you, for whatever reason, need to change
+the asset generator some behat configuration, feel free to adjust your local copies accordingly.
 
-After copying the config files and, if needed, editing them, you can start the testing.   
-All there is to do is calling `run.sh` and specifying either a locally available zip file, a remote zipfile or a release tag:
+The package test suit expects an install-package and an update-package in the `./files` directory. The packages must be
+named to conform to `*_install_*_latest.zip` and `*_update_*_latest.zip` respectively.
+
+## Running tests
+Running the tests is as easy as calling the appropriate shell scripts in the `./docker` directory. Please note that these
+scripts are intended to be run by a Bamboo agent, so they do expect a Bamboo build key as the first argument. For local
+testing purposes, you can simply pass any arbitrary string as an argument such as:
+
+* `./stage_installer.sh testing` Tests install functionality
+* `./stage_updater.sh testing` Tests update functionality
+* `./stage_general.sh testing` Regular shop functionality
+
+## Running single features
+For local development, it is very useful to be able to run single features or tests without running a whole stage. That
+is what the `./docker/_local_manual_testing.sh` script is for. It sets up the same environment the stages execute in but
+doesn't execute a single test on its own. After calling the script you can run specific features manually. It is recommended
+to use an alias like the following:
  
-```
-./run.sh --zipfile=/path/to/zip/file.zip
-``` 
-```
-./run.sh --url=http://host.tld/path/to/zip/file.zip
-```
+ ```bash
+ runmink='docker-compose -f docker-compose.yml -f docker-compose.local.yml run --rm tools ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
+ ```
 
-> Make sure the zipfile is a Shopware install package.
+ Then you can run a specific feature by simply calling:
 
-```
-./run.sh --release=5.2.0
-```
-
-## Features
-
-The package test suite consists of the following docker containers, defined in `docker/docker-compose.yml`:
-* apache
-* behat
-* mysql
-* selenium
-* smtp
-
-The tests live inside the folder `tests/`, the asset generator is located in `assetgenerator/`.
-The asset generator is used for creating random images with a text printed on it. That way,
-products created during tests can easily be decorated with images.
+ ```bash
+ runmink ../test/features/backend_customers.feature
+ ```
  
-The asset generator takes an URL in the format `http://host/WidthxHeight/SomeText.extension`.   
-Example: `http://assetgenerator/800x600/MyProduct.jpg`. The size parameter is optional.
+ 
+## Debugging and Development
 
-The containers in detail:
+### Remote debugging using VNC Sessions
+When run in development mode (by using `./docker/_local_manual_testing.sh`), Selenium is run in debug mode and exposes
+port 5900. Is is necessary to forward this port from the docker container to the host (your development machine), which
+is already done in `./docker/docker-compose.local.yml`. That means if you use the alias supplied above for running your
+tests, you can use any VNC client to connect to `localhost:5900`. When prompted for a password, enter `secret`.
 
-#### Apache
+#### Note for Windows user
+If you develop on Windows and run the test suite in a virtual machine, make sure you also forward the port from you VM
+to your host machine. With Vagrant, add the following port forwarding rule to your Vagrantfile and restart your VM:
 
-The container is build from a `Dockerfile` located in `docker/build-apache`.
-
-It is based on [`php:7-apache`](https://hub.docker.com/_/php/).   
-The container is used for serving the Shopware installation that is tested as well as the integrated asset generator.
-
-The shopware installation is expected to live inside `/var/www/shopware` in the container, the asset generator
-is mounted inside `/var/www/assetgenerator`.
-
-The container does not export any ports to the host.
-
-#### behat
-
-The container is build from a `Dockerfile` located in `docker/build-behat`.
-
-It is based on [`php:7-cli`](https://hub.docker.com/_/php/).   
-Inside this container the actual testsuite is executed. It is connected to the Apache container,
-which is accessible via the host `shopware.localhost` from inside the behat container.
-
-The `selenium` and `smtp` containers are accessible via their names as hostname.
-
-The container does not export any ports to the host.
-
-#### mysql
-
-The container is build from a `Dockerfile` located in `docker/build-mysql`.
-
-It is based on [`mariadb`](https://hub.docker.com/_/mariadb/).   
-On creation the database `shopware` with user `shopware` and password `shopware` is created.
-This database is later used for hosting the Shopware installation.
-
-Admin account is `root` with password `toor`, although there should be no reason to use this account during testing.
-
-The container does not export any ports to the host.
-
-#### selenium
-
-The container is build from a `Dockerfile` located in `docker/build-selenium`.
-
-It is based on [`selenium-standalone-firefox/`](https://hub.docker.com/u/selenium/).   
-On creation the database `shopware` with user `shopware` and password `shopware` is created.
-This database is later used for hosting the Shopware installation.
-
-Admin account is `root` with password `toor`, although there should be no reason to use this account during testing.
-
-The container does not export any ports to the host.
-
-#### smtp
-
-The container uses the [`mailhog/mailhog`](https://hub.docker.com/r/mailhog/mailhog/) image.   
-The apache container is configured to send all mails to the mailhog container.
-No e-mails are sent to the outside. Mailhog comes with [an API](https://github.com/mailhog/MailHog/blob/master/docs/APIv2.md) which can be used in tests. 
-
-The container does not export any ports to the host.
-
-## Configuration
-
-#### tests/.env
-
-You may need to adjust the parameter `assets_url` if you're not using the built in container structure.
-
-#### tests/behat.yml
-
-You may need to adjust the parameters `base_url` and `wd_host` if you're not using the built in container structure.
+```
+    config.vm.network "forwarded_port", guest: 5900, host: 5900
+```
 
 ## Writing Tests
 
-### How to use the XpathBuilder
+### What goes where?
+The `*.feature` files should only contain human-readable, english sentences, assumptions and actions.
 
+The `*Context.php` files all live in the `Shopware\Context` namespace and may only contain step definitions for
+steps used the feature files. All logic should be handled by the `Pages`. Step definitions should be short and expressive. 
+Only use regular expressions in step name definitions when absolutely necessary. Most of the time it might be better to
+refactor steps into smaller sub-steps that only handle one single functionality.
+
+### Using Tags
+
+Additional functionality for tests can be enabled by tagging either single scenarios or whole features
+with special tags.
+
+#### @knownFailing
+This tag prevents features from being tested completely, useful to be able to commit WIP features
+that would otherwise cause a breaking CI build.
+
+#### @isolated
+When a scenario is tagged with this tag, the database gets wiped before and after the scenario is run.
+Per default, the database is being reset to a clean state after every feature.
+
+### How to use the XpathBuilder
 The `Shopware\Component\XpathBuilder` namespace contains a few classes that can be helpful when writing tests that rely 
 on complicated xpath queries. It is recommended to use either the `FrontendXpathBuilder` or the `BackendXpathBuilder`, 
 which both inherit from the `BaseXpathBuilder` but additionally provide useful shortcuts for often-needed functionality, 
 like e.g. selecting an ExtJS window by its title.
 
-
 #### Using the BaseXpathBuilder
-
 The XpathBuilder can be used with a fluent, method-chain-style interface:
-```
+
+```php
 <?php
 
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
@@ -153,6 +114,7 @@ $builder
     ->getXpath();
 
 ```
+
 The BaseXpathBuilder comes pre-configured with a single `/` as its path. There is *no implicit resetting* with the base builder. 
 If you configured a path and want to reuse the same Builder-instance, you need to call `$builder->reset()` on it again in 
 order to reset the path to its default value. It is recommended that you explicitly call `->reset()` explicitly at the 
@@ -166,34 +128,74 @@ To retrieve the currently configured xpath, call the `->getXpath()` method. Plea
 the BaseXpathBuilder() *does not* implicitly reset the builder when you get the path. 
 
 There is a static shorthand method useful for creating xpaths inline:
-```
+
+```php
 <?php
 
-use Shopware\Component\XpathBuilder\BaseXpathBuilder;
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 $iconXpath = BackendXpathBuilder::create()->child('img', ['@class' => 'icon-smiley'])->getXpath();
 ```
 
 #### Using the BackendXpathBuilder
-
 The BackendXpathBuilder class has some helpful shorthand methods that provide easy access to common xpaths. They can
 be accessed statically and always return the resulting Xpath as a ready-to-use xpath string.
 
 The following (non exhaustive) list contains some of these methods:
-```
+
+```php
 <?php
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
-[...]
+// [...]
 
 $window = $this->find('xpath', BackendXpathBuilder::getWindowXpathByTitle('Kundenverwaltung'));
 
 $textInput = $this->find('xpath', BackendXpathBuilder::getInputXpathByLabel('Email:'));
 
-$textarea = $this->find('xpath', BackendXpathBuilder::getFormElementXpathByLabel('Kommentar:'));
+$textarea = $this->find('xpath', BackendXpathBuilder::getFormElementXpathByLabel('textarea', 'Kommentar:'));
 
 $combobox = $this->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel('Steuersatz:'));
 
 $saveButton = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Speichern'));
+
+// [...]
+
 ```
+
+### Using the asset generator
+The package test suite comes pre-configured with a simple asset generator that can generate random images with fixed
+sizes and text printed on them. The asset generator is available over HTTP at `http://assetgenerator/`:
+ ```
+ http://assetgenerator/800x600/MyProduct.jpg
+ ```
+
+Please note that the size parameter is completely optional.
+
+## Docker Container Reference
+
+### Apache container
+* Runs PHP7 and Apache Server
+* Serves Shopware installation from `/var/www/shopware`
+* Serves asset generator from `/var/www/assetgenerator`
+
+### Tools container
+* Based on PHP7 CLI Docker image
+* Place where the actual test suite is executed
+* Linked to apache container via host `shopware.localhost`
+* Linked to selenium container via host `selenium`
+* Linked to smtp container via host `smtp`
+
+### MySQL container
+* Provides mariaDB database named `shopware` for user `shopware` with password `shopware`
+* Root access for user `root` with password `toor`
+
+### Selenium container
+* Based on selenium-chrome Docker image
+* Exposes port 5900 in development mode (`docker-compose.local.yml`) for remote debugging via VNC
+
+### SMTP container
+* Based on mailhog Docker image
+* Configured to receive all mails from apache container
+* Refer to [Mailhog's API Documentation](https://github.com/mailhog/MailHog/blob/master/docs/APIv2.md)

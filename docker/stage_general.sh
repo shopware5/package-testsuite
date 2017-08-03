@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# Include testing config for docker-compose
-shopt -s expand_aliases
-alias docker-compose="docker-compose -f docker-compose.yml -f docker-compose.local.yml"
+if [ "$1" = "" ]
+then
+    echo "Missing argument. Should be 'bamboo.buildResultKey'"
+    exit 1
+fi
 
 . ./sh/_pre-stage.sh
 
 echo "Unzipping installer"
 docker-compose run --rm tools find /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
-
-echo "Copying update package"
-docker-compose run --rm tools find /source -maxdepth 1 -name "${UPDATE_PACKAGE_NAME}" -exec cp {} /var/www/cdn/update.zip \;
 
 echo "Install Shopware via CLI"
 docker-compose run --rm tools php /var/www/shopware/recovery/install/index.php \
@@ -30,4 +29,13 @@ docker-compose run --rm tools php /var/www/shopware/recovery/install/index.php \
 
 . ./sh/_configure-sw-installation.sh
 
-unalias docker-compose
+if [ "$PACKAGE_VERSION" = "5.2" ]
+    then
+        echo "Run Mink (5.2 Compatibility mode)"
+        docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware53'
+    else
+        echo "Run Mink"
+        docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware52'
+fi
+
+. ./sh/_post-stage.sh
