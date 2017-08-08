@@ -1,8 +1,6 @@
 @javascript @frontend @voucher
 Feature:
 
-  Background:
-
   Scenario: I can create, edit and delete vouchers and my customers can use them
     Given I am on the page "BackendLogin"
     When I log in with user "demo" and password "demo"
@@ -92,8 +90,15 @@ Feature:
     And I click the delete icon on the voucher named "Neuer Relativer Testgutschein"
     And I click the "Ja" button
 
+  @isolated
   Scenario: I can create and use vouchers with individual codes
-    Given I am on the page "BackendLogin"
+    Given the following customer accounts exist:
+      | email                             | password | group | country |
+      | regular.customer@shopware.de.test | shopware |       | DE      |
+    And the following products exist in the store:
+      | number  | name                         | price | tax | supplier    | categories                            |
+      | SWT0001 | BienenhoniK - Karl Süßkleber | 19    | 19  | Bienenstock | Root > Deutsch > Nahrungsmittel > Süß |
+    And I am on the page "BackendLogin"
     And I log in with user "demo" and password "demo"
     And I am on the page "VoucherModule"
     And I click the "Hinzufügen" button
@@ -111,3 +116,4 @@ Feature:
     And I click on the "Individuelle Gutscheincodes" tab
     And I click the "Neue Codes generieren" button
     Then I should see "Nein" eventually
+    And I should be able to use the code exactly once
