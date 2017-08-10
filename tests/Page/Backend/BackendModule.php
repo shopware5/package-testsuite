@@ -4,6 +4,7 @@ namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\Window;
 use Shopware\Page\ContextAwarePage;
 
 class BackendModule extends ContextAwarePage
@@ -160,36 +161,22 @@ class BackendModule extends ContextAwarePage
      * Helper method that returns the current module window
      *
      * @param bool $exactMatch
-     * @return NodeElement|null
+     * @return Window|null
      */
     protected function getModuleWindow($exactMatch = true)
     {
-        return $this->getWindowByTitle($this->moduleWindowTitle, $exactMatch);
+        return new Window($this->moduleWindowTitle, $this->getSession(), $exactMatch);
     }
 
     /**
      * Helper method that returns the current editor window
      *
      * @param bool $exactMatch
-     * @return NodeElement|null
+     * @return Window|null
      */
     protected function getEditorWindow($exactMatch = true)
     {
-        return $this->getWindowByTitle($this->editorWindowTitle, $exactMatch);
-    }
-
-    /**
-     * Helper method that returns the node element of an ExtJS window by it's title
-     *
-     * @param $title
-     * @param bool $exactMatch
-     * @return NodeElement|null
-     */
-    private function getWindowByTitle($title, $exactMatch)
-    {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($title, $exactMatch);
-        $this->waitForSelectorPresent('xpath', $windowXpath);
-        return $this->find('xpath', $windowXpath);
+        return new Window($this->editorWindowTitle, $this->getSession(), $exactMatch);
     }
 
     /**

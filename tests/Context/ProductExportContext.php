@@ -2,10 +2,12 @@
 
 namespace Shopware\Context;
 
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\ProductExportModule;
 
-class ProductExportContext extends SubContext
+class ProductExportContext extends PageObjectContext
 {
     /**
      * @When I fill in the product export configuration:
@@ -13,45 +15,16 @@ class ProductExportContext extends SubContext
      */
     public function iFillInTheProductExportGeneralConfiguration(TableNode $table)
     {
-        /** @var ProductExportModule $page */
-        $page = $this->getPage('ProductExportModule');
-
-        $data = $table->getHash();
-        $page->fillConfigurationForm($data);
+        $this->getModulePage()->fillConfigurationForm($table->getHash());
     }
 
     /**
-     * @When I start the product export
+     * @Then I enter the template
+     * @param PyStringNode $template
      */
-    public function iStartTheProductExport()
+    public function iEnterTheTemplate(PyStringNode $template)
     {
-        /** @var ProductExportModule $page */
-        $page = $this->getPage('ProductExportModule');
-        $page->startExport();
-    }
-
-    /**
-     * @Then I should be able to enter my basic template :template
-     * @param string $template
-     */
-    public function iShouldBeAbleToEnterMyBasicTemplate($template)
-    {
-        /** @var ProductExportModule $page */
-        $page = $this->getPage('ProductExportModule');
-        $page->enterTemplate($template);
-    }
-
-    /**
-     * @Then it should contain the following product data:
-     * @param TableNode $table
-     */
-    public function itShouldContainTheFollowingProductData(TableNode $table)
-    {
-        /** @var ProductExportModule $page */
-        $page = $this->getPage('ProductExportModule');
-
-        $data = $table->getHash();
-        $page->checkExportResult($data);
+        $this->getModulePage()->enterTemplate($template);
     }
 
     /**
@@ -60,8 +33,52 @@ class ProductExportContext extends SubContext
      */
     public function iOpenTheCreatedExportFile($title)
     {
+        $this->getModulePage()->openExport($title);
+    }
+
+    /**
+     * @Then it should contain the following product data:
+     * @param PyStringNode $expected
+     */
+    public function itShouldContainTheFollowingProductData(PyStringNode $expected)
+    {
+        $this->getModulePage()->checkExportResult($expected);
+    }
+
+    /**
+     * @Given I block products from supplier :supplierName
+     * @param string $supplierName
+     */
+    public function iBlockProductsFromSupplier($supplierName)
+    {
+        $this->getModulePage()->blockSupplier($supplierName);
+    }
+
+    /**
+     * @Given I define a minimum price filter with a value of :minPrice
+     * @param string $minPrice
+     */
+    public function iDefineAMinimumPriceFilterWithAValueOf($minPrice)
+    {
+        $this->getModulePage()->addMinimumPriceFilter($minPrice);
+    }
+
+    /**
+     * @Given I click the edit icon on the export :exportName
+     * @param string $exportName
+     */
+    public function iClickTheEditIconOnTheExport($exportName)
+    {
+        $this->getModulePage()->clickEditIconForExport($exportName);
+    }
+
+    /**
+     * @return ProductExportModule|null
+     */
+    private function getModulePage()
+    {
         /** @var ProductExportModule $page */
         $page = $this->getPage('ProductExportModule');
-        $page->openExport($title);
+        return $page;
     }
 }
