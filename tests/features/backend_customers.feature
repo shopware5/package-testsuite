@@ -55,7 +55,7 @@ Feature: I can manage my customers with the backend customer module
 
     ## Deleting the newly created user
     When I click the delete icon on customer "David"
-    Then I should see "Sind Sie sicher, dass" eventually
+    Then I should see "Bist du sicher, dass" eventually
 
     When I click the "Ja" button
     Then I should eventually not see "David"

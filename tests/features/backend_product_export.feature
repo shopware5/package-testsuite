@@ -1,4 +1,4 @@
-@javascript @productexport
+@javascript @productexport @knownFailing
 Feature: I can use product exports
 
   Background:

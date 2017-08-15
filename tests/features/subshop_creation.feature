@@ -1,4 +1,4 @@
-@javascript @subshop
+@javascript @subshop @isolated
 Feature: I can create and access a subshop
 
   Background:

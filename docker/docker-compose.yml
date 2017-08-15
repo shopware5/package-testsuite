@@ -41,6 +41,7 @@ services:
       - apache:assetgenerator.example
       - apache:shopware-subshop-01.test
       - apache:shopware.test
+    shm_size: 1G
   tools:
     image: shopware/package-testsuite:tools
     volumes:

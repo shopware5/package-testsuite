@@ -31,6 +31,8 @@ class PaymentModule extends BackendModule
             ->descendant('div', ['~class' => 'x-grid-cell-inner', 'and', '~text' => $name . ' ('])
             ->getXpath();
 
+        $this->waitForSelectorPresent('xpath', $paymentMethodXpath);
+
         $paymentMethod = $window->find('xpath', $paymentMethodXpath);
         $paymentMethod->click();
 
