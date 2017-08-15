@@ -7,136 +7,146 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\ArticleModule;
 use Shopware\Page\Backend\BackendModule;
 
-class ArticleContext extends SubContext
+class BackendArticleContext extends SubContext
 {
-    /**
-     * @Given I click the :label extended menu element
-     * @param string $label
-     */
-    public function iClickTheExtendedMenuElement($label)
-    {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->clickOnExtendedElement($label);
-    }
-
     /**
      * @Given I set :price as the article price
      * @param string $price
+     * @throws \Exception
      */
     public function iSetAsTheArticlePriceForTheCustomerGroup($price)
     {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->setPriceForCustomerGroup($price);
+        $this->getModulePage()->setArticlePrice($price);
     }
 
     /**
      * @Given I choose :text as article description
      * @param string $text
+     * @throws \RuntimeException
      */
     public function iChooseAsArticleDescription($text)
     {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->setDescription($text);
+        $this->getModulePage()->setDescription($text);
     }
 
     /**
-     * @Then I am be able to save my article
+     * @Then I am able to save my article
+     * @throws \RuntimeException
      */
-    public function iAmBeAbleToSaveMyArticle()
+    public function iAmAbleToSaveMyArticle()
     {
-        /** @var BackendModule $page */
-        $page = $this->getPage('BackendModule');
-        $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern');
-        $button = $page->find('xpath', $buttonXpath);
-        $button->click();
+        $this->getModulePage()->saveArticle();
     }
 
-
     /**
-     * @When I click the :icon icon to add :name
-     * @param string $icon
+     * @When I click to add the category with name :name to the article
      * @param string $name
+     * @throws \Exception
      */
-    public function iClickTheIconToAdd($icon, $name)
+    public function iClickTheIconToAdd($name)
     {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->addCategory($icon, $name);
+        $this->getModulePage()->addCategory($name);
     }
 
     /**
-     * @Then I should find :title in the area :area
+     * @Then I should find the category with name :title in :area
      * @param string $title
      * @param string $area
+     * @throws \Exception
      */
     public function iShouldFindInTheArea($title, $area)
     {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->checkAddedCategory($title, $area);
-    }
-
-    /**
-     * @When I set :shoptitle as the shop for the preview
-     * @When I fill in the preview configuration:
-     * @param string $label
-     */
-    public function iSetAsShopForThePreview($label)
-    {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->chooseShopForPreview($label);
+        $this->getModulePage()->checkAddedCategory($title, $area);
     }
 
     /**
      * @When I fill in the basic configuration:
      * @param TableNode $table
+     * @throws \Exception
      */
     public function iFillInTheBasicConfiguration(TableNode $table)
     {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-
         $data = $table->getHash();
-        $page->setBasicData($data);
+        $this->getModulePage()->setBasicData($data);
     }
-
 
     /**
      * @When I expand the :label element
      * @param string $label
+     * @throws \RuntimeException
      */
-    public function iExpandTheElement($label)
+    public function iExpandTheCategoryElement($label)
     {
-        /** @var BackendModule $page */
-        $page = $this->getPage('BackendModule');
-        $page->expandCollapsible($label);
+        $this->getBackendModulePage()->expandCategoryCollapsible($label);
     }
-
-    /**
-     * @Given I start the preview
-     */
-    public function iStartThePreview()
-    {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        $page->startPreview();
-    }
-
 
     /**
      * @Then I check if my article data is displayed:
      * @param TableNode $table
      */
-    public function iCheckIfMyArticleDataIsDisplayed1(TableNode $table)
+    public function iCheckIfMyArticleDataIsDisplayed(TableNode $table)
     {
         $data = $table->getHash();
 
         foreach ($data as $product) {
             $this->waitForText($product['info']);
         }
+    }
+
+    /**
+     * @When I change the article name to :articlename
+     * @throws \Exception
+     */
+    public function iChangeTheArticleNameTo($articlename)
+    {
+        $this->getModulePage()->changeArticleName($articlename);
+    }
+
+    /**
+     * @When I click the edit icon of the entry :name
+     *
+     * @throws \Exception
+     */
+    public function iClickTheEditIconOfTheEntry($name)
+    {
+        $this->getBackendModulePage()->clickEntryIconByName($name, 'sprite-pencil');
+    }
+
+    /**
+     * @When I click the delete icon of the entry :name
+     * @throws \Exception
+     */
+    public function iClickTheDeleteIconOfTheEntry($name)
+    {
+        $this->getBackendModulePage()->clickEntryIconByName($name, 'sprite-minus-circle-frame');
+    }
+
+    /**
+     * @Given I confirm to delete the entry
+     * @throws \Exception
+     */
+    public function iConfirmToDeleteTheEntry()
+    {
+        $this->getBackendModulePage()->answerMessageBox('Ja');
+    }
+
+    /**
+     * @return ArticleModule|null
+     */
+    private function getModulePage()
+    {
+        /** @var ArticleModule $page */
+        $page = $this->getPage('ArticleModule');
+        return $page;
+    }
+
+    /**
+     * @return BackendModule|null
+     */
+    private function getBackendModulePage()
+    {
+        /** @var BackendModule $page */
+        $page = $this->getPage('BackendModule');
+        return $page;
     }
 }

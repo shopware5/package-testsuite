@@ -12,6 +12,7 @@ class ProductExportContext extends PageObjectContext
     /**
      * @When I fill in the product export configuration:
      * @param TableNode $table
+     * @throws \Exception
      */
     public function iFillInTheProductExportGeneralConfiguration(TableNode $table)
     {
@@ -30,6 +31,7 @@ class ProductExportContext extends PageObjectContext
     /**
      * @Given I open the :title export file
      * @param string $title
+     * @throws \Exception
      */
     public function iOpenTheCreatedExportFile($title)
     {

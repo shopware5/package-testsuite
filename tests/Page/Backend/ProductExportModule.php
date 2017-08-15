@@ -39,6 +39,7 @@ class ProductExportModule extends BackendModule
      * Enters the template on which the product export is based of
      *
      * @param string $template The template itself
+     * @throws \Exception
      */
     public function enterTemplate($template)
     {
@@ -60,6 +61,7 @@ class ProductExportModule extends BackendModule
      * Open a product export
      *
      * @param $exportTitle
+     * @throws \Exception
      */
     public function openExport($exportTitle)
     {

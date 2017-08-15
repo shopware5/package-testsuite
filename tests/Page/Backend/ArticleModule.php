@@ -7,33 +7,18 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ArticleModule extends BackendModule
 {
-    /** @var string */
-    protected $moduleWindowTitle = 'Artikeldetails : Neuer Artikel';
-
     private $priceCellLabel = 'Preis';
     private $priceRowAnchor = 'Beliebig';
+    private $enterKeyNumber = 13;
+    protected $moduleWindowTitle = 'Artikeldetails : Neuer Artikel';
 
     /**
-     * Clicks a specific element with extended title
+     * Sets the price for the article
      *
-     * @param string $elementName Name of the element
-     **/
-    public function clickOnExtendedElement($elementName)
-    {
-        $builder = new BackendXpathBuilder();
-
-        $elementXpath = $builder->child('span', ['@text' => $elementName, 'and', '~class' => 'shortcut'])->ancestor('div', [], 1)->getXpath();
-
-        $element = $this->find('xpath', $elementXpath);
-        $this->assertNotNull($element, $elementXpath);
-        $element->click();
-    }
-
-    /**
-     * Fills in a checkbox
      * @param $price
+     * @throws \Exception
      */
-    public function setPriceForCustomerGroup($price)
+    public function setArticlePrice($price)
     {
         $window = $this->getModuleWindow();
         $builder = new BackendXpathBuilder();
@@ -48,6 +33,7 @@ class ArticleModule extends BackendModule
 
     /**
      * Finds the field position for the price
+     *
      * @param NodeElement $cellElement
      * @return int position
      */
@@ -63,7 +49,6 @@ class ArticleModule extends BackendModule
 
         /** @var NodeElement $cell */
         foreach ($cells as $cell) {
-
             if ($cell->getText() === $this->priceCellLabel) {
                 return $positionIndex;
             }
@@ -73,9 +58,11 @@ class ArticleModule extends BackendModule
 
     /**
      * Sets the price eventually.
+     *
      * @param NodeElement $window
      * @param float $price
      * @param int $position
+     * @throws \Exception
      */
     private function setPrice($window, $price, $position)
     {
@@ -91,7 +78,6 @@ class ArticleModule extends BackendModule
             ->child('div', [], 1)
             ->getXpath();
 
-
         /** @var NodeElement $priceField */
         $priceField = $row->find('xpath', $priceFieldXpath);
         $this->assertNotNull($priceField, $priceFieldXpath);
@@ -104,12 +90,12 @@ class ArticleModule extends BackendModule
         $priceInput = $this->find('xpath', $priceInputXpath);
         $this->assertNotNull($priceInput, $priceInputXpath);
         $priceInput->setValue($price);
-        $priceInput->keyPress(13);
-
+        $priceInput->keyPress($this->enterKeyNumber);
     }
 
     /**
      * Sets the text for the short description
+     *
      * @param string $text
      */
     public function setDescription($text)
@@ -118,17 +104,10 @@ class ArticleModule extends BackendModule
     }
 
     /**
-     * Sets the text for the short description
-     * @param string $text
-     */
-    public function uploadArticleImage($text)
-    {
-        $this->getSession()->executeScript("tinymce.get()[0].setContent('" . $text . "');");
-    }
-
-    /**
-     * Sets the text for the short description
+     * Sets the basic information of the article
+     *
      * @param $data
+     * @throws \Exception
      */
     public function setBasicData($data)
     {
@@ -137,17 +116,18 @@ class ArticleModule extends BackendModule
     }
 
     /**
-     * Sets the text for the short description
-     * @param $icon
+     * Adds the category to the article
+     *
      * @param $name
+     * @throws \Exception
      */
-    public function addCategory($icon, $name)
+    public function addCategory($name)
     {
         $window = $this->getModuleWindow();
         $builder = new BackendXpathBuilder();
 
         $plusXpath = $builder
-            ->child('div', ['@text' => 'Unterkategorie'])
+            ->child('div', ['@text' => $name])
             ->ancestor('tr', [], 1)
             ->descendant('td', [], 2)
             ->descendant('img')
@@ -159,9 +139,11 @@ class ArticleModule extends BackendModule
     }
 
     /**
-     * Sets the text for the short description
+     * Checks if the category is connected to the article correctly
+     *
      * @param $name
      * @param $area
+     * @throws \Exception
      */
     public function checkAddedCategory($name, $area)
     {
@@ -178,38 +160,26 @@ class ArticleModule extends BackendModule
         $this->assertNotNull($plus, $plusXpath);
     }
 
-
     /**
-     * Sets the text for the short description
-     * @param $name
+     * Changes the name of the selected article
+     *
+     * @param $newName
      */
-    public function chooseShopForPreview($name)
+    public function changeArticleName($newName)
     {
-        $window = $this->getModuleWindow();
-        $builder = new BackendXpathBuilder();
-
-        $comboboxXpath = $builder
-            ->child('label', ['@text' => 'Artikel-Vorschau:'])
-            ->ancestor('table', ['~class' => 'x-form-item'], 1)
-            ->getXpath();
-
-        //$combobox = $window->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($name));
-        $this->fillCombobox($this->find('xpath',$comboboxXpath), 'Demo shop');
+        $input = $this->find('xpath', BackendXpathBuilder::getInputXpathByLabel('Artikel-Bezeichnung:'));
+        $input->click();
+        $input->setValue($newName);
     }
 
-
-    public function startPreview()
+    /**
+     * Saves the article
+     *
+     */
+    public function saveArticle()
     {
-        $window = $this->getModuleWindow();
-        $builder = new BackendXpathBuilder();
-
-        $previewXpath = $builder
-            ->child('span', ['@text' => 'Vorschau'])
-            ->ancestor('button', [], 1)
-            ->getXpath();
-
-        $previewButton = $window->find('xpath', $previewXpath);
-        $this->assertNotNull($previewButton, $previewXpath);
-        $previewButton->click();
+        $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern');
+        $button = $this->find('xpath', $buttonXpath);
+        $button->click();
     }
 }

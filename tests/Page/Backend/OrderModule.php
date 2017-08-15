@@ -26,6 +26,7 @@ class OrderModule extends BackendModule
      * Open an order by email
      *
      * @param string $email
+     * @throws \Exception
      */
     public function openOrderByEmail($email)
     {
@@ -48,6 +49,7 @@ class OrderModule extends BackendModule
      *
      * @param string $type
      * @param string $status
+     * @throws \Exception
      */
     public function setStatusByType($type, $status)
     {
@@ -69,6 +71,8 @@ class OrderModule extends BackendModule
 
     /**
      * Send a notification email to the customer using the email window opened after saving after a status history change
+     *
+     * @throws \Exception
      */
     public function sendCustomerNotificationMail()
     {
@@ -84,6 +88,8 @@ class OrderModule extends BackendModule
 
     /**
      * Reload the status history tab
+     *
+     * @throws \Exception
      */
     public function reloadStatusHistory()
     {
@@ -112,20 +118,10 @@ class OrderModule extends BackendModule
     }
 
     /**
-     * Click the email icon on the topmost generated document
-     */
-    public function clickEmailIconOnLastGeneratedIcon()
-    {
-        $row = $this->getLastGeneratedDocumentGridRow();
-        $emailIconXpath = BackendXpathBuilder::create()->child('img', ['~class' => 'sprite-mail-send'])->getXpath();
-
-        $row->find('xpath', $emailIconXpath)->click();
-    }
-
-    /**
      * Filter the backend order list by shipping country
      *
      * @param string $country
+     * @throws \Exception
      */
     public function filterOrderListForShippingCountry($country)
     {
@@ -138,6 +134,7 @@ class OrderModule extends BackendModule
      * Get number of orders in backend list
      *
      * @return integer
+     * @throws \Exception
      */
     public function getNumberOfOrdersInOrderList()
     {
@@ -150,6 +147,8 @@ class OrderModule extends BackendModule
 
     /**
      * Sort backend order list by order value (ascendingly)
+     *
+     * @throws \Exception
      */
     public function sortOrderListByValue()
     {
@@ -166,6 +165,7 @@ class OrderModule extends BackendModule
      * Get the topmost order from the backend listing
      *
      * @return NodeElement|null
+     * @throws \Exception
      */
     public function getTopmostOrderFromList()
     {
@@ -180,6 +180,7 @@ class OrderModule extends BackendModule
      * Get the latest generated document grid row
      *
      * @return NodeElement|null
+     * @throws \Exception
      */
     private function getLastGeneratedDocumentGridRow()
     {

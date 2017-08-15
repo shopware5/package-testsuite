@@ -4,6 +4,7 @@ namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit_Framework_Assert;
+use Shopware\Page\Backend\BackendModule;
 use Shopware\Page\Backend\OrderModule;
 use Smalot\PdfParser\Parser;
 
@@ -12,6 +13,7 @@ class BackendOrderContext extends SubContext
     /**
      * @When I open the order from email :email
      * @param string $email
+     * @throws \RuntimeException
      */
     public function iOpenTheOrderFromEmail($email)
     {
@@ -24,6 +26,7 @@ class BackendOrderContext extends SubContext
      * @When I change the :type status to :status
      * @param string $type
      * @param string $status
+     * @throws \RuntimeException
      */
     public function iChangeTheOrderOrPaymentStatusTo($type, $status)
     {
@@ -34,6 +37,7 @@ class BackendOrderContext extends SubContext
 
     /**
      * @Given I reload the status history
+     * @throws \RuntimeException
      */
     public function iReloadTheStatusHistory()
     {
@@ -44,6 +48,7 @@ class BackendOrderContext extends SubContext
 
     /**
      * @Then I should eventually see a generated invoice
+     * @throws \Exception
      */
     public function iShouldEventuallySeeAGeneratedInvoice()
     {
@@ -53,18 +58,20 @@ class BackendOrderContext extends SubContext
     }
 
     /**
-     * @When I click the email icon on the last generated document
+     * @When I click the email icon on the last generated document :name
+     * @throws \Exception
      */
-    public function iClickTheEmailIconOnTheLastGeneratedDocument()
+    public function iClickTheEmailIconOnTheLastGeneratedDocument($name)
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->clickEmailIconOnLastGeneratedIcon();
+        /** @var BackendModule $page */
+        $page = $this->getPage('BackendModule');
+        $page->clickEntryIconByName($name, 'sprite-mail-send');
     }
 
     /**
      * @When I filter the backend order list for shipping country :country
      * @param string $country
+     * @throws \RuntimeException
      */
     public function iFilterTheBackendOrderListForShippingCountry($country)
     {
@@ -90,6 +97,7 @@ class BackendOrderContext extends SubContext
 
     /**
      * @Given I sort the backend order list by order value ascendingly
+     * @throws \RuntimeException
      */
     public function iSortTheBackendOrderListByOrderValueAscendingly()
     {
@@ -116,6 +124,7 @@ class BackendOrderContext extends SubContext
 
     /**
      * @Then I should be able to send a notification to the customer
+     * @throws \RuntimeException
      */
     public function iShouldBeAbleToSendANotificationToTheCustomer()
     {
