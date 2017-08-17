@@ -11,11 +11,12 @@ use Shopware\Page\Backend\ShippingModule;
 class BackendContext extends SubContext
 {
     /**
+     * @Given I am logged into the backend
      * @When I log in with user :user and password :password
      * @param string $user
      * @param string $password
      */
-    public function iLogInWithUserAndPassword($user, $password)
+    public function iLogInWithUserAndPassword($user = 'demo', $password = 'demo')
     {
         /** @var BackendLogin $page */
         $page = $this->getPage('BackendLogin');
