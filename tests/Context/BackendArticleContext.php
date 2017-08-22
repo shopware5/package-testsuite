@@ -137,10 +137,10 @@ class BackendArticleContext extends SubContext
     {
         /** @var ArticleModule $page */
         $page = $this->getPage('ArticleModule');
-        if ($page !== null) {
-            return $page;
+        if ($page == null) {
+            throw new \Exception('Page is not defined.');
         }
-        throw new \Exception('Page is not defined.');
+        return $page;
     }
 
     /**
@@ -151,9 +151,9 @@ class BackendArticleContext extends SubContext
     {
         /** @var BackendModule $page */
         $page = $this->getPage('BackendModule');
-        if ($page !== null) {
-            return $page;
+        if ($page == null) {
+            throw new \Exception('Page is not defined.');
         }
-        throw new \Exception('Page is not defined.');
+        return $page;
     }
 }
