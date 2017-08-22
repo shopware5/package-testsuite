@@ -32,7 +32,7 @@ Feature: I can create, update and delete an article
     Then I should see "Unterkategorie" eventually
 
     When I expand the "Unterkategorie" element
-    When I click to add the category with name "Unterkategorie" to the article
+    And I click to add the category with name "Unterkategorie" to the article
     Then I should find the category with name "Unterkategorie" in "Zugewiesene Kategorien"
     When I click on the "Stammdaten" tab
     Then I am able to save my article

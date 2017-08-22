@@ -3,7 +3,6 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\ArticleModule;
 use Shopware\Page\Backend\BackendModule;
 
@@ -16,26 +15,26 @@ class BackendArticleContext extends SubContext
      */
     public function iSetAsTheArticlePriceForTheCustomerGroup($price)
     {
-        $this->getModulePage()->setArticlePrice($price);
+        $this->getArticleModulePage()->setArticlePrice($price);
     }
 
     /**
      * @Given I choose :text as article description
      * @param string $text
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     public function iChooseAsArticleDescription($text)
     {
-        $this->getModulePage()->setDescription($text);
+        $this->getArticleModulePage()->setDescription($text);
     }
 
     /**
      * @Then I am able to save my article
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     public function iAmAbleToSaveMyArticle()
     {
-        $this->getModulePage()->saveArticle();
+        $this->getArticleModulePage()->saveArticle();
     }
 
     /**
@@ -45,7 +44,7 @@ class BackendArticleContext extends SubContext
      */
     public function iClickTheIconToAdd($name)
     {
-        $this->getModulePage()->addCategory($name);
+        $this->getArticleModulePage()->addCategory($name);
     }
 
     /**
@@ -56,7 +55,7 @@ class BackendArticleContext extends SubContext
      */
     public function iShouldFindInTheArea($title, $area)
     {
-        $this->getModulePage()->checkAddedCategory($title, $area);
+        $this->getArticleModulePage()->checkAddedCategory($title, $area);
     }
 
     /**
@@ -67,13 +66,13 @@ class BackendArticleContext extends SubContext
     public function iFillInTheBasicConfiguration(TableNode $table)
     {
         $data = $table->getHash();
-        $this->getModulePage()->setBasicData($data);
+        $this->getArticleModulePage()->setBasicData($data);
     }
 
     /**
      * @When I expand the :label element
      * @param string $label
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     public function iExpandTheCategoryElement($label)
     {
@@ -99,7 +98,7 @@ class BackendArticleContext extends SubContext
      */
     public function iChangeTheArticleNameTo($articlename)
     {
-        $this->getModulePage()->changeArticleName($articlename);
+        $this->getArticleModulePage()->changeArticleName($articlename);
     }
 
     /**
@@ -132,21 +131,29 @@ class BackendArticleContext extends SubContext
 
     /**
      * @return ArticleModule|null
+     * @throws \Exception
      */
-    private function getModulePage()
+    private function getArticleModulePage()
     {
         /** @var ArticleModule $page */
         $page = $this->getPage('ArticleModule');
-        return $page;
+        if ($page !== null) {
+            return $page;
+        }
+        throw new \Exception('Page is not defined.');
     }
 
     /**
      * @return BackendModule|null
+     * @throws \Exception
      */
     private function getBackendModulePage()
     {
         /** @var BackendModule $page */
         $page = $this->getPage('BackendModule');
-        return $page;
+        if ($page !== null) {
+            return $page;
+        }
+        throw new \Exception('Page is not defined.');
     }
 }

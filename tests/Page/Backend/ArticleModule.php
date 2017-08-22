@@ -36,6 +36,7 @@ class ArticleModule extends BackendModule
      *
      * @param NodeElement $cellElement
      * @return int position
+     * @throws \Exception
      */
     private function findPriceFieldPosition($cellElement)
     {
@@ -54,10 +55,11 @@ class ArticleModule extends BackendModule
             }
             ++$positionIndex;
         }
+        throw new \Exception('Price input is missing.');
     }
 
     /**
-     * Sets the price eventually.
+     * Sets the price in the corresponding input field
      *
      * @param NodeElement $window
      * @param float $price
@@ -106,7 +108,7 @@ class ArticleModule extends BackendModule
     /**
      * Sets the basic information of the article
      *
-     * @param $data
+     * @param array $data
      * @throws \Exception
      */
     public function setBasicData($data)
@@ -118,7 +120,7 @@ class ArticleModule extends BackendModule
     /**
      * Adds the category to the article
      *
-     * @param $name
+     * @param string $name
      * @throws \Exception
      */
     public function addCategory($name)
@@ -141,8 +143,8 @@ class ArticleModule extends BackendModule
     /**
      * Checks if the category is connected to the article correctly
      *
-     * @param $name
-     * @param $area
+     * @param string $name
+     * @param string $area
      * @throws \Exception
      */
     public function checkAddedCategory($name, $area)
@@ -178,8 +180,7 @@ class ArticleModule extends BackendModule
      */
     public function saveArticle()
     {
-        $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern');
-        $button = $this->find('xpath', $buttonXpath);
+        $button = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
         $button->click();
     }
 }

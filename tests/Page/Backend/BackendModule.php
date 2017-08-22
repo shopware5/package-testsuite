@@ -284,8 +284,8 @@ class BackendModule extends ContextAwarePage
     /**
      * Clicks the selected icon for the entry with a given name.
      *
-     * @param $name
-     * @param $icon
+     * @param string $name
+     * @param string $icon
      * @throws \Exception
      */
     public function clickEntryIconByName($name, $icon)
