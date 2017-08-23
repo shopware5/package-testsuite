@@ -34,6 +34,7 @@ class BackendModule extends ContextAwarePage
      *
      * @param NodeElement $formParent
      * @param array $formElements
+     * @throws \Exception
      */
     public function fillExtJsForm(NodeElement $formParent, array $formElements)
     {
@@ -47,7 +48,7 @@ class BackendModule extends ContextAwarePage
             switch ($element['type']) {
                 case 'input':
                     $input = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
-                    if(!$input) {
+                    if (!$input) {
                         throw new \Exception('Could not find input element by label ' . $element['label']);
                     }
                     $this->fillInput($input, $element['value']);
@@ -69,6 +70,12 @@ class BackendModule extends ContextAwarePage
                     $selecttree = $parent->find('xpath',
                         BackendXpathBuilder::getSelectorPebbleXpathByLabel($element['label']));
                     $this->fillSelecttree($selecttree, $element['value']);
+                    break;
+                case 'comboinput':
+                    $inputXpath = BackendXpathBuilder::getInputXpathByLabel($element['label']);
+                    $supplierInput = $formParent->find('xpath', $inputXpath);
+                    $this->fillComboboxInput($supplierInput, $element['value']);
+                    break;
             }
         }
     }
@@ -108,7 +115,7 @@ class BackendModule extends ContextAwarePage
         $pebble = $combobox->find('xpath', $builder->child('div', ['~class' => 'x-form-trigger'])->getXpath());
 
         if (!$pebble->isVisible()) {
-            throw new \Exception('Pebble with for combobox with value ' . $value . 'not visible.');
+            throw new \RuntimeException('Pebble with for combobox with value ' . $value . 'not visible.');
         }
 
         $pebble->click();
@@ -134,10 +141,23 @@ class BackendModule extends ContextAwarePage
     }
 
     /**
+     * Helper method that fills an extJS combobox input field
+     *
+     * @param NodeElement $comboInputField
+     * @param string $value
+     */
+    public function fillComboboxInput(NodeElement $comboInputField, $value)
+    {
+        $comboInputField->click();
+        $comboInputField->setValue($value);
+    }
+
+    /**
      * Selects an entry in a selecttree
      *
      * @param NodeElement $selecttree
      * @param string $value Data which should be used for the selection
+     * @throws \Exception
      */
     public function fillSelecttree($selecttree, $value)
     {
@@ -156,6 +176,52 @@ class BackendModule extends ContextAwarePage
             $option->click();
         }
     }
+
+    /**
+     * Expands a collapsed element
+     *
+     * @param string $label
+     * @param null $fieldset
+     */
+    public function expandCategoryCollapsible($label, $fieldset = null)
+    {
+        $builder = new BackendXpathBuilder();
+
+        $collapsibleFieldXpath = $builder
+            ->child('div', ['@text' => $label], 1)
+            ->ancestor('tr', [], 1)
+            ->getXpath();
+
+        if ($fieldset) {
+            /** @var NodeElement $fieldset */
+            $element = $fieldset->find('xpath', $collapsibleFieldXpath);
+        } else {
+            $element = $this->find('xpath', $collapsibleFieldXpath);
+        }
+
+        $element->doubleClick();
+    }
+
+    /**
+     * Chooses the desired answer in a message box
+     *
+     * @param $answer
+     * @throws \Exception
+     */
+    public function answerMessageBox($answer)
+    {
+        $builder = new BackendXpathBuilder();
+
+        $answerButtonXpath = $builder
+            ->child('span', ['@text' => $answer, 'and', '~class' => 'x-btn-inner'], 1)
+            ->ancestor('button', [], 1)
+            ->getXpath();
+
+        $answerButton = $this->find('xpath', $answerButtonXpath);
+        $this->assertNotNull($answerButton, $answerButtonXpath);
+        $answerButton->click();
+    }
+
 
     /**
      * Helper method that returns the current module window
@@ -185,6 +251,7 @@ class BackendModule extends ContextAwarePage
      * @param NodeElement $elemA
      * @param NodeElement $elemB
      * @return bool
+     * @throws \Behat\Mink\Exception\DriverException
      */
     private function elementsTouch(NodeElement $elemA, NodeElement $elemB)
     {
@@ -205,11 +272,35 @@ class BackendModule extends ContextAwarePage
      * @param string $id
      * @param string $side Can be either top, bottom, left or right
      * @return int
+     * @throws \Behat\Mink\Exception\DriverException
      */
     private function getYCoordinateForElement($id, $side = 'top')
     {
         return (int)$this->getSession()->getDriver()->evaluateScript(
             "return document.getElementById('" . $id . "').getBoundingClientRect()." . $side . ";"
         );
+    }
+
+    /**
+     * Clicks the selected icon for the entry with a given name.
+     *
+     * @param string $name
+     * @param string $icon
+     * @throws \Exception
+     */
+    public function clickEntryIconByName($name, $icon)
+    {
+        $builder = new BackendXpathBuilder();
+
+        $editIconXpath = $builder
+            ->child('div')
+            ->contains($name)
+            ->ancestor('tr', ['~class' => 'x-grid-row'])
+            ->descendant('img', ['~class' => $icon])
+            ->getXpath();
+
+        $this->waitForXpathElementPresent($editIconXpath);
+        $editIcon = $this->find('xpath', $editIconXpath);
+        $editIcon->click();
     }
 }
