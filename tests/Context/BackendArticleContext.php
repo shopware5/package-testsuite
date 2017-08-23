@@ -130,7 +130,7 @@ class BackendArticleContext extends SubContext
     }
 
     /**
-     * @return ArticleModule|null
+     * @return ArticleModule
      * @throws \Exception
      */
     private function getArticleModulePage()
@@ -144,7 +144,7 @@ class BackendArticleContext extends SubContext
     }
 
     /**
-     * @return BackendModule|null
+     * @return BackendModule
      * @throws \Exception
      */
     private function getBackendModulePage()
