@@ -7,8 +7,7 @@ Feature: I can manage my customers with the backend customer module
   Scenario: I can create, edit and delete customers from the customer module
 
     ## Opening the module
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     And I hover backend menu item "Kunden"
     And I click on backend menu item that contains "Kunden"
     Then I might need to close the welcome wizard

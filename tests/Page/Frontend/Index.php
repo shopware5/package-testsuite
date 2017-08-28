@@ -5,9 +5,8 @@ namespace Shopware\Page\Frontend;
 use Behat\Mink\Element\NodeElement;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Component\Helper\HelperSelectorInterface;
 
-class Index extends Page implements HelperSelectorInterface
+class Index extends Page
 {
     /**
      * @var string $path
@@ -17,59 +16,29 @@ class Index extends Page implements HelperSelectorInterface
     /**
      * @inheritdoc
      */
-    public function getCssSelectors()
-    {
-        return [
-            'myAccount' => '.account--link',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getXPathSelectors()
     {
-        $builder = new FrontendXpathBuilder();
-
         return [
-            'templateMainNav' => $builder
-                ->reset()
+            'templateMainNav' => FrontendXpathBuilder::create()
                 ->child('nav', ['@class' => 'navigation-main'])
                 ->descendant('ul', ['~class' => 'navigation--list'])
                 ->descendant('li', ['~text' => '{NAVTITLE}'])
                 ->getXpath(),
 
-            'templateSubNav' => $builder
-                ->reset()
+            'templateSubNav' => FrontendXpathBuilder::create()
                 ->child('li', ['~class' => 'is--active'])
                 ->descendant('a', ['@class' => 'navigation--link', 'and', '~text' => '{NAVTITLE}'])
                 ->getXpath(),
 
-            'templateListingProductByOrderNumber' => $builder
-                ->reset()
+            'templateListingProductByOrderNumber' => FrontendXpathBuilder::create()
                 ->child('div', ['@class' => 'listing--container'])
                 ->descendant('div', ['@data-ordernumber' => '{ORDERNUMBER}']),
 
-            'templateListingProductBoxByName' => $builder
-                ->reset()
+            'templateListingProductBoxByName' => FrontendXpathBuilder::create()
                 ->child('div', ['@class' => 'listing--container'])
                 ->descendant('div', ['@class' => 'product--info'])
                 ->descendant('a', ['@class' => 'product--title', 'and', '@title' => '{PRODUCTNAME}'])
                 ->ancestor('div', ['~class' => 'product--box'], 1)
-                ->getXpath(),
-
-            'logoPictureSourceElements' => $builder
-                ->reset()
-                ->child('div', ['~class' => 'logo--shop'])
-                ->descendant('picture', [], 1)
-                ->descendant('source')
-                ->getXpath(),
-
-            'logoPictureimgElement' => $builder
-                ->reset()
-                ->child('div', ['~class' => 'logo--shop'])
-                ->descendant('picture', [], 1)
-                ->descendant('img', [], 1)
                 ->getXpath(),
         ];
     }
@@ -93,13 +62,13 @@ class Index extends Page implements HelperSelectorInterface
     }
 
     /**
-     * @param string $productname
-     * @return NodeElement|null
+     * @param string $productName
+     * @return NodeElement
      */
-    public function getProductListingBoxElement($productname)
+    public function getProductListingBoxElement($productName)
     {
         $xpath = $this->getXPathSelectors()['templateListingProductBoxByName'];
-        return $this->find('xpath', str_replace('{PRODUCTNAME}', $productname, $xpath));
+        return $this->find('xpath', str_replace('{PRODUCTNAME}', $productName, $xpath));
     }
 
     /**

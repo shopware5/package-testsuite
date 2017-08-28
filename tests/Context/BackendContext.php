@@ -5,7 +5,6 @@ namespace Shopware\Context;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\Backend;
-use Shopware\Page\Backend\BackendLogin;
 use Shopware\Page\Backend\ShippingModule;
 
 class BackendContext extends SubContext
@@ -18,8 +17,8 @@ class BackendContext extends SubContext
      */
     public function iLogInWithUserAndPassword($user = 'demo', $password = 'demo')
     {
-        /** @var BackendLogin $page */
-        $page = $this->getPage('BackendLogin');
+        /** @var Backend $page */
+        $page = $this->getPage('Backend');
         $page->login($user, $password);
     }
 
@@ -58,8 +57,8 @@ class BackendContext extends SubContext
      */
     public function theFollowingShippingOptionsExist(TableNode $table)
     {
-        /** @var BackendLogin $page */
-        $page = $this->getPage('BackendLogin');
+        /** @var Backend $page */
+        $page = $this->getPage('Backend');
         $page->login();
 
         /** @var ShippingModule $page */

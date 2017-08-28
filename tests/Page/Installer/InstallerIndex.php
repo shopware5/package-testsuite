@@ -4,9 +4,8 @@ namespace Shopware\Page\Installer;
 
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
-use Shopware\Component\Helper\HelperSelectorInterface;
 
-class InstallerIndex extends ContextAwarePage implements HelperSelectorInterface
+class InstallerIndex extends ContextAwarePage
 {
     /**
      * @var string $path

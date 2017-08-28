@@ -2,8 +2,7 @@
 Feature:
 
   Scenario: I can create, edit and delete vouchers and my customers can use them
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     And I hover backend menu item "Marketing"
     And I click on backend menu item that contains "Gutscheine"
     Then I should see "Hinzufügen" eventually
@@ -59,6 +58,7 @@ Feature:
 
     ## Change voucher to from absolute to relative
     Given I am on the page "VoucherModule"
+    Then I should see "Neuer Absoluter Testgutschein" eventually
     And I click the edit icon on the voucher named "Neuer Absoluter Testgutschein"
     Then I should see "Gutschein-Konfiguration" eventually
 
@@ -87,6 +87,7 @@ Feature:
 
     ## Delete the voucher
     Given I am on the page "VoucherModule"
+    Then I should see "Neuer Relativer Testgutschein" eventually
     And I click the delete icon on the voucher named "Neuer Relativer Testgutschein"
     And I click the "Ja" button
 
@@ -98,7 +99,7 @@ Feature:
     And the following products exist in the store:
       | number  | name                         | price | tax | supplier    | categories                            |
       | SWT0001 | BienenhoniK - Karl Süßkleber | 19    | 19  | Bienenstock | Root > Deutsch > Nahrungsmittel > Süß |
-    And I am on the page "BackendLogin"
+    And I am on the page "Backend"
     And I log in with user "demo" and password "demo"
     And I am on the page "VoucherModule"
     And I click the "Hinzufügen" button

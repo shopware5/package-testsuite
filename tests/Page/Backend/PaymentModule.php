@@ -2,7 +2,6 @@
 
 namespace Shopware\Page\Backend;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class PaymentModule extends BackendModule
@@ -23,39 +22,38 @@ class PaymentModule extends BackendModule
     public function activatePaymentMethod($name)
     {
         $this->open();
-        $page = $this->getPage('PaymentModule');
         $window = $this->getModuleWindow();
 
+        $paymentMethodXpath = $this->getPaymentMethodXpath($name);
+
+        $paymentMethod = $this->waitForSelectorPresent('xpath', $paymentMethodXpath);
+        $paymentMethod->click();
+
+        $generalTab = $window->find('xpath', BackendXpathBuilder::getTabXpathByLabel('Generell'));
+        $generalTab->click();
+
+        $checkbox = $window->getCheckbox('Aktiv:');
+        if ($checkbox->isChecked()) {
+            return;
+        }
+
+        $checkbox->toggle();
+
+        $window->findButton('Speichern')->click();
+        $this->waitForText('Zahlungsart gespeichert', 1);
+    }
+
+    /**
+     * @param $name
+     * @return string
+     */
+    private function getPaymentMethodXpath($name)
+    {
         $paymentMethodXpath = BackendXpathBuilder::create()
             ->child('div', ['starts-with' => ['@id', 'payment-main-tree']])
             ->descendant('div', ['~class' => 'x-grid-cell-inner', 'and', '~text' => $name . ' ('])
             ->getXpath();
 
-        $this->waitForSelectorPresent('xpath', $paymentMethodXpath);
-
-        $paymentMethod = $window->find('xpath', $paymentMethodXpath);
-        $paymentMethod->click();
-
-        $generalTabXpath = BackendXpathBuilder::create()
-            ->child('span', ['@class' => 'x-tab-inner', 'and', '~text' => 'Generell'])
-            ->getXpath();
-
-        $tab = $window->find('xpath', $generalTabXpath);
-        $tab->click();
-
-        $checkbox = $window->find('xpath', BackendXpathBuilder::getInputXpathByLabel('Aktiv:'));
-        $checked = $checkbox->find('xpath',
-            BackendXpathBuilder::create()->ancestor('table', ['~class' => 'x-form-cb-checked'], 1)->getXpath());
-
-        if (null !== $checked) {
-            return;
-        }
-
-        $checkbox->click();
-
-        $saveButton = $page->findButton('Speichern');
-        $saveButton->click();
-
-        $this->waitForText('Zahlungsart gespeichert', 1);
+        return $paymentMethodXpath;
     }
 }

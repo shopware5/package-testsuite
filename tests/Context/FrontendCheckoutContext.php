@@ -3,7 +3,6 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Page\Backend\ShippingModule;
 use Shopware\Page\Frontend\Account;
 use Shopware\Page\Frontend\CheckoutCart;
 use Shopware\Page\Frontend\CheckoutConfirm;

@@ -18,11 +18,7 @@ class BackendVoucherContext extends SubContext
      */
     public function fillNewVoucherForm(TableNode $table)
     {
-        /** @var VoucherModule $page */
-        $page = $this->getPage('VoucherModule');
-        $data = $table->getHash();
-
-        $page->fillVoucherEditorFormWith($data);
+        $this->getModulePage()->fillVoucherEditorFormWith($table->getHash());
     }
 
     /**
@@ -31,9 +27,7 @@ class BackendVoucherContext extends SubContext
      */
     public function iClickTheEditIconOnVoucher($name)
     {
-        /** @var VoucherModule $page */
-        $page = $this->getPage('VoucherModule');
-        $page->openEditFormForVoucher($name);
+        $this->getModulePage()->openEditFormForVoucher($name);
     }
 
     /**
@@ -42,9 +36,7 @@ class BackendVoucherContext extends SubContext
      */
     public function iClickTheDeleteIconOnTheVoucherNamed($name)
     {
-        /** @var VoucherModule $page */
-        $page = $this->getPage('VoucherModule');
-        $page->deleteVoucher($name);
+        $this->getModulePage()->deleteVoucher($name);
     }
 
     /**
@@ -74,6 +66,16 @@ class BackendVoucherContext extends SubContext
     }
 
     /**
+     * @return VoucherModule
+     */
+    private function getModulePage()
+    {
+        /** @var VoucherModule $page */
+        $page = $this->getPage('VoucherModule');
+        return $page;
+    }
+
+    /**
      * Get the first dynamically generated voucher code
      *
      * @param bool $voucherWasUsed
@@ -83,8 +85,6 @@ class BackendVoucherContext extends SubContext
     {
         $voucherWasUsed = $voucherWasUsed ? 'Ja' : 'Nein';
 
-        /** @var VoucherModule $page */
-        $page = $this->getPage('VoucherModule');
         $codeXpathSelector = BackendXpathBuilder::create()
             ->child('div')
             ->contains($voucherWasUsed)
@@ -93,9 +93,9 @@ class BackendVoucherContext extends SubContext
             ->child('div', ['~class' => 'x-grid-cell-inner'])
             ->getXpath();
 
-        $this->waitForSelectorPresent('xpath', $codeXpathSelector);
+        $codeCell = $this->waitForSelectorPresent('xpath', $codeXpathSelector);
 
-        return $page->find('xpath', $codeXpathSelector)->getText();
+        return $codeCell->getText();
     }
 
     private function loginAsFrontendUser()
@@ -135,10 +135,12 @@ class BackendVoucherContext extends SubContext
         $voucherModule = $this->getPage('VoucherModule');
         $voucherModule->open();
 
+        $this->waitForText('Neuer Individueller Testgutschein', 3);
+
         $voucherModule->openEditFormForVoucher('Neuer Individueller Testgutschein');
         $this->waitForText('Gutschein-Konfiguration', 6);
 
-        /** @var Backend $page */
+        /** @var Backend $backend */
         $backend = $this->getPage('Backend');
         $backend->clickOnTabWithName('Individuelle Gutscheincodes');
 

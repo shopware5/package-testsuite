@@ -2,11 +2,10 @@
 
 namespace Shopware\Page\Backend;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
-use Shopware\Component\Helper\HelperSelectorInterface;
+use Shopware\Page\ContextAwarePage;
 
-class Backend extends Page implements HelperSelectorInterface
+class Backend extends ContextAwarePage
 {
     /**
      * @var string $path
@@ -14,19 +13,32 @@ class Backend extends Page implements HelperSelectorInterface
     protected $path = '/backend/';
 
     /**
-     * @inheritdoc
+     * Log user into the backend
+     *
+     * @param string $user
+     * @param string $password
      */
-    public function getCssSelectors()
+    public function login($user = 'demo', $password = 'demo')
     {
-        return [];
-    }
+        $this->open();
 
-    /**
-     * @inheritdoc
-     */
-    public function getXPathSelectors()
-    {
-        return [];
+        // Are we already logged in?
+        if ($this->waitIfThereIsText('Marketing', 3)) {
+            return;
+        }
+
+        $this->waitForSelectorPresent('xpath', "//input[@name='username']");
+
+        $userInput = $this->find('xpath', "//input[@name='username']");
+        $userInput->setValue($user);
+
+        $passwordInput = $this->find('xpath', "//input[@name='password']");
+        $passwordInput->setValue($password);
+
+        $button = $this->find('xpath', "//button[@data-action='login']");
+        $button->click();
+
+        $this->waitForText('Marketing', 5);
     }
 
     /**
@@ -36,13 +48,7 @@ class Backend extends Page implements HelperSelectorInterface
      */
     public function clickOnTabWithName($label)
     {
-        $tabXpath = BackendXpathBuilder::create()
-            ->child('span', ['@text' => $label, 'and', '~class' => 'x-tab-inner'])
-            ->ancestor('button', [], 1)
-            ->getXpath();
-
-        $element = $this->find('xpath', $tabXpath);
-        $element->click();
+        $tab = $this->find('xpath', BackendXpathBuilder::getTabXpathByLabel($label));
+        $tab->click();
     }
-
 }

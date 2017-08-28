@@ -8,8 +8,7 @@ Feature: I can create, update and delete an article
     And the category tree "Root > Deutsch > ErsteKategorie > Unterkategorie" exists
 
   Scenario: I can create a new article
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     Then I should see "Artikel" eventually
     And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
@@ -46,8 +45,7 @@ Feature: I can create, update and delete an article
     Then I should see "Der Artikel wurde erfolgreich in den Warenkorb gelegt" eventually
 
   Scenario: I can edit an existing article
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     Then I should see "Artikel" eventually
     And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
@@ -63,8 +61,7 @@ Feature: I can create, update and delete an article
     Then I should see "Erster Artikel EDIT" eventually
 
   Scenario: I can delete an existing article
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     Then I should see "Artikel" eventually
     And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"

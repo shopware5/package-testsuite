@@ -4,11 +4,11 @@ namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit_Framework_Assert;
-use Shopware\Page\Backend\BackendModule;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\OrderModule;
 use Smalot\PdfParser\Parser;
 
-class BackendOrderContext extends SubContext
+class BackendOrderContext extends PageObjectContext
 {
     /**
      * @When I open the order from email :email
@@ -17,67 +17,42 @@ class BackendOrderContext extends SubContext
      */
     public function iOpenTheOrderFromEmail($email)
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->openOrderByEmail($email);
+        $this->getModulePage()->openOrderByEmail($email);
     }
 
     /**
      * @When I change the :type status to :status
      * @param string $type
      * @param string $status
-     * @throws \RuntimeException
      */
     public function iChangeTheOrderOrPaymentStatusTo($type, $status)
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->setStatusByType($type, $status);
+        $this->getModulePage()->setStatusByType($type, $status);
     }
 
     /**
      * @Given I reload the status history
-     * @throws \RuntimeException
      */
     public function iReloadTheStatusHistory()
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->reloadStatusHistory();
+        $this->getModulePage()->reloadStatusHistory();
     }
 
     /**
-     * @Then I should eventually see a generated invoice
-     * @throws \Exception
+     * @When I click the email icon on the last generated document
      */
-    public function iShouldEventuallySeeAGeneratedInvoice()
+    public function iClickTheEmailIconOnTheLastGeneratedDocument()
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->waitForGeneratedInvoiceAppears();
-    }
-
-    /**
-     * @When I click the email icon on the last generated document :name
-     * @throws \Exception
-     */
-    public function iClickTheEmailIconOnTheLastGeneratedDocument($name)
-    {
-        /** @var BackendModule $page */
-        $page = $this->getPage('BackendModule');
-        $page->clickEntryIconByName($name, 'sprite-mail-send');
+        $this->getModulePage()->clickEmailIconOnLastGeneratedIcon();
     }
 
     /**
      * @When I filter the backend order list for shipping country :country
      * @param string $country
-     * @throws \RuntimeException
      */
     public function iFilterTheBackendOrderListForShippingCountry($country)
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->filterOrderListForShippingCountry($country);
+        $this->getModulePage()->filterOrderListForShippingCountry($country);
     }
 
     /**
@@ -87,9 +62,7 @@ class BackendOrderContext extends SubContext
      */
     public function iShouldSeeExactlyOneOrderInTheOrderList($amount)
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $actualAmount = $page->getNumberOfOrdersInOrderList();
+        $actualAmount = $this->getModulePage()->getNumberOfOrdersInOrderList();
         if ((int)$amount !== $actualAmount) {
             throw new \Exception(sprintf('Expected %s order, found %s.', $amount, $actualAmount));
         }
@@ -97,13 +70,10 @@ class BackendOrderContext extends SubContext
 
     /**
      * @Given I sort the backend order list by order value ascendingly
-     * @throws \RuntimeException
      */
     public function iSortTheBackendOrderListByOrderValueAscendingly()
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->sortOrderListByValue();
+        $this->getModulePage()->sortOrderListByValue();
     }
 
     /**
@@ -113,9 +83,7 @@ class BackendOrderContext extends SubContext
      */
     public function iShouldSeeTheOrderFromAtTheTopOfTheOrderList($email)
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $topmostOrder = $page->getTopmostOrderFromList();
+        $topmostOrder = $this->getModulePage()->getTopmostOrderFromList();
 
         if (!strpos($topmostOrder->getHtml(), $email)) {
             throw new \Exception(sprintf('Expected order from %s would be at top of list.', $email));
@@ -124,13 +92,10 @@ class BackendOrderContext extends SubContext
 
     /**
      * @Then I should be able to send a notification to the customer
-     * @throws \RuntimeException
      */
     public function iShouldBeAbleToSendANotificationToTheCustomer()
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-        $page->sendCustomerNotificationMail();
+        $this->getModulePage()->sendCustomerNotificationMail();
     }
 
     /**
@@ -140,16 +105,14 @@ class BackendOrderContext extends SubContext
      */
     public function theInvoiceShouldContain(TableNode $content)
     {
+        // Allow time for the invoice to be generated
+        sleep(3);
+
         $documentsPath = $this->getDocumentsDirectory();
 
         $documents = glob($documentsPath . '/*.pdf');
-        switch (count($documents)) {
-            case 0:
-                throw new \Exception('Could not find generated PDF document.');
-            case 1:
-                break;
-            default:
-                echo "Warning - more than one document found. Is the test running on a clean SW installation?";
+        if(empty($documents)) {
+            throw new \Exception('Could not find generated PDF document.');
         }
 
         $pdfContent = $this->getPdfTextContent($documents[0]);
@@ -159,6 +122,16 @@ class BackendOrderContext extends SubContext
         }
 
         unlink($documents[0]);
+    }
+
+    /**
+     * @return OrderModule
+     */
+    private function getModulePage()
+    {
+        /** @var OrderModule $page */
+        $page = $this->getPage('OrderModule');
+        return $page;
     }
 
     /**

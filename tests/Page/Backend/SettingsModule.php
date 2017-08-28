@@ -3,6 +3,7 @@
 namespace Shopware\Page\Backend;
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\Window;
 
 class SettingsModule extends BackendModule
 {
@@ -47,7 +48,7 @@ class SettingsModule extends BackendModule
      */
     public function fillShopConfigurationForm(array $data)
     {
-        $window = $this->find('xpath', BackendXpathBuilder::getWindowXpathByTitle('Grundeinstellungen - Shops'));
+        $window = Window::createFromTitle('Grundeinstellungen - Shops', $this->getSession());
         $this->fillExtJsForm($window, $data);
 
         $submitButton = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Speichern'));

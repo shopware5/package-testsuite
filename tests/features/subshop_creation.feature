@@ -9,8 +9,7 @@ Feature: I can create and access a subshop
 
 
   Scenario: I can create a subshop
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     Then I should see "Einstellungen" eventually
     And I should see "Feedback" eventually
     When I hover backend menu item "Einstellungen"

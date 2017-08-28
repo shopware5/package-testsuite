@@ -1,11 +1,11 @@
 <?php
 
-namespace Shopware\Element\Backend;
+namespace Shopware\Element\Backend\GridView;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\ExtJsElement;
 
-class GridViewRow extends NodeElement
+class GridViewRow extends ExtJsElement
 {
     /**
      * Click an icon in a grid view row.

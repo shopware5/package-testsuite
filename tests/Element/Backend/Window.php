@@ -2,111 +2,220 @@
 
 namespace Shopware\Element\Backend;
 
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\Form\Checkbox;
+use Shopware\Element\Backend\Form\Combobox;
+use Shopware\Element\Backend\Form\Input;
+use Shopware\Element\Backend\Form\Selecttree;
+use Shopware\Element\Backend\Form\Textarea;
+use Shopware\Element\Backend\GridView\GridView;
 
 /**
  * Class Window
  *
- * Representing an ExtJS window, identified by its title.
+ * Representing an ExtJS window, the fundamental block of an ExtJs application.
+ *
+ * You can get other ExtJS elements from a window, e.g. grid views, form inputs
+ * and buttons.
  */
-class Window extends NodeElement
+class Window extends ExtJsElement
 {
     /**
-     * ExtJS Window Title
+     * Static construction method for creating an ExtJS Window object.
      *
-     * @var string
-     */
-    private $title;
-
-    /**
-     * Window constructor.
+     * Example Usage:
+     *  $window = Window::createFromTitle('Kundenadministration', $this->getSession());
+     *
      * @param string $title
      * @param Session $session
      * @param bool $exactTitleMatch
-     * @throws \Exception
+     * @return Window
      */
-    public function __construct($title, Session $session, $exactTitleMatch = true)
+    public static function createFromTitle($title, Session $session, $exactTitleMatch = true)
     {
-        $this->title = $title;
-
         $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($title, $exactTitleMatch);
-        parent::__construct($windowXpath, $session);
+        $window = new Window($windowXpath, $session);
 
-        $this->waitForWindowVisible();
+        return $window;
     }
 
     /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Close the ExtJs window
-     */
-    public function close()
-    {
-        $closeButton = $this->find('xpath', $this->getWindowCloseButtonXpath());
-        $closeButton->click();
-    }
-
-    /**
-     * Get a grid view enclosed in the current window
+     * Get a grid view from within the current window.
+     * If a window contains multiple grid views, the search can be limited
+     * by providing an arbitrary string that appears within the grid view that
+     * is to be selected.
      *
+     * @param string|null $containsText
      * @return GridView
-     * @throws \Exception
      */
-    public function getGridView()
+    public function getGridView($containsText = '')
     {
-        $gridView = new GridView($this->getGridViewXpath(), $this->getSession());
-
+        $gridView = new GridView($this->getGridViewXpath($containsText), $this->getSession());
         return $gridView;
     }
 
     /**
-     * Wait for the extJS window to be valid and visible
+     * Get an input form field by its exact label
+     *
+     *  Example Usage:
+     *  $input = $window->getInput('Dateiname:');
+     *
+     * @param $label
+     * @param string|null $fieldset
+     * @return Input
      */
-    private function waitForWindowVisible()
+    public function getInput($label, $fieldset = null)
     {
-        sleep(2);
-
-        $this->waitFor(10, function (Window $window) {
-            return $window->isValid() && $window->isVisible();
-        });
-
-        if (!$this->isValid()) {
-            throw new \Exception('Could not find window with title: ' . $this->getTitle());
-        }
-
-        if (!$this->isVisible()) {
-            throw new \Exception('Window with title ' . $this->getTitle() . 'not visible.');
-        }
+        $input = new Input($this->getInputXpath($label, $fieldset), $this->getSession());
+        return $input;
     }
 
     /**
-     * @return string
+     * Get a combobox field by its exact label
+     *
+     *  Example Usage:
+     *  $combobox = $window->getCombobox('Steuersatz:');
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return Combobox
      */
-    private function getWindowCloseButtonXpath()
+    public function getCombobox($label, $fieldset = null)
     {
-        $closeButtonXpath = BackendXpathBuilder::create($this->getXpath())
-            ->descendant('div', ['~class' => 'x-window-header'])
-            ->descendant('img', ['~class' => 'x-tool-close'])
-            ->getXpath();
-        return $closeButtonXpath;
+        $combobox = new Combobox($this->getComboboxXpath($label, $fieldset), $this->getSession());
+        return $combobox;
     }
 
     /**
+     * Get a checkbox field by its exact label
+     *
+     *  Example Usage:
+     *  $checkbox = $window->getCheckbox('Aktiv:');
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return Checkbox
+     */
+    public function getCheckbox($label, $fieldset = null)
+    {
+        $checkbox = new Checkbox($this->getInputXpath($label, $fieldset), $this->getSession());
+        return $checkbox;
+    }
+
+    /**
+     * Get a textarea by its exact label
+     *
+     *  Example Usage:
+     *  $textarea = $window->getTextarea('Kurzbeschreibung:');
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return Textarea
+     */
+    public function getTextarea($label, $fieldset = null)
+    {
+        $textarea = new Textarea($this->getTextareaXpath($label, $fieldset), $this->getSession());
+        return $textarea;
+    }
+
+    /**
+     * Get a selecttree by its exact label
+     *
+     *  Example Usage:
+     *  $tree = $window->getSelecttree('Kategorie:');
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return Selecttree
+     */
+    public function getSelecttree($label, $fieldset = null)
+    {
+        $selecttree = Selecttree::createFromXpath($this->getSelecttreeXpath($label, $fieldset), $this);
+        return $selecttree;
+    }
+
+    /**
+     * @param string $containsText
      * @return string
      */
-    private function getGridViewXpath()
+    private function getGridViewXpath($containsText = '')
     {
         $gridViewXpath = BackendXpathBuilder::create($this->getXpath())
             ->descendant('div', ['~class' => 'x-grid-with-row-lines'])
+            ->descendant('*', ['~text' => $containsText])
+            ->ancestor('div', ['~class' => 'x-grid-with-row-lines'])
             ->getXpath();
+
         return $gridViewXpath;
+    }
+
+    /**
+     * Get xpath for a combobox within the current window, potentially limited to a given fieldset.
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return string
+     */
+    private function getComboboxXpath($label, $fieldset = null)
+    {
+        $scope = $fieldset
+            ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
+            : $this->getXpath();
+
+        return BackendXpathBuilder::getComboboxXpathByLabel($label, $scope);
+    }
+
+    /**
+     * Get xpath for an input field within the current window, optionally scoped to a given fieldset
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return string
+     */
+    private function getInputXpath($label, $fieldset)
+    {
+        $scope = $fieldset
+            ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
+            : $this->getXpath();
+
+        return BackendXpathBuilder::getInputXpathByLabel($label, $scope);
+    }
+
+    /**
+     * Get xpath to textarea element within the current window, optionally scoped to a given fieldset
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return string
+     */
+    private function getTextareaXpath($label, $fieldset)
+    {
+        $scope = $fieldset
+            ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
+            : $this->getXpath();
+
+        return BackendXpathBuilder::getFormElementXpathByLabel($label, 'textarea', $scope);
+    }
+
+    /**
+     * Return xpath to a given selecttree within the current window
+     *
+     * @param string $label
+     * @param string|null $fieldset
+     * @return string
+     */
+    private function getSelecttreeXpath($label, $fieldset)
+    {
+        $scope = $fieldset
+            ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
+            : $this->getXpath();
+
+        return BackendXpathBuilder::create($scope)
+            ->descendant('label', ['@text' => $label])
+            ->ancestor('td', [], 1)
+            ->followingSibling('td', [], 1)
+            ->descendant('div', ['~class' => 'x-form-trigger'])
+            ->getXpath();
     }
 }

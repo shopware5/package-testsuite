@@ -3,6 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Behat\Hook\Scope\ScenarioScope;
+use Behat\Mink\Driver\Selenium2Driver;
 
 class GeneralContext extends SubContext
 {
@@ -35,29 +36,26 @@ class GeneralContext extends SubContext
     }
 
     /**
-     * Helper method that resets the database to a known, clean state
+     * Maximize browser window before execution
+     *
+     * @BeforeScenario
      */
-    private static function cleanDatabase()
+    public function onBeforeScenario()
     {
-        $dbDumpFile = __DIR__ . '/../clean_db.sql';
-
-        if (!is_file($dbDumpFile)) {
-            echo "Could not reset database - no clean state available. (Missing dump file)." . PHP_EOL;
-            return;
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $driver->maximizeWindow();
+            $this->getSession()->resizeWindow(1920, 1080, 'current');
         }
-
-        echo "Resetting database to clean state..." . PHP_EOL;
-        passthru(sprintf('mysql -u shopware -pshopware -h mysql shopware < %s', $dbDumpFile));
     }
 
     /**
-     * Helper method that clears the shopware cache
+     * @Given I wait for :amount seconds
+     * @param $amount
      */
-    private static function clearCache()
+    public function iWaitForSeconds($amount)
     {
-        echo "Clearing Shopware cache..." . PHP_EOL;
-        $swConsole = getenv('base_path') . '/bin/console';
-        shell_exec('php ' . $swConsole . ' sw:cache:clear');
+        sleep((int)$amount);
     }
 
     /**
@@ -87,5 +85,31 @@ class GeneralContext extends SubContext
     public function iShouldEventuallyNotSee($text)
     {
         $this->waitForTextNotPresent($text);
+    }
+
+    /**
+     * Helper method that resets the database to a known, clean state
+     */
+    private static function cleanDatabase()
+    {
+        $dbDumpFile = __DIR__ . '/../clean_db.sql';
+
+        if (!is_file($dbDumpFile)) {
+            echo "Could not reset database - no clean state available. (Missing dump file)." . PHP_EOL;
+            return;
+        }
+
+        echo "Resetting database to clean state..." . PHP_EOL;
+        passthru(sprintf('mysql -u shopware -pshopware -h mysql shopware < %s', $dbDumpFile));
+    }
+
+    /**
+     * Helper method that clears the shopware cache
+     */
+    private static function clearCache()
+    {
+        echo "Clearing Shopware cache..." . PHP_EOL;
+        $swConsole = getenv('base_path') . '/bin/console';
+        shell_exec('php ' . $swConsole . ' sw:cache:clear');
     }
 }

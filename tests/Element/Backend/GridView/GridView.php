@@ -1,29 +1,29 @@
 <?php
 
-namespace Shopware\Element\Backend;
+namespace Shopware\Element\Backend\GridView;
 
 use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\ExtJsElement;
 
-class GridView extends NodeElement
+/**
+ * Class GridView
+ * Represents an ExtJS grid view
+ */
+class GridView extends ExtJsElement
 {
-    /**
-     * @inheritdoc
-     */
-    public function __construct($xpath, Session $session)
-    {
-        parent::__construct($xpath, $session);
-
-        $this->waitForGridViewVisible($xpath);
-    }
-
     /**
      * Reload the content of the grid view
      */
     public function reload()
     {
         $reloadButton = $this->find('xpath', $this->getReloadButtonXpath());
+
+        // Wait to click button
+        $this->waitFor(5, function () use ($reloadButton) {
+            return $reloadButton->isVisible();
+        });
+
         $reloadButton->click();
     }
 
@@ -60,6 +60,27 @@ class GridView extends NodeElement
     }
 
     /**
+     * Sort a grid view by a given header name
+     *
+     * @param string $headerName
+     */
+    public function sortBy($headerName)
+    {
+        $tableHeaderXpath = BackendXpathBuilder::create()
+            ->child('span', ['~class' => 'x-column-header-text'])
+            ->contains($headerName)
+            ->getXpath();
+
+        $tableHeader = $this->find('xpath', $tableHeaderXpath);
+
+        $this->waitFor(5, function () use ($tableHeader) {
+            return $tableHeader->isVisible();
+        });
+
+        $tableHeader->click();
+    }
+
+    /**
      * @return string
      */
     private function getReloadButtonXpath()
@@ -79,16 +100,5 @@ class GridView extends NodeElement
             ->descendant('tr', ['~class' => 'x-grid-row'])
             ->getXpath();
         return $rowsXpath;
-    }
-
-    /**
-     * @param $xpath
-     * @throws \Exception
-     */
-    private function waitForGridViewVisible($xpath)
-    {
-        if (!$this->isValid()) {
-            throw new \Exception('Could not find grid view using xpath ' . $xpath);
-        }
     }
 }

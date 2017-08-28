@@ -3,7 +3,6 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Exception\MissingRequirementException;
 use Shopware\Component\Api\ApiClient;
 
 class ApiContext extends SubContext
@@ -125,7 +124,7 @@ class ApiContext extends SubContext
 
     /**
      * @return ApiClient
-     * @throws MissingRequirementException
+     * @throws \RuntimeException
      */
     private function getApiClient()
     {
@@ -139,15 +138,15 @@ class ApiContext extends SubContext
         $assetUrl = getenv('assets_url');
 
         if (empty($apiKey)) {
-            throw new MissingRequirementException("Please set the api_key parameter in .env");
+            throw new \RuntimeException("Please set the api_key parameter in .env");
         }
 
         if (empty($baseUrl)) {
-            throw new MissingRequirementException("Please set the base_url parameter in behat.yml");
+            throw new \RuntimeException("Please set the base_url parameter in behat.yml");
         }
 
         if (empty($assetUrl)) {
-            throw new MissingRequirementException("Please set the asset_url parameter in .env");
+            throw new \RuntimeException("Please set the asset_url parameter in .env");
         }
 
         $this->apiClient = new ApiClient($baseUrl, $assetUrl, $apiUser, $apiKey);

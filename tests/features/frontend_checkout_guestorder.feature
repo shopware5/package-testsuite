@@ -50,8 +50,7 @@ Feature: I can buy products using the store frontend
     And I click on "Zahlungspflichtig bestellen"
     Then I should see "Vielen Dank für Ihre Bestellung" eventually
 
-    When I am on the page "BackendLogin"
-    And I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     And I am on the page "CustomerModule"
     Then I might need to close the welcome wizard
     When I click the edit icon on customer "David"
