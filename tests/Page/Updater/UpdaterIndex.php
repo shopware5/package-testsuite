@@ -4,9 +4,8 @@ namespace Shopware\Page\Updater;
 
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Page\ContextAwarePage;
-use Shopware\Component\Helper\HelperSelectorInterface;
 
-class UpdaterIndex extends ContextAwarePage implements HelperSelectorInterface
+class UpdaterIndex extends ContextAwarePage
 {
 
     /**

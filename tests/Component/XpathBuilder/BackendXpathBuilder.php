@@ -28,11 +28,13 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $label
      * @param string $tag
+     * @param string $scope
      * @return string
      */
-    public static function getFormElementXpathByLabel($label, $tag)
+    public static function getFormElementXpathByLabel($label, $tag, $scope = '/')
     {
-        return (new self)->descendant('label', ['@text' => $label])
+        return static::create($scope)
+            ->descendant('label', ['@text' => $label])
             ->ancestor('td', [], 1)
             ->followingSibling('td', [], 1)
             ->descendant($tag)
@@ -43,11 +45,12 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * Return an Xpath that finds a button by its label
      *
      * @param string $label
+     * @param string $scope
      * @return string
      */
-    public static function getButtonXpathByLabel($label)
+    public static function getButtonXpathByLabel($label, $scope = '/')
     {
-        return (new self)
+        return static::create($scope)
             ->child('span', ['@class' => 'x-btn-inner'])
             ->contains($label)
             ->ancestor('button')
@@ -58,41 +61,28 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * Shorthand function to get an extJS input field by its label
      *
      * @param string $label
+     * @param string $scope
      * @return string
      */
-    public static function getInputXpathByLabel($label)
+    public static function getInputXpathByLabel($label, $scope = '/')
     {
-        return self::getFormElementXpathByLabel($label, 'input');
-    }
-
-    /**
-     * Return a selector pebble xpath by its associated label
-     *
-     * @param string $label
-     * @return string
-     */
-    public static function getSelectorPebbleXpathByLabel($label)
-    {
-        return (new self)
-            ->descendant('label', ['@text' => $label])
-            ->ancestor('td', [], 1)
-            ->followingSibling('td', [], 1)
-            ->descendant('div', ['~class' => 'x-form-trigger'])
-            ->getXpath();
+        return self::getFormElementXpathByLabel($label, 'input', $scope);
     }
 
     /**
      * Returns label-specific xpath for a combobox
      *
      * @param string $label
+     * @param string $scope
      * @return string
      */
-    public static function getComboboxXpathByLabel($label)
+    public static function getComboboxXpathByLabel($label, $scope = '/')
     {
-        $builder = new BackendXpathBuilder();
-        $builder->setXpath(self::getSelectorPebbleXpathByLabel($label));
-
-        return $builder
+        return static::create($scope)
+            ->descendant('label', ['@text' => $label])
+            ->ancestor('td', [], 1)
+            ->followingSibling('td', [], 1)
+            ->descendant('div', ['~class' => 'x-form-trigger'])
             ->ancestor('tr', [], 2)
             ->getXpath();
     }
@@ -159,47 +149,16 @@ class BackendXpathBuilder extends BaseXpathBuilder
     }
 
     /**
-     * Return a list of all elements of a select tree
-     *
-     * @param string $selectString
-     * @return array
-     */
-    public static function getSelectTreeElementXpaths($selectString)
-    {
-        $xpaths = [];
-
-        $categories = array_map('trim', explode('>', $selectString));
-        $lastKey = count($categories) - 1;
-
-        foreach ($categories as $key => $category) {
-            if ($key === $lastKey) {
-                $xpaths[] = (new self)
-                    ->descendant('div', ['@text' => $category])
-                    ->descendant('img', ['~class' => 'x-tree-icon'])
-                    ->getXpath();
-                break;
-            }
-
-            $xpaths[] = (new self)
-                ->descendant('div', ['~class' => 'x-tree-panel'])
-                ->descendant('div', ['@text' => $category])
-                ->descendant('img', ['~class' => 'x-tree-expander'])
-                ->getXpath();
-        }
-
-        return $xpaths;
-    }
-
-    /**
      * Return an Xpath that finds a fieldset by its label
      *
      * @param string $label
+     * @param string $scope
      * @return string
      */
-    public static function getFieldsetXpathByLabel($label)
+    public static function getFieldsetXpathByLabel($label, $scope = '/')
     {
-        return (new self)
-            ->child('fieldset')
+        return static::create($scope)
+            ->descendant('fieldset')
             ->descendant('legend')
             ->descendant('div')
             ->contains($label)

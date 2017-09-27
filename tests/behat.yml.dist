@@ -32,7 +32,6 @@ default:
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Shopware\Context\DebugContext
-                - Shopware\Context\FeatureContext
                 - Shopware\Context\GeneralContext
                 - Shopware\Context\BackendContext
                 - Shopware\Context\FrontendContext

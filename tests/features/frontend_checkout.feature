@@ -66,7 +66,7 @@ Feature: I can buy products using the store frontend
       | sumWithoutVat | 41,09 € |
 
   Scenario: I can order a product and pay using SEPA
-    Given I am on the page "BackendLogin"
+    Given I am on the page "Backend"
     When I log in with user "demo" and password "demo"
     And the following payment methods are activated:
       | name |

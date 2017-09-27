@@ -96,6 +96,7 @@ Feature: I can use product exports
       | Dateiformat: | CSV   | combobox |
 
     And I click the "Speichern und schließen" button
+    Then I should see "Profile 02" eventually
     And I open the "Profile 02" export file
     Then it should contain the following product data:
       """
@@ -104,7 +105,7 @@ Feature: I can use product exports
 
      # Test Profile 03 - Enter invalid template and see if the shop crashes
   @isolated
-  Scenario: I can create an invalid product export without crashing the shop
+  Scenario: I can create an invalid product export without causing any issues for the shop (Profile 03)
     Given I am logged into the backend
 
     When I am on the page "ProductExportModule"

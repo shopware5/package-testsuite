@@ -2,8 +2,9 @@
 
 namespace Shopware\Page\Backend;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\GridView\GridView;
+use Shopware\Element\Backend\GridView\GridViewRow;
 
 class OrderModule extends BackendModule
 {
@@ -26,22 +27,11 @@ class OrderModule extends BackendModule
      * Open an order by email
      *
      * @param string $email
-     * @throws \Exception
      */
     public function openOrderByEmail($email)
     {
-        $window = $this->getModuleWindow();
-
-        $editIconXpath = BackendXpathBuilder::create()
-            ->child('a')
-            ->contains($email)
-            ->ancestor('tr', ['~class' => 'x-grid-row'])
-            ->descendant('img', ['~class' => 'sprite-pencil'])
-            ->getXpath();
-
-        $this->waitForXpathElementPresent($editIconXpath);
-        $editIcon = $window->find('xpath', $editIconXpath);
-        $editIcon->click();
+        $orderRow = $this->getOrderListGridView()->getRowByContent($email);
+        $orderRow->clickActionIcon('sprite-pencil');
     }
 
     /**
@@ -49,30 +39,17 @@ class OrderModule extends BackendModule
      *
      * @param string $type
      * @param string $status
-     * @throws \Exception
      */
     public function setStatusByType($type, $status)
     {
         $label = strtolower($type) === 'order' ? 'Bestellstatus:' : 'Zahlungsstatus:';
 
-        $containerXpath = BackendXpathBuilder::create()
-            ->child('span')
-            ->contains('Bestellung bearbeiten')
-            ->ancestor('div', ['~class' => 'x-panel-default'])
-            ->getXpath();
-        $this->waitForSelectorPresent('xpath', $containerXpath);
-        $container = $this->find('xpath', $containerXpath);
-
-        $statusComboboxXpath = BackendXpathBuilder::getComboboxXpathByLabel($label);
-        $statusCombobox = $container->find('xpath', $statusComboboxXpath);
-
-        $this->fillCombobox($statusCombobox, $status);
+        $statusCombobox = $this->getEditorWindow()->getCombobox($label);
+        $statusCombobox->setValue($status);
     }
 
     /**
      * Send a notification email to the customer using the email window opened after saving after a status history change
-     *
-     * @throws \Exception
      */
     public function sendCustomerNotificationMail()
     {
@@ -88,109 +65,91 @@ class OrderModule extends BackendModule
 
     /**
      * Reload the status history tab
-     *
-     * @throws \Exception
      */
     public function reloadStatusHistory()
     {
-        $window = $this->getEditorWindow(false);
-
-        $loadingButtonXpath = BackendXpathBuilder::create()
-            ->child('div', ['~class' => 'x-order-history-grid'])
-            ->descendant('span', ['~class' => 'x-tbar-loading'])
-            ->getXpath();
-
-        $window->find('xpath', $loadingButtonXpath)->click();
+        $gridView = $this->getEditorWindow()->getGridView('Benutzer');
+        $gridView->reload();
     }
 
     /**
-     * Wait for a generated invoice to appear
-     *
-     * @throws \Exception
+     * Click the email icon on the topmost generated document
      */
-    public function waitForGeneratedInvoiceAppears()
+    public function clickEmailIconOnLastGeneratedIcon()
     {
         $row = $this->getLastGeneratedDocumentGridRow();
-
-        if (!strpos($row->getHtml(), 'Rechnung')) {
-            throw new \Exception('Could not find generated invoice');
-        }
+        $row->clickActionIcon('sprite-mail-send');
     }
 
     /**
      * Filter the backend order list by shipping country
      *
      * @param string $country
-     * @throws \Exception
      */
     public function filterOrderListForShippingCountry($country)
     {
-        $window = $this->getModuleWindow();
-        $this->fillExtJsForm($window, [['label' => 'Lieferland:', 'value' => $country, 'type' => 'combobox']]);
+        $this->getModuleWindow()->getCombobox('Lieferland:')->setValue($country);
         $this->findButton('Ausführen')->click();
+
+        // Wait for the list to reload automatically
+        sleep(3);
     }
 
     /**
      * Get number of orders in backend list
      *
      * @return integer
-     * @throws \Exception
      */
     public function getNumberOfOrdersInOrderList()
     {
-        return count($this->getModuleWindow()->findAll('xpath',
-            BackendXpathBuilder::create()
-                ->child('tr', ['~class' => 'x-grid-row'])
-                ->getXpath()
-        ));
+        $gridView = $this->getOrderListGridView();
+        return count($gridView->getRows());
     }
 
     /**
      * Sort backend order list by order value (ascendingly)
-     *
-     * @throws \Exception
      */
     public function sortOrderListByValue()
     {
-        $tableHeaderXpath = BackendXpathBuilder::create()
-            ->child('span', ['~class' => 'x-column-header-text'])
-            ->contains('Betrag')
-            ->getXpath();
-
-        $this->waitForSelectorPresent('xpath', $tableHeaderXpath);
-        $this->find('xpath', $tableHeaderXpath)->click();
+        sleep(3);
+        $this->getOrderListGridView()->sortBy('Betrag');
     }
 
     /**
      * Get the topmost order from the backend listing
      *
-     * @return NodeElement|null
-     * @throws \Exception
+     * @return GridViewRow
      */
     public function getTopmostOrderFromList()
     {
-        return $this->getModuleWindow()->find('xpath',
-            BackendXpathBuilder::create()
-                ->child('tr', ['~class' => 'x-grid-row'])
-                ->getXpath()
-        );
+        return $this->getOrderListGridView()->getRows()[0];
     }
 
     /**
      * Get the latest generated document grid row
      *
-     * @return NodeElement|null
-     * @throws \Exception
+     * @return GridViewRow
      */
     private function getLastGeneratedDocumentGridRow()
     {
-        $tableRowXpath = BackendXpathBuilder::create()
-            ->child('div', ['~class' => 'x-document-grid'])
-            ->descendant('tr', ['~class' => 'x-grid-row'])
-            ->getXpath();
+        return $this->getEditorWindow()->getGridView('Betrag')->getRowByContent('Rechnung');
+    }
 
-        $this->waitForSelectorPresent('xpath', $tableRowXpath);
+    /**
+     * Get main order list grid view
+     *
+     * @return GridView
+     */
+    private function getOrderListGridView()
+    {
+        return $this->getModuleWindow()->getGridView('Bestellnummer');
+    }
 
-        return $this->getEditorWindow(false)->find('xpath', $tableRowXpath);
+    /**
+     * {@inheritdoc}
+     */
+    protected function getEditorWindow($exactMatch = false)
+    {
+        return parent::getEditorWindow($exactMatch);
     }
 }

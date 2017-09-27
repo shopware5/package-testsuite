@@ -4,10 +4,6 @@ namespace Shopware\Component\Api;
 
 use Faker\Factory as FakerFactory;
 use GuzzleHttp\Client as Guzzle;
-use Shopware\Exception\CategoryPathNotStartingAtRootException;
-use Shopware\Exception\MissingRequirementException;
-use Shopware\Exception\MultipleChoicesException;
-use Shopware\Exception\NoArticleNameException;
 
 class ApiClient
 {
@@ -43,7 +39,6 @@ class ApiClient
      * @param string $assetUrl
      * @param string $username
      * @param string $apiKey
-     * @throws MissingRequirementException
      */
     public function __construct($apiUrl, $assetUrl, $username, $apiKey)
     {
@@ -52,11 +47,11 @@ class ApiClient
         $this->client = new Guzzle();
 
         if (empty($username)) {
-            throw new MissingRequirementException('Missing API username.');
+            throw new \RuntimeException('Missing API username.');
         }
 
         if (empty($apiKey)) {
-            throw new MissingRequirementException('Missing API password.');
+            throw new \RuntimeException('Missing API password.');
         }
 
         $this->auth = [$username, $apiKey, 'digest'];
@@ -167,15 +162,14 @@ class ApiClient
     /**
      * @param $categories
      * @return int
-     * @throws CategoryPathNotStartingAtRootException
-     * @throws MultipleChoicesException
+     * @throws \RuntimeException
      */
     public function createCategoryTree($categories)
     {
         $categories = explode('>', $categories);
         $rootCategory = trim(array_shift($categories));
         if ($rootCategory !== "Root") {
-            throw new CategoryPathNotStartingAtRootException("The first element of a category path has to be Root.");
+            throw new \RuntimeException("The first element of a category path has to be Root.");
         }
 
         $parentId = 1;
@@ -196,7 +190,7 @@ class ApiClient
             }
 
             if ($existsResponse['total'] > 1) {
-                throw new MultipleChoicesException(sprintf('There are multiple definitions for "%s" with parent id %i.',
+                throw new \RuntimeException(sprintf('There are multiple definitions for "%s" with parent id %i.',
                     $category, $parentId));
             }
 
@@ -222,7 +216,6 @@ class ApiClient
      * @param array $product
      * @param array $categories
      * @return array
-     * @throws NoArticleNameException
      */
     private function buildArticleDataArray(array $product, array $categories)
     {

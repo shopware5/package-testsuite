@@ -3,7 +3,7 @@
 namespace Shopware\Page\Backend;
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
-use Shopware\Element\Backend\GridViewRow;
+use Shopware\Element\Backend\GridView\GridViewRow;
 
 class ProductExportModule extends BackendModule
 {
@@ -66,6 +66,7 @@ class ProductExportModule extends BackendModule
     public function openExport($exportTitle)
     {
         $window = $this->getModuleWindow();
+
         $exportRow = $window->getGridView()->getRowByContent($exportTitle);
 
         $exportUrl = $this->getExportUrl($exportRow);
@@ -100,9 +101,7 @@ class ProductExportModule extends BackendModule
      */
     public function addMinimumPriceFilter($minPrice)
     {
-        $this->fillExtJsForm($this->getEditorWindow(), [
-            ['label' => 'Preis grösser:', 'value' => (int)$minPrice, 'type' => 'input'],
-        ]);
+        $this->getEditorWindow()->getInput('Preis grösser:')->setValue((int)$minPrice);
     }
 
     /**

@@ -21,10 +21,11 @@ class CheckoutShippingPayment extends ContextAwarePage
             $this->open();
         }
 
-        $element = $this->getMethodElement($shippingMethod);
-        $element->click();
+        $this->selectShippingMethod($shippingMethod);
 
-        $this->getPage('CheckoutConfirm')->open();
+        $this->waitForJsOverlayToClose();
+
+        $this->pressButton('Weiter');
     }
 
     /**
@@ -38,28 +39,11 @@ class CheckoutShippingPayment extends ContextAwarePage
             $this->open();
         }
 
-        $element = $this->getMethodElement($paymentMethod);
-        $element->click();
+        $this->selectPaymentMethod($paymentMethod);
 
-        // Fill out SEPA information if necessary
-        if ($paymentMethod === 'SEPA') {
-            $ibanInputXpath = FrontendXpathBuilder::getInputById('iban');
-            $this->waitForSelectorPresent('xpath', $ibanInputXpath);
-            $this->find('xpath', $ibanInputXpath)->setValue('DE27100777770209299700');
+        $this->waitForJsOverlayToClose();
 
-            $bicInputXpath = FrontendXpathBuilder::getInputById('bic');
-            $this->find('xpath', $bicInputXpath)->setValue('DEMOBIC');
-
-            $bankInputXpath = FrontendXpathBuilder::getInputById('bank');
-            $this->find('xpath', $bankInputXpath)->setValue('Bank');
-        }
-
-        $this->waitForSelectorInvisible('xpath', FrontendXpathBuilder::create()
-            ->child('div', ['~class' => 'js--overlay'])
-            ->getXpath()
-        );
-
-        $this->findButton('Weiter')->click();
+        $this->pressButton('Weiter');
     }
 
     /**
@@ -79,8 +63,59 @@ class CheckoutShippingPayment extends ContextAwarePage
         return $this->find('xpath', $elementXpath);
     }
 
+    /**
+     * Verifies that we currently are on the shipping/payment page
+     *
+     * @param array $urlParameters
+     * @return bool
+     */
     protected function verifyUrl(array $urlParameters = [])
     {
         return $this->getDriver()->getCurrentUrl() === $this->getUrl($urlParameters);
+    }
+
+    /**
+     * Select a shipping method from the list in the frontend
+     *
+     * @param $shippingMethod
+     */
+    private function selectShippingMethod($shippingMethod)
+    {
+        $element = $this->getMethodElement($shippingMethod);
+        $element->click();
+    }
+
+    /**
+     * Select a payment method from the list in the frontend and
+     * fill in some demo SEPA data if necessary
+     *
+     * @param $paymentMethod
+     */
+    private function selectPaymentMethod($paymentMethod)
+    {
+        $element = $this->getMethodElement($paymentMethod);
+        $element->click();
+
+        // Fill out SEPA information if necessary
+        if ($paymentMethod === 'SEPA') {
+            $ibanInputXpath = FrontendXpathBuilder::getInputById('iban');
+            $this->waitForSelectorPresent('xpath', $ibanInputXpath);
+
+            $this->fillField('iban', 'DE27100777770209299700');
+            $this->fillField('bic', 'DEMOBIC');
+            $this->fillField('bank', 'Demobank');
+        }
+    }
+
+    /**
+     * Wait for the Javascript Overlay to close, indicating the new shipping/payment
+     * method was selected successfully.
+     */
+    private function waitForJsOverlayToClose()
+    {
+        $this->waitForSelectorInvisible('xpath', FrontendXpathBuilder::create()
+            ->child('div', ['~class' => 'js--overlay'])
+            ->getXpath()
+        );
     }
 }

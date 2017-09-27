@@ -3,10 +3,11 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Page\Backend\BackendLogin;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
+use Shopware\Page\Backend\Backend;
 use Shopware\Page\Backend\PaymentModule;
 
-class BackendPaymentContext extends SubContext
+class BackendPaymentContext extends PageObjectContext
 {
     /**
      * @Given the following payment methods are activated:
@@ -14,8 +15,8 @@ class BackendPaymentContext extends SubContext
      */
     public function theFollowingPaymentMethodsAreActivated(TableNode $table)
     {
-        /** @var BackendLogin $backendPage */
-        $backendPage = $this->getPage('BackendLogin');
+        /** @var Backend $backendPage */
+        $backendPage = $this->getPage('Backend');
         $backendPage->login();
 
         /** @var PaymentModule $page */

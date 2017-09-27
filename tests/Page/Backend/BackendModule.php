@@ -12,12 +12,22 @@ class BackendModule extends ContextAwarePage
     /**
      * @var string
      */
-    protected $moduleWindowTitle = '';
+    protected $moduleWindowTitle;
+
+    /**
+     * @var Window|null
+     */
+    protected $moduleWindow;
 
     /**
      * @var string
      */
-    protected $editorWindowTitle = '';
+    protected $editorWindowTitle;
+
+    /**
+     * @var Window|null
+     */
+    protected $editorWindow;
 
     /**
      * Fill a standard ExtJs form with data
@@ -32,44 +42,34 @@ class BackendModule extends ContextAwarePage
      *                         'textarea'
      * - fieldset (optional) - You can scope a single form element further by providing the parenting fieldset
      *
-     * @param NodeElement $formParent
+     * @param Window $formParent
      * @param array $formElements
      * @throws \Exception
      */
-    public function fillExtJsForm(NodeElement $formParent, array $formElements)
+    public function fillExtJsForm(Window $formParent, array $formElements)
     {
         foreach ($formElements as $element) {
-
-            // Change scope to fieldset if specified
-            $parent = isset($element['fieldset'])
-                ? $formParent->find('xpath', BackendXpathBuilder::getFieldsetXpathByLabel($element['fieldset']))
-                : $formParent;
-
+            $element['fieldset'] = isset($element['fieldset']) ? $element['fieldset'] : '';
             switch ($element['type']) {
                 case 'input':
-                    $input = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
-                    if (!$input) {
-                        throw new \Exception('Could not find input element by label ' . $element['label']);
-                    }
-                    $this->fillInput($input, $element['value']);
+                    $input = $formParent->getInput($element['label'], $element['fieldset']);
+                    $input->setValue($element['value']);
                     break;
                 case 'combobox':
-                    $combobox = $parent->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($element['label']));
-                    $this->fillCombobox($combobox, $element['value']);
+                    $combobox = $formParent->getCombobox($element['label'], $element['fieldset']);
+                    $combobox->setValue($element['value']);
                     break;
                 case 'checkbox':
-                    $checkbox = $parent->find('xpath', BackendXpathBuilder::getInputXpathByLabel($element['label']));
-                    $this->toggleCheckbox($checkbox);
+                    $checkbox = $formParent->getCheckbox($element['label'], $element['fieldset']);
+                    $checkbox->toggle();
                     break;
                 case 'textarea':
-                    $textarea = $parent->find('xpath',
-                        BackendXpathBuilder::getFormElementXpathByLabel($element['label'], 'textarea'));
-                    $this->fillInput($textarea, $element['value']);
+                    $textarea = $formParent->getTextarea($element['label'], $element['fieldset']);
+                    $textarea->setValue($element['value']);
                     break;
                 case 'selecttree':
-                    $selecttree = $parent->find('xpath',
-                        BackendXpathBuilder::getSelectorPebbleXpathByLabel($element['label']));
-                    $this->fillSelecttree($selecttree, $element['value']);
+                    $selecttree = $formParent->getSelecttree($element['label'], $element['fieldset']);
+                    $selecttree->setValue($element['value']);
                     break;
                 case 'comboinput':
                     $inputXpath = BackendXpathBuilder::getInputXpathByLabel($element['label']);
@@ -78,66 +78,6 @@ class BackendModule extends ContextAwarePage
                     break;
             }
         }
-    }
-
-    /**
-     * Helper method that fills an extJS input field
-     *
-     * @param NodeElement $input
-     * @param string $value
-     */
-    public function fillInput(NodeElement $input, $value)
-    {
-        $input->setValue($value);
-    }
-
-    /**
-     * Fills in a checkbox
-     *
-     * @param NodeElement $checkbox
-     */
-    public function toggleCheckbox(NodeElement $checkbox)
-    {
-        $checkbox->click();
-    }
-
-    /**
-     * Helper method that fills an extJS combobox
-     *
-     * @param NodeElement $combobox
-     * @param string $value
-     * @throws \Exception
-     */
-    public function fillCombobox(NodeElement $combobox, $value)
-    {
-        $builder = new BackendXpathBuilder();
-
-        $pebble = $combobox->find('xpath', $builder->child('div', ['~class' => 'x-form-trigger'])->getXpath());
-
-        if (!$pebble->isVisible()) {
-            throw new \RuntimeException('Pebble with for combobox with value ' . $value . 'not visible.');
-        }
-
-        $pebble->click();
-
-        $dropdownsXpath = BackendXpathBuilder::create()->child('div', ['~class' => 'x-boundlist'])->getXpath();
-        $this->waitForSelectorPresent('xpath', $dropdownsXpath, 5);
-
-        $dropdowns = $this->findAll('xpath', $dropdownsXpath);
-        /** @var NodeElement $dropdown */
-        foreach ($dropdowns as $dropdown) {
-            if ($this->elementsTouch($dropdown, $pebble)) {
-                $optionXpath = BackendXpathBuilder::create()
-                    ->child('li', ['@role' => 'option', 'and', '@text' => $value])
-                    ->getXpath();
-
-                $option = $dropdown->find('xpath', $optionXpath);
-                $option->click();
-                break;
-            }
-        }
-
-        sleep(1);
     }
 
     /**
@@ -150,31 +90,6 @@ class BackendModule extends ContextAwarePage
     {
         $comboInputField->click();
         $comboInputField->setValue($value);
-    }
-
-    /**
-     * Selects an entry in a selecttree
-     *
-     * @param NodeElement $selecttree
-     * @param string $value Data which should be used for the selection
-     * @throws \Exception
-     */
-    public function fillSelecttree($selecttree, $value)
-    {
-        $selecttree->click();
-        $elementXpaths = BackendXpathBuilder::getSelectTreeElementXpaths($value);
-
-        foreach ($elementXpaths as $xpath) {
-            $dropdownXpath = BackendXpathBuilder::create()
-                ->descendant('div', ['@text' => 'Deutsch'])
-                ->ancestor('div', ['~class' => 'x-tree-panel'])
-                ->getXpath();
-            $this->waitForXpathElementPresent($dropdownXpath);
-
-            $dropdown = $this->find('xpath', $dropdownXpath);
-            $option = $dropdown->find('xpath', $xpath);
-            $option->click();
-        }
     }
 
     /**
@@ -231,7 +146,12 @@ class BackendModule extends ContextAwarePage
      */
     protected function getModuleWindow($exactMatch = true)
     {
-        return new Window($this->moduleWindowTitle, $this->getSession(), $exactMatch);
+        // Cache the window reference as long as it is still valid
+        if (!$this->moduleWindow || !$this->moduleWindow->isValid() || $exactMatch == false) {
+            $this->moduleWindow = Window::createFromTitle($this->moduleWindowTitle, $this->getSession(), $exactMatch);
+        }
+
+        return $this->moduleWindow;
     }
 
     /**
@@ -242,43 +162,12 @@ class BackendModule extends ContextAwarePage
      */
     protected function getEditorWindow($exactMatch = true)
     {
-        return new Window($this->editorWindowTitle, $this->getSession(), $exactMatch);
-    }
+        // Cache the window reference as long as it is still valid
+        if (!$this->editorWindow || !$this->editorWindow->isValid() || $exactMatch == false) {
+            $this->editorWindow = Window::createFromTitle($this->editorWindowTitle, $this->getSession(), $exactMatch);
+        }
 
-    /**
-     * Helper method that returns true if two NodeElements touch
-     *
-     * @param NodeElement $elemA
-     * @param NodeElement $elemB
-     * @return bool
-     * @throws \Behat\Mink\Exception\DriverException
-     */
-    private function elementsTouch(NodeElement $elemA, NodeElement $elemB)
-    {
-        $idA = $elemA->getAttribute('id');
-        $aTop = $this->getYCoordinateForElement($idA, 'top');
-        $aBottom = $this->getYCoordinateForElement($idA, 'bottom');
-
-        $idB = $elemB->getAttribute('id');
-        $bTop = $this->getYCoordinateForElement($idB, 'top');
-        $bBottom = $this->getYCoordinateForElement($idB, 'bottom');
-
-        return abs($aTop - $bBottom) < 5 || abs($aBottom - $bTop) < 5;
-    }
-
-    /**
-     * Get the bounding box position value for any element on the page by it's id
-     *
-     * @param string $id
-     * @param string $side Can be either top, bottom, left or right
-     * @return int
-     * @throws \Behat\Mink\Exception\DriverException
-     */
-    private function getYCoordinateForElement($id, $side = 'top')
-    {
-        return (int)$this->getSession()->getDriver()->evaluateScript(
-            "return document.getElementById('" . $id . "').getBoundingClientRect()." . $side . ";"
-        );
+        return $this->editorWindow;
     }
 
     /**

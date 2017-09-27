@@ -7,8 +7,7 @@ Feature: I can manage my orders with the backend order module
       | customer.email              | position.name | position.quantity | position.price |
       | order.test@shopware.de.test | Testartikel   | 2                 | 10.99          |
 
-    When I am on the page "BackendLogin"
-    And I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     And I hover backend menu item "Kunden"
     And I click on backend menu item that contains "Bestellungen"
     Then I should see "order.test@shopware.de.test" eventually
@@ -29,8 +28,7 @@ Feature: I can manage my orders with the backend order module
     ## Document creation
     When I click on the "Dokumente" tab
     And I click the "Dokument erstellen" button
-    Then I should eventually see a generated invoice
-    And the invoice should contain the following:
+    Then the invoice should contain the following:
       | content                               |
       | Gewählte Zahlungsart: Vorkasse        |
       | Gewählte Versandart: Standard Versand |
@@ -44,8 +42,7 @@ Feature: I can manage my orders with the backend order module
       | order.test@shopware.de.test | Testartikel   | 1                 | 10.99          | DE               |
       | demo.test@shopware.de.test  | Testartikel   | 3                 | 15.99          | GB               |
 
-    Given I am on the page "BackendLogin"
-    And I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     And I am on the page "OrderModule"
 
     When I filter the backend order list for shipping country "Deutschland"

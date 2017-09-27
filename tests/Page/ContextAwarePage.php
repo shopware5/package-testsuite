@@ -19,7 +19,7 @@ class ContextAwarePage extends Page
     protected function assertNotNull($element, $message)
     {
         if (null === $element) {
-            throw new \UnexpectedValueException($message);
+            throw new \UnexpectedValueException('Failed Assertion: Element of type ' . get_class($element) . 'is null - ' . $message);
         }
     }
 
@@ -129,7 +129,6 @@ class ContextAwarePage extends Page
      * Checks via spin function if an element is present on page via given xpath, with sleep at the beginning (default 2)
      * @param $xpath
      * @param int $sleep
-     * @return bool
      * @throws \Exception
      */
     protected function waitForXpathElementPresent($xpath, $sleep = 2)
@@ -186,7 +185,7 @@ class ContextAwarePage extends Page
      */
     protected function clickOnElementWhenReady(NodeElement $elem)
     {
-        $this->spin(function (ContextAwarePage $context) use ($elem) {
+        $this->spin(function () use ($elem) {
             try {
                 $elem->click();
                 return true;
@@ -219,7 +218,7 @@ class ContextAwarePage extends Page
      */
     protected function waitForSelectorInvisible($selector, $locator, $wait = 2)
     {
-        sleep(2);
+        sleep($wait);
         $this->spin(function (ContextAwarePage $context) use ($selector, $locator) {
             /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);

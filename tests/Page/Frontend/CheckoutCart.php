@@ -6,9 +6,8 @@ use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
-use Shopware\Component\Helper\HelperSelectorInterface;
 
-class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
+class CheckoutCart extends ContextAwarePage
 {
     /**
      * @var string $path
@@ -21,23 +20,10 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
     public function getCssSelectors()
     {
         return [
-            'aggregationAmounts' => 'ul.aggregation--list',
             'sum' => 'li.entry--sum > div.entry--value',
             'shipping' => 'li.entry--shipping > div.entry--value',
             'total' => 'li.entry--total > div.entry--value',
             'sumWithoutVat' => 'li.entry--totalnet > div.entry--value',
-            'taxValue' => 'li.entry--taxes:nth-of-type(%d) > div.entry--value',
-            'taxRate' => 'li.entry--taxes:nth-of-type(%d) > div.entry--label',
-            'addVoucherInput' => 'div.add-voucher--panel input.add-voucher--field',
-            'addVoucherSubmit' => 'div.add-voucher--panel button.add-voucher--button',
-            'addArticleInput' => 'form.add-product--form > input.add-product--field',
-            'addArticleSubmit' => 'form.add-product--form > button.add-product--button',
-            'removeVoucher' => 'div.row--voucher .column--actions-link',
-            'aggregationLabels' => 'ul.aggregation--list .entry--label',
-            'aggregationValues' => 'ul.aggregation--list .entry--value',
-            'shippingPaymentForm' => 'form.payment',
-            'articleDeleteButtons' => '.column--actions-link[title="Löschen"]',
-            'dispatchSelect' => '#basket_dispatch_list',
         ];
     }
 
@@ -77,12 +63,9 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
      */
     public function validateCart(array $positionData)
     {
-        $expectedPositions = [];
-        foreach ($positionData as $position) {
-            $expectedPositions[] = CartPosition::fromArray($position);
-        }
-
+        $expectedPositions = $this->hydratePositionData($positionData);
         $actualPositions = $this->extractActualCartPositions();
+
         $this->assertCartPositionListsAreEqual($expectedPositions, $actualPositions);
     }
 
@@ -96,7 +79,6 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         $addProductSubmitXpath = $this->getXPathSelectors()['addProductSubmit'];
 
         $this->waitForSelectorPresent('xpath', $addProductInputXpath);
-        $this->waitForSelectorPresent('xpath', $addProductSubmitXpath);
 
         $this->find('xpath', $addProductInputXpath)->setValue($article);
         $this->find('xpath', $addProductSubmitXpath)->click();
@@ -384,5 +366,17 @@ class CheckoutCart extends ContextAwarePage implements HelperSelectorInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param array $positionData
+     * @return array
+     */
+    private function hydratePositionData(array $positionData)
+    {
+        $expectedPositions = array_map(function ($position) {
+            return CartPosition::fromArray($position);
+        }, $positionData);
+        return $expectedPositions;
     }
 }

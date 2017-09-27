@@ -4,6 +4,7 @@ namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\Window;
 
 class ShippingModule extends BackendModule
 {
@@ -43,8 +44,7 @@ class ShippingModule extends BackendModule
 
         // Set optional shipping free limit
         if (array_key_exists('shippingfree', $shipping)) {
-            $shippingFreeInput = $this->getShippingFreeInput($editor);
-            $this->fillInput($shippingFreeInput, $shipping['shippingfree']);
+            $editor->getInput('Versandkosten frei ab:')->setValue($shipping['shippingfree']);
         }
 
         // Activate payment methods if configured
@@ -71,14 +71,8 @@ class ShippingModule extends BackendModule
      */
     public function deleteShippingMethod($shippingMethod)
     {
-        $deleteButtonXpath = BackendXpathBuilder::create()
-            ->child('div', ['~text' => $shippingMethod])
-            ->ancestor('tr', [], 1)
-            ->descendant('img', ['~class' => 'sprite-minus-circle-frame'])
-            ->getXpath();
-
-        $this->waitForSelectorPresent('xpath', $deleteButtonXpath);
-        $this->find('xpath', $deleteButtonXpath)->click();
+        $shippingRow = $this->getModuleWindow()->getGridView()->getRowByContent($shippingMethod);
+        $shippingRow->clickActionIcon('sprite-minus-circle-frame');
 
         $confirmButtonXpath = BackendXpathBuilder::create()->child('button', ['@text' => 'Ja'])->getXpath();
         $this->waitForSelectorPresent('xpath', $confirmButtonXpath);
@@ -101,32 +95,13 @@ class ShippingModule extends BackendModule
             throw new \Exception(sprintf('Missing shipping method "%s"', $methodName));
         }
 
-        $methodRowXpath = BackendXpathBuilder::create()
-            ->child('strong', ['@text' => $methodName])
-            ->ancestor('tr', ['~class' => 'x-grid-row'])
-            ->getXpath();
-        $methodRow = $window->find('xpath', $methodRowXpath);
-
-        $editIcon = $methodRow->find('xpath', BackendXpathBuilder::getIconXpathByType('edit'));
-        $editIcon->click();
+        $methodRow = $window->getGridView()->getRowByContent($methodName);
+        $methodRow->clickActionIcon('sprite-pencil');
 
         $editor = $this->getEditorWindow();
 
         // Empty out all previous cost configuration
-        $costRowsXpath = BackendXpathBuilder::create()->child('tr', ['~class' => 'x-grid-row'])->getXpath();
-        $costRows = $editor->findAll('xpath', $costRowsXpath);
-        array_shift($costRows);
-
-        /** @var NodeElement $costRow */
-        foreach ($costRows as $costRow) {
-            $deleteIcon = $costRow->find('xpath', BackendXpathBuilder::getIconXpathByType('delete'));
-            $deleteIcon->click();
-
-            $messageBoxXpath = BackendXpathBuilder::getWindowXpathByTitle('Den ausgewählten Eintrag löschen?');
-            $this->waitForSelectorPresent('xpath', $messageBoxXpath);
-            $messageBox = $this->find('xpath', $messageBoxXpath);
-            $messageBox->findButton('Ja')->click();
-        }
+        $this->emptyShippingCostConfiguration($editor);
 
         $columnMapping = [
             'from' => 1,
@@ -243,7 +218,7 @@ class ShippingModule extends BackendModule
     {
         $cell->doubleClick();
         $focusedInput = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getFocusedElementXpath());
-        $this->fillInput($focusedInput, $columnValue);
+        $focusedInput->setValue($columnValue);
     }
 
     /**
@@ -280,17 +255,6 @@ class ShippingModule extends BackendModule
     }
 
     /**
-     * @param NodeElement $editor
-     * @return NodeElement
-     */
-    private function getShippingFreeInput(NodeElement $editor)
-    {
-        $shippingFreeInputXpath = BackendXpathBuilder::getInputXpathByLabel('Versandkosten frei ab:');
-        $shippingFreeInput = $editor->find('xpath', $shippingFreeInputXpath);
-        return $shippingFreeInput;
-    }
-
-    /**
      * @param array $shipping
      * @return array
      */
@@ -312,5 +276,26 @@ class ShippingModule extends BackendModule
             ? explode(', ', $shipping['activeCountries'])
             : [$shipping['activeCountries']];
         return $countries;
+    }
+
+    /**
+     * @param Window $editor
+     */
+    private function emptyShippingCostConfiguration(Window $editor)
+    {
+        $costRowsXpath = BackendXpathBuilder::create()->child('tr', ['~class' => 'x-grid-row'])->getXpath();
+        $costRows = $editor->findAll('xpath', $costRowsXpath);
+        array_shift($costRows);
+
+        /** @var NodeElement $costRow */
+        foreach ($costRows as $costRow) {
+            $deleteIcon = $costRow->find('xpath', BackendXpathBuilder::getIconXpathByType('delete'));
+            $deleteIcon->click();
+
+            $messageBoxXpath = BackendXpathBuilder::getWindowXpathByTitle('Den ausgewählten Eintrag löschen?');
+            $this->waitForSelectorPresent('xpath', $messageBoxXpath);
+            $messageBox = $this->find('xpath', $messageBoxXpath);
+            $messageBox->findButton('Ja')->click();
+        }
     }
 }

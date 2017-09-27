@@ -4,6 +4,7 @@ namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Element\Backend\Window;
 
 class CustomerModule extends BackendModule
 {
@@ -13,12 +14,19 @@ class CustomerModule extends BackendModule
     protected $path = '/backend/?app=Customer';
 
     /**
+     * @var string
+     */
+    protected $moduleWindowTitle = 'Kunden';
+
+    /**
      * Helper function that skips the intro wizard of the customer module
      */
-    public function skipIntroWizard()
+    public function skipIntroWizardIfNecessary()
     {
-        $skipButton = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Überspringen'));
-        $skipButton->click();
+        if ($this->waitIfThereIsText('Überspringen')) {
+            $skipButton = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Überspringen'));
+            $skipButton->click();
+        }
     }
 
     /**
@@ -26,12 +34,10 @@ class CustomerModule extends BackendModule
      * the supplied data.
      *
      * @param array $data
-     * @throws \Exception
      */
     public function fillNewCustomerFormWith(array $data)
     {
         $window = $this->getNewCustomerWindow();
-
         $this->fillCustomerForm($window, $data);
     }
 
@@ -39,35 +45,57 @@ class CustomerModule extends BackendModule
      * Fill the edit customer form with the supplied data
      *
      * @param array $data
-     * @throws \Exception
      */
     public function fillEditCustomerFormWith(array $data)
     {
         $window = $this->getEditCustomerWindow();
-
         $this->fillCustomerForm($window, $data);
+    }
+
+    /**
+     * Click the edit icon for the customer with a given
+     * firstname.
+     *
+     * @param $firstname
+     */
+    public function openEditFormForCustomer($firstname)
+    {
+        $window = $this->getModuleWindow();
+        $customerRow = $window->getGridView()->getRowByContent($firstname);
+        $customerRow->clickActionIcon('sprite-pencil');
+    }
+
+    /**
+     * Click the delete icon for the customer with a given
+     * firstname.
+     *
+     * @param $firstname
+     */
+    public function clickDeleteIconForCustomer($firstname)
+    {
+        $window = $this->getModuleWindow();
+        $customerRow = $window->getGridView()->getRowByContent($firstname);
+        $customerRow->clickActionIcon('sprite-minus-circle-frame');
     }
 
     /**
      * Fill a form within the supplied window with the supplied form data
      *
-     * @param NodeElement $window
+     * @param Window $window
      * @param array $data
-     * @throws \Exception
      */
-    private function fillCustomerForm(NodeElement $window, array $data)
+    private function fillCustomerForm(Window $window, array $data)
     {
         // Fill most form elements
         $this->fillExtJsForm($window, $data);
 
-        // Fill custom payment combobox element
-        foreach ($data as $entry) {
-            if ($entry['type'] !== 'paymentbox') {
-                continue;
-            }
+        $paymentFields = array_filter($data, function ($row) {
+            return $row['type'] === 'paymentbox';
+        });
 
-            $combobox = $window->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($entry['label']));
-            $this->fillPaymentCombobox($combobox, $entry['value']);
+        foreach($paymentFields as $row) {
+            $combobox = $window->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($row['label']));
+            $this->fillPaymentCombobox($combobox, $row['value']);
         }
     }
 
@@ -86,8 +114,8 @@ class CustomerModule extends BackendModule
 
         sleep(1);
 
-        // Please refer to comment in BackendModule::fillCombobox() for more details to why this solution is necessary
-        $options = $this->findAll('xpath', $builder->reset()->child('div', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
+        $options = $this->findAll('xpath',
+            $builder->reset()->child('div', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
         /** @var NodeElement $option */
         foreach ($options as $option) {
             try {
@@ -99,38 +127,20 @@ class CustomerModule extends BackendModule
 
     /**
      * Helper method to get the "new customer" window node element
-     * @return NodeElement
-     * @throws \Exception
+     * @return Window
      */
     private function getNewCustomerWindow()
     {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Kunden-Administration - Neuen Kunden erstellen');
-
-        $window = $this->find('xpath', $windowXpath);
-
-        if (!$window) {
-            throw new \RuntimeException('Could not find customer module.');
-        }
-
-        return $window;
+        return Window::createFromTitle('Kunden-Administration - Neuen Kunden erstellen', $this->getSession());
     }
 
     /**
      * Helper method to get the "edit customer" window node element
      *
-     * @return NodeElement
-     * @throws \Exception
+     * @return Window
      */
     private function getEditCustomerWindow()
     {
-        $windowXpath = BackendXpathBuilder::getWindowXpathByTitle('Kundenkonto:', false);
-
-        $window = $this->find('xpath', $windowXpath);
-
-        if (!$window) {
-            throw new \RuntimeException('Could not find customer module.');
-        }
-
-        return $window;
+        return Window::createFromTitle('Kundenkonto:', $this->getSession(), false);
     }
 }

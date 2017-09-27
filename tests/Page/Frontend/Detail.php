@@ -13,6 +13,7 @@ class Detail extends Page
 
     /**
      * Puts the current article <quantity> times to basket
+     *
      * @param int $quantity
      */
     public function toBasket($quantity = 1)

@@ -94,7 +94,7 @@ Feature: I can start and complete the installation process
     And I should see the link "shopBackend" leading to "/backend"
     When I am on the page "Index"
     Then I should see "Realisiert mit Shopware"
-    When I am on the page "BackendLogin"
+    When I am on the page "Backend"
     Then I should see "Shopware Backend Login" eventually
 
   @shopware53
@@ -157,5 +157,5 @@ Feature: I can start and complete the installation process
     And I should see the link "shopBackend" leading to "/backend"
     When I am on the page "Index"
     Then I should see "Realisiert mit Shopware"
-    When I am on the page "BackendLogin"
+    When I am on the page "Backend"
     Then I should see "Shopware Backend Login" eventually

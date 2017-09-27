@@ -5,8 +5,7 @@ Feature: I can check the files which belong to my shop installation
     Given the filecheck requirements are not met
 
   Scenario: I can check the original state of my folders and files
-    Given I am on the page "BackendLogin"
-    When I log in with user "demo" and password "demo"
+    Given I am logged into the backend
     Then I should see "Einstellungen" eventually
     And I should see "Feedback" eventually
     When I hover backend menu item "Einstellungen"
