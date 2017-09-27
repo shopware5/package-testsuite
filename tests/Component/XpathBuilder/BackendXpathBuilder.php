@@ -33,7 +33,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      */
     public static function getFormElementXpathByLabel($label, $tag, $scope = '/')
     {
-        return BackendXpathBuilder::create($scope)
+        return static::create($scope)
             ->descendant('label', ['@text' => $label])
             ->ancestor('td', [], 1)
             ->followingSibling('td', [], 1)
@@ -50,7 +50,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      */
     public static function getButtonXpathByLabel($label, $scope = '/')
     {
-        return BackendXpathBuilder::create($scope)
+        return static::create($scope)
             ->child('span', ['@class' => 'x-btn-inner'])
             ->contains($label)
             ->ancestor('button')
@@ -78,7 +78,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      */
     public static function getComboboxXpathByLabel($label, $scope = '/')
     {
-        return BackendXpathBuilder::create($scope)
+        return static::create($scope)
             ->descendant('label', ['@text' => $label])
             ->ancestor('td', [], 1)
             ->followingSibling('td', [], 1)
@@ -157,7 +157,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      */
     public static function getFieldsetXpathByLabel($label, $scope = '/')
     {
-        return BackendXpathBuilder::create($scope)
+        return static::create($scope)
             ->descendant('fieldset')
             ->descendant('legend')
             ->descendant('div')
