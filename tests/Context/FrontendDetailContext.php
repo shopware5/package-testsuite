@@ -14,7 +14,6 @@ class FrontendDetailContext extends SubContext
     public function iChooseTheVariantWithTheNumber($optionNumber)
     {
         $this->getDetailPage()->fillField("group[5]",$optionNumber);
-        //$this->getDetailPage()->checkFrontendVariant("group[5]", $optionNumber);
     }
 
     /**
