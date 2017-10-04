@@ -137,6 +137,18 @@ class BackendModule extends ContextAwarePage
         $answerButton->click();
     }
 
+    public function checkIfTabIsActive($title)
+    {
+        $builder = new BackendXpathBuilder();
+
+        $tabXpath = $builder
+            ->child('span', ['@text' => $title, 'and', '~class' => 'x-tab-inner'], 1)
+            ->ancestor('button', ['@disabled' => ''], 1)
+            ->getXpath();
+
+        return $tabXpath !== null;
+    }
+
 
     /**
      * Helper method that returns the current module window
