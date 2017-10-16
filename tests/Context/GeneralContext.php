@@ -44,8 +44,7 @@ class GeneralContext extends SubContext
     {
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof Selenium2Driver) {
-            $driver->maximizeWindow();
-            $this->getSession()->resizeWindow(1920, 1080, 'current');
+            $driver->resizeWindow(1920, 1080);
         }
     }
 

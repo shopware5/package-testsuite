@@ -163,7 +163,7 @@ class ContextAwarePage extends Page
      */
     protected function waitForClassNotPresent($parent, $xPath, $class)
     {
-        $this->spin(function (NodeElement $parent, $xPath, $class) use ($parent, $xPath, $class) {
+        $this->spin(function () use ($parent, $xPath, $class) {
             $element = $parent->find('xpath', $xPath);
             if ($element->hasClass($class)) {
                 return false;
