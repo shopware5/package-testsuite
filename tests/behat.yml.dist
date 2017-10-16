@@ -39,7 +39,6 @@ default:
                 - Shopware\Context\FrontendCheckoutContext
                 - Shopware\Context\FrontendAccountContext
                 - Shopware\Context\ApiContext
-                - Shopware\Context\DetailContext
                 - Shopware\Context\InstallerContext
                 - Shopware\Context\UpdaterContext
                 - Shopware\Context\SubshopContext

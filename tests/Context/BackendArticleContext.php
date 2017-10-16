@@ -2,12 +2,42 @@
 
 namespace Shopware\Context;
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Page\Backend\ArticleModule;
+use Shopware\Page\Backend\ExistingArticleModule;
+use Shopware\Page\Backend\NewArticleModule;
 use Shopware\Page\Backend\BackendModule;
 
 class BackendArticleContext extends SubContext
 {
+    /**
+     * @return BackendModule
+     * @throws \Exception
+     */
+    private function getBackendModulePage()
+    {
+        /** @var BackendModule $page */
+        $page = $this->getPage('BackendModule');
+        if ($page === null) {
+            throw new \RuntimeException('Page is not defined.');
+        }
+        return $page;
+    }
+
+    /**
+     * @return ExistingArticleModule
+     * @throws \Exception
+     */
+    private function getExistingArticleModulePage()
+    {
+        /** @var ExistingArticleModule $page */
+        $page = $this->getPage('ExistingArticleModule');
+        if ($page === null) {
+            throw new \RuntimeException('Page is not defined.');
+        }
+        return $page;
+    }
+
     /**
      * @Given I set :price as the article price
      *
@@ -16,7 +46,7 @@ class BackendArticleContext extends SubContext
      */
     public function iSetAsTheArticlePriceForTheCustomerGroup($price)
     {
-        $this->getArticleModulePage()->setArticlePrice($price);
+        $this->getNewArticleModulePage()->setArticlePriceData($price, 'Preis', "price");
     }
 
     /**
@@ -27,7 +57,7 @@ class BackendArticleContext extends SubContext
      */
     public function iChooseAsArticleDescription($text)
     {
-        $this->getArticleModulePage()->setDescription($text);
+        $this->getNewArticleModulePage()->setDescription($text);
     }
 
     /**
@@ -37,7 +67,7 @@ class BackendArticleContext extends SubContext
      */
     public function iAmAbleToSaveMyArticle()
     {
-        $this->getArticleModulePage()->saveArticle();
+        $this->getNewArticleModulePage()->saveArticle();
     }
 
     /**
@@ -48,7 +78,7 @@ class BackendArticleContext extends SubContext
      */
     public function iClickTheIconToAdd($name)
     {
-        $this->getArticleModulePage()->addCategory($name);
+        $this->getNewArticleModulePage()->addCategory($name);
     }
 
     /**
@@ -60,7 +90,7 @@ class BackendArticleContext extends SubContext
      */
     public function iShouldFindInTheArea($title, $area)
     {
-        $this->getArticleModulePage()->checkAddedCategory($title, $area);
+        $this->getNewArticleModulePage()->checkAddedCategory($title, $area);
     }
 
     /**
@@ -72,7 +102,7 @@ class BackendArticleContext extends SubContext
     public function iFillInTheBasicConfiguration(TableNode $table)
     {
         $data = $table->getHash();
-        $this->getArticleModulePage()->setBasicData($data);
+        $this->getNewArticleModulePage()->setBasicData($data);
     }
 
     /**
@@ -108,7 +138,7 @@ class BackendArticleContext extends SubContext
      */
     public function iChangeTheArticleNameTo($articlename)
     {
-        $this->getArticleModulePage()->changeArticleName($articlename);
+        $this->getExistingArticleModulePage()->changeArticleName($articlename);
     }
 
     /**
@@ -144,27 +174,13 @@ class BackendArticleContext extends SubContext
     }
 
     /**
-     * @return ArticleModule
+     * @return NewArticleModule
      * @throws \Exception
      */
-    private function getArticleModulePage()
+    private function getNewArticleModulePage()
     {
-        /** @var ArticleModule $page */
-        $page = $this->getPage('ArticleModule');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-        return $page;
-    }
-
-    /**
-     * @return BackendModule
-     * @throws \Exception
-     */
-    private function getBackendModulePage()
-    {
-        /** @var BackendModule $page */
-        $page = $this->getPage('BackendModule');
+        /** @var NewArticleModule $page */
+        $page = $this->getPage('NewArticleModule');
         if ($page === null) {
             throw new \RuntimeException('Page is not defined.');
         }
@@ -193,7 +209,7 @@ class BackendArticleContext extends SubContext
      */
     public function iCreateTheGroup($groupname, $label)
     {
-        $this->getArticleModulePage()->createVariantGroup($groupname, $label);
+        $this->getExistingArticleModulePage()->createVariantGroup($groupname, $label);
     }
 
     /**
@@ -206,7 +222,7 @@ class BackendArticleContext extends SubContext
      */
     public function theGroupShouldBeListedAsAnActiveGroup($title, $area)
     {
-        $this->getArticleModulePage()->checkIfMatchesTheRightGroup($title, $area);
+        $this->getExistingArticleModulePage()->checkIfMatchesTheRightGroup($title, $area);
     }
 
     /**
@@ -217,7 +233,7 @@ class BackendArticleContext extends SubContext
      */
     public function iClickToCreateTheOptionsOfIt($groupname)
     {
-        $this->getArticleModulePage()->clickToEditGroup($groupname);
+        $this->getExistingArticleModulePage()->clickToEditGroup($groupname);
     }
 
     /**
@@ -228,6 +244,45 @@ class BackendArticleContext extends SubContext
      */
     public function iCreateTheFollowingOptionsOptions(TableNode $table)
     {
-        $this->getArticleModulePage()->createOptionsForGroup($table->getHash(), 'Optionen erstellen:');
+        $this->getExistingArticleModulePage()->createOptionsForGroup($table->getHash(), 'Optionen erstellen:');
+    }
+
+    /**
+     * @When I limit the price :price for an amount up to :max
+     * @When I set the price :price for any number from here
+     *
+     * @param $price
+     * @param int $maxAmount
+     *
+     * @throws \Exception
+     */
+    public function iLimitThePriceForAnAmountOfTo($price, $maxAmount = 0)
+    {
+        $this->getExistingArticleModulePage()->setArticlePriceData($price, "Preis", "price");
+
+        if ($maxAmount !== 0) {
+            $this->getExistingArticleModulePage()->setArticlePriceData($maxAmount, "Bis", "to");
+        }
+    }
+
+    /**
+     * @Then I should see :price as to-price
+     *
+     * @param string $price
+     */
+    public function iShouldSeeAsToPrice($price)
+    {
+        $this->waitForText($price);
+    }
+
+    /**
+     * @Given I should see :amount as from-price to any number
+     *
+     * @param string $amount
+     */
+    public function iShouldSeeAsFromPriceToAnyNumber($amount)
+    {
+        $this->waitForText($amount);
+        $this->waitForText('Beliebig');
     }
 }
