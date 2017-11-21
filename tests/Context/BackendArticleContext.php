@@ -2,7 +2,6 @@
 
 namespace Shopware\Context;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Shopware\Page\Backend\ExistingArticleModule;
 use Shopware\Page\Backend\NewArticleModule;
@@ -38,6 +37,21 @@ class BackendArticleContext extends SubContext
         return $page;
     }
 
+
+    /**
+     * @return NewArticleModule
+     * @throws \Exception
+     */
+    private function getNewArticleModulePage()
+    {
+        /** @var NewArticleModule $page */
+        $page = $this->getPage('NewArticleModule');
+        if ($page === null) {
+            throw new \RuntimeException('Page is not defined.');
+        }
+        return $page;
+    }
+
     /**
      * @Given I set :price as the article price
      *
@@ -46,7 +60,7 @@ class BackendArticleContext extends SubContext
      */
     public function iSetAsTheArticlePriceForTheCustomerGroup($price)
     {
-        $this->getNewArticleModulePage()->setArticlePriceData($price, 'Preis', "price");
+        $this->getNewArticleModulePage()->setArticlePriceData($price, 'Preis', 'price');
     }
 
     /**
@@ -174,20 +188,6 @@ class BackendArticleContext extends SubContext
     }
 
     /**
-     * @return NewArticleModule
-     * @throws \Exception
-     */
-    private function getNewArticleModulePage()
-    {
-        /** @var NewArticleModule $page */
-        $page = $this->getPage('NewArticleModule');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-        return $page;
-    }
-
-    /**
      * @Given the :title tab should be active
      *
      * @param string $title
@@ -258,10 +258,10 @@ class BackendArticleContext extends SubContext
      */
     public function iLimitThePriceForAnAmountOfTo($price, $maxAmount = 0)
     {
-        $this->getExistingArticleModulePage()->setArticlePriceData($price, "Preis", "price");
+        $this->getExistingArticleModulePage()->setArticlePriceData($price, 'Preis', 'price');
 
         if ($maxAmount !== 0) {
-            $this->getExistingArticleModulePage()->setArticlePriceData($maxAmount, "Bis", "to");
+            $this->getExistingArticleModulePage()->setArticlePriceData($maxAmount, 'Bis', 'to');
         }
     }
 

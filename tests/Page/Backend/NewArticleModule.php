@@ -16,6 +16,7 @@ class NewArticleModule extends BackendModule
      *
      * @param string $value
      * @param string $cellAnchor
+     * @param string $inputName
      * @throws \Exception
      */
     public function setArticlePriceData($value, $cellAnchor, $inputName)
@@ -25,7 +26,6 @@ class NewArticleModule extends BackendModule
 
         $cellElementXpath = $builder->child('span', ['@text' => $cellAnchor, 'and', '~class' => 'x-column-header-text'])->ancestor('div', [], 1)->getXpath();
         $cellElement = $window->find('xpath', $cellElementXpath);
-        $this->assertNotNull($cellElement, $cellElementXpath);
 
         $priceCellPosition = $this->findPriceDataFieldPosition($cellElement, $cellAnchor);
         $this->setPriceData($value, $priceCellPosition, $inputName);
@@ -35,6 +35,7 @@ class NewArticleModule extends BackendModule
      * Finds the field position for the price
      *
      * @param NodeElement $cellElement
+     * @param string $anchor
      * @return int position
      * @throws \Exception
      */
@@ -171,5 +172,4 @@ class NewArticleModule extends BackendModule
         $button = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
         $button->click();
     }
-
 }

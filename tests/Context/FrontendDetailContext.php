@@ -45,7 +45,7 @@ class FrontendDetailContext extends SubContext
      */
     public function iChooseTheVariantWithTheNumber($optionNumber)
     {
-        $this->getDetailPage()->fillField("group[5]", $optionNumber);
+        $this->getDetailPage()->fillField('group[5]', $optionNumber);
     }
 
     /**
@@ -78,7 +78,7 @@ class FrontendDetailContext extends SubContext
     public function iPutTheArticleTimesIntoTheBasket($quantity)
     {
         $this->getDetailPage()->toBasket($quantity);
-        $this->waitForText("Der Artikel wurde erfolgreich in den Warenkorb gelegt");
+        $this->waitForText('Der Artikel wurde erfolgreich in den Warenkorb gelegt');
     }
 
 
@@ -86,6 +86,7 @@ class FrontendDetailContext extends SubContext
      * @Then I should see the following graduated prices:
      *
      * @param TableNode $table
+     * @throws \Exception
      */
     public function iShouldSeeTheFollowingGraduatedPrices(TableNode $table)
     {

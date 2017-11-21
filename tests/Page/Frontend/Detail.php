@@ -11,7 +11,7 @@ class Detail extends ContextAwarePage
     /**
      * @var string $path
      */
-    protected $path = '/detail/index/sArticle/{articleId}';
+    protected $path = '/detail/index/sArticle/{articleId}?number={number}';
 
     /**
      * Puts the current article <quantity> times to basket
@@ -46,6 +46,7 @@ class Detail extends ContextAwarePage
      * Checks if the amount and the corresponding graduated price are matching correctly
      *
      * @param string $graduatedprice
+     * @throws \Exception
      */
     public function checkGraduatedPrice($graduatedprice)
     {
