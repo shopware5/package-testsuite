@@ -2,7 +2,6 @@
 
 namespace Shopware\Page\Backend;
 
-
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ExistingArticleModule extends NewArticleModule
@@ -10,7 +9,7 @@ class ExistingArticleModule extends NewArticleModule
     /**
      * Changes the name of the selected article
      *
-     * @param $newName
+     * @param string $newName
      */
     public function changeArticleName($newName)
     {
@@ -22,8 +21,8 @@ class ExistingArticleModule extends NewArticleModule
     /**
      * Creates the group of a configurator set
      *
-     * @param $groupname
-     * @param $label
+     * @param string $groupname
+     * @param string $label
      */
     public function createVariantGroup($groupname, $label)
     {
