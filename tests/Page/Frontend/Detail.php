@@ -40,4 +40,24 @@ class Detail extends ContextAwarePage
 
         $this->waitForSelectorNotPresent('xpath', $overlayXpath);
     }
+
+
+    /**
+     * Checks if the amount and the corresponding graduated price are matching correctly
+     *
+     * @param string $graduatedprice
+     * @throws \Exception
+     */
+    public function checkGraduatedPrice($graduatedprice)
+    {
+        $builder = new FrontendXpathBuilder();
+
+        $grPriceXpath = $builder
+            ->child('span', ['~text' => $graduatedprice['amount'], 'and', '~class' => 'block-prices--quantity'], 1)
+            ->ancestor('tr', [], 1)
+            ->child('td', ['~text' => $graduatedprice['price'], 'and', '~class' => 'block-prices--cell'], 1)
+            ->getXpath();
+
+        $this->waitForSelectorPresent('xpath', $grPriceXpath);
+    }
 }

@@ -7,7 +7,7 @@ Feature: I can generate and use article variants
       | Shopkunden | EK  |
     And the category tree "Root > Deutsch > ErsteKategorie > Unterkategorie" exists
 
-  Scenario: I can create a new article
+  Scenario: I can create a new article with variants
     Given I am logged into the backend
     Then I should see "Artikel" eventually
     And I should see "Feedback" eventually
