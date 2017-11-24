@@ -60,4 +60,26 @@ class Detail extends ContextAwarePage
 
         $this->waitForSelectorPresent('xpath', $grPriceXpath);
     }
+
+    /**
+     * Checks, if the base price information is shown correctly
+     *
+     * @param string $entry
+     * @throws \Exception
+     */
+    public function checkBasePrice($entry)
+    {
+        $builder = new FrontendXpathBuilder();
+
+        if ($entry['information'] === 'Einheit') {
+            $spanXpath = $builder
+                ->child('option', ['~text' => $entry['data']], 1)
+                ->getXpath();
+        } else {
+            $spanXpath = $builder
+                ->child('div', ['~text' => $entry['data']], 1)
+                ->getXpath();
+        }
+        $this->waitForSelectorPresent('xpath', $spanXpath);
+    }
 }
