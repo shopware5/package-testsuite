@@ -62,7 +62,7 @@ class Detail extends ContextAwarePage
     }
 
     /**
-     * Checks, if the base price information is shown correctly
+     * Checks if the base price information is shown correctly
      *
      * @param string $entry
      * @throws \Exception
