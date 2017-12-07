@@ -96,4 +96,20 @@ class FrontendDetailContext extends SubContext
             $this->getDetailPage()->checkGraduatedPrice($graduatedprice);
         }
     }
+
+
+    /**
+     * @Given I should see the base price information:
+     *
+     * @param TableNode $table
+     * @throws \Exception
+     */
+    public function iShouldSeeTheBasePriceInformation(TableNode $table)
+    {
+        $data = $table->getHash();
+
+        foreach ($data as $entry) {
+            $this->getDetailPage()->checkBasePrice($entry);
+        }
+    }
 }
