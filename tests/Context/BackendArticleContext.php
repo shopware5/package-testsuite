@@ -251,7 +251,7 @@ class BackendArticleContext extends SubContext
      * @When I limit the price :price for an amount up to :max
      * @When I set the price :price for any number from here
      *
-     * @param $price
+     * @param string $price
      * @param int $maxAmount
      *
      * @throws \Exception
@@ -284,5 +284,29 @@ class BackendArticleContext extends SubContext
     {
         $this->waitForText($amount);
         $this->waitForText('Beliebig');
+    }
+
+    /**
+     * @When I fill in the property configuration:
+     *
+     * @param TableNode $table
+     * @throws \Exception
+     */
+    public function iFillInThePropertyConfiguration(TableNode $table)
+    {
+        $data = $table->getHash();
+        $this->getExistingArticleModulePage()->selectProperty($data);
+    }
+
+    /**
+     * @Then I should see :group as corresponding value to :value
+     *
+     * @param string $group
+     * @param string $value
+     * @throws \Exception
+     */
+    public function iShouldSeeAsCorrespondingValueTo($group, $value)
+    {
+        $this->getExistingArticleModulePage()->checkCorrespondingPropertyValues($group, $value);
     }
 }
