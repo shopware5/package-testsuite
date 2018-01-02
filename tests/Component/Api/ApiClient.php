@@ -712,15 +712,16 @@ class ApiClient
         $this->post('/api/propertyGroups', $propertiesArray);
 
         $this->throwExceptionWhenEmpty($property, ['key', 'set', 'group', 'option']);
+
         $this->post('/api/articles', $this->buildPropertyDataArray($property));
     }
 
 
     /**
-     * @param array $group
+     * @param $group
      * @return array
      */
-    private function buildPropertyDataArray(array $group)
+    private function buildPropertyDataArray($group)
     {
         return [
             'key' => $group['key'],
@@ -732,14 +733,18 @@ class ApiClient
                 'number' => 'SW10002',
                 'inStock' => 15,
                 'active' => true,
-                'prices' => ['customerGroupKey' => 'EK',
-                    'from' => 1,
-                    'price' => 50]
+                [
+                    'customerGroupKey' => 'EK',
+                    'from'  => 1,
+                    'price' => 50
+                ]
             ],
             'filterGroupId' => array_key_exists('groupKey', $group) ? $group['groupKey'] : 1,
             'propertyValues' => array_key_exists('propertyValues', $group) ? $group['propertyValues'] : [
-                'option' => array('name' => $group['group']),
-                'value' => $group['option'],
+                [
+                    'option' => array('name' => $group['group']),
+                    'value' => $group['option'],
+                ]
             ],
         ];
     }
