@@ -2,6 +2,7 @@
 
 namespace Shopware\Page\Backend;
 
+use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ExistingArticleModule extends NewArticleModule
@@ -110,5 +111,77 @@ class ExistingArticleModule extends NewArticleModule
             $button = $window->find('xpath', $activeButtonXpath);
             $button->click();
         }
+    }
+
+    /**
+     * Fills in the property data of an article, excluding the values
+     *
+     * @param array $data
+     * @throws \Exception
+     */
+    public function selectProperty($data)
+    {
+        $window = $this->getModuleWindow(false);
+
+        // Fills most form elements
+        $this->fillExtJsForm($window, $data);
+
+        foreach ($data as $entry) {
+            if ($entry['type'] === 'withoutlabel') {
+                $this->chooseOption($entry['value']);
+            }
+        }
+    }
+
+    /**
+     * Assigns an option to a selected group
+     *
+     * @param string $value
+     * @throws \Exception
+     */
+    private function chooseOption($value)
+    {
+        $builder = new BackendXpathBuilder();
+        $comboBoxXpath = $builder
+            ->child('table', ['@data-action' => 'values-table'])
+            ->descendant('td', [], 1)
+            ->followingSibling('td', [], 1)
+            ->descendant('div', ['~class' => 'x-form-trigger'])
+            ->getXpath();
+
+        $pebble = $this->find('xpath', $comboBoxXpath);
+        $pebble->click();
+        sleep(1);
+
+        $options = $this->findAll('xpath',
+            $builder->reset()->child('li', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
+
+        /** @var NodeElement $option */
+        foreach ($options as $option) {
+            try {
+                $option->click();
+            } catch (\Exception $e) {
+            }
+        }
+    }
+
+    /**
+     * Checks if a specific value matches to a given property correctly
+     *
+     * @param string $group
+     * @param string $value
+     * @throws \Exception
+     */
+    public function checkCorrespondingPropertyValues($group, $value)
+    {
+        $builder = new BackendXpathBuilder();
+
+        $matchXpath = $builder
+            ->child('span', ['@text' => $group])
+            ->ancestor('tr', [], 1)
+            ->descendant('div', ['@text' => $value])
+            ->getXpath();
+
+        $this->waitForSelectorPresent('xpath', $matchXpath);
     }
 }

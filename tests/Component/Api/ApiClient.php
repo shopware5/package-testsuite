@@ -680,20 +680,72 @@ class ApiClient
                 JSON_ERROR_CTRL_CHAR => 'Control character issue, maybe wrong encoded',
                 JSON_ERROR_SYNTAX => 'Syntaxerror',
             ];
-            $error = "<h2>Could not decode json</h2>";
-            $error .= "json_last_error: " . $jsonErrors[json_last_error()];
-            $error .= "<br>Raw:<br>";
-            $error .= "<pre>" . print_r($result, true) . "</pre>";
+            $error = '<h2>Could not decode json</h2>';
+            $error .= 'json_last_error: ' . $jsonErrors[json_last_error()];
+            $error .= '<br>Raw:<br>';
+            $error .= '<pre>' . print_r($result, true) . '</pre>';
             throw new \Exception($error);
         }
         if (!isset($decodedResult['success'])) {
-            throw new \Exception("Invalid Response");
+            throw new \Exception('Invalid Response');
         }
         if (!$decodedResult['success']) {
-            $error = "<h2>No Success</h2>";
-            $error .= "<p>" . $decodedResult['message'] . "</p>";
+            $error = '<h2>No Success</h2>';
+            $error .= '<p>' . $decodedResult['message'] . '</p>';
             throw new \Exception($error);
         }
         return $decodedResult;
+    }
+
+    /**
+     * @param array $property
+     * @throws \Exception
+     */
+    public function createProperty($property)
+    {
+        $propertiesArray = array(
+            'name' => $property['set'],
+            'position' => 1,
+            'comparable' => 1,
+            'sortmode' => 1
+        );
+        $this->post('/api/propertyGroups', $propertiesArray);
+
+        $this->throwExceptionWhenEmpty($property, ['key', 'set', 'group', 'option']);
+
+        $this->post('/api/articles', $this->buildPropertyDataArray($property));
+    }
+
+
+    /**
+     * @param $group
+     * @return array
+     */
+    private function buildPropertyDataArray($group)
+    {
+        return [
+            'key' => $group['key'],
+            'name' => $group['set'],
+            'description' => array_key_exists('name', $group) ? $group['name'] : 'This is my set',
+            'active' => array_key_exists('active', $group) ? $group['active'] : true,
+            'taxId' => array_key_exists('tax', $group) ? $group['tax'] : true,
+            'mainDetail' => array_key_exists('mainDetail', $group) ? $group['mainDetail'] : [
+                'number' => 'SW10002',
+                'inStock' => 15,
+                'active' => true,
+                [
+                    'customerGroupKey' => 'EK',
+                    'from'  => 1,
+                    'price' => 50
+                ]
+            ],
+            'filterGroupId' => array_key_exists('groupKey', $group) ? $group['groupKey'] : 1,
+            'propertyValues' => array_key_exists('propertyValues', $group) ? $group['propertyValues'] : [
+                [
+                    'option' => array('name' => $group['group']),
+                    'value' => $group['option'],
+                ]
+            ],
+        ];
     }
 }

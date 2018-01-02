@@ -70,9 +70,27 @@ class ApiContext extends SubContext
         }
     }
 
+
+    /**
+     * @Given the following properties exist in the store:
+     *
+     * @param TableNode $table
+     * @throws \Exception
+     */
+    public function theFollowingPropertiesExistInTheStore(TableNode $table)
+    {
+        $api = $this->getApiClient();
+
+        foreach ($table->getHash() as $data) {
+            $api->createProperty($data);
+        }
+    }
+
     /**
      * @Given there is no customer registered with e-mail address :email
+     *
      * @param string $email
+     * @throws \RuntimeException
      */
     public function thereIsNoCustomerRegisteredWithEMailAddress($email)
     {
