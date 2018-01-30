@@ -107,6 +107,7 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @param string $voucherCode
+     * @throws \Exception
      */
     private function fillCartWithProductsAndGeneratedVoucher($voucherCode)
     {

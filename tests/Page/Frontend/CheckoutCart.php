@@ -3,6 +3,7 @@
 namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
+use Shopware\Component\Api\ApiClient;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
@@ -151,16 +152,19 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Fills the cart with products
      * @param array $items
+     * @throws \Exception
      */
     public function fillCartWithProducts(array $items)
     {
         $originalPath = $this->path;
 
-        foreach ($items as $item) {
-            if (!$this->hasCartProductWithQuantity($item['number'], $item['quantity'])) {
-                $this->path = sprintf('/checkout/addArticle/sAdd/%s/sQuantity/%d', $item['number'], $item['quantity']);
-                $this->open();
-            }
+        /** @var Detail $detailPage */
+        $detailPage = $this->getPage('Detail');
+
+        foreach ($items as $row) {
+            // Send static articleId, because the number is prefered
+            $detailPage->open(['articleId' => 1, 'number' => $row['number']]);
+            $detailPage->toBasket($row['quantity']);
         }
 
         $this->path = $originalPath;
