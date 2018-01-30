@@ -101,6 +101,7 @@ class FrontendCheckoutContext extends SubContext
     /**
      * @Given the cart contains the following products:
      * @param TableNode $items
+     * @throws \Exception
      */
     public function theCartContainsTheFollowingProducts(TableNode $items)
     {
