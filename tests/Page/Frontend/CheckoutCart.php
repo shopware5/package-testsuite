@@ -162,9 +162,13 @@ class CheckoutCart extends ContextAwarePage
         $detailPage = $this->getPage('Detail');
 
         foreach ($items as $row) {
-            // Send static articleId, because the number is prefered
-            $detailPage->open(['articleId' => 1, 'number' => $row['number']]);
-            $detailPage->toBasket($row['quantity']);
+            if (!$this->hasCartProductWithQuantity($row['number'], $row['quantity'])) {
+                // Send static articleId, because the number is preferred
+                $detailPage->open(['articleId' => 1, 'number' => $row['number']]);
+                $detailPage->toBasket($row['quantity']);
+                $this->waitForText('Der Artikel wurde erfolgreich in den Warenkorb gelegt');
+                $this->waitForText($row['number']);
+            }
         }
 
         $this->path = $originalPath;
