@@ -52,6 +52,7 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @Given I should be able to use the code exactly once
+     * @throws \Exception
      */
     public function iShouldBeAbleToUseTheCodeExactlyOnce()
     {
