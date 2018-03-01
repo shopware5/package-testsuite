@@ -29,13 +29,8 @@ docker-compose run --rm tools php /var/www/shopware/recovery/install/index.php \
 
 . ./sh/_configure-sw-installation.sh
 
-if [ "$PACKAGE_VERSION" = "5.2" ]
-    then
-        echo "Run Mink (5.2 Compatibility mode)"
-        docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware53'
-    else
-        echo "Run Mink"
-        docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware52'
-fi
+
+echo "Run Mink"
+docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing'
 
 . ./sh/_post-stage.sh

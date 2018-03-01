@@ -39,13 +39,8 @@ docker-compose run --rm tools bash -c 'cp /config_testing.php /var/www/shopware/
 echo "Chown directories to www-data"
 docker-compose run --rm tools chown -R www-data:www-data /var/www/shopware
 
-if [ "$PACKAGE_VERSION" = "5.2" ]
-    then
-        echo "Run Mink (5.2 Compatibility mode)"
-        docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater&&~@knownFailing&&~@shopware53'
-    else
-        echo "Run Mink"
-        docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater&&~@knownFailing&&~@shopware52'
-fi
+
+echo "Run Mink"
+docker-compose run --rm tools ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater&&~@knownFailing'
 
 . ./sh/_post-stage.sh
