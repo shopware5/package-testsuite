@@ -30,6 +30,7 @@ services:
       - "shopware-subshop-01.test:127.0.0.1"
     environment:
       SHOPWARE_ENV: testing
+      TZ: Europe/Berlin
     links:
       - mysql
       - smtp
@@ -42,6 +43,8 @@ services:
       - apache:shopware-subshop-01.test
       - apache:shopware.test
     shm_size: 1G
+    environment:
+      TZ: Europe/Berlin
   tools:
     image: shopware/package-testsuite:tools
     volumes:
