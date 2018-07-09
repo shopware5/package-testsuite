@@ -10,14 +10,8 @@ fi
 
 echo "Starting sw install:release"
 
-VERSION_TO_DOWNLOAD="latest"
-if [ "$PACKAGE_VERSION" != "5.4" ]
-    then
-        VERSION_TO_DOWNLOAD="$PACKAGE_VERSION.0"
-fi
-
 docker-compose run --rm tools sw install:release \
---release=${VERSION_TO_DOWNLOAD} \
+--release="${PACKAGE_VERSION}" \
 --install-dir=/var/www/shopware \
 --db-host=mysql \
 --db-user=shopware \
