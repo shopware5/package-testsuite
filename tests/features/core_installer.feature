@@ -9,7 +9,7 @@ Feature: I can start and complete the installation process
 
     When I advance to the next installer page
 
-    Then I should see "Endnutzer-Lizenzbestimmungen"
+    Then I should see "Allgemeine Geschäftsbedingungen" eventually
     When I check the license checkbox to agree to the terms
     And I advance to the next installer page
 

@@ -40,7 +40,7 @@ class InstallerContext extends SubContext
     {
         /** @var InstallerIndex $page */
         $page = $this->getPage('InstallerIndex');
-        $page->tickCheckbox('licenseCheckbox');
+        $page->tickCheckbox('tos');
     }
 
     /**
