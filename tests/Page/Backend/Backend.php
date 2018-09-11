@@ -21,6 +21,7 @@ class Backend extends ContextAwarePage
     public function login($user = 'demo', $password = 'demo')
     {
         $this->open();
+        $this->getSession()->setCookie('lastCheckSubscriptionDate', date('dmY'));
 
         // Are we already logged in?
         if ($this->waitIfThereIsText('Marketing', 3)) {
