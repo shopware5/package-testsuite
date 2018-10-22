@@ -10,6 +10,8 @@ docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware
 docker-compose run --rm tools bash -c 'cp /php-config/config_testing.php /var/www/shopware/config_testing.php'
 # Disable feedback form
 docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware`.`s_core_config_elements` SET `value`='"'"'b:0;'"'"' WHERE `name`='"'"'update-send-feedback'"'"';'
+# Disable benchmark teaser
+docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware`.`s_core_config_elements` SET `value`='"'"'b:0;'"'"' WHERE `name`='"'"'benchmarkTeaser'"'"';'
 # Disable update verification
 docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware`.`s_core_config_elements` SET `value`='"'"'b:0;'"'"' WHERE `name`='"'"'update-verify-signature'"'"';'
 # Use mocked update server
