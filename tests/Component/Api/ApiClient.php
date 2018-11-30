@@ -709,11 +709,11 @@ class ApiClient
             'comparable' => 1,
             'sortmode' => 1
         );
-        $this->post('/api/propertyGroups', $propertiesArray);
+        $this->post('api/propertyGroups', $propertiesArray);
 
         $this->throwExceptionWhenEmpty($property, ['key', 'set', 'group', 'option']);
 
-        $this->post('/api/articles', $this->buildPropertyDataArray($property));
+        $this->post('api/articles', $this->buildPropertyDataArray($property));
     }
 
 
