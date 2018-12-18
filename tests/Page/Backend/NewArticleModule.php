@@ -25,6 +25,8 @@ class NewArticleModule extends BackendModule
         $builder = new BackendXpathBuilder();
 
         $cellElementXpath = $builder->child('span', ['@text' => $cellAnchor, 'and', '~class' => 'x-column-header-text'])->ancestor('div', [], 1)->getXpath();
+        $this->waitForSelectorPresent('xpath', $cellElementXpath);
+        $this->waitForSelectorVisible('xpath', $cellElementXpath);
         $cellElement = $window->find('xpath', $cellElementXpath);
 
         $priceCellPosition = $this->findPriceDataFieldPosition($cellElement, $cellAnchor);
@@ -45,6 +47,8 @@ class NewArticleModule extends BackendModule
         $positionIndex = 1;
 
         $cellParent = $cellElement->getParent()->getParent();
+        $this->waitForSelectorPresent('xpath', $cellParent->getXpath());
+        $this->waitForSelectorVisible('xpath', $cellParent->getXpath());
 
         /** @var NodeElement[] $cellList */
         $cells = $cellParent->findAll('xpath', $builder->child('div', ['~class' => 'x-column-header'])->getXpath());
@@ -74,6 +78,9 @@ class NewArticleModule extends BackendModule
         $builder = new BackendXpathBuilder();
 
         $priceRowXpath = $builder->child('div', ['@text' => $this->priceRowAnchor])->ancestor('tr', [], 1)->getXpath();
+
+        $this->waitForSelectorPresent('xpath', $priceRowXpath);
+        $this->waitForSelectorVisible('xpath', $priceRowXpath);
         $row = $window->find('xpath', $priceRowXpath);
 
         $priceFieldXpath = $builder
@@ -83,15 +90,17 @@ class NewArticleModule extends BackendModule
             ->getXpath();
 
         /** @var NodeElement $priceField */
-        $priceField = $row->find('xpath', $priceFieldXpath);
         $this->waitForSelectorPresent('xpath', $priceFieldXpath);
+        $this->waitForSelectorVisible('xpath', $priceFieldXpath);
+        $priceField = $row->find('xpath', $priceFieldXpath);
         $priceField->click();
 
         $priceInputXpath = $builder->reset()->child('input', ['@name' => $inputName], 1)->getXpath();
 
         $this->waitForSelectorPresent('xpath', $priceInputXpath);
-
+        $this->waitForSelectorVisible('xpath', $priceInputXpath);
         $priceInput = $this->find('xpath', $priceInputXpath);
+
         $priceInput->setValue($value);
         $priceInput->keyPress($this->enterKeyNumber);
     }

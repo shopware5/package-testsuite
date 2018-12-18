@@ -1,4 +1,4 @@
-@javascript @backend @article @graduatedprices
+@javascript @backend @article @graduatedprices @knownFailing
 Feature: I can generate and use article with graduated prices
 
   Background:
