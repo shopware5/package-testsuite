@@ -33,7 +33,7 @@ Feature: I can manage my customers with the backend customer module
       | Straße:               | Drake Circus 1  | input      | Adressdaten       |
       | Postleitzahl:         | PL4 1BB         | input      | Adressdaten       |
       | Stadt:                | Plymouth        | input      | Adressdaten       |
-      | Land:                 | Großbritannien  | combobox   | Adressdaten       |
+      | Land:                 | Ägypten         | combobox   | Adressdaten       |
       | Aktuelle Zahlungsart: | Vorkasse        | paymentbox | Zahlungsdaten     |
 
     And I click the "Speichern" button

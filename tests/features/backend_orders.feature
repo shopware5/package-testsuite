@@ -40,7 +40,7 @@ Feature: I can manage my orders with the backend order module
     Given the following orders exist:
       | customer.email              | position.name | position.quantity | position.price | shipping.country |
       | order.test@shopware.de.test | Testartikel   | 1                 | 10.99          | DE               |
-      | demo.test@shopware.de.test  | Testartikel   | 3                 | 15.99          | GB               |
+      | demo.test@shopware.de.test  | Testartikel   | 3                 | 15.99          | EG               |
 
     Given I am logged into the backend
     And I am on the page "OrderModule"
@@ -49,7 +49,7 @@ Feature: I can manage my orders with the backend order module
     Then I should see exactly 1 order in the order list
 
     When I click the "Zurücksetzen" button
-    And I filter the backend order list for shipping country "Großbritannien"
+    And I filter the backend order list for shipping country "Ägypten"
     Then I should see exactly 1 order in the order list
 
     When I click the "Zurücksetzen" button
