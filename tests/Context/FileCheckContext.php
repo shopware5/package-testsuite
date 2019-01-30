@@ -43,6 +43,8 @@ class FileCheckContext extends SubContext
     {
         /** @var SystemInfoModule $page */
         $page = $this->getPage('SystemInfoModule');
+
+        $this->waitForText('engine');
         $requirementLabel = $requirement === 'folder' ? $this->folderRequirementLabel : $this->fileRequirementLabel;
 
         $page->checkRequirements(
