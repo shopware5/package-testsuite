@@ -6,7 +6,7 @@ volumes:
 
 services:
   mysql:
-    image: mysql:5.6
+    image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: toor
       MYSQL_DATABASE: shopware
@@ -15,7 +15,7 @@ services:
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
   apache:
-    image: shopware/package-testsuite:apache
+    image: shopware/package-testsuite:apache7.2
     volumes:
       - ../www/assetgenerator:/var/www/assetgenerator
       - ../www/updates:/var/www/updates
@@ -46,7 +46,7 @@ services:
     environment:
       TZ: Europe/Berlin
   tools:
-    image: shopware/package-testsuite:tools
+    image: shopware/package-testsuite:tools7.2
     volumes:
       - ../tests:/tests
       - datavolume:/var/www/shopware
