@@ -2,6 +2,7 @@
 
 namespace Shopware\Context;
 
+use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Page\Frontend\Account;
@@ -101,7 +102,7 @@ class FrontendContext extends SubContext
             $priceText = str_replace(',', '.', str_replace('.', '', $priceText));
         }
 
-        \PHPUnit_Framework_Assert::assertEquals(floatval($priceText), floatval($testPrice));
+        Assert::assertEquals((float)$priceText, (float)$testPrice);
     }
 
     /**

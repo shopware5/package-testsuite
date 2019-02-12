@@ -305,7 +305,7 @@ class CheckoutCart extends ContextAwarePage
     private function compareCartPositions(CartPosition $expected, CartPosition $actual)
     {
         return $actual->getName() === $expected->getName() &&
-            strpos($actual->getNumber(), $expected->getNumber()) &&
+            strpos($actual->getNumber(), $expected->getNumber()) !== false &&
             $actual->getQuantity() === $expected->getQuantity() &&
             $actual->getItemPrice() === $expected->getItemPrice() &&
             $actual->getSum() === $expected->getSum();

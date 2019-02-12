@@ -14,6 +14,8 @@ services:
       MYSQL_PASSWORD: shopware
     volumes:
       - ./mysql/conf.d:/etc/mysql/conf.d
+    tmpfs:
+      - /var/lib/mysql
   apache:
     image: shopware/package-testsuite:apache7.2
     volumes:

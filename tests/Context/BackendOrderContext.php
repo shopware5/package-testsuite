@@ -3,7 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use PHPUnit_Framework_Assert;
+use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\OrderModule;
 use Smalot\PdfParser\Parser;
@@ -118,7 +118,7 @@ class BackendOrderContext extends PageObjectContext
         $pdfContent = $this->getPdfTextContent($documents[0]);
 
         foreach ($content->getHash() as $expectedString) {
-            PHPUnit_Framework_Assert::assertContains($expectedString['content'], $pdfContent);
+            Assert::assertContains($expectedString['content'], $pdfContent);
         }
 
         unlink($documents[0]);

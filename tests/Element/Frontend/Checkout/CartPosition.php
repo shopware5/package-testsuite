@@ -65,9 +65,9 @@ class CartPosition
         $data['sum'] = self::toFloat($data['sum']);
 
         return new self(
-            $data['name'],
-            $data['number'],
-            $data['quantity'],
+            trim($data['name']),
+            trim($data['number']),
+            (int) trim($data['quantity']),
             $data['itemPrice'],
             $data['sum']
         );
@@ -128,6 +128,6 @@ class CartPosition
         $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
         preg_match("/([0-9]+[\\.]?[0-9]*)/", $float, $matches);
 
-        return floatval($matches[0]);
+        return (float) $matches[0];
     }
 }

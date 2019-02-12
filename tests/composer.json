@@ -12,8 +12,9 @@
     "guzzlehttp/guzzle": "^6.2",
     "vlucas/phpdotenv": "^2.3",
     "fzaninotto/faker": "^1.6",
-    "phpunit/phpunit": "5.5.*",
-    "smalot/pdfparser": "^0.10.0"
+    "phpunit/phpunit": "^7",
+    "smalot/pdfparser": "^0.14.0",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

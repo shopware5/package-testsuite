@@ -3,6 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\Backend;
 use Shopware\Page\Backend\VoucherModule;
@@ -63,7 +64,7 @@ class BackendVoucherContext extends SubContext
         $this->finishCheckout();
         $usedCode = $this->getUsedVoucherCodeFromBackend();
 
-        \PHPUnit_Framework_Assert::assertEquals($voucherCode, $usedCode);
+        Assert::assertEquals($voucherCode, $usedCode);
     }
 
     /**
