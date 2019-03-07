@@ -351,10 +351,6 @@ class CheckoutCart extends ContextAwarePage
     {
         $this->open();
 
-        $voucherCheckboxXpath = FrontendXpathBuilder::getInputById('add-voucher--trigger');
-        $this->waitForSelectorPresent('xpath', $voucherCheckboxXpath);
-        $this->find('xpath', $voucherCheckboxXpath)->click();
-
         $voucherInputXpath = FrontendXpathBuilder::getElementXpathByName('input', 'sVoucher');
         $this->waitForSelectorPresent('xpath', $voucherInputXpath);
         $this->find('xpath', $voucherInputXpath)->setValue($code);
