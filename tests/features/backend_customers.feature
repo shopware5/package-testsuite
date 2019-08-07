@@ -21,7 +21,7 @@ Feature: I can manage my customers with the backend customer module
       | label                 | value           | type       | fieldset          |
       | E-Mail:               | test@tester.com | input      | Stammdaten        |
       | Kundengruppe:         | Shopkunden      | combobox   | Stammdaten        |
-      | Shop:                 | Demo shop       | combobox   | Stammdaten        |
+      | Sprache:              | Demo shop       | combobox   | Stammdaten        |
       | Passwort:             | 12345678        | input      | Stammdaten        |
       | Passwort bestätigen:  | 12345678        | input      | Stammdaten        |
       | Anrede:               | Herr            | combobox   | Persönliche Daten |

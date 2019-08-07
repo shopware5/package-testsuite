@@ -45,7 +45,7 @@ class ProductExportModule extends BackendModule
     {
         $editor = $this->getEditorWindow(false);
 
-        $templateAreaXpath = BackendXpathBuilder::create()->child('div', ['~class' => 'cm-s-default'])->getXpath();
+        $templateAreaXpath = BackendXpathBuilder::create()->child('pre', ['~class' => 'ace_editor'])->getXpath();
         $this->waitForXpathElementPresent($templateAreaXpath);
 
         $templateArea = $editor->find('xpath', $templateAreaXpath);

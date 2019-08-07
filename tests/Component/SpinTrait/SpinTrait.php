@@ -12,7 +12,7 @@ trait SpinTrait
      * @return bool
      * @throws \Exception
      */
-    protected function spin($lambda, $wait = 60)
+    protected function spin($lambda, $wait = 120)
     {
         if (!$this->spinWithNoException($lambda, $wait)) {
             throw new \Exception("Spin function timed out after {$wait} seconds");
@@ -26,7 +26,7 @@ trait SpinTrait
      * @param int $wait
      * @return bool
      */
-    protected function spinWithNoException($lambda, $wait = 60)
+    protected function spinWithNoException($lambda, $wait = 120)
     {
         $time = time();
         $stopTime = $time + $wait;
