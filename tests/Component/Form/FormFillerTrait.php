@@ -18,14 +18,15 @@ trait FormFillerTrait
         foreach ($formData as $formElement) {
             switch ($formElement['type']) {
                 case 'input':
-                    $this->getElementByName($page, 'input', $formElement['name'])->setValue($formElement['value']);
+                    $this->getElementByName($page, FrontendXpathBuilder::getElementXpathByName('input', $formElement['name']))->setValue($formElement['value']);
                     break;
                 case 'select':
-                    $this->getElementByName($page, 'select', $formElement['name'])->selectOption($formElement['value']);
+                    $this->getElementByName($page, FrontendXpathBuilder::getElementXpathByName('select', $formElement['name']))->selectOption($formElement['value']);
                     break;
                 case 'checkbox':
                     if ($this->isCheckboxChecked($page, $formElement['name']) !== (bool)$formElement['value']) {
-                        $this->getElementByName($page, 'input', $formElement['name'])->check();
+                        $xpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['name']);
+                        $this->getElementByName($page, $this->selectLastElement($xpath))->check();
                     }
                     break;
             }
@@ -36,15 +37,12 @@ trait FormFillerTrait
      * Get a NodeElement with the given name
      *
      * @param ContextAwarePage $page
-     * @param string $type
-     * @param string $name
+     * @param string $xpath
      * @return \Behat\Mink\Element\NodeElement|null
      */
-    private function getElementByName(ContextAwarePage $page, $type, $name)
+    private function getElementByName(ContextAwarePage $page, $xpath)
     {
-        $elementXpath = FrontendXpathBuilder::getElementXpathByName($type, $name);
-        $page->waitForSelectorPresent('xpath', $elementXpath);
-        return $page->find('xpath', $elementXpath);
+        return $page->waitForSelectorPresent('xpath', $xpath);
     }
 
     /**
@@ -57,5 +55,14 @@ trait FormFillerTrait
     private function isCheckboxChecked(ContextAwarePage $page, $inputName)
     {
         return (bool)$page->find('css', 'input[type="checkbox"][name="' . $inputName . '"]:checked');
+    }
+
+    /**
+     * @param string $xpath
+     * @return string
+     */
+    private function selectLastElement($xpath)
+    {
+        return sprintf('(%s)[last()]', $xpath);
     }
 }
