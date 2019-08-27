@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  tools:
+    image: shopware/php-cli:${PHP_VERSION:-latest}
+    tty: true
+    depends_on:
+      - mysql
+      - elasticsearch
+    volumes:
+      - ../:/var/www/html
+      - ~/.composer/cache:/root/.composer/cache
+    links:
+      - "mysql:mysql.example"
+      - "elasticsearch:elasticsearch.example"
+
+  mysql:
+    build: mysql
+    tmpfs:
+      - /var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: shopware
+        MYSQL_PASSWORD: shopware
+        MYSQL_DATABASE: shopware
+
+  elasticsearch:
+      image: elasticsearch:${ELASTICSEARCH_VERSION}
