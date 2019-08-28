@@ -1,0 +1,46 @@
+version: '3.1'
+
+volumes:
+  datavolume:
+
+services:
+  tools:
+    image: shopware/php-cli:${PHP_VERSION:-latest}
+    tty: true
+    depends_on:
+      - mysql
+    volumes:
+      - datavolume:/var/www/html/var
+      - datavolume:/var/www/html/web/cache
+      - ../:/var/www/html
+      - ~/.composer/cache:/root/.composer/cache
+    links:
+      - "mysql:mysql.example"
+      - "web:web.example"
+      - "seleniumchrome-standalone:selenium"
+
+  web:
+    image: shopware/php-apache:${PHP_VERSION:-latest}
+    volumes:
+      - datavolume:/var/www/html/var
+      - datavolume:/var/www/html/web/cache
+      - ../:/var/www/html
+      - ~/.composer/cache:/root/.composer/cache
+    links:
+      - "mysql:mysql.example"
+
+  mysql:
+    build: mysql
+    tmpfs:
+      - /var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: shopware
+        MYSQL_PASSWORD: shopware
+        MYSQL_DATABASE: shopware
+
+  seleniumchrome-standalone:
+    image: selenium/standalone-chrome:3.3
+    shm_size: 512M
+    links:
+      - "web:web.example"
