@@ -15,7 +15,7 @@ stages:
   - Testing
 
 Build package:
-  image: shopware/php-cli:latest
+  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/php
   stage: Build package
   services:
     - name: mysql:5.7
@@ -31,7 +31,7 @@ Build package:
       - deploy-script/output/package/*.zip
 
 Install process:
-  image: shopware/5-docker-cli
+  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli
   stage: Testing
   dependencies:
     - Build package
@@ -50,7 +50,7 @@ Install process:
 
 
 Update process:
-  image: shopware/5-docker-cli
+  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli
   stage: Testing
   variables:
     PACKAGE_VERSION: "5.5.6"
@@ -70,7 +70,7 @@ Update process:
       junit: tests/logs/mink/*.xml
 
 Test installation:
-  image: shopware/5-docker-cli
+  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli
   stage: Testing
   dependencies:
     - Build package
