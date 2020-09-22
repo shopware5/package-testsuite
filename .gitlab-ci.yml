@@ -21,10 +21,10 @@ Build package:
     - name: mysql:5.7
       alias: mysql
   script:
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.shopware.com/shopware/5/product/shopware.git shopware --depth=1
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.shopware.com/shopware/5/product/shopware.git shopware --depth=1 -b $PACKAGE_VERSION
     - git clone --bare file://$CI_PROJECT_DIR/shopware _build
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.shopware.com/shopware/5/product/package-builder.git deploy-script --depth=1
-    - ant -f deploy-script/build.xml install update -Ddb.host="mysql" -Ddb.port=3306 -Ddb.name="shopware" -Ddb.user="shopware" -Ddb.password="shopware" -Dgit.repo.url="$CI_PROJECT_DIR/_build" -Dgit.checkout.branch=5.6 -Dgit.newtag=5.6.99 -Dgit.newtag_text=""
+    - ant -f deploy-script/build.xml install update -Ddb.host="mysql" -Ddb.port=3306 -Ddb.name="shopware" -Ddb.user="shopware" -Ddb.password="shopware" -Dgit.repo.url="$CI_PROJECT_DIR/_build" -Dgit.checkout.branch=$PACKAGE_VERSION -Dgit.newtag=$PACKAGE_VERSION.99 -Dgit.newtag_text=""
   artifacts:
     when: on_success
     paths:
