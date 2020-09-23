@@ -37,13 +37,13 @@ doesn't execute a single test on its own. After calling the script you can run s
 to use an alias like the following:
  
  ```bash
- runmink='docker-compose -f docker-compose.yml -f docker-compose.local.yml run --rm tools ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
+alias runmink='docker-compose -f docker-compose.yml -f docker-compose.local.yml run --rm tools ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
  ```
 
  Then you can run a specific feature by simply calling:
 
  ```bash
- runmink ../test/features/backend_customers.feature
+runmink /tests/features/backend_customers.feature
  ```
  
  

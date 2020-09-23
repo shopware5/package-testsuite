@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Include testing config for docker-compose
 shopt -s expand_aliases

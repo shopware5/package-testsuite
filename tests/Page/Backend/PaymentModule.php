@@ -51,9 +51,11 @@ class PaymentModule extends BackendModule
     {
         $paymentMethodXpath = BackendXpathBuilder::create()
             ->child('div', ['starts-with' => ['@id', 'payment-main-tree']])
-            ->descendant('div', ['~class' => 'x-grid-cell-inner', 'and', '~text' => $name . ' ('])
+            ->descendant('div', ['~class' => 'x-grid-cell-inner', 'and', '~text' => $name])
             ->getXpath();
 
         return $paymentMethodXpath;
     }
 }
+
+//div[starts-with(@id, 'payment-main-tree')]/descendant::div[contains(concat(' ', normalize-space(@class), ' '), ' x-grid-cell-inner ') and ./descendant-or-self::*[text()[contains(.,'SEPA (')]]]

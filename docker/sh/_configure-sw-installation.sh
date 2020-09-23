@@ -16,15 +16,8 @@ docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware
 docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware`.`s_core_config_elements` SET `value`='"'"'b:0;'"'"' WHERE `name`='"'"'update-verify-signature'"'"';'
 # Use mocked update server
 docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware`.`s_core_config_elements` SET `value`='"'"'s:23:"http://updates.example/";'"'"' WHERE `name`='"'"'update-api-endpoint'"'"';'
-
-# Shopware 5.3 specific configuration
-if [ "$PACKAGE_VERSION" = "5.3" ]
-    then
-        # Disable installation survey
-        docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE `shopware`.`s_core_config_elements` SET `value`='"'"'b:0;'"'"' WHERE `name`='"'"'installationSurvey'"'"';'
-        # Disable RC message
-        docker-compose run --rm tools bash -c "cd /var/www/shopware && sed -ie \"s/const VERSION_TEXT = '.*'/const VERSION_TEXT = ''/g\" engine/Shopware/Application.php"
-fi
+# Disable Cookie Banner
+docker-compose run --rm tools mysql -u root -ptoor -h mysql -e 'UPDATE s_core_config_elements SET value = "b:0;" WHERE name = "show_cookie_note"'
 
 echo "Chown directories to www-data"
 docker-compose run --rm tools chown -R www-data:www-data /var/www/shopware
