@@ -37,7 +37,7 @@ doesn't execute a single test on its own. After calling the script you can run s
 to use an alias like the following:
  
  ```bash
-alias runmink='docker-compose -f docker-compose.yml -f docker-compose.local.yml run --rm tools ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
+alias runmink='docker-compose -f docker-compose.yml -f docker-compose.local.yml run --rm behat ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
  ```
 
  Then you can run a specific feature by simply calling:
@@ -180,19 +180,12 @@ Please note that the size parameter is completely optional.
 * Serves Shopware installation from `/var/www/shopware`
 * Serves asset generator from `/var/www/assetgenerator`
 
-### Tools container
-* Based on PHP7 CLI Docker image
-* Place where the actual test suite is executed
-* Linked to apache container via host `shopware.localhost`
-* Linked to selenium container via host `selenium`
-* Linked to smtp container via host `smtp`
-
 ### MySQL container
 * Provides mariaDB database named `shopware` for user `shopware` with password `shopware`
 * Root access for user `root` with password `toor`
 
 ### Selenium container
-* Based on selenium-chrome Docker image
+* Uses the selenium/standalone-chrome Docker image
 * Exposes port 5900 in development mode (`docker-compose.local.yml`) for remote debugging via VNC
 
 ### SMTP container
