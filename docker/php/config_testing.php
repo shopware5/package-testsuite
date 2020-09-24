@@ -14,4 +14,8 @@ return [
     'phpsettings' => [
         'display_errors' => 1,
     ],
+    'mail' => [
+        'type' => 'file',
+
+    ]
 ];

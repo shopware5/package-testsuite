@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Include testing config for docker-compose
 shopt -s expand_aliases
 alias docker-compose="docker-compose -f docker-compose.yml -f docker-compose.local.yml"
 
+trap "{ . ./sh/_post-stage.sh; exit 1; }" ERR
+
 . ./sh/_pre-stage.sh
 
 echo "Unzipping installer"
-docker-compose run --rm tools find /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
+docker-compose run --rm --entrypoint="find" apache /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
 
 echo "Copying update package"
-docker-compose run --rm tools find /source -maxdepth 1 -name "${UPDATE_PACKAGE_NAME}" -exec cp {} /var/www/cdn/update.zip \;
+docker-compose run --rm --entrypoint="find" apache /source -maxdepth 1 -name "${UPDATE_PACKAGE_NAME}" -exec cp {} /var/www/cdn/update.zip \;
 
 echo "Install Shopware via CLI"
-docker-compose run --rm tools php /var/www/shopware/recovery/install/index.php \
+docker-compose run --rm --entrypoint="php" apache /var/www/shopware/recovery/install/index.php \
     --no-interaction \
     --db-host="mysql" \
     --db-name="shopware" \

@@ -17,13 +17,15 @@ services:
     tmpfs:
       - /var/lib/mysql
   apache:
-    image: shopware/package-testsuite:apache7.2
+    image: gitlab.shopware.com:5005/shopware/5/product/image/package-testsuite/php-apache:7.3
     volumes:
       - ../www/assetgenerator:/var/www/assetgenerator
       - ../www/updates:/var/www/updates
       - datavolume:/var/www/shopware
       - updatesvolume:/var/www/cdn
-      - ~/.composer/cache:/root/.composer/cache
+      - ../files:/source
+      - ../tests:/tests
+      - ./php:/php-config:ro
     extra_hosts:
       - "assetgenerator.example:127.0.0.1"
       - "updates.example:127.0.0.1"
@@ -35,20 +37,9 @@ services:
       TZ: Europe/Berlin
     links:
       - mysql
-      - smtp
-  smtp:
-    image: mailhog/mailhog
-  selenium:
-    image: shopware/package-testsuite:selenium
-    links:
-      - apache:assetgenerator.example
-      - apache:shopware-subshop-01.test
-      - apache:shopware.test
-    shm_size: 1G
-    environment:
-      TZ: Europe/Berlin
-  tools:
-    image: shopware/package-testsuite:tools7.2
+  behat:
+    image: gitlab.shopware.com:5005/shopware/5/product/image/package-testsuite/php-apache:7.3
+    working_dir: /tests
     volumes:
       - ../tests:/tests
       - datavolume:/var/www/shopware
@@ -63,4 +54,34 @@ services:
       - apache:updates.example
       - apache:cdn.example
       - selenium
-      - smtp
+    environment:
+      SHOPWARE_ENV: testing
+      TZ: Europe/Berlin
+  selenium:
+    image: selenium/standalone-chrome:85.0
+    links:
+      - apache:assetgenerator.example
+      - apache:shopware-subshop-01.test
+      - apache:shopware.test
+    shm_size: 1G
+    environment:
+      TZ: 'Europe/Berlin'
+      LANGUAGE: 'de_DE.UTF-8'
+      LANG: 'de_DE.UTF-8'
+      SCREEN_WIDTH: '1920'
+      SCREEN_HEIGHT: '1080'
+  start-mysql:
+    image: busybox:latest
+    entrypoint:
+      - sh
+    command: >
+      -c "
+        while !(nc -z mysql 3306)
+        do
+          echo -n '.'
+          sleep 1
+        done;
+        echo 'database ready!'
+      "
+    depends_on:
+      - mysql
