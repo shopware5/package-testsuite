@@ -36,6 +36,7 @@ Feature: I can create and access a subshop
       | Template:            | Responsive               | combobox   |
       | Dokumenten-Template: | Responsive               | combobox   |
       | Kundengruppe:        | Shopkunden               | combobox   |
+    And I am on the page "Index"
 
     Then I should be able to access the subshop via using "http://shopware-subshop-01.test"
     And I should see "Subshop-Unterkategorie" eventually

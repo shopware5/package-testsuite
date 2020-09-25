@@ -46,6 +46,6 @@ docker-compose run --rm --entrypoint="chown" apache -R www-data:www-data /var/ww
 
 
 echo "Run Mink"
-docker-compose run --rm -w "/tests" --entrypoint="./behat" apache --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater&&~@knownFailing'
+docker-compose run --rm behat ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@updater&&~@knownFailing'
 
 . ./sh/_post-stage.sh

@@ -44,6 +44,6 @@ echo "Prevent recovery"
 docker-compose run --rm --entrypoint="touch" apache recovery/install/data/install.lock
 
 echo "Run Mink"
-docker-compose run --rm -w "/tests" --entrypoint="./behat" apache --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware52'
+docker-compose run --rm behat ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing&&~@shopware52'
 
 . ./sh/_post-stage.sh

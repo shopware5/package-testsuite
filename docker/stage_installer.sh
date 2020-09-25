@@ -23,6 +23,6 @@ docker-compose run --rm --entrypoint="bash" apache -c 'cp /php-config/config_tes
 echo "Chown directories to www-data"
 docker-compose run --rm --entrypoint="chown" apache -R www-data:www-data /var/www/shopware
 
-docker-compose run --rm -w "/tests" --entrypoint="./behat" apache --format=pretty --out=std --format=junit --out=/logs/mink --tags '@installer&&~@knownFailing'
+docker-compose run --rm behat ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '@installer&&~@knownFailing'
 
 . ./sh/_post-stage.sh
