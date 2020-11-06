@@ -39,4 +39,4 @@ docker-compose down -v --remove-orphans
 docker-compose run --rm start-mysql && docker-compose up -d
 
 echo "Composer install in /tests"
-docker-compose run --rm -w "/tests" --entrypoint="composer" apache install
+docker-compose run --rm -w "/tests" --entrypoint="composer" apache install --ignore-platform-req=composer-plugin-api
