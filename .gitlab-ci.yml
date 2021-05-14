@@ -15,7 +15,7 @@ stages:
   - Testing
 
 Build package:
-  image: gitlab.shopware.com:5005/shopware/5/product/image/package-testsuite/package-builder-cli:latest
+  image: gitlab.shopware.com:5005/shopware/5/product/image/package-testsuite/package-builder-cli:php74
   stage: Build package
   services:
     - name: mysql:5.7
