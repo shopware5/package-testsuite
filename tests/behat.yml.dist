@@ -13,6 +13,9 @@ default:
                   - Shopware\Element\Frontend
         Behat\MinkExtension:
             base_url: 'http://shopware.test/'
+            show_cmd: 'echo "Scenario failed! Saved current page to %s"'
+            show_tmp_dir: 'tests/logs/mink'
+            show_auto: true
             default_session: 'goutte'
             javascript_session: 'selenium2'
             goutte: ~

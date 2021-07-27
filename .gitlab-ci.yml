@@ -45,6 +45,7 @@ Install process:
     - cd docker
     - ./stage_installer.sh $CI_JOB_ID
   artifacts:
+    when: always
     paths:
       - tests/logs/mink/*
     reports:
@@ -68,6 +69,7 @@ Update process:
     - cd docker
     - ./stage_updater.sh $CI_JOB_ID
   artifacts:
+    when: always
     paths:
       - tests/logs/mink/*
     reports:
@@ -88,6 +90,7 @@ Test installation:
     - cd docker
     - ./stage_general.sh $CI_JOB_ID
   artifacts:
+    when: always
     paths:
       - tests/logs/mink/*
     reports:
