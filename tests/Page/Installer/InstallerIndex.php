@@ -101,11 +101,12 @@ class InstallerIndex extends ContextAwarePage
 
                 $schemaInput = $this->find('xpath', $schemaInputXpath);
 
+                // Element will be replaced with a <select> by the onFocus listener on $schemaInput
                 if($schemaInput) {
                     $schemaInput->focus();
                 }
 
-                // Wait for the onFocus listener to finish its AJAX request, after which the <input> will be replaced by a <select>
+                // Wait for the onFocus listener to finish its AJAX request & replace
                 $schemaSelect = $this->waitForSelectorPresent('xpath', $schemaSelectXpath, 10);
 
                 $schemaSelect->selectOption($formElement['value']);
