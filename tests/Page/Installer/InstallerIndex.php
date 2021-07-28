@@ -62,7 +62,7 @@ class InstallerIndex extends ContextAwarePage
      */
     public function advance()
     {
-        $forwardButton = $this->find('xpath', $this->getXPathSelectors()['forwardButton']);
+        $forwardButton = $this->waitForSelectorPresent('xpath', $this->getXPathSelectors()['forwardButton']);
         $forwardButton->click();
     }
 
@@ -95,29 +95,27 @@ class InstallerIndex extends ContextAwarePage
     public function fillInAndSubmitForm($data)
     {
         foreach ($data as $formElement) {
-            // Shopware 5.2 and 5.3 handle the database schema input differently
             if ($formElement['field'] === 'c_database_schema') {
-                sleep(3);
+                $schemaInputXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
+                $schemaSelectXpath = FrontendXpathBuilder::getElementXpathByName('select', $formElement['field']);
 
-                // Try to find 5.3 input field
-                $schemaXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
-                $schemaInput = $this->find('xpath', $schemaXpath);
+                $schemaInput = $this->find('xpath', $schemaInputXpath);
 
-                // Look for 5.2 select field otherwise
-                if(!$schemaInput) {
-                    $schemaXpath = FrontendXpathBuilder::getElementXpathByName('select', $formElement['field']);
-                    $schemaInput = $this->find('xpath', $schemaXpath);
-                    $schemaInput->selectOption($formElement['value']);
-                } else {
-                    $schemaInput->setValue($formElement['value']);
+                if($schemaInput) {
+                    $schemaInput->focus();
                 }
+
+                // Wait for the onFocus listener to finish its AJAX request, after which the <input> will be replaced by a <select>
+                $schemaSelect = $this->waitForSelectorPresent('xpath', $schemaSelectXpath, 10);
+
+                $schemaSelect->selectOption($formElement['value']);
 
                 continue;
             }
 
             $elementXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
-            $this->waitForSelectorPresent('xpath', $elementXpath);
-            $element = $this->find('xpath', $elementXpath);
+            $element = $this->waitForSelectorPresent('xpath', $elementXpath);
+
             if ($element->isVisible()) {
                 $element->setValue($formElement['value']);
             }
