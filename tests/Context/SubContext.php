@@ -78,6 +78,10 @@ class SubContext extends PageObjectContext implements MinkAwareContext
      */
     public function getSession()
     {
+        if (!$this->mink->getSession()->isStarted()) {
+            $this->mink->getSession()->start();
+        }
+
         return $this->mink->getSession();
     }
 
