@@ -8,7 +8,6 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 class NewArticleModule extends BackendModule
 {
     private $priceRowAnchor = 'Beliebig';
-    private $enterKeyNumber = 13;
     protected $moduleWindowTitle = 'Artikeldetails :';
 
     /**
@@ -102,7 +101,9 @@ class NewArticleModule extends BackendModule
         $priceInput = $this->find('xpath', $priceInputXpath);
 
         $priceInput->setValue($value);
-        $priceInput->keyPress($this->enterKeyNumber);
+
+        // Minks keyPress-method is buggy unfortunately, this is a workaround to de-focus the price input so its value is actually set.
+        $window->click();
     }
 
     /**
@@ -112,7 +113,7 @@ class NewArticleModule extends BackendModule
      */
     public function setDescription($text)
     {
-        $this->getSession()->executeScript("tinymce.get()[0].setContent('" . $text . "');");
+        $this->getDriver()->executeScript("tinymce.get()[0].setContent('" . $text . "');");
     }
 
     /**
@@ -174,11 +175,10 @@ class NewArticleModule extends BackendModule
 
     /**
      * Saves the article
-     *
      */
     public function saveArticle()
     {
-        $button = $this->find('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
+        $button = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
         $button->click();
     }
 }
