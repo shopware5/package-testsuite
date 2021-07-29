@@ -118,7 +118,7 @@ class BackendOrderContext extends PageObjectContext
         $pdfContent = $this->getPdfTextContent($documents[0]);
 
         foreach ($content->getHash() as $expectedString) {
-            Assert::assertContains($expectedString['content'], $pdfContent);
+            Assert::assertStringContainsString($expectedString['content'], $pdfContent);
         }
 
         unlink($documents[0]);

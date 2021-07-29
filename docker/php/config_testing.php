@@ -16,6 +16,5 @@ return [
     ],
     'mail' => [
         'type' => 'file',
-
     ]
 ];

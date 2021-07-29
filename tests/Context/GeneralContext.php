@@ -43,6 +43,7 @@ class GeneralContext extends SubContext
     public function onBeforeScenario()
     {
         $driver = $this->getSession()->getDriver();
+
         if ($driver instanceof Selenium2Driver) {
             $driver->resizeWindow(1920, 1080);
         }
