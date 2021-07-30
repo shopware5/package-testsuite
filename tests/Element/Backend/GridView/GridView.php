@@ -42,6 +42,16 @@ class GridView extends ExtJsElement
     }
 
     /**
+     * Returns the first row from a grid view
+     *
+     * @return GridViewRow
+     */
+    public function getFirstRow()
+    {
+        return $this->find('xpath', $this->getGridViewFirstRowXpath());
+    }
+
+    /**
      * Get the first row that contains given string
      *
      * @param string $content
@@ -100,5 +110,10 @@ class GridView extends ExtJsElement
             ->descendant('tr', ['~class' => 'x-grid-row'])
             ->getXpath();
         return $rowsXpath;
+    }
+
+    private function getGridViewFirstRowXpath(): string
+    {
+        return sprintf('(%s)[1]', $this->getGridViewRowsXpath());
     }
 }

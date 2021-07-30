@@ -122,7 +122,7 @@ class OrderModule extends BackendModule
      */
     public function getTopmostOrderFromList()
     {
-        return $this->getOrderListGridView()->getRows()[0];
+        return $this->getOrderListGridView()->getFirstRow();
     }
 
     /**
