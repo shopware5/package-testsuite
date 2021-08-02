@@ -54,7 +54,7 @@ class ApiClient
             throw new \RuntimeException('Missing API password.');
         }
 
-        $this->auth = [$username, $apiKey, 'digest'];
+        $this->auth = [$username, $apiKey, 'basic'];
 
         $this->faker = FakerFactory::create('de_DE');
     }
