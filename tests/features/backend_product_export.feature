@@ -90,14 +90,15 @@ Feature: I can use product exports
       """
 
     When I am on the page "ProductExportModule"
-    And I click the edit icon on the export "Profile 02"
+    Then I should see "Profile 02" eventually
+    When I click the edit icon on the export "Profile 02"
     And I fill in the product export configuration:
       | label        | value | type     |
       | Dateiformat: | CSV   | combobox |
-
     And I click the "Speichern und schließen" button
     Then I should see "Profile 02" eventually
-    And I open the "Profile 02" export file
+
+    When I open the "Profile 02" export file
     Then it should contain the following product data:
       """
       "SWT0003";"Supplier II";&quot;Product C&quot;;35,50;DE::DHL:3.9;   "SWT0004";"Supplier III";&quot;Product D&quot;;135,50;DE::DHL:3.9;
