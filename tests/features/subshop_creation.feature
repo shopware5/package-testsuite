@@ -7,7 +7,6 @@ Feature: I can create and access a subshop
       | Shopkunden | EK  |
     And the category tree "Root > Subshop-Kategorie > Subshop-Unterkategorie" exists
 
-
   Scenario: I can create a subshop
     Given I am logged into the backend
     Then I should see "Einstellungen" eventually

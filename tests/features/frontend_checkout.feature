@@ -2,7 +2,6 @@
 Feature: I can buy products using the store frontend
 
   Background:
-
     Given the following products exist in the store:
       | number  | name                         | price | tax | supplier                | categories                                                             |
       | SWT0001 | BienenhoniK - Karl Süßkleber | 5.20  | 19  | Bienenstock             | Root > Deutsch > Nahrungsmittel > Süß                                  |

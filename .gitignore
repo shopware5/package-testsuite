@@ -10,6 +10,7 @@
 /temp/*
 !/temp/.gitkeep
 .php_cs.cache
+logs/mink/*
 
 ### JetBrains IDEs ###
 /.idea/

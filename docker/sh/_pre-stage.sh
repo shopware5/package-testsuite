@@ -11,7 +11,7 @@ BEHAT_DIST="../tests/behat.yml.dist"
 UPDATE_PACKAGE_NAME="*_update_*_latest.zip"
 INSTALL_PACKAGE_NAME="*_install_*_latest.zip"
 
-PACKAGE_VERSION="${PACKAGE_VERSION:-5.3}"
+PACKAGE_VERSION="${PACKAGE_VERSION:-5.7}"
 echo "PACKAGE_VERSION: $PACKAGE_VERSION"
 
 echo "Checking for install package"
