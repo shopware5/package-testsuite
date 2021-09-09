@@ -2,7 +2,6 @@
 Feature: I can use product exports
 
   Background:
-
     Given the following products exist in the store:
       | number  | name      | price  | supplier     | categories                                        |
       | SWT0001 | Product A | 5.20   | Supplier I   | Root > Deutsch > ErsteKategorie > Unterkategorie  |

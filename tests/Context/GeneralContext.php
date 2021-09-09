@@ -59,6 +59,14 @@ class GeneralContext extends SubContext
     }
 
     /**
+     * @Given /^I scroll down "([^"]*)" px$/
+     */
+    public function iScrollDown($pixels)
+    {
+        $this->getSession()->executeScript(sprintf('window.scroll(0, %s)', $pixels));
+    }
+
+    /**
      * @Given I am on the page :page
      * @When I go to the page :page
      * @param string $page

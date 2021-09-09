@@ -24,9 +24,6 @@ default:
                 capabilities:
                     browser: chrome
                     marionette: true
-                    extra_capabilities:
-                        chromeOptions:
-                            w3c: false
             browser_name: chrome
 
     gherkin:
