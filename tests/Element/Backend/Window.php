@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Element\Backend;
 
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Form\Checkbox;
@@ -24,18 +28,12 @@ class Window extends ExtJsElement
      *
      * Example Usage:
      *  $window = Window::createFromTitle('Kundenadministration', $this->getSession());
-     *
-     * @param string $title
-     * @param bool   $exactTitleMatch
-     *
-     * @return Window
      */
-    public static function createFromTitle($title, Session $session, $exactTitleMatch = true)
+    public static function createFromTitle(string $title, Session $session, bool $exactTitleMatch = true): Window
     {
         $windowXpath = BackendXpathBuilder::getWindowXpathByTitle($title, $exactTitleMatch);
-        $window = new Window($windowXpath, $session);
 
-        return $window;
+        return new Window($windowXpath, $session);
     }
 
     /**
@@ -43,16 +41,10 @@ class Window extends ExtJsElement
      * If a window contains multiple grid views, the search can be limited
      * by providing an arbitrary string that appears within the grid view that
      * is to be selected.
-     *
-     * @param string|null $containsText
-     *
-     * @return GridView
      */
-    public function getGridView($containsText = '')
+    public function getGridView(?string $containsText = ''): GridView
     {
-        $gridView = new GridView($this->getGridViewXpath($containsText), $this->getSession());
-
-        return $gridView;
+        return new GridView($this->getGridViewXpath($containsText), $this->getSession());
     }
 
     /**
@@ -60,16 +52,10 @@ class Window extends ExtJsElement
      *
      *  Example Usage:
      *  $input = $window->getInput('Dateiname:');
-     *
-     * @param string|null $fieldset
-     *
-     * @return Input
      */
-    public function getInput($label, $fieldset = null)
+    public function getInput(string $label, ?string $fieldset = null): Input
     {
-        $input = new Input($this->getInputXpath($label, $fieldset), $this->getSession());
-
-        return $input;
+        return new Input($this->getInputXpath($label, $fieldset), $this->getSession());
     }
 
     /**
@@ -77,17 +63,10 @@ class Window extends ExtJsElement
      *
      *  Example Usage:
      *  $combobox = $window->getCombobox('Steuersatz:');
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return Combobox
      */
-    public function getCombobox($label, $fieldset = null)
+    public function getCombobox(string $label, ?string $fieldset = null): Combobox
     {
-        $combobox = new Combobox($this->getComboboxXpath($label, $fieldset), $this->getSession());
-
-        return $combobox;
+        return new Combobox($this->getComboboxXpath($label, $fieldset), $this->getSession());
     }
 
     /**
@@ -95,17 +74,10 @@ class Window extends ExtJsElement
      *
      *  Example Usage:
      *  $checkbox = $window->getCheckbox('Aktiv:');
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return Checkbox
      */
-    public function getCheckbox($label, $fieldset = null)
+    public function getCheckbox(string $label, ?string $fieldset = null): Checkbox
     {
-        $checkbox = new Checkbox($this->getInputXpath($label, $fieldset), $this->getSession());
-
-        return $checkbox;
+        return new Checkbox($this->getInputXpath($label, $fieldset), $this->getSession());
     }
 
     /**
@@ -113,17 +85,10 @@ class Window extends ExtJsElement
      *
      *  Example Usage:
      *  $textarea = $window->getTextarea('Kurzbeschreibung:');
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return Textarea
      */
-    public function getTextarea($label, $fieldset = null)
+    public function getTextarea(string $label, ?string $fieldset = null): Textarea
     {
-        $textarea = new Textarea($this->getTextareaXpath($label, $fieldset), $this->getSession());
-
-        return $textarea;
+        return new Textarea($this->getTextareaXpath($label, $fieldset), $this->getSession());
     }
 
     /**
@@ -131,44 +96,25 @@ class Window extends ExtJsElement
      *
      *  Example Usage:
      *  $tree = $window->getSelecttree('Kategorie:');
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return Selecttree
      */
-    public function getSelecttree($label, $fieldset = null)
+    public function getSelecttree(string $label, ?string $fieldset = null): Selecttree
     {
-        $selecttree = Selecttree::createFromXpath($this->getSelecttreeXpath($label, $fieldset), $this);
-
-        return $selecttree;
+        return Selecttree::createFromXpath($this->getSelecttreeXpath($label, $fieldset), $this);
     }
 
-    /**
-     * @param string $containsText
-     *
-     * @return string
-     */
-    private function getGridViewXpath($containsText = '')
+    private function getGridViewXpath(string $containsText = ''): string
     {
-        $gridViewXpath = BackendXpathBuilder::create($this->getXpath())
+        return BackendXpathBuilder::create($this->getXpath())
             ->descendant('div', ['~class' => 'x-grid-with-row-lines'])
             ->descendant('*', ['~text' => $containsText])
             ->ancestor('div', ['~class' => 'x-grid-with-row-lines'])
             ->getXpath();
-
-        return $gridViewXpath;
     }
 
     /**
      * Get xpath for a combobox within the current window, potentially limited to a given fieldset.
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return string
      */
-    private function getComboboxXpath($label, $fieldset = null)
+    private function getComboboxXpath(string $label, ?string $fieldset = null): string
     {
         $scope = $fieldset
             ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
@@ -179,13 +125,8 @@ class Window extends ExtJsElement
 
     /**
      * Get xpath for an input field within the current window, optionally scoped to a given fieldset
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return string
      */
-    private function getInputXpath($label, $fieldset)
+    private function getInputXpath(string $label, ?string $fieldset): string
     {
         $scope = $fieldset
             ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
@@ -196,13 +137,8 @@ class Window extends ExtJsElement
 
     /**
      * Get xpath to textarea element within the current window, optionally scoped to a given fieldset
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return string
      */
-    private function getTextareaXpath($label, $fieldset)
+    private function getTextareaXpath(string $label, ?string $fieldset): string
     {
         $scope = $fieldset
             ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
@@ -213,13 +149,8 @@ class Window extends ExtJsElement
 
     /**
      * Return xpath to a given selecttree within the current window
-     *
-     * @param string      $label
-     * @param string|null $fieldset
-     *
-     * @return string
      */
-    private function getSelecttreeXpath($label, $fieldset)
+    private function getSelecttreeXpath(string $label, ?string $fieldset): string
     {
         $scope = $fieldset
             ? BackendXpathBuilder::getFieldsetXpathByLabel($fieldset, $this->getXpath())
@@ -231,5 +162,24 @@ class Window extends ExtJsElement
             ->followingSibling('td', [], 1)
             ->descendant('div', ['~class' => 'x-form-trigger'])
             ->getXpath();
+    }
+
+    /**
+     * @param string          $selector
+     * @param string[]|string $locator
+     *
+     * @throws ElementNotFoundException
+     */
+    public function find($selector, $locator): NodeElement
+    {
+        $element = parent::find($selector, $locator);
+        if ($element === null) {
+            if (\is_array($locator)) {
+                $locator = implode(' ', $locator);
+            }
+            throw new ElementNotFoundException($this->getDriver(), null, $selector, $locator);
+        }
+
+        return $element;
     }
 }

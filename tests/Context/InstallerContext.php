@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -11,10 +13,9 @@ class InstallerContext extends SubContext
     /**
      * @When I advance to the next installer page
      */
-    public function iAdvanceToTheNextInstallerPage()
+    public function iAdvanceToTheNextInstallerPage(): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->advance();
     }
 
@@ -22,11 +23,9 @@ class InstallerContext extends SubContext
      * @Then I should see the list of required files and folders:
      * @Then I should see the checks for my system:
      */
-    public function iShouldSeeText(TableNode $table)
+    public function iShouldSeeText(TableNode $table): void
     {
-        $data = $table->getHash();
-
-        foreach ($data as $text) {
+        foreach ($table->getHash() as $text) {
             $this->checkIfThereIsText($text['text'], $this);
         }
     }
@@ -34,20 +33,18 @@ class InstallerContext extends SubContext
     /**
      * @When I check the license checkbox to agree to the terms
      */
-    public function iCheckTheCheckbox()
+    public function iCheckTheCheckbox(): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->tickCheckbox('tos');
     }
 
     /**
      * @Then the following form fields must be required:
      */
-    public function theFollowingFormFieldsMustBeRequired(TableNode $table)
+    public function theFollowingFormFieldsMustBeRequired(TableNode $table): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $data = $table->getHash();
 
         foreach ($data as $field) {
@@ -58,10 +55,9 @@ class InstallerContext extends SubContext
     /**
      * @When I fill the form:
      */
-    public function iFillTheForm(TableNode $table)
+    public function iFillTheForm(TableNode $table): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $data = $table->getHash();
 
         $page->fillInAndSubmitForm($data);
@@ -69,55 +65,44 @@ class InstallerContext extends SubContext
 
     /**
      * @When I click on :text on the installer page to start the database update
-     *
-     * @param string $text
      */
-    public function iClickOn($text)
+    public function iClickOn(string $text): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->clickOnElementWithText($text);
     }
 
     /**
      * @When I go back to the previous installer page
      */
-    public function iGoBackToThePreviousInstallerPage()
+    public function iGoBackToThePreviousInstallerPage(): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->returnToPreviousDbPage();
     }
 
     /**
      * @When I choose the radio field with value :value
-     *
-     * @param string $value
      */
-    public function iChooseTheRadioFieldWithValue($value)
+    public function iChooseTheRadioFieldWithValue(string $value): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->tickRadioButtonOption($value);
     }
 
     /**
      * @Given I should see the link :linktext leading to :target
-     *
-     * @param string $linktext
-     * @param string $target
      */
-    public function iShouldSeeTheLinkLeadingTo($linktext, $target)
+    public function iShouldSeeTheLinkLeadingTo(string $linktext, string $target): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->checkIfShopIsAvailable($linktext, $target);
     }
 
     /**
      * @Then I should see :text after import is finished
      */
-    public function iShouldSeeAfterImportIsFinished($text)
+    public function iShouldSeeAfterImportIsFinished($text): void
     {
         $builder = new BackendXpathBuilder();
         $this->waitForTextInElement($builder->child('div', ['@class' => 'counter-container'])->getXpath(), $text, 0, 120);
@@ -127,10 +112,8 @@ class InstallerContext extends SubContext
      * Just for Shopware 5.2
      *
      * @Then I should see :text after the database import has finished
-     *
-     * @param string $text
      */
-    public function iShouldSeeTextAfterTheDatabaseImportHasFinished($text)
+    public function iShouldSeeTextAfterTheDatabaseImportHasFinished(string $text): void
     {
         $builder = new BackendXpathBuilder();
         $this->waitForTextInElement($builder->child('div', ['@class' => 'counter-text'])->getXpath(), $text, 0, 120);
@@ -138,26 +121,21 @@ class InstallerContext extends SubContext
 
     /**
      * @Then the :field field should get activated so that I am able to enter the license
-     *
-     * @param string $field
      */
-    public function theFieldShouldGetActivated($field)
+    public function theFieldShouldGetActivated(string $field): void
     {
         usleep(250000);
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->checkIfDisabled('css', $field);
     }
 
     /**
      * @Given I click :text to skip the next installer page
-     *
-     * @param string $text
      */
-    public function iSkip($text)
+    public function iSkip(string $text): void
     {
-        /** @var InstallerIndex $page */
-        $page = $this->getPage('InstallerIndex');
+        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
         $page->clickOnElementToSkip($text);
     }
 }

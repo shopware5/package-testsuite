@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -11,60 +13,34 @@ class BackendArticleContext extends SubContext
 {
     /**
      * @throws \Exception
-     *
-     * @return BackendModule
      */
-    private function getBackendModulePage()
+    private function getBackendModulePage(): BackendModule
     {
-        /** @var BackendModule $page */
-        $page = $this->getPage('BackendModule');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-
-        return $page;
+        return $this->getValidPage('BackendModule', BackendModule::class);
     }
 
     /**
      * @throws \Exception
-     *
-     * @return ExistingArticleModule
      */
-    private function getExistingArticleModulePage()
+    private function getExistingArticleModulePage(): ExistingArticleModule
     {
-        /** @var ExistingArticleModule $page */
-        $page = $this->getPage('ExistingArticleModule');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-
-        return $page;
+        return $this->getValidPage('ExistingArticleModule', ExistingArticleModule::class);
     }
 
     /**
      * @throws \Exception
-     *
-     * @return NewArticleModule
      */
-    private function getNewArticleModulePage()
+    private function getNewArticleModulePage(): NewArticleModule
     {
-        /** @var NewArticleModule $page */
-        $page = $this->getPage('NewArticleModule');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-
-        return $page;
+        return $this->getValidPage('NewArticleModule', NewArticleModule::class);
     }
 
     /**
      * @Given I set :price as the article price
      *
-     * @param string $price
-     *
      * @throws \Exception
      */
-    public function iSetAsTheArticlePriceForTheCustomerGroup($price)
+    public function iSetAsTheArticlePriceForTheCustomerGroup(string $price): void
     {
         $this->getNewArticleModulePage()->setArticlePriceData($price, 'Preis', 'price');
     }
@@ -72,11 +48,9 @@ class BackendArticleContext extends SubContext
     /**
      * @Given I choose :text as article description
      *
-     * @param string $text
-     *
      * @throws \Exception
      */
-    public function iChooseAsArticleDescription($text)
+    public function iChooseAsArticleDescription(string $text): void
     {
         $this->getNewArticleModulePage()->setDescription($text);
     }
@@ -86,7 +60,7 @@ class BackendArticleContext extends SubContext
      *
      * @throws \Exception
      */
-    public function iAmAbleToSaveMyArticle()
+    public function iAmAbleToSaveMyArticle(): void
     {
         $this->getNewArticleModulePage()->saveArticle();
     }
@@ -94,11 +68,9 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click to add the category with name :name to the article
      *
-     * @param string $name
-     *
      * @throws \Exception
      */
-    public function iClickTheIconToAdd($name)
+    public function iClickTheIconToAdd(string $name): void
     {
         $this->getNewArticleModulePage()->addCategory($name);
     }
@@ -106,12 +78,9 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I should find the category with name :title in :area
      *
-     * @param string $title
-     * @param string $area
-     *
      * @throws \Exception
      */
-    public function iShouldFindInTheArea($title, $area)
+    public function iShouldFindInTheArea(string $title, string $area): void
     {
         $this->getNewArticleModulePage()->checkAddedCategory($title, $area);
     }
@@ -121,7 +90,7 @@ class BackendArticleContext extends SubContext
      *
      * @throws \Exception
      */
-    public function iFillInTheBasicConfiguration(TableNode $table)
+    public function iFillInTheBasicConfiguration(TableNode $table): void
     {
         $data = $table->getHash();
         $this->getNewArticleModulePage()->setBasicData($data);
@@ -130,11 +99,9 @@ class BackendArticleContext extends SubContext
     /**
      * @When I expand the :label element
      *
-     * @param string $label
-     *
      * @throws \Exception
      */
-    public function iExpandTheCategoryElement($label)
+    public function iExpandTheCategoryElement(string $label): void
     {
         $this->getBackendModulePage()->expandCategoryCollapsible($label);
     }
@@ -142,35 +109,29 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I check if my article data is displayed:
      */
-    public function iCheckIfMyArticleDataIsDisplayed(TableNode $table)
+    public function iCheckIfMyArticleDataIsDisplayed(TableNode $table): void
     {
-        $data = $table->getHash();
-
-        foreach ($data as $product) {
+        foreach ($table->getHash() as $product) {
             $this->waitForText($product['info']);
         }
     }
 
     /**
-     * @When I change the article name to :articlename
-     *
-     * @param string $articlename
+     * @When I change the article name to :productName
      *
      * @throws \Exception
      */
-    public function iChangeTheArticleNameTo($articlename)
+    public function iChangeTheArticleNameTo(string $productName): void
     {
-        $this->getExistingArticleModulePage()->changeArticleName($articlename);
+        $this->getExistingArticleModulePage()->changeArticleName($productName);
     }
 
     /**
      * @When I click the edit icon of the entry :name
      *
-     * @param string $name
-     *
      * @throws \Exception
      */
-    public function iClickTheEditIconOfTheEntry($name)
+    public function iClickTheEditIconOfTheEntry(string $name): void
     {
         $this->getBackendModulePage()->clickEntryIconByName($name, 'sprite-pencil');
     }
@@ -178,11 +139,9 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click the delete icon of the entry :name
      *
-     * @param string $name
-     *
      * @throws \Exception
      */
-    public function iClickTheDeleteIconOfTheEntry($name)
+    public function iClickTheDeleteIconOfTheEntry(string $name): void
     {
         $this->getBackendModulePage()->clickEntryIconByName($name, 'sprite-minus-circle-frame');
     }
@@ -192,7 +151,7 @@ class BackendArticleContext extends SubContext
      *
      * @throws \Exception
      */
-    public function iConfirmToDeleteTheEntry()
+    public function iConfirmToDeleteTheEntry(): void
     {
         $this->getBackendModulePage()->answerMessageBox('Ja');
     }
@@ -200,11 +159,9 @@ class BackendArticleContext extends SubContext
     /**
      * @Given the :title tab should be active
      *
-     * @param string $title
-     *
      * @throws \Exception
      */
-    public function theTabShouldBeActive($title)
+    public function theTabShouldBeActive(string $title): void
     {
         if ($this->getBackendModulePage()->checkIfTabIsActive($title) !== true) {
             throw new \RuntimeException('Variant was not set active.');
@@ -214,26 +171,20 @@ class BackendArticleContext extends SubContext
     /**
      * @When I create the :title group via :label
      *
-     * @param string $groupname
-     * @param string $label
-     *
      * @throws \Exception
      */
-    public function iCreateTheGroup($groupname, $label)
+    public function iCreateTheGroup(string $groupName, string $label): void
     {
-        $this->getExistingArticleModulePage()->createVariantGroup($groupname, $label);
+        $this->getExistingArticleModulePage()->createVariantGroup($groupName, $label);
     }
 
     /**
      * @Given the group :title should be listed in the area :area
      * @Given the option :title should be listed in the area :area
      *
-     * @param string $title
-     * @param string $area
-     *
      * @throws \Exception
      */
-    public function theGroupShouldBeListedAsAnActiveGroup($title, $area)
+    public function theGroupShouldBeListedAsAnActiveGroup(string $title, string $area): void
     {
         $this->getExistingArticleModulePage()->checkIfMatchesTheRightGroup($title, $area);
     }
@@ -241,13 +192,11 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click :group to create the options of it
      *
-     * @param string $groupname
-     *
      * @throws \Exception
      */
-    public function iClickToCreateTheOptionsOfIt($groupname)
+    public function iClickToCreateTheOptionsOfIt(string $groupName): void
     {
-        $this->getExistingArticleModulePage()->clickToEditGroup($groupname);
+        $this->getExistingArticleModulePage()->clickToEditGroup($groupName);
     }
 
     /**
@@ -255,7 +204,7 @@ class BackendArticleContext extends SubContext
      *
      * @throws \Exception
      */
-    public function iCreateTheFollowingOptionsOptions(TableNode $table)
+    public function iCreateTheFollowingOptionsOptions(TableNode $table): void
     {
         $this->getExistingArticleModulePage()->createOptionsForGroup($table->getHash(), 'Optionen erstellen:');
     }
@@ -264,36 +213,29 @@ class BackendArticleContext extends SubContext
      * @When I limit the price :price for an amount up to :max
      * @When I set the price :price for any number from here
      *
-     * @param string $price
-     * @param int    $maxAmount
-     *
      * @throws \Exception
      */
-    public function iLimitThePriceForAnAmountOfTo($price, $maxAmount = 0)
+    public function iLimitThePriceForAnAmountOfTo(string $price, string $maxAmount = '0'): void
     {
         $this->getExistingArticleModulePage()->setArticlePriceData($price, 'Preis', 'price');
 
-        if ($maxAmount !== 0) {
+        if ($maxAmount !== '0') {
             $this->getExistingArticleModulePage()->setArticlePriceData($maxAmount, 'Bis', 'to');
         }
     }
 
     /**
      * @Then I should see :price as to-price
-     *
-     * @param string $price
      */
-    public function iShouldSeeAsToPrice($price)
+    public function iShouldSeeAsToPrice(string $price): void
     {
         $this->waitForText($price);
     }
 
     /**
      * @Given I should see :amount as from-price to any number
-     *
-     * @param string $amount
      */
-    public function iShouldSeeAsFromPriceToAnyNumber($amount)
+    public function iShouldSeeAsFromPriceToAnyNumber(string $amount): void
     {
         $this->waitForText($amount);
         $this->waitForText('Beliebig');
@@ -304,7 +246,7 @@ class BackendArticleContext extends SubContext
      *
      * @throws \Exception
      */
-    public function iFillInThePropertyConfiguration(TableNode $table)
+    public function iFillInThePropertyConfiguration(TableNode $table): void
     {
         $data = $table->getHash();
         $this->getExistingArticleModulePage()->selectProperty($data);
@@ -331,7 +273,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When /^I open variant detail page of variant "([^"]*)"$/
      */
-    public function iOpenVariantDetailPageOfVariant(string $orderNumber)
+    public function iOpenVariantDetailPageOfVariant(string $orderNumber): void
     {
         $this->getExistingArticleModulePage()->openVariantDetailPage($orderNumber);
     }

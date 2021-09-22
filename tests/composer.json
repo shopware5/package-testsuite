@@ -15,6 +15,7 @@
         "fzaninotto/faker": "^1.6",
         "guzzlehttp/guzzle": "^6.2",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.0",
+        "phpstan/phpstan": "^0.12.99",
         "phpunit/phpunit": "^9.4",
         "sensiolabs/behat-page-object-extension": "^2.0",
         "smalot/pdfparser": "^0.14.0",

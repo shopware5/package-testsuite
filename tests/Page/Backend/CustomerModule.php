@@ -13,10 +13,7 @@ class CustomerModule extends BackendModule
      */
     protected $path = '/backend/?app=Customer';
 
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle = 'Kunden';
+    protected string $moduleWindowTitle = 'Kunden';
 
     /**
      * Helper function that skips the intro wizard of the customer module
@@ -104,7 +101,7 @@ class CustomerModule extends BackendModule
 
         $options = $this->findAll('xpath',
             $builder->reset()->child('div', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
-        /** @var NodeElement $option */
+
         foreach ($options as $option) {
             try {
                 $option->click();

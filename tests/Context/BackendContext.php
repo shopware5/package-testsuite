@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -13,23 +15,17 @@ class BackendContext extends SubContext
     /**
      * @Given I am logged into the backend
      * @When I log in with user :user and password :password
-     *
-     * @param string $user
-     * @param string $password
      */
-    public function iLogInWithUserAndPassword($user = 'demo', $password = 'demo')
+    public function iLogInWithUserAndPassword(string $user = 'demo', string $password = 'demo'): void
     {
-        /** @var Backend $page */
-        $page = $this->getPage('Backend');
+        $page = $this->getValidPage('Backend', Backend::class);
         $page->login($user, $password);
     }
 
     /**
      * @When I hover backend menu item :item
-     *
-     * @param string $itemName
      */
-    public function iHoverBackendMenuItem($itemName)
+    public function iHoverBackendMenuItem(string $itemName): void
     {
         $xpath = "//span[text()='$itemName']";
         $this->waitForSelectorPresent('xpath', $xpath);
@@ -38,20 +34,16 @@ class BackendContext extends SubContext
 
     /**
      * @When I click on backend menu item :item
-     *
-     * @param string $itemName
      */
-    public function iClickOnBackendMenuItem($itemName)
+    public function iClickOnBackendMenuItem(string $itemName): void
     {
         $this->getSession()->getDriver()->click("//span[text()='$itemName']/ancestor::a[1]");
     }
 
     /**
      * @When I click on backend menu item that contains :text
-     *
-     * @param string $text
      */
-    public function iClickOnBackendMenuItemThatContains($text)
+    public function iClickOnBackendMenuItemThatContains(string $text): void
     {
         $this->getSession()->getDriver()->click("//span[contains(., '$text')]/ancestor::a[1]");
     }
@@ -59,14 +51,12 @@ class BackendContext extends SubContext
     /**
      * @Given the following shipping options exist:
      */
-    public function theFollowingShippingOptionsExist(TableNode $table)
+    public function theFollowingShippingOptionsExist(TableNode $table): void
     {
-        /** @var Backend $page */
-        $page = $this->getPage('Backend');
+        $page = $this->getValidPage('Backend', Backend::class);
         $page->login();
 
-        /** @var ShippingModule $page */
-        $page = $this->getPage('ShippingModule');
+        $page = $this->getValidPage('ShippingModule', ShippingModule::class);
 
         foreach ($table->getHash() as $shipping) {
             $page->createShippingMethodIfNotExists($shipping);
@@ -75,28 +65,22 @@ class BackendContext extends SubContext
 
     /**
      * @Given the shipping method :method has the following shipping costs:
-     *
-     * @param string $method
      */
-    public function theShippingMethodHasTheFollowingShippingCosts($method, TableNode $table)
+    public function theShippingMethodHasTheFollowingShippingCosts(string $method, TableNode $table): void
     {
-        /** @var ShippingModule $page */
-        $page = $this->getPage('ShippingModule');
+        $page = $this->getValidPage('ShippingModule', ShippingModule::class);
         $page->setShippingCosts($method, $table->getHash());
     }
 
     /**
      * @When I click the :label button
-     *
-     * @param string $label
      */
-    public function clickButtonByLabel($label)
+    public function clickButtonByLabel(string $label): void
     {
-        $page = $this->getPage('Backend');
+        $page = $this->getValidPage('Backend', Backend::class);
         $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel($label);
         $this->waitForSelectorPresent('xpath', $buttonXpath);
-        $buttons = $page->findAll('xpath', $buttonXpath);
-        foreach ($buttons as $button) {
+        foreach ($page->findAll('xpath', $buttonXpath) as $button) {
             if ($button->isVisible()) {
                 $button->click();
 
@@ -109,13 +93,10 @@ class BackendContext extends SubContext
 
     /**
      * @When I click on the :tabName tab
-     *
-     * @param string $tabName
      */
-    public function iClickOnTheTab($tabName)
+    public function iClickOnTheTab(string $tabName): void
     {
-        /** @var Backend $page */
-        $page = $this->getPage('Backend');
+        $page = $this->getValidPage('Backend', Backend::class);
         $page->clickOnTabWithName($tabName);
     }
 }

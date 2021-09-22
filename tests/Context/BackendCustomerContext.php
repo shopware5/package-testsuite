@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\CustomerModule;
 
-class BackendCustomerContext extends PageObjectContext
+class BackendCustomerContext extends SubContext
 {
     /**
      * @Then I might need to close the welcome wizard
      */
-    public function iMightNeedToCloseTheWelcomeWizard()
+    public function iMightNeedToCloseTheWelcomeWizard(): void
     {
         $this->getModulePage()->skipIntroWizardIfNecessary();
     }
@@ -19,7 +20,7 @@ class BackendCustomerContext extends PageObjectContext
     /**
      * @When I fill out the new customer form:
      */
-    public function fillNewCustomerForm(TableNode $table)
+    public function fillNewCustomerForm(TableNode $table): void
     {
         $this->getModulePage()->fillNewCustomerFormWith($table->getHash());
     }
@@ -27,11 +28,9 @@ class BackendCustomerContext extends PageObjectContext
     /**
      * @When I click the edit icon on customer :firstname
      *
-     * @param string $name
-     *
      * @throws \Exception
      */
-    public function iClickTheEditIconOnCustomer($name)
+    public function iClickTheEditIconOnCustomer(string $name): void
     {
         $this->getModulePage()->openEditFormForCustomer($name);
     }
@@ -39,29 +38,21 @@ class BackendCustomerContext extends PageObjectContext
     /**
      * @When I change the following information:
      */
-    public function iChangeTheFollowingInformation(TableNode $table)
+    public function iChangeTheFollowingInformation(TableNode $table): void
     {
         $this->getModulePage()->fillEditCustomerFormWith($table->getHash());
     }
 
     /**
      * @When I click the delete icon on customer :firstname
-     *
-     * @param string $firstname
      */
-    public function iClickTheDeleteIconOnCustomer($firstname)
+    public function iClickTheDeleteIconOnCustomer(string $firstname): void
     {
         $this->getModulePage()->clickDeleteIconForCustomer($firstname);
     }
 
-    /**
-     * @return CustomerModule
-     */
-    private function getModulePage()
+    private function getModulePage(): CustomerModule
     {
-        /** @var CustomerModule $page */
-        $page = $this->getPage('CustomerModule');
-
-        return $page;
+        return $this->getValidPage('CustomerModule', CustomerModule::class);
     }
 }

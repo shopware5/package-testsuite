@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ExistingArticleModule extends NewArticleModule
 {
     /**
      * Changes the name of the selected article
-     *
-     * @param string $newName
      */
-    public function changeArticleName($newName)
+    public function changeArticleName(string $newName): void
     {
         $input = $this->find('xpath', BackendXpathBuilder::getInputXpathByLabel('Artikel-Bezeichnung:'));
         $input->click();
@@ -21,41 +20,29 @@ class ExistingArticleModule extends NewArticleModule
 
     /**
      * Creates the group of a configurator set
-     *
-     * @param string $groupname
-     * @param string $label
      */
-    public function createVariantGroup($groupname, $label)
+    public function createVariantGroup(string $groupName, string $label): void
     {
         $window = $this->getModuleWindow(false);
-        $builder = new BackendXpathBuilder();
-
-        $inputXpath = $builder
+        $inputXpath = (new BackendXpathBuilder())
             ->child('label', ['@text' => $label])
             ->ancestor('tr', [], 1)
             ->descendant('input', ['~class' => 'x-form-field'], 1)
             ->getXpath();
 
         $input = $window->find('xpath', $inputXpath);
-        $input->setValue($groupname);
+        $input->setValue($groupName);
     }
 
     /**
      * Checks if the group is located in the desired area, e.g. under "active"
-     *
-     * @param string $title
-     * @param string $grouptitle
-     *
-     * @return bool
      */
-    public function checkIfMatchesTheRightGroup($title, $grouptitle)
+    public function checkIfMatchesTheRightGroup(string $title, string $groupTitle): bool
     {
-        $builder = new BackendXpathBuilder();
-
-        $groupMatchXpath = $builder
+        $groupMatchXpath = (new BackendXpathBuilder())
             ->child('div', ['@text' => $title])
             ->ancestor('tbody', [], 1)
-            ->descendant('span', ['@text' => $grouptitle], 1)
+            ->descendant('span', ['@text' => $groupTitle], 1)
             ->getXpath();
 
         return $groupMatchXpath !== null;
@@ -63,16 +50,12 @@ class ExistingArticleModule extends NewArticleModule
 
     /**
      * Clicks the group of the configurator set in order to edit it
-     *
-     * @param string $groupname
      */
-    public function clickToEditGroup($groupname)
+    public function clickToEditGroup(string $groupName): void
     {
         $window = $this->getModuleWindow(false);
-        $builder = new BackendXpathBuilder();
-
-        $inputXpath = $builder
-            ->child('div', ['@text' => $groupname])
+        $inputXpath = (new BackendXpathBuilder())
+            ->child('div', ['@text' => $groupName])
             ->ancestor('tr', ['~class' => 'x-grid-row'], 1)
             ->getXpath();
 
@@ -83,10 +66,9 @@ class ExistingArticleModule extends NewArticleModule
     /**
      * Creates the options of a configurator set
      *
-     * @param array  $data
-     * @param string $label
+     * @param array<array<string, string>> $data
      */
-    public function createOptionsForGroup($data, $label)
+    public function createOptionsForGroup(array $data, string $label): void
     {
         $window = $this->getModuleWindow(false);
         $builder = new BackendXpathBuilder();
@@ -116,11 +98,11 @@ class ExistingArticleModule extends NewArticleModule
     /**
      * Fills in the property data of an article, excluding the values
      *
-     * @param array $data
+     * @param array<array<string, string>> $data
      *
      * @throws \Exception
      */
-    public function selectProperty($data)
+    public function selectProperty(array $data): void
     {
         $window = $this->getModuleWindow(false);
 
@@ -137,11 +119,9 @@ class ExistingArticleModule extends NewArticleModule
     /**
      * Assigns an option to a selected group
      *
-     * @param string $value
-     *
      * @throws \Exception
      */
-    private function chooseOption($value)
+    private function chooseOption(string $value): void
     {
         $builder = new BackendXpathBuilder();
         $comboBoxXpath = $builder
@@ -158,7 +138,6 @@ class ExistingArticleModule extends NewArticleModule
         $options = $this->findAll('xpath',
             $builder->reset()->child('li', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
 
-        /** @var NodeElement $option */
         foreach ($options as $option) {
             try {
                 $option->click();
@@ -170,16 +149,11 @@ class ExistingArticleModule extends NewArticleModule
     /**
      * Checks if a specific value matches to a given property correctly
      *
-     * @param string $group
-     * @param string $value
-     *
      * @throws \Exception
      */
-    public function checkCorrespondingPropertyValues($group, $value)
+    public function checkCorrespondingPropertyValues(string $group, string $value): void
     {
-        $builder = new BackendXpathBuilder();
-
-        $matchXpath = $builder
+        $matchXpath = (new BackendXpathBuilder())
             ->child('span', ['@text' => $group])
             ->ancestor('tr', [], 1)
             ->descendant('div', ['@text' => $value])
@@ -208,6 +182,9 @@ class ExistingArticleModule extends NewArticleModule
 
         $orderNumberInputField = $this->find('xpath', $orderNumberInputFieldXPath);
         $value = $orderNumberInputField->getValue();
+        if (!\is_string($value)) {
+            throw new \RuntimeException('Value of order number input field needs to be string');
+        }
         $orderNumberInputField->setValue($value . $additionalText);
 
         $orderNumberInputField->blur();

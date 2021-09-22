@@ -2,8 +2,8 @@
 
 namespace Shopware\Page\Frontend;
 
-use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
+use Shopware\Context\Exception\PageNotDefinedException;
 use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
 
@@ -101,7 +101,6 @@ class CheckoutCart extends ContextAwarePage
             throw new \Exception(sprintf('Can\'t delete cart position #%s - no such position', $position));
         }
 
-        /** @var NodeElement $row */
         $row = $rows[$position - 1];
         $row->findButton('Löschen')->click();
     }
@@ -111,7 +110,7 @@ class CheckoutCart extends ContextAwarePage
      *
      * @throws \Exception
      */
-    public function checkAggregation($aggregation)
+    public function checkAggregation(array $aggregation): void
     {
         $this->open();
 
@@ -158,8 +157,10 @@ class CheckoutCart extends ContextAwarePage
     {
         $originalPath = $this->path;
 
-        /** @var Detail $detailPage */
         $detailPage = $this->getPage('Detail');
+        if (!$detailPage instanceof Detail) {
+            throw new PageNotDefinedException('Detail', Detail::class);
+        }
 
         foreach ($items as $row) {
             if (!$this->hasCartProductWithQuantity($row['number'], $row['quantity'])) {
@@ -182,7 +183,6 @@ class CheckoutCart extends ContextAwarePage
         $this->open();
         $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
 
-        /** @var NodeElement $row */
         foreach ($rows as $row) {
             $row->findButton('Löschen')->click();
         }
@@ -191,12 +191,9 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Check the cart position count and cart sum
      *
-     * @param string $quantity
-     * @param string $amount
-     *
      * @throws \Exception
      */
-    public function checkPositionCountAndCartSum($quantity, $amount)
+    public function checkPositionCountAndCartSum(string $quantity, string $amount)
     {
         if ($this->getCartPositionCount() !== (int) $quantity || $this->getCartSum() !== self::toFloat($amount)) {
             throw new \Exception(sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
@@ -228,10 +225,8 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Return current cart sum
-     *
-     * @return float
      */
-    private function getCartSum()
+    private function getCartSum(): float
     {
         $this->open();
         $element = $this->find('css', $this->getCssSelectors()['sum']);
@@ -251,7 +246,6 @@ class CheckoutCart extends ContextAwarePage
 
         $positions = [];
 
-        /** @var NodeElement $row */
         foreach ($rows as $row) {
             $positions[] = CartPosition::fromArray([
                 'name' => $row->find('xpath', $this->getXPathSelectors()['cartPositionName'])->getText(),
@@ -279,9 +273,7 @@ class CheckoutCart extends ContextAwarePage
             throw new \Exception(sprintf('Expected %s cart positions, got %s.', \count($expected), \count($actual)));
         }
 
-        /** @var CartPosition $expectedPosition */
         foreach ($expected as $expectedPosition) {
-            /** @var CartPosition $actualPosition */
             foreach ($actual as $actualPosition) {
                 if ($expectedPosition->getName() === $actualPosition->getName()) {
                     if ($this->compareCartPositions($expectedPosition, $actualPosition)) {
@@ -327,10 +319,8 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Convert a given string value to a float
-     *
-     * @return float
      */
-    private static function toFloat($string)
+    private static function toFloat($string): float
     {
         if (\is_float($string)) {
             return $string;
@@ -339,7 +329,7 @@ class CheckoutCart extends ContextAwarePage
         $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
         preg_match('/([0-9]+[\\.]?[0-9]*)/', $float, $matches);
 
-        return \floatval($matches[0]);
+        return (float) $matches[0];
     }
 
     /**

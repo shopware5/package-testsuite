@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -13,56 +15,48 @@ class FrontendCheckoutContext extends SubContext
     /**
      * @Given the aggregations should look like this:
      */
-    public function theCartAggregationsShouldLookLikeThis(TableNode $aggregations)
+    public function theCartAggregationsShouldLookLikeThis(TableNode $aggregations): void
     {
         $aggregations = $aggregations->getHash();
-        /** @var CheckoutCart $checkoutCart */
-        $checkoutCart = $this->getPage('CheckoutCart');
+
+        $checkoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $checkoutCart->checkAggregation($aggregations);
     }
 
     /**
      * @When I fill in the registration form:
      */
-    public function iFillInTheRegistrationForm(TableNode $customerData)
+    public function iFillInTheRegistrationForm(TableNode $customerData): void
     {
-        /** @var CheckoutConfirm $page */
-        $page = $this->getPage('CheckoutConfirm');
+        $page = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
         $page->fillOutRegistrationForm($customerData->getHash());
     }
 
     /**
      * @When I add the article :number to my basket
-     *
-     * @param string $number
      */
-    public function iAddTheArticleToMyBasket($number)
+    public function iAddTheArticleToMyBasket(string $number): void
     {
-        /** @var CheckoutCart $checkoutCart */
-        $checkoutCart = $this->getPage('CheckoutCart');
+        $checkoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $checkoutCart->addArticle($number);
         $this->waitForText($number);
     }
 
     /**
      * @When I remove the article on position :position
-     *
-     * @param string $position
      */
-    public function iRemoveTheArticleOnPosition($position)
+    public function iRemoveTheArticleOnPosition(string $position): void
     {
-        /** @var CheckoutCart $page */
-        $page = $this->getPage('CheckoutCart');
+        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $page->removeCartPositionAtIndex($position);
     }
 
     /**
      * @When I proceed to order confirmation
      */
-    public function iProceedToOrderConfirmation()
+    public function iProceedToOrderConfirmation(): void
     {
-        /** @var CheckoutCart $frontendCheckoutCart */
-        $frontendCheckoutCart = $this->getPage('CheckoutCart');
+        $frontendCheckoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $frontendCheckoutCart->open();
         $frontendCheckoutCart->proceedToOrderConfirmation();
     }
@@ -70,20 +64,18 @@ class FrontendCheckoutContext extends SubContext
     /**
      * @When I proceed to checkout
      */
-    public function iProceedToCheckout()
+    public function iProceedToCheckout(): void
     {
-        /** @var CheckoutConfirm $frontendCheckoutConfirm */
-        $frontendCheckoutConfirm = $this->getPage('CheckoutConfirm');
+        $frontendCheckoutConfirm = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
         $frontendCheckoutConfirm->proceedToCheckout();
     }
 
     /**
      * @When I proceed to checkout cart
      */
-    public function iProceedToCheckoutCart()
+    public function iProceedToCheckoutCart(): void
     {
-        /** @var CheckoutCart $frontendCheckoutCart */
-        $frontendCheckoutCart = $this->getPage('CheckoutCart');
+        $frontendCheckoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $frontendCheckoutCart->open();
         $frontendCheckoutCart->proceedToOrderConfirmation();
     }
@@ -91,10 +83,9 @@ class FrontendCheckoutContext extends SubContext
     /**
      * @When I proceed to checkout Confirmation
      */
-    public function iProceedToCheckoutConfirmation()
+    public function iProceedToCheckoutConfirmation(): void
     {
-        /** @var CheckoutConfirm $frontendCheckoutConfirmation */
-        $frontendCheckoutConfirmation = $this->getPage('CheckoutConfirm');
+        $frontendCheckoutConfirmation = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
         $frontendCheckoutConfirmation->open();
     }
 
@@ -103,10 +94,10 @@ class FrontendCheckoutContext extends SubContext
      *
      * @throws \Exception
      */
-    public function theCartContainsTheFollowingProducts(TableNode $items)
+    public function theCartContainsTheFollowingProducts(TableNode $items): void
     {
-        /** @var CheckoutCart $page */
-        $page = $this->getPage('CheckoutCart')->open();
+        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $page->open();
         $page->emptyCart();
         $page->fillCartWithProducts($items->getHash());
         $page->open();
@@ -115,26 +106,20 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @Given I change my payment method to :paymentMethod
-     *
-     * @param string $paymentMethod
      */
-    public function changePaymentMethodTo($paymentMethod)
+    public function changePaymentMethodTo(string $paymentMethod): void
     {
-        /** @var CheckoutShippingPayment $page */
-        $page = $this->getPage('CheckoutShippingPayment');
+        $page = $this->getValidPage('CheckoutShippingPayment', CheckoutShippingPayment::class);
         $page->open();
         $page->changePaymentMethodTo($paymentMethod);
     }
 
     /**
      * @Given /^I change my shipping method to "([^"]*)"(?::)?$/
-     *
-     * @param string $shippingMethod
      */
-    public function changeShippingMethodTo($shippingMethod)
+    public function changeShippingMethodTo(string $shippingMethod): void
     {
-        /** @var CheckoutShippingPayment $page */
-        $page = $this->getPage('CheckoutShippingPayment');
+        $page = $this->getValidPage('CheckoutShippingPayment', CheckoutShippingPayment::class);
         $page->open();
         $page->changeShippingMethodTo($shippingMethod);
     }
@@ -143,10 +128,9 @@ class FrontendCheckoutContext extends SubContext
      * @Given I am not logged in
      * @And I am not logged in
      */
-    public function iAmNotLoggedIn()
+    public function iAmNotLoggedIn(): void
     {
-        /** @var Account $page */
-        $page = $this->getPage('Account');
+        $page = $this->getValidPage('Account', Account::class);
         $page->open();
 
         // See if we already are logged out

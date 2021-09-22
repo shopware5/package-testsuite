@@ -12,7 +12,7 @@ class VoucherModule extends BackendModule
     /**
      * {@inheritdoc}
      */
-    protected $moduleWindowTitle = 'Gutschein-Administration';
+    protected string $moduleWindowTitle = 'Gutschein-Administration';
 
     /**
      * {@inheritdoc}

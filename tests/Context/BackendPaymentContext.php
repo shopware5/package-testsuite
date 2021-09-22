@@ -1,25 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\Backend;
 use Shopware\Page\Backend\PaymentModule;
 
-class BackendPaymentContext extends PageObjectContext
+class BackendPaymentContext extends SubContext
 {
     /**
      * @Given the following payment methods are activated:
      */
-    public function theFollowingPaymentMethodsAreActivated(TableNode $table)
+    public function theFollowingPaymentMethodsAreActivated(TableNode $table): void
     {
-        /** @var Backend $backendPage */
-        $backendPage = $this->getPage('Backend');
+        $backendPage = $this->getValidPage('Backend', Backend::class);
         $backendPage->login();
 
-        /** @var PaymentModule $page */
-        $page = $this->getPage('PaymentModule');
+        $page = $this->getValidPage('PaymentModule', PaymentModule::class);
 
         foreach ($table as $row) {
             $page->activatePaymentMethod($row['name']);

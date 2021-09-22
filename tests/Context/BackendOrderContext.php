@@ -1,34 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\OrderModule;
 use Smalot\PdfParser\Parser;
 
-class BackendOrderContext extends PageObjectContext
+class BackendOrderContext extends SubContext
 {
     /**
      * @When I open the order from email :email
      *
-     * @param string $email
-     *
      * @throws \RuntimeException
      */
-    public function iOpenTheOrderFromEmail($email)
+    public function iOpenTheOrderFromEmail(string $email): void
     {
         $this->getModulePage()->openOrderByEmail($email);
     }
 
     /**
      * @When I change the :type status to :status
-     *
-     * @param string $type
-     * @param string $status
      */
-    public function iChangeTheOrderOrPaymentStatusTo($type, $status)
+    public function iChangeTheOrderOrPaymentStatusTo(string $type, string $status): void
     {
         $this->getModulePage()->setStatusByType($type, $status);
     }
@@ -36,7 +32,7 @@ class BackendOrderContext extends PageObjectContext
     /**
      * @Given I reload the status history
      */
-    public function iReloadTheStatusHistory()
+    public function iReloadTheStatusHistory(): void
     {
         $this->getModulePage()->reloadStatusHistory();
     }
@@ -44,17 +40,15 @@ class BackendOrderContext extends PageObjectContext
     /**
      * @When I click the email icon on the last generated document
      */
-    public function iClickTheEmailIconOnTheLastGeneratedDocument()
+    public function iClickTheEmailIconOnTheLastGeneratedDocument(): void
     {
         $this->getModulePage()->clickEmailIconOnLastGeneratedIcon();
     }
 
     /**
      * @When I filter the backend order list for shipping country :country
-     *
-     * @param string $country
      */
-    public function iFilterTheBackendOrderListForShippingCountry($country)
+    public function iFilterTheBackendOrderListForShippingCountry(string $country): void
     {
         $this->getModulePage()->filterOrderListForShippingCountry($country);
     }
@@ -62,11 +56,9 @@ class BackendOrderContext extends PageObjectContext
     /**
      * @Then I should see exactly :amount order in the order list
      *
-     * @param string $amount
-     *
      * @throws \Exception
      */
-    public function iShouldSeeExactlyOneOrderInTheOrderList($amount)
+    public function iShouldSeeExactlyOneOrderInTheOrderList(string $amount): void
     {
         $actualAmount = $this->getModulePage()->getNumberOfOrdersInOrderList();
         if ((int) $amount !== $actualAmount) {
@@ -77,7 +69,7 @@ class BackendOrderContext extends PageObjectContext
     /**
      * @Given I sort the backend order list by order value ascendingly
      */
-    public function iSortTheBackendOrderListByOrderValueAscendingly()
+    public function iSortTheBackendOrderListByOrderValueAscendingly(): void
     {
         $this->getModulePage()->sortOrderListByValue();
     }
@@ -85,11 +77,9 @@ class BackendOrderContext extends PageObjectContext
     /**
      * @Then I should see the order from :email at the top of the order list
      *
-     * @param string $email
-     *
      * @throws \Exception
      */
-    public function iShouldSeeTheOrderFromAtTheTopOfTheOrderList($email)
+    public function iShouldSeeTheOrderFromAtTheTopOfTheOrderList(string $email): void
     {
         $topmostOrder = $this->getModulePage()->getTopmostOrderFromList();
 
@@ -101,7 +91,7 @@ class BackendOrderContext extends PageObjectContext
     /**
      * @Then I should be able to send a notification to the customer
      */
-    public function iShouldBeAbleToSendANotificationToTheCustomer()
+    public function iShouldBeAbleToSendANotificationToTheCustomer(): void
     {
         $this->getModulePage()->sendCustomerNotificationMail();
     }
@@ -111,7 +101,7 @@ class BackendOrderContext extends PageObjectContext
      *
      * @throws \Exception
      */
-    public function theInvoiceShouldContain(TableNode $content)
+    public function theInvoiceShouldContain(TableNode $content): void
     {
         // Allow time for the invoice to be generated
         sleep(3);
@@ -132,23 +122,15 @@ class BackendOrderContext extends PageObjectContext
         unlink($documents[0]);
     }
 
-    /**
-     * @return OrderModule
-     */
-    private function getModulePage()
+    private function getModulePage(): OrderModule
     {
-        /** @var OrderModule $page */
-        $page = $this->getPage('OrderModule');
-
-        return $page;
+        return $this->getValidPage('OrderModule', OrderModule::class);
     }
 
     /**
      * @throws \Exception
-     *
-     * @return string
      */
-    private function getDocumentsDirectory()
+    private function getDocumentsDirectory(): string
     {
         $documentsPath = getenv('base_path') . '/files/documents';
 
@@ -160,13 +142,9 @@ class BackendOrderContext extends PageObjectContext
     }
 
     /**
-     * @param string $filepath
-     *
-     * @throws \Exception
-     *
-     * @return string
+     *@throws \Exception
      */
-    private function getPdfTextContent($filepath)
+    private function getPdfTextContent(string $filepath): string
     {
         if (!is_file($filepath)) {
             throw new \Exception('Could not open file ' . $filepath);

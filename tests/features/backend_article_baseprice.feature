@@ -8,7 +8,7 @@ Feature: I can generate and use article with base price information
     And the category tree "Root > Deutsch > ErsteKategorie > Unterkategorie" exists
     And the following products exist in the store:
       | number  | name              | price | tax | supplier | categories                                       |
-      | SW10001 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
+      | SW77777 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
 
   Scenario: I can add graduated prices to the article
     Given I am logged into the backend
@@ -16,8 +16,8 @@ Feature: I can generate and use article with base price information
     And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Übersicht"
-    Then I should see "SW10001" eventually
-    When I click the edit icon of the entry "SW10001"
+    Then I should see "SW77777" eventually
+    When I click the edit icon of the entry "SW77777"
     Then I should see "Artikeldetails : Einfacher Artikel" eventually
 
     When I fill in the basic configuration:
@@ -36,7 +36,7 @@ Feature: I can generate and use article with base price information
       | Grundpreis  | 40,00   |
       | Basis       | 1 Liter |
       | Inhalt      | 0.25    |
-    When I am on the detail page for article with ordernumber "SW10001"
+    When I am on the detail page for article with ordernumber "SW77777"
     Then I should see "Einfacher Artikel" eventually
     And I should see "Paket" eventually
     And I should see the base price information:

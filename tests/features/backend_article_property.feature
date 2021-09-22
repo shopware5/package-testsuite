@@ -8,7 +8,7 @@ Feature: I can add properties to an article
     And the category tree "Root > Deutsch > ErsteKategorie > Unterkategorie" exists
     And the following products exist in the store:
       | number  | name              | price | tax | supplier | categories                                       |
-      | SW10001 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
+      | SW66666 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
     And the following properties exist in the store:
       | key | groupKey | set       | group | option |
       | 1   | 1        | ErstesSet | Farbe | Blau   |
@@ -20,8 +20,8 @@ Feature: I can add properties to an article
 
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Übersicht"
-    Then I should see "SW10001" eventually
-    When I click the edit icon of the entry "SW10001"
+    Then I should see "SW66666" eventually
+    When I click the edit icon of the entry "SW66666"
     Then I should see "Artikeldetails : Einfacher Artikel" eventually
 
     When I click on the "Eigenschaften" tab
@@ -35,7 +35,7 @@ Feature: I can add properties to an article
     And I am able to save my article
     And I should see "Erfolgreich" eventually
 
-    When I am on the detail page for article with ordernumber "SW10001"
+    When I am on the detail page for article with ordernumber "SW66666"
     Then I should see "Blau" eventually
     When I should see "Einfacher Artikel" eventually
     And I put the current article "1" times into the basket

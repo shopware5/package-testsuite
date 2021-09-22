@@ -3,16 +3,14 @@
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Window;
 use Shopware\Page\ContextAwarePage;
 
 class BackendModule extends ContextAwarePage
 {
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle;
+    protected string $moduleWindowTitle = '';
 
     /**
      * @var Window|null
@@ -105,7 +103,6 @@ class BackendModule extends ContextAwarePage
             ->getXpath();
 
         if ($fieldset) {
-            /** @var NodeElement $fieldset */
             $element = $fieldset->find('xpath', $collapsibleFieldXpath);
         } else {
             $element = $this->find('xpath', $collapsibleFieldXpath);
@@ -147,16 +144,16 @@ class BackendModule extends ContextAwarePage
 
     /**
      * Helper method that returns the current module window
-     *
-     * @param bool $exactMatch
-     *
-     * @return Window|null
      */
-    protected function getModuleWindow($exactMatch = true)
+    protected function getModuleWindow(bool $exactMatch = true): Window
     {
         // Cache the window reference as long as it is still valid
-        if (!$this->moduleWindow || !$this->moduleWindow->isValid() || $exactMatch == false) {
+        if (!$this->moduleWindow || !$this->moduleWindow->isValid() || $exactMatch === false) {
             $this->moduleWindow = Window::createFromTitle($this->moduleWindowTitle, $this->getSession(), $exactMatch);
+        }
+
+        if ($this->moduleWindow === null) {
+            throw new ElementNotFoundException($this->getDriver());
         }
 
         return $this->moduleWindow;

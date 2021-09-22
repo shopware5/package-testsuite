@@ -9,18 +9,14 @@ class NewArticleModule extends BackendModule
 {
     private $priceRowAnchor = 'Beliebig';
 
-    protected $moduleWindowTitle = 'Artikeldetails :';
+    protected string $moduleWindowTitle = 'Artikeldetails :';
 
     /**
      * Sets the price or other data for the article
      *
-     * @param string $value
-     * @param string $cellAnchor
-     * @param string $inputName
-     *
      * @throws \Exception
      */
-    public function setArticlePriceData($value, $cellAnchor, $inputName)
+    public function setArticlePriceData(string $value, string $cellAnchor, string $inputName): void
     {
         $window = $this->getModuleWindow(false);
         $builder = new BackendXpathBuilder();
@@ -37,14 +33,11 @@ class NewArticleModule extends BackendModule
     /**
      * Finds the field position for the price
      *
-     * @param NodeElement $cellElement
-     * @param string      $anchor
-     *
      * @throws \Exception
      *
      * @return int position
      */
-    private function findPriceDataFieldPosition($cellElement, $anchor)
+    private function findPriceDataFieldPosition(NodeElement $cellElement, string $anchor): int
     {
         $builder = new BackendXpathBuilder();
         $positionIndex = 1;
@@ -53,10 +46,8 @@ class NewArticleModule extends BackendModule
         $this->waitForSelectorPresent('xpath', $cellParent->getXpath());
         $this->waitForSelectorVisible('xpath', $cellParent->getXpath());
 
-        /** @var NodeElement[] $cellList */
         $cells = $cellParent->findAll('xpath', $builder->child('div', ['~class' => 'x-column-header'])->getXpath());
 
-        /** @var NodeElement $cell */
         foreach ($cells as $cell) {
             if ($cell->getText() === $anchor) {
                 return $positionIndex;
@@ -69,12 +60,9 @@ class NewArticleModule extends BackendModule
     /**
      * Sets the price in the corresponding input field
      *
-     * @param float $value
-     * @param int   $position
-     *
      * @throws \Exception
      */
-    private function setPriceData($value, $position, $inputName)
+    private function setPriceData(string $value, int $position, string $inputName)
     {
         $window = $this->getModuleWindow(false);
         $builder = new BackendXpathBuilder();

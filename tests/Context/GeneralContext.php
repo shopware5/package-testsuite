@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Behat\Hook\Scope\ScenarioScope;
@@ -12,7 +14,7 @@ class GeneralContext extends SubContext
      *
      * @AfterFeature
      */
-    public static function onAfterFeature()
+    public static function onAfterFeature(): void
     {
         self::cleanDatabase();
         self::clearCache();
@@ -24,7 +26,7 @@ class GeneralContext extends SubContext
      * @BeforeScenario
      * @AfterScenario
      */
-    public static function onAfterScenario(ScenarioScope $scope)
+    public static function onAfterScenario(ScenarioScope $scope): void
     {
         $tags = $scope->getScenario()->getTags();
 
@@ -39,7 +41,7 @@ class GeneralContext extends SubContext
      *
      * @BeforeScenario
      */
-    public function onBeforeScenario()
+    public function onBeforeScenario(): void
     {
         $driver = $this->getSession()->getDriver();
 
@@ -51,7 +53,7 @@ class GeneralContext extends SubContext
     /**
      * @Given I wait for :amount seconds
      */
-    public function iWaitForSeconds($amount)
+    public function iWaitForSeconds($amount): void
     {
         sleep((int) $amount);
     }
@@ -59,39 +61,33 @@ class GeneralContext extends SubContext
     /**
      * @Given /^I scroll down "([^"]*)" px$/
      */
-    public function iScrollDown($pixels)
+    public function iScrollDown($pixels): void
     {
         $this->getSession()->executeScript(sprintf('window.scroll(0, %s)', $pixels));
     }
 
     /**
-     * @Given I am on the page :page
-     * @When I go to the page :page
-     *
-     * @param string $page
+     * @Given I am on the page :pageName
+     * @When I go to the page :pageName
      */
-    public function iAmOnThePage($page)
+    public function iAmOnThePage(string $pageName): void
     {
-        $page = $this->getPage($page);
+        $page = $this->getPage($pageName);
         $page->open();
     }
 
     /**
      * @Then I should see :text eventually
-     *
-     * @param string $text
      */
-    public function iShouldSeeEventually($text)
+    public function iShouldSeeEventually(string $text): void
     {
         $this->waitForText($text);
     }
 
     /**
      * @Then I should eventually not see :text
-     *
-     * @param string $text
      */
-    public function iShouldEventuallyNotSee($text)
+    public function iShouldEventuallyNotSee(string $text): void
     {
         $this->waitForTextNotPresent($text);
     }
@@ -99,7 +95,7 @@ class GeneralContext extends SubContext
     /**
      * Helper method that resets the database to a known, clean state
      */
-    private static function cleanDatabase()
+    private static function cleanDatabase(): void
     {
         $dbDumpFile = __DIR__ . '/../clean_db.sql';
 
@@ -116,7 +112,7 @@ class GeneralContext extends SubContext
     /**
      * Helper method that clears the shopware cache
      */
-    private static function clearCache()
+    private static function clearCache(): void
     {
         echo 'Clearing Shopware cache...' . PHP_EOL;
         $swConsole = getenv('base_path') . '/bin/console';

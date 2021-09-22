@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -7,15 +9,12 @@ use Shopware\Component\Api\ApiClient;
 
 class ApiContext extends SubContext
 {
-    /**
-     * @var ApiClient
-     */
-    private $apiClient;
+    private ?ApiClient $apiClient = null;
 
     /**
      * @Given the following products exist in the store:
      */
-    public function theFollowingProductsExistInTheStore(TableNode $table)
+    public function theFollowingProductsExistInTheStore(TableNode $table): void
     {
         $api = $this->getApiClient();
 
@@ -29,7 +28,7 @@ class ApiContext extends SubContext
     /**
      * @Given the following customer accounts exist:
      */
-    public function theFollowingCustomerAccountsExist(TableNode $table)
+    public function theFollowingCustomerAccountsExist(TableNode $table): void
     {
         foreach ($table->getHash() as $item) {
             $password = !empty($item['password']) ? $item['password'] : '';
@@ -42,7 +41,7 @@ class ApiContext extends SubContext
     /**
      * @Given the following countries are active for checkout:
      */
-    public function theFollowingCountriesAreActiveForCheckout(TableNode $table)
+    public function theFollowingCountriesAreActiveForCheckout(TableNode $table): void
     {
         $api = $this->getApiClient();
         $data = $table->getHash();
@@ -53,7 +52,7 @@ class ApiContext extends SubContext
     /**
      * @Given the following customer groups exist:
      */
-    public function theFollowingCustomerGroupsExist(TableNode $table)
+    public function theFollowingCustomerGroupsExist(TableNode $table): void
     {
         $api = $this->getApiClient();
 
@@ -71,7 +70,7 @@ class ApiContext extends SubContext
      *
      * @throws \Exception
      */
-    public function theFollowingPropertiesExistInTheStore(TableNode $table)
+    public function theFollowingPropertiesExistInTheStore(TableNode $table): void
     {
         $api = $this->getApiClient();
 
@@ -83,11 +82,9 @@ class ApiContext extends SubContext
     /**
      * @Given there is no customer registered with e-mail address :email
      *
-     * @param string $email
-     *
      * @throws \RuntimeException
      */
-    public function thereIsNoCustomerRegisteredWithEMailAddress($email)
+    public function thereIsNoCustomerRegisteredWithEMailAddress(string $email): void
     {
         $api = $this->getApiClient();
         if ($api->customerExists($email)) {
@@ -97,22 +94,14 @@ class ApiContext extends SubContext
 
     /**
      * @Given the category tree :tree exists
-     *
-     * @param string $tree
      */
-    public function theFollowingCategoryIsAvailable($tree)
+    public function theFollowingCategoryIsAvailable(string $tree): void
     {
         $api = $this->getApiClient();
         $api->createCategoryTree($tree);
     }
 
-    /**
-     * @param string $email
-     * @param string $password
-     * @param string $group
-     * @param string $country
-     */
-    private function createCustomer($email, $password = '', $group = '', $country = '')
+    private function createCustomer(string $email, string $password = '', string $group = '', string $country = ''): void
     {
         $api = $this->getApiClient();
 
@@ -138,10 +127,8 @@ class ApiContext extends SubContext
 
     /**
      * @throws \RuntimeException
-     *
-     * @return ApiClient
      */
-    private function getApiClient()
+    private function getApiClient(): ApiClient
     {
         if ($this->apiClient !== null) {
             return $this->apiClient;
@@ -172,7 +159,7 @@ class ApiContext extends SubContext
     /**
      * @Given the following orders exist:
      */
-    public function theFollowingOrdersExist(TableNode $orders)
+    public function theFollowingOrdersExist(TableNode $orders): void
     {
         foreach ($orders as $order) {
             $this->getApiClient()->createOrder($order);

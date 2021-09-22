@@ -3,6 +3,7 @@
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Window;
 
@@ -13,10 +14,7 @@ class ShippingModule extends BackendModule
      */
     protected $path = '/backend/?app=Shipping';
 
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle = 'Versandkosten Verwaltung';
+    protected string $moduleWindowTitle = 'Versandkosten Verwaltung';
 
     /**
      * @var string
@@ -84,11 +82,9 @@ class ShippingModule extends BackendModule
     /**
      * Set the shipping cost configuration for a given shipping method
      *
-     * @param string $methodName
-     *
      * @throws \Exception
      */
-    public function setShippingCosts($methodName, array $costData)
+    public function setShippingCosts(string $methodName, array $costData): void
     {
         $this->open();
         $window = $this->getModuleWindow();
@@ -139,24 +135,22 @@ class ShippingModule extends BackendModule
 
     /**
      * Helper method that returns true if a given shipping method already exists
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    private function shippingMethodExists($name)
+    private function shippingMethodExists(string $name): bool
     {
-        $shippingMethod = $this->find('xpath', BackendXpathBuilder::create()
-            ->child('strong', ['@text' => $name])
-            ->getXpath());
+        try {
+            $this->find('xpath', BackendXpathBuilder::create()->child('strong', ['@text' => $name])->getXpath());
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
 
-        return $shippingMethod !== null;
+        return true;
     }
 
     /**
      * Activated a given set of payment methods for the shipping method that is currently being edited
      */
-    private function activatePaymentMethods(NodeElement $editor, array $paymentMethods)
+    private function activatePaymentMethods(NodeElement $editor, array $paymentMethods): void
     {
         $paymentTabXpath = BackendXpathBuilder::getTabXpathByLabel('Zahlart Auswahl');
         $editor->find('xpath', $paymentTabXpath)->click();
@@ -279,7 +273,6 @@ class ShippingModule extends BackendModule
         $costRows = $editor->findAll('xpath', $costRowsXpath);
         array_shift($costRows);
 
-        /** @var NodeElement $costRow */
         foreach ($costRows as $costRow) {
             $deleteIcon = $costRow->find('xpath', BackendXpathBuilder::getIconXpathByType('delete'));
             $deleteIcon->click();

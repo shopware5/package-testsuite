@@ -13,10 +13,7 @@ class OrderModule extends BackendModule
      */
     protected $path = '/backend/?app=Order';
 
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle = 'Bestellungen';
+    protected string $moduleWindowTitle = 'Bestellungen';
 
     /**
      * @var string

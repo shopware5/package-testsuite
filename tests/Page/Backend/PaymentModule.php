@@ -11,10 +11,7 @@ class PaymentModule extends BackendModule
      */
     protected $path = '/backend/?app=Payment';
 
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle = 'Zahlungsarten';
+    protected string $moduleWindowTitle = 'Zahlungsarten';
 
     /**
      * Activate a given payment method

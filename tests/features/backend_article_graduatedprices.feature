@@ -1,4 +1,4 @@
-@javascript @backend @article @graduatedprices @knownFailing
+@javascript @backend @article @graduatedprices
 Feature: I can generate and use article with graduated prices
 
   Background:
@@ -8,7 +8,7 @@ Feature: I can generate and use article with graduated prices
     And the category tree "Root > Deutsch > ErsteKategorie > Unterkategorie" exists
     And the following products exist in the store:
       | number  | name              | price | tax | supplier | categories                                       |
-      | SW10001 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
+      | SW88888 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
 
   Scenario: I can add graduated prices to the article
     Given I am logged into the backend
@@ -16,8 +16,8 @@ Feature: I can generate and use article with graduated prices
     And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Übersicht"
-    Then I should see "SW10001" eventually
-    When I click the edit icon of the entry "SW10001"
+    Then I should see "SW88888" eventually
+    When I click the edit icon of the entry "SW88888"
     Then I should see "Artikeldetails : Einfacher Artikel" eventually
 
     When I limit the price "10" for an amount up to "2"
@@ -31,7 +31,7 @@ Feature: I can generate and use article with graduated prices
 
     When I am on the homepage
     And I navigate to category tree "ErsteKategorie > Unterkategorie"
-    And I am on the detail page for article with ordernumber "SW10001"
+    And I am on the detail page for article with ordernumber "SW88888"
     And I should see "Einfacher Artikel" eventually
     Then I should see the following graduated prices:
       | amount | price |
@@ -44,9 +44,9 @@ Feature: I can generate and use article with graduated prices
     When I click on "Warenkorb bearbeiten"
     Then I should see "Einfacher Artikel" eventually
     And I should see "10,00" eventually
-    When I am on the detail page for article with ordernumber "SW10001"
+    When I am on the detail page for article with ordernumber "SW88888"
     And I put the current article "2" times into the basket
     Then I should see "21,00" eventually
-    When I am on the detail page for article with ordernumber "SW10001"
+    When I am on the detail page for article with ordernumber "SW88888"
     And I put the current article "7" times into the basket
     Then I should see "50,00" eventually

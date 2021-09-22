@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -10,7 +12,7 @@ class SubshopContext extends SubContext
     /**
      * @Given I am in subshop with URL :url
      */
-    public function iAmInSubshopWithURL($url)
+    public function iAmInSubshopWithURL($url): void
     {
         if (substr($url, 0, 4) === 'http') {
             $this->setMinkParameters([
@@ -28,45 +30,36 @@ class SubshopContext extends SubContext
     /**
      * @Then I should be able to access the subshop via using :url
      * @Then I should be able to access the shop via using :url
-     *
-     * @param string $url
      */
-    public function iShouldBeAbleToAccessTheSubshopViaUsing($url)
+    public function iShouldBeAbleToAccessTheSubshopViaUsing(string $url): void
     {
         $this->getSession()->visit($url);
     }
 
     /**
      * @When I click the :label menu element
-     *
-     * @param string $label
      */
-    public function iClickTheMenuElement($label)
+    public function iClickTheMenuElement(string $label): void
     {
-        /** @var SettingsModule $page */
-        $page = $this->getPage('SettingsModule');
+        $page = $this->getValidPage('SettingsModule', SettingsModule::class);
         $page->clickOnMenuElement($label);
     }
 
     /**
      * @When I click the :label settings element
-     *
-     * @param string $label
      */
-    public function iClickTheSettingsElement($label)
+    public function iClickTheSettingsElement(string $label): void
     {
-        /** @var SettingsModule $page */
-        $page = $this->getPage('SettingsModule');
+        $page = $this->getValidPage('SettingsModule', SettingsModule::class);
         $page->clickOnSettingsMenuElement($label);
     }
 
     /**
      * @Given I fill in and submit the :formname configuration form:
      */
-    public function iFillTheConfigurationForm($formname, TableNode $table)
+    public function iFillTheConfigurationForm($formname, TableNode $table): void
     {
-        /** @var SettingsModule $page */
-        $page = $this->getPage('SettingsModule');
+        $page = $this->getValidPage('SettingsModule', SettingsModule::class);
 
         $data = $table->getHash();
         $page->fillShopConfigurationForm($data);

@@ -2,6 +2,7 @@
 
 namespace Shopware\Component\Form;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 
@@ -46,14 +47,14 @@ trait FormFillerTrait
 
     /**
      * Helper method that checks if a given checkbox identified by name is checked
-     *
-     * @param string $inputName
-     *
-     * @return bool
      */
-    private function isCheckboxChecked(ContextAwarePage $page, $inputName)
+    private function isCheckboxChecked(ContextAwarePage $page, string $inputName): bool
     {
-        return (bool) $page->find('css', 'input[type="checkbox"][name="' . $inputName . '"]:checked');
+        try {
+            return (bool) $page->find('css', 'input[type="checkbox"][name="' . $inputName . '"]:checked');
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
     }
 
     /**

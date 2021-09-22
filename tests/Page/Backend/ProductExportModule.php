@@ -2,6 +2,7 @@
 
 namespace Shopware\Page\Backend;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\GridView\GridViewRow;
 
@@ -12,10 +13,7 @@ class ProductExportModule extends BackendModule
      */
     protected $path = '/backend/?app=ProductFeed';
 
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle = 'Produktexporte';
+    protected string $moduleWindowTitle = 'Produktexporte';
 
     /**
      * @var string
@@ -25,9 +23,15 @@ class ProductExportModule extends BackendModule
     /**
      * {@inheritdoc}
      */
-    public function verify(array $urlParameters)
+    public function verify(array $urlParameters): bool
     {
-        return $this->getModuleWindow() !== null;
+        try {
+            $this->getModuleWindow();
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -48,7 +52,7 @@ class ProductExportModule extends BackendModule
      *
      * @throws \Exception
      */
-    public function enterTemplate($template)
+    public function enterTemplate(string $template): void
     {
         $editor = $this->getEditorWindow(false);
 
@@ -122,11 +126,9 @@ class ProductExportModule extends BackendModule
     }
 
     /**
-     * @param string $expected
-     *
      * @throws \Exception
      */
-    public function checkExportResult($expected)
+    public function checkExportResult(string $expected): void
     {
         $actual = $this->getText();
 

@@ -3,14 +3,12 @@
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class SystemInfoModule extends BackendModule
 {
-    /**
-     * @var string
-     */
-    protected $moduleWindowTitle = 'System-Informationen';
+    protected string $moduleWindowTitle = 'System-Informationen';
 
     /**
      * Checks if all requirements are fulfilled
@@ -44,17 +42,19 @@ class SystemInfoModule extends BackendModule
             ->descendant('div', ['~class' => $class])
             ->getXpath();
 
-        return $grid->find('xpath', $statusXpath) !== null;
+        try {
+            $grid->find('xpath', $statusXpath);
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Get the requirements grid for a given grid item
-     *
-     * @param string $item
-     *
-     * @return NodeElement|null
      */
-    private function getGridForGridItem($item)
+    private function getGridForGridItem(string $item): NodeElement
     {
         $window = $this->getModuleWindow();
         $gridXPath = BackendXpathBuilder::create()

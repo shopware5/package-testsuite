@@ -3,6 +3,7 @@
 namespace Shopware\Page;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\SpinTrait\SpinTrait;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
@@ -37,7 +38,7 @@ class ContextAwarePage extends Page
         $this->spin(function (ContextAwarePage $context) use ($text) {
             $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(text(), '$text')]");
 
-            return $result != null && \count($result) > 0;
+            return \count($result) > 0;
         });
     }
 
@@ -84,7 +85,6 @@ class ContextAwarePage extends Page
         sleep($sleep);
         $elem = null;
         $this->spinWithNoException(function (ContextAwarePage $context) use ($selector, $locator, &$elem) {
-            /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
 
             return !($elem === null);
@@ -109,7 +109,6 @@ class ContextAwarePage extends Page
         sleep($sleep);
         $elem = null;
         $this->spin(function (ContextAwarePage $context) use ($selector, $locator, &$elem) {
-            /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
             if ($elem === null) {
                 return false;
@@ -134,7 +133,6 @@ class ContextAwarePage extends Page
     {
         sleep($sleep);
         $this->spin(function (ContextAwarePage $context) use ($selector, $locator) {
-            /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
             if ($elem === null) {
                 return true;
@@ -155,7 +153,6 @@ class ContextAwarePage extends Page
     {
         sleep($sleep);
         $this->spin(function (ContextAwarePage $context) use ($xpath) {
-            /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find('xpath', $xpath);
             if ($elem === null) {
                 return false;
@@ -232,10 +229,9 @@ class ContextAwarePage extends Page
     protected function waitForSelectorVisible($selector, $locator)
     {
         $this->spin(function (ContextAwarePage $context) use ($selector, $locator) {
-            /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
 
-            return !empty($elem) || $elem->isVisible();
+            return !empty($elem) || ($elem !== null && $elem->isVisible());
         }, 90);
     }
 
@@ -250,10 +246,41 @@ class ContextAwarePage extends Page
     {
         sleep($wait);
         $this->spin(function (ContextAwarePage $context) use ($selector, $locator) {
-            /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
 
             return empty($elem) || !$elem->isVisible();
         }, 90);
+    }
+
+    /**
+     * @param string          $selector
+     * @param string[]|string $locator
+     *
+     * @throws ElementNotFoundException
+     */
+    public function find($selector, $locator): NodeElement
+    {
+        $element = parent::find($selector, $locator);
+        if ($element === null) {
+            if (\is_array($locator)) {
+                $locator = implode(' ', $locator);
+            }
+            throw new ElementNotFoundException($this->getDriver(), null, $selector, $locator);
+        }
+
+        return $element;
+    }
+
+    /**
+     * @param string       $selector
+     * @param array|string $locator
+     */
+    public function has($selector, $locator): bool
+    {
+        try {
+            return parent::has($selector, $locator);
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
     }
 }

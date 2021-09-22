@@ -86,7 +86,7 @@ class UpdaterIndex extends ContextAwarePage
      *
      * @param string $stepName Name of the step from which the navigation will proceed
      */
-    public function advanceToStep($stepName)
+    public function advanceToStep(string $stepName): void
     {
         $xpath = $this->getXPathSelectors();
         $forwardButton = $this->waitForSelectorPresent('xpath', $xpath[$stepName]);

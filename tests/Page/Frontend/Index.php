@@ -3,10 +3,10 @@
 namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
+use Shopware\Page\ContextAwarePage;
 
-class Index extends Page
+class Index extends ContextAwarePage
 {
     /**
      * @var string
@@ -75,13 +75,7 @@ class Index extends Page
         return $this->find('xpath', str_replace('{PRODUCTNAME}', $productName, $xpath));
     }
 
-    /**
-     * @param string $title
-     * @param string $template
-     *
-     * @return NodeElement|null
-     */
-    public function getNavElement($title, $template)
+    public function getNavElement(string $title, string $template): NodeElement
     {
         $xpath = $this->getXPathSelectors()[$template];
 

@@ -12,10 +12,8 @@ class CheckoutShippingPayment extends ContextAwarePage
 
     /**
      * Change the currently selected shipping method
-     *
-     * @param string $shippingMethod
      */
-    public function changeShippingMethodTo($shippingMethod)
+    public function changeShippingMethodTo(string $shippingMethod): void
     {
         if (!$this->verifyUrl()) {
             $this->open();
