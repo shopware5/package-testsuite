@@ -19,7 +19,7 @@ Feature: I can generate and use article variants
       | label                | value          | type       | fieldset   |
       | Hersteller:          | Finch          | comboinput | Stammdaten |
       | Artikel-Bezeichnung: | Erster Artikel | input      | Stammdaten |
-      | Artikelnummer:       | SW10001        | input      | Stammdaten |
+      | Artikelnummer:       | SW99999        | input      | Stammdaten |
       | Varianten-Artikel:   | true           | checkbox   | Stammdaten |
     And I set "10" as the article price
     Then I am able to save my article
@@ -47,6 +47,15 @@ Feature: I can generate and use article variants
     When I click the "Vorgang starten" button
     Then I should see "Erfolg" eventually
 
+    When I open inline editing of variant "SW99999.1" and add "test"
+    Then I should see "Erfolg" eventually
+    Then I should see "SW99999.1test" eventually
+
+    When I open variant detail page of variant "SW99999.1test"
+    Then I should see "Konfiguratoroptionen" eventually
+    When I click the "Artikel speichern" button
+    Then I should see "Erfolg" eventually
+
     When I click on the "Kategorien" tab
     Then I should see "Zugewiesene Kategorien" eventually
 
@@ -65,7 +74,7 @@ Feature: I can generate and use article variants
     When I am on the homepage
     And I navigate to category tree "ErsteKategorie > Unterkategorie"
     Then I should be able to see the product "Erster Artikel" with price "10"
-    When I am on the detail page for article with ordernumber "SW10001"
+    When I am on the detail page for article with ordernumber "SW99999"
     Then I should see "Farbe" eventually
     When I choose the variant with the number "3"
     Then I should see "Blau" eventually
@@ -73,5 +82,3 @@ Feature: I can generate and use article variants
     When I put the current article "1" times into the basket
     Then I should see "Der Artikel wurde erfolgreich in den Warenkorb gelegt" eventually
     And I should see "Erster Artikel Blau" eventually
-
-

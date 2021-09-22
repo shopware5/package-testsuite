@@ -3,6 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\ExistingArticleModule;
 use Shopware\Page\Backend\NewArticleModule;
 use Shopware\Page\Backend\BackendModule;
@@ -305,8 +306,24 @@ class BackendArticleContext extends SubContext
      * @param string $value
      * @throws \Exception
      */
-    public function iShouldSeeAsCorrespondingValueTo($group, $value)
+    public function iShouldSeeAsCorrespondingValueTo(string $group, string $value): void
     {
         $this->getExistingArticleModulePage()->checkCorrespondingPropertyValues($group, $value);
+    }
+
+    /**
+     * @When /^I open inline editing of variant "([^"]*)" and add "([^"]*)"$/
+     */
+    public function iOpenInlineEditingOfVariantAndAdd(string $orderNumber, string $additionalText): void
+    {
+        $this->getExistingArticleModulePage()->doInlineEditingOfVariant($orderNumber, $additionalText);
+    }
+
+    /**
+     * @When /^I open variant detail page of variant "([^"]*)"$/
+     */
+    public function iOpenVariantDetailPageOfVariant(string $orderNumber)
+    {
+        $this->getExistingArticleModulePage()->openVariantDetailPage($orderNumber);
     }
 }

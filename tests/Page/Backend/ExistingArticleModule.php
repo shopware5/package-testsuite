@@ -184,4 +184,35 @@ class ExistingArticleModule extends NewArticleModule
 
         $this->waitForSelectorPresent('xpath', $matchXpath);
     }
+
+    public function doInlineEditingOfVariant(string $orderNumber, string $additionalText): void
+    {
+        $builder = new BackendXpathBuilder();
+
+        $orderNumberCell = $builder
+            ->child('div', ['@text' => $orderNumber])
+            ->ancestor('td')
+            ->getXpath();
+
+        $this->find('xpath', $orderNumberCell)->doubleClick();
+
+        $builder->reset();
+
+        $orderNumberInputFieldXPath = $builder->child('input', ['@name' => 'details.number'])->getXpath();
+
+        $this->waitForSelectorPresent('xpath', $orderNumberInputFieldXPath);
+        $this->waitForSelectorVisible('xpath', $orderNumberInputFieldXPath);
+
+        $orderNumberInputField = $this->find('xpath', $orderNumberInputFieldXPath);
+        $value = $orderNumberInputField->getValue();
+        $orderNumberInputField->setValue($value . $additionalText);
+
+        $orderNumberInputField->blur();
+    }
+
+    public function openVariantDetailPage(string $orderNumber): void
+    {
+        $variantRow = $this->getModuleWindow(false)->getGridView($orderNumber)->getRowByContent($orderNumber);
+        $variantRow->clickActionIcon('sprite-pencil');
+    }
 }

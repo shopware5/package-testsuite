@@ -149,7 +149,6 @@ class BackendModule extends ContextAwarePage
         return $tabXpath !== null;
     }
 
-
     /**
      * Helper method that returns the current module window
      *

@@ -63,6 +63,8 @@ If you don't want to use Docker, you can still execute `behat` manually.
 - Adjust the value `assets_url` in the `tests/.env` file
   - It needs the path to the image generator shipped with this repository
   - it could look like this: `http://localhost/package-testsuite/www/assetgenerator/`
+- Adjust the value `api_key` in the `tests/.env` file
+  - It needs to be the API key of the admin user "demo" of your local shop installation
 - Adjust the value `default.extensions.Behat\MinkExtension.base_url` in the `tests/behat.yml` file
   - Set it to a path of your local Shopware installation like `http://localhost/5.7/`
 - Adjust the value `default.extensions.Behat\MinkExtension.selenium2.wd_host` in the `tests/behat.yml` file

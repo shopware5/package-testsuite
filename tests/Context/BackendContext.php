@@ -3,6 +3,7 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\Backend;
 use Shopware\Page\Backend\ShippingModule;
@@ -90,8 +91,16 @@ class BackendContext extends SubContext
         $page = $this->getPage('Backend');
         $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel($label);
         $this->waitForSelectorPresent('xpath', $buttonXpath);
-        $button = $page->find('xpath', $buttonXpath);
-        $button->click();
+        $buttons = $page->findAll('xpath', $buttonXpath);
+        foreach ($buttons as $button) {
+            if ($button->isVisible()) {
+                $button->click();
+
+                return;
+            }
+        }
+
+        throw new ElementNotFoundException($this->getDriver(), 'button', 'xpath', $buttonXpath);
     }
 
     /**

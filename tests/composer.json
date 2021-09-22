@@ -1,4 +1,6 @@
 {
+    "name": "shopware/five-package-test-suite",
+    "description": "Shopware 5 package test suite",
     "type": "project",
     "require-dev": {
         "behat/behat": "^3.7",
@@ -18,13 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Shopware\\Tests\\Mink\\": "features/bootstrap",
-            "Shopware\\Context\\": "Context",
-            "Shopware\\Helper\\": "Helper",
-            "Shopware\\Component\\": "Component",
-            "Shopware\\Exception\\": "Exception",
-            "Shopware\\Element\\": "Element",
-            "Shopware\\Page\\": "Page"
+            "Shopware\\": ""
         }
     }
 }
