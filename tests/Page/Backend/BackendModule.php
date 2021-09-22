@@ -42,8 +42,6 @@ class BackendModule extends ContextAwarePage
      *                         'textarea'
      * - fieldset (optional) - You can scope a single form element further by providing the parenting fieldset
      *
-     * @param Window $formParent
-     * @param array $formElements
      * @throws \Exception
      */
     public function fillExtJsForm(Window $formParent, array $formElements)
@@ -83,7 +81,6 @@ class BackendModule extends ContextAwarePage
     /**
      * Helper method that fills an extJS combobox input field
      *
-     * @param NodeElement $comboInputField
      * @param string $value
      */
     public function fillComboboxInput(NodeElement $comboInputField, $value)
@@ -96,7 +93,7 @@ class BackendModule extends ContextAwarePage
      * Expands a collapsed element
      *
      * @param string $label
-     * @param null $fieldset
+     * @param null   $fieldset
      */
     public function expandCategoryCollapsible($label, $fieldset = null)
     {
@@ -120,7 +117,6 @@ class BackendModule extends ContextAwarePage
     /**
      * Chooses the desired answer in a message box
      *
-     * @param $answer
      * @throws \Exception
      */
     public function answerMessageBox($answer)
@@ -153,6 +149,7 @@ class BackendModule extends ContextAwarePage
      * Helper method that returns the current module window
      *
      * @param bool $exactMatch
+     *
      * @return Window|null
      */
     protected function getModuleWindow($exactMatch = true)
@@ -169,6 +166,7 @@ class BackendModule extends ContextAwarePage
      * Helper method that returns the current editor window
      *
      * @param bool $exactMatch
+     *
      * @return Window|null
      */
     protected function getEditorWindow($exactMatch = true)
@@ -186,6 +184,7 @@ class BackendModule extends ContextAwarePage
      *
      * @param string $name
      * @param string $icon
+     *
      * @throws \Exception
      */
     public function clickEntryIconByName($name, $icon)

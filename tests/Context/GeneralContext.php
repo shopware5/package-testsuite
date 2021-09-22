@@ -23,13 +23,12 @@ class GeneralContext extends SubContext
      *
      * @BeforeScenario
      * @AfterScenario
-     * @param ScenarioScope $scope
      */
     public static function onAfterScenario(ScenarioScope $scope)
     {
         $tags = $scope->getScenario()->getTags();
 
-        if (in_array('isolated', $tags)) {
+        if (\in_array('isolated', $tags)) {
             self::cleanDatabase();
             self::clearCache();
         }
@@ -51,11 +50,10 @@ class GeneralContext extends SubContext
 
     /**
      * @Given I wait for :amount seconds
-     * @param $amount
      */
     public function iWaitForSeconds($amount)
     {
-        sleep((int)$amount);
+        sleep((int) $amount);
     }
 
     /**
@@ -69,6 +67,7 @@ class GeneralContext extends SubContext
     /**
      * @Given I am on the page :page
      * @When I go to the page :page
+     *
      * @param string $page
      */
     public function iAmOnThePage($page)
@@ -79,6 +78,7 @@ class GeneralContext extends SubContext
 
     /**
      * @Then I should see :text eventually
+     *
      * @param string $text
      */
     public function iShouldSeeEventually($text)
@@ -88,6 +88,7 @@ class GeneralContext extends SubContext
 
     /**
      * @Then I should eventually not see :text
+     *
      * @param string $text
      */
     public function iShouldEventuallyNotSee($text)
@@ -103,11 +104,12 @@ class GeneralContext extends SubContext
         $dbDumpFile = __DIR__ . '/../clean_db.sql';
 
         if (!is_file($dbDumpFile)) {
-            echo "Could not reset database - no clean state available. (Missing dump file)." . PHP_EOL;
+            echo 'Could not reset database - no clean state available. (Missing dump file).' . PHP_EOL;
+
             return;
         }
 
-        echo "Resetting database to clean state..." . PHP_EOL;
+        echo 'Resetting database to clean state...' . PHP_EOL;
         passthru(sprintf('mysql -u shopware -pshopware -h mysql shopware < %s', $dbDumpFile));
     }
 
@@ -116,7 +118,7 @@ class GeneralContext extends SubContext
      */
     private static function clearCache()
     {
-        echo "Clearing Shopware cache..." . PHP_EOL;
+        echo 'Clearing Shopware cache...' . PHP_EOL;
         $swConsole = getenv('base_path') . '/bin/console';
         shell_exec('php ' . $swConsole . ' sw:cache:clear');
     }

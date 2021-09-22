@@ -7,9 +7,13 @@ use Shopware\Page\Backend\SystemInfoModule;
 class FileCheckContext extends SubContext
 {
     private $testPath;
+
     private $folderRequirementLabel = 'media/music/';
+
     private $fileRequirementLabel = 'engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap.php';
+
     private $renamedFileRequirementLabel = '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap-.php';
+
     private $unfulfilledIcon = 'cross';
 
     public function __construct()
@@ -25,7 +29,6 @@ class FileCheckContext extends SubContext
     {
         $this->setRequirementsFulfillment(false);
     }
-
 
     /**
      * @When I correct the :requirement requirement
@@ -53,17 +56,18 @@ class FileCheckContext extends SubContext
         );
     }
 
-
     /**
      * Fakes an unfulfilled requirement or undoes it
-     * @param bool $meetRequirements Determines if the requirement should be met or not
-     * @param string $type Determines if the requirement should be defined fo a specific element (optional)
+     *
+     * @param bool   $meetRequirements Determines if the requirement should be met or not
+     * @param string $type             Determines if the requirement should be defined fo a specific element (optional)
      */
     private function setRequirementsFulfillment($meetRequirements, $type = '')
     {
         if ($meetRequirements === false) {
             rename($this->testPath . '/' . $this->fileRequirementLabel, $this->testPath . $this->renamedFileRequirementLabel);
             chmod($this->testPath . '/' . $this->folderRequirementLabel, 0444);
+
             return;
         }
 

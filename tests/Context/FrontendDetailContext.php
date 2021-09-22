@@ -9,8 +9,9 @@ use Shopware\Page\Frontend\Search;
 class FrontendDetailContext extends SubContext
 {
     /**
-     * @return Detail
      * @throws \Exception
+     *
+     * @return Detail
      */
     private function getDetailPage()
     {
@@ -19,13 +20,14 @@ class FrontendDetailContext extends SubContext
         if ($page === null) {
             throw new \RuntimeException('Page is not defined.');
         }
+
         return $page;
     }
 
-
     /**
-     * @return Search
      * @throws \Exception
+     *
+     * @return Search
      */
     private function getSearchPage()
     {
@@ -34,13 +36,13 @@ class FrontendDetailContext extends SubContext
         if ($page === null) {
             throw new \RuntimeException('Page is not defined.');
         }
+
         return $page;
     }
 
     /**
      * @When I choose the variant with the number :optionNumber
      *
-     * @param $optionNumber
      * @throws \Exception
      */
     public function iChooseTheVariantWithTheNumber($optionNumber)
@@ -62,6 +64,7 @@ class FrontendDetailContext extends SubContext
      * @Given I am on the detail page for article with ordernumber :ordernumber
      *
      * @param string $ordernumber
+     *
      * @throws \Exception
      */
     public function iAmOnTheDetailPageForArticleWithOrdernumber($ordernumber)
@@ -73,6 +76,7 @@ class FrontendDetailContext extends SubContext
      * @When I put the current article :quantity times into the basket
      *
      * @param string $quantity
+     *
      * @throws \Exception
      */
     public function iPutTheArticleTimesIntoTheBasket($quantity)
@@ -81,11 +85,9 @@ class FrontendDetailContext extends SubContext
         $this->waitForText('Der Artikel wurde erfolgreich in den Warenkorb gelegt');
     }
 
-
     /**
      * @Then I should see the following graduated prices:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
     public function iShouldSeeTheFollowingGraduatedPrices(TableNode $table)
@@ -97,11 +99,9 @@ class FrontendDetailContext extends SubContext
         }
     }
 
-
     /**
      * @Given I should see the base price information:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
     public function iShouldSeeTheBasePriceInformation(TableNode $table)

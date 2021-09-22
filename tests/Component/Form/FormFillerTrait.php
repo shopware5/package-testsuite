@@ -10,7 +10,6 @@ trait FormFillerTrait
     /**
      * Fill a given form where the fields are identified by their name and tag types
      *
-     * @param ContextAwarePage $page
      * @param array $formData Expected format: [['name' => 'sAGB', 'value' => '1', 'type' => 'checkbox']]
      */
     public function fillForm(ContextAwarePage $page, array $formData)
@@ -24,7 +23,7 @@ trait FormFillerTrait
                     $this->getElementByName($page, FrontendXpathBuilder::getElementXpathByName('select', $formElement['name']))->selectOption($formElement['value']);
                     break;
                 case 'checkbox':
-                    if ($this->isCheckboxChecked($page, $formElement['name']) !== (bool)$formElement['value']) {
+                    if ($this->isCheckboxChecked($page, $formElement['name']) !== (bool) $formElement['value']) {
                         $xpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['name']);
                         $this->getElementByName($page, $this->selectLastElement($xpath))->check();
                     }
@@ -36,8 +35,8 @@ trait FormFillerTrait
     /**
      * Get a NodeElement with the given name
      *
-     * @param ContextAwarePage $page
      * @param string $xpath
+     *
      * @return \Behat\Mink\Element\NodeElement|null
      */
     private function getElementByName(ContextAwarePage $page, $xpath)
@@ -48,17 +47,18 @@ trait FormFillerTrait
     /**
      * Helper method that checks if a given checkbox identified by name is checked
      *
-     * @param ContextAwarePage $page
      * @param string $inputName
+     *
      * @return bool
      */
     private function isCheckboxChecked(ContextAwarePage $page, $inputName)
     {
-        return (bool)$page->find('css', 'input[type="checkbox"][name="' . $inputName . '"]:checked');
+        return (bool) $page->find('css', 'input[type="checkbox"][name="' . $inputName . '"]:checked');
     }
 
     /**
      * @param string $xpath
+     *
      * @return string
      */
     private function selectLastElement($xpath)

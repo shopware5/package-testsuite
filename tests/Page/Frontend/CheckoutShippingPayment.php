@@ -50,6 +50,7 @@ class CheckoutShippingPayment extends ContextAwarePage
      * Return the shipping or payment method with the given name
      *
      * @param string $methodName
+     *
      * @return NodeElement|null
      */
     public function getMethodElement($methodName)
@@ -66,7 +67,6 @@ class CheckoutShippingPayment extends ContextAwarePage
     /**
      * Verifies that we currently are on the shipping/payment page
      *
-     * @param array $urlParameters
      * @return bool
      */
     protected function verifyUrl(array $urlParameters = [])
@@ -76,8 +76,6 @@ class CheckoutShippingPayment extends ContextAwarePage
 
     /**
      * Select a shipping method from the list in the frontend
-     *
-     * @param $shippingMethod
      */
     private function selectShippingMethod($shippingMethod)
     {
@@ -88,8 +86,6 @@ class CheckoutShippingPayment extends ContextAwarePage
     /**
      * Select a payment method from the list in the frontend and
      * fill in some demo SEPA data if necessary
-     *
-     * @param $paymentMethod
      */
     private function selectPaymentMethod($paymentMethod)
     {

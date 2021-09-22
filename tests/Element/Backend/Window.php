@@ -12,8 +12,6 @@ use Shopware\Element\Backend\Form\Textarea;
 use Shopware\Element\Backend\GridView\GridView;
 
 /**
- * Class Window
- *
  * Representing an ExtJS window, the fundamental block of an ExtJs application.
  *
  * You can get other ExtJS elements from a window, e.g. grid views, form inputs
@@ -28,8 +26,8 @@ class Window extends ExtJsElement
      *  $window = Window::createFromTitle('Kundenadministration', $this->getSession());
      *
      * @param string $title
-     * @param Session $session
-     * @param bool $exactTitleMatch
+     * @param bool   $exactTitleMatch
+     *
      * @return Window
      */
     public static function createFromTitle($title, Session $session, $exactTitleMatch = true)
@@ -47,11 +45,13 @@ class Window extends ExtJsElement
      * is to be selected.
      *
      * @param string|null $containsText
+     *
      * @return GridView
      */
     public function getGridView($containsText = '')
     {
         $gridView = new GridView($this->getGridViewXpath($containsText), $this->getSession());
+
         return $gridView;
     }
 
@@ -61,13 +61,14 @@ class Window extends ExtJsElement
      *  Example Usage:
      *  $input = $window->getInput('Dateiname:');
      *
-     * @param $label
      * @param string|null $fieldset
+     *
      * @return Input
      */
     public function getInput($label, $fieldset = null)
     {
         $input = new Input($this->getInputXpath($label, $fieldset), $this->getSession());
+
         return $input;
     }
 
@@ -77,13 +78,15 @@ class Window extends ExtJsElement
      *  Example Usage:
      *  $combobox = $window->getCombobox('Steuersatz:');
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return Combobox
      */
     public function getCombobox($label, $fieldset = null)
     {
         $combobox = new Combobox($this->getComboboxXpath($label, $fieldset), $this->getSession());
+
         return $combobox;
     }
 
@@ -93,13 +96,15 @@ class Window extends ExtJsElement
      *  Example Usage:
      *  $checkbox = $window->getCheckbox('Aktiv:');
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return Checkbox
      */
     public function getCheckbox($label, $fieldset = null)
     {
         $checkbox = new Checkbox($this->getInputXpath($label, $fieldset), $this->getSession());
+
         return $checkbox;
     }
 
@@ -109,13 +114,15 @@ class Window extends ExtJsElement
      *  Example Usage:
      *  $textarea = $window->getTextarea('Kurzbeschreibung:');
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return Textarea
      */
     public function getTextarea($label, $fieldset = null)
     {
         $textarea = new Textarea($this->getTextareaXpath($label, $fieldset), $this->getSession());
+
         return $textarea;
     }
 
@@ -125,18 +132,21 @@ class Window extends ExtJsElement
      *  Example Usage:
      *  $tree = $window->getSelecttree('Kategorie:');
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return Selecttree
      */
     public function getSelecttree($label, $fieldset = null)
     {
         $selecttree = Selecttree::createFromXpath($this->getSelecttreeXpath($label, $fieldset), $this);
+
         return $selecttree;
     }
 
     /**
      * @param string $containsText
+     *
      * @return string
      */
     private function getGridViewXpath($containsText = '')
@@ -153,8 +163,9 @@ class Window extends ExtJsElement
     /**
      * Get xpath for a combobox within the current window, potentially limited to a given fieldset.
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return string
      */
     private function getComboboxXpath($label, $fieldset = null)
@@ -169,8 +180,9 @@ class Window extends ExtJsElement
     /**
      * Get xpath for an input field within the current window, optionally scoped to a given fieldset
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return string
      */
     private function getInputXpath($label, $fieldset)
@@ -185,8 +197,9 @@ class Window extends ExtJsElement
     /**
      * Get xpath to textarea element within the current window, optionally scoped to a given fieldset
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return string
      */
     private function getTextareaXpath($label, $fieldset)
@@ -201,8 +214,9 @@ class Window extends ExtJsElement
     /**
      * Return xpath to a given selecttree within the current window
      *
-     * @param string $label
+     * @param string      $label
      * @param string|null $fieldset
+     *
      * @return string
      */
     private function getSelecttreeXpath($label, $fieldset)

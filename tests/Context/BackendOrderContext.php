@@ -12,7 +12,9 @@ class BackendOrderContext extends PageObjectContext
 {
     /**
      * @When I open the order from email :email
+     *
      * @param string $email
+     *
      * @throws \RuntimeException
      */
     public function iOpenTheOrderFromEmail($email)
@@ -22,6 +24,7 @@ class BackendOrderContext extends PageObjectContext
 
     /**
      * @When I change the :type status to :status
+     *
      * @param string $type
      * @param string $status
      */
@@ -48,6 +51,7 @@ class BackendOrderContext extends PageObjectContext
 
     /**
      * @When I filter the backend order list for shipping country :country
+     *
      * @param string $country
      */
     public function iFilterTheBackendOrderListForShippingCountry($country)
@@ -57,13 +61,15 @@ class BackendOrderContext extends PageObjectContext
 
     /**
      * @Then I should see exactly :amount order in the order list
+     *
      * @param string $amount
+     *
      * @throws \Exception
      */
     public function iShouldSeeExactlyOneOrderInTheOrderList($amount)
     {
         $actualAmount = $this->getModulePage()->getNumberOfOrdersInOrderList();
-        if ((int)$amount !== $actualAmount) {
+        if ((int) $amount !== $actualAmount) {
             throw new \Exception(sprintf('Expected %s order, found %s.', $amount, $actualAmount));
         }
     }
@@ -78,7 +84,9 @@ class BackendOrderContext extends PageObjectContext
 
     /**
      * @Then I should see the order from :email at the top of the order list
+     *
      * @param string $email
+     *
      * @throws \Exception
      */
     public function iShouldSeeTheOrderFromAtTheTopOfTheOrderList($email)
@@ -100,7 +108,7 @@ class BackendOrderContext extends PageObjectContext
 
     /**
      * @Given the invoice should contain the following:
-     * @param TableNode $content
+     *
      * @throws \Exception
      */
     public function theInvoiceShouldContain(TableNode $content)
@@ -111,7 +119,7 @@ class BackendOrderContext extends PageObjectContext
         $documentsPath = $this->getDocumentsDirectory();
 
         $documents = glob($documentsPath . '/*.pdf');
-        if(empty($documents)) {
+        if (empty($documents)) {
             throw new \Exception('Could not find generated PDF document.');
         }
 
@@ -131,12 +139,14 @@ class BackendOrderContext extends PageObjectContext
     {
         /** @var OrderModule $page */
         $page = $this->getPage('OrderModule');
+
         return $page;
     }
 
     /**
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     private function getDocumentsDirectory()
     {
@@ -151,8 +161,10 @@ class BackendOrderContext extends PageObjectContext
 
     /**
      * @param string $filepath
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     private function getPdfTextContent($filepath)
     {

@@ -3,16 +3,16 @@
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Page\Backend\BackendModule;
 use Shopware\Page\Backend\ExistingArticleModule;
 use Shopware\Page\Backend\NewArticleModule;
-use Shopware\Page\Backend\BackendModule;
 
 class BackendArticleContext extends SubContext
 {
     /**
-     * @return BackendModule
      * @throws \Exception
+     *
+     * @return BackendModule
      */
     private function getBackendModulePage()
     {
@@ -21,12 +21,14 @@ class BackendArticleContext extends SubContext
         if ($page === null) {
             throw new \RuntimeException('Page is not defined.');
         }
+
         return $page;
     }
 
     /**
-     * @return ExistingArticleModule
      * @throws \Exception
+     *
+     * @return ExistingArticleModule
      */
     private function getExistingArticleModulePage()
     {
@@ -35,13 +37,14 @@ class BackendArticleContext extends SubContext
         if ($page === null) {
             throw new \RuntimeException('Page is not defined.');
         }
+
         return $page;
     }
 
-
     /**
-     * @return NewArticleModule
      * @throws \Exception
+     *
+     * @return NewArticleModule
      */
     private function getNewArticleModulePage()
     {
@@ -50,6 +53,7 @@ class BackendArticleContext extends SubContext
         if ($page === null) {
             throw new \RuntimeException('Page is not defined.');
         }
+
         return $page;
     }
 
@@ -57,6 +61,7 @@ class BackendArticleContext extends SubContext
      * @Given I set :price as the article price
      *
      * @param string $price
+     *
      * @throws \Exception
      */
     public function iSetAsTheArticlePriceForTheCustomerGroup($price)
@@ -68,6 +73,7 @@ class BackendArticleContext extends SubContext
      * @Given I choose :text as article description
      *
      * @param string $text
+     *
      * @throws \Exception
      */
     public function iChooseAsArticleDescription($text)
@@ -89,6 +95,7 @@ class BackendArticleContext extends SubContext
      * @When I click to add the category with name :name to the article
      *
      * @param string $name
+     *
      * @throws \Exception
      */
     public function iClickTheIconToAdd($name)
@@ -101,6 +108,7 @@ class BackendArticleContext extends SubContext
      *
      * @param string $title
      * @param string $area
+     *
      * @throws \Exception
      */
     public function iShouldFindInTheArea($title, $area)
@@ -111,7 +119,6 @@ class BackendArticleContext extends SubContext
     /**
      * @When I fill in the basic configuration:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
     public function iFillInTheBasicConfiguration(TableNode $table)
@@ -124,6 +131,7 @@ class BackendArticleContext extends SubContext
      * @When I expand the :label element
      *
      * @param string $label
+     *
      * @throws \Exception
      */
     public function iExpandTheCategoryElement($label)
@@ -133,8 +141,6 @@ class BackendArticleContext extends SubContext
 
     /**
      * @Then I check if my article data is displayed:
-     *
-     * @param TableNode $table
      */
     public function iCheckIfMyArticleDataIsDisplayed(TableNode $table)
     {
@@ -149,6 +155,7 @@ class BackendArticleContext extends SubContext
      * @When I change the article name to :articlename
      *
      * @param string $articlename
+     *
      * @throws \Exception
      */
     public function iChangeTheArticleNameTo($articlename)
@@ -160,6 +167,7 @@ class BackendArticleContext extends SubContext
      * @When I click the edit icon of the entry :name
      *
      * @param string $name
+     *
      * @throws \Exception
      */
     public function iClickTheEditIconOfTheEntry($name)
@@ -171,6 +179,7 @@ class BackendArticleContext extends SubContext
      * @When I click the delete icon of the entry :name
      *
      * @param string $name
+     *
      * @throws \Exception
      */
     public function iClickTheDeleteIconOfTheEntry($name)
@@ -192,6 +201,7 @@ class BackendArticleContext extends SubContext
      * @Given the :title tab should be active
      *
      * @param string $title
+     *
      * @throws \Exception
      */
     public function theTabShouldBeActive($title)
@@ -206,6 +216,7 @@ class BackendArticleContext extends SubContext
      *
      * @param string $groupname
      * @param string $label
+     *
      * @throws \Exception
      */
     public function iCreateTheGroup($groupname, $label)
@@ -219,6 +230,7 @@ class BackendArticleContext extends SubContext
      *
      * @param string $title
      * @param string $area
+     *
      * @throws \Exception
      */
     public function theGroupShouldBeListedAsAnActiveGroup($title, $area)
@@ -230,6 +242,7 @@ class BackendArticleContext extends SubContext
      * @When I click :group to create the options of it
      *
      * @param string $groupname
+     *
      * @throws \Exception
      */
     public function iClickToCreateTheOptionsOfIt($groupname)
@@ -240,7 +253,6 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I create the following options options:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
     public function iCreateTheFollowingOptionsOptions(TableNode $table)
@@ -253,7 +265,7 @@ class BackendArticleContext extends SubContext
      * @When I set the price :price for any number from here
      *
      * @param string $price
-     * @param int $maxAmount
+     * @param int    $maxAmount
      *
      * @throws \Exception
      */
@@ -290,7 +302,6 @@ class BackendArticleContext extends SubContext
     /**
      * @When I fill in the property configuration:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
     public function iFillInThePropertyConfiguration(TableNode $table)
@@ -302,8 +313,6 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I should see :group as corresponding value to :value
      *
-     * @param string $group
-     * @param string $value
      * @throws \Exception
      */
     public function iShouldSeeAsCorrespondingValueTo(string $group, string $value): void

@@ -11,7 +11,6 @@ class Search extends Page
     /**
      * Allow verification by checking if the search landed us on a detail page
      *
-     * @param array $urlParameters
      * @return bool|int
      */
     protected function verify(array $urlParameters)

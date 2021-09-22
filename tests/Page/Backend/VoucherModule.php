@@ -5,7 +5,7 @@ namespace Shopware\Page\Backend;
 class VoucherModule extends BackendModule
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/backend/?app=Voucher';
 
@@ -22,8 +22,6 @@ class VoucherModule extends BackendModule
     /**
      * Fill the new voucher form of the backend module with
      * the supplied data.
-     *
-     * @param array $data
      */
     public function fillVoucherEditorFormWith(array $data)
     {
@@ -33,8 +31,6 @@ class VoucherModule extends BackendModule
 
     /**
      * Click the edit icon for the row containing $name
-     *
-     * @param $name
      */
     public function openEditFormForVoucher($name)
     {
@@ -44,8 +40,6 @@ class VoucherModule extends BackendModule
 
     /**
      * Delete a voucher by its name
-     *
-     * @param $name
      */
     public function deleteVoucher($name)
     {

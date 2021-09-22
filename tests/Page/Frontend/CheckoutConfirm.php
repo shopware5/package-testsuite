@@ -10,7 +10,7 @@ class CheckoutConfirm extends ContextAwarePage
     use FormFillerTrait;
 
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/checkout/confirm';
 

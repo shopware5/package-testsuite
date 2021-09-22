@@ -11,7 +11,7 @@ class Account extends ContextAwarePage
     use FormFillerTrait;
 
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/account';
 
@@ -48,8 +48,6 @@ class Account extends ContextAwarePage
 
     /**
      * Fills the fields of the registration form and submits it
-     *
-     * @param array $data
      */
     public function register(array $data)
     {

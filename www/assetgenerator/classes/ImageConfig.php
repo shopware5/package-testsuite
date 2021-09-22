@@ -2,15 +2,29 @@
 
 class ImageConfig
 {
-    /** @var  int */
+    /**
+     * @var int
+     */
     private $imageWidth;
-    /** @var  int */
+
+    /**
+     * @var int
+     */
     private $imageHeight;
-    /** @var  int */
+
+    /**
+     * @var int
+     */
     private $maxLineWidth;
-    /** @var  int */
+
+    /**
+     * @var int
+     */
     private $colorDeviation;
-    /** @var  string */
+
+    /**
+     * @var string
+     */
     private $text;
 
     /**
@@ -18,9 +32,10 @@ class ImageConfig
      */
     public function getImageWidth()
     {
-        if (!is_int($this->imageWidth)) {
+        if (!\is_int($this->imageWidth)) {
             return 640;
         }
+
         return $this->imageWidth;
     }
 
@@ -37,9 +52,10 @@ class ImageConfig
      */
     public function getImageHeight()
     {
-        if (!is_int($this->imageHeight)) {
+        if (!\is_int($this->imageHeight)) {
             return 480;
         }
+
         return $this->imageHeight;
     }
 
@@ -56,9 +72,10 @@ class ImageConfig
      */
     public function getMaxLineWidth()
     {
-        if (!is_int($this->maxLineWidth)) {
+        if (!\is_int($this->maxLineWidth)) {
             return 15;
         }
+
         return $this->maxLineWidth;
     }
 
@@ -75,7 +92,7 @@ class ImageConfig
      */
     public function getColorDeviation()
     {
-        if (!is_int($this->colorDeviation)) {
+        if (!\is_int($this->colorDeviation)) {
             return 20;
         }
 
@@ -95,7 +112,7 @@ class ImageConfig
      */
     public function getSeed()
     {
-        return (double)microtime() * 1000000;
+        return (float) microtime() * 1000000;
     }
 
     /**
@@ -111,6 +128,6 @@ class ImageConfig
      */
     public function setText($text)
     {
-        $this->text = (string)$text;
+        $this->text = (string) $text;
     }
 }

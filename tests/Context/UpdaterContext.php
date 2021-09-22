@@ -65,6 +65,7 @@ class UpdaterContext extends SubContext
 
     /**
      * @Given I should see the reminder :hint to remove the update-assets folder
+     *
      * @param string $hint
      */
     public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder($hint)
@@ -92,12 +93,14 @@ class UpdaterContext extends SubContext
 
     /**
      * Sets the access privileges of a directory according to the situation to simulate system requirements
+     *
      * @param bool $meetRequirements
      */
     private function setRequirementsFulfillment($meetRequirements)
     {
         if ($meetRequirements === false) {
             chmod($this->testPath, 0444);
+
             return;
         }
         chmod($this->testPath, 0777);
@@ -113,7 +116,6 @@ class UpdaterContext extends SubContext
 
     /**
      * @When I advance to the next step via :stepName
-     * @param $stepName
      */
     public function iAdvanceToTheNextRequirementsStep($stepName)
     {

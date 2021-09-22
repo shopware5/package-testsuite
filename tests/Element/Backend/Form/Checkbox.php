@@ -18,7 +18,7 @@ class Checkbox extends ExtJsElement
 
         $checked = $this->find('xpath', $checkedXpath);
 
-        return null !== $checked;
+        return $checked !== null;
     }
 
     public function toggle()

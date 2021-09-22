@@ -7,13 +7,19 @@ use Shopware\Element\Backend\GridView\GridViewRow;
 
 class ProductExportModule extends BackendModule
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $path = '/backend/?app=ProductFeed';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $moduleWindowTitle = 'Produktexporte';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $editorWindowTitle = 'Feed - Konfiguration';
 
     /**
@@ -21,7 +27,7 @@ class ProductExportModule extends BackendModule
      */
     public function verify(array $urlParameters)
     {
-        return null !== $this->getModuleWindow();
+        return $this->getModuleWindow() !== null;
     }
 
     /**
@@ -39,6 +45,7 @@ class ProductExportModule extends BackendModule
      * Enters the template on which the product export is based of
      *
      * @param string $template The template itself
+     *
      * @throws \Exception
      */
     public function enterTemplate($template)
@@ -60,7 +67,6 @@ class ProductExportModule extends BackendModule
     /**
      * Open a product export
      *
-     * @param $exportTitle
      * @throws \Exception
      */
     public function openExport($exportTitle)
@@ -101,7 +107,7 @@ class ProductExportModule extends BackendModule
      */
     public function addMinimumPriceFilter($minPrice)
     {
-        $this->getEditorWindow()->getInput('Preis grösser:')->setValue((int)$minPrice);
+        $this->getEditorWindow()->getInput('Preis grösser:')->setValue((int) $minPrice);
     }
 
     /**
@@ -117,6 +123,7 @@ class ProductExportModule extends BackendModule
 
     /**
      * @param string $expected
+     *
      * @throws \Exception
      */
     public function checkExportResult($expected)
@@ -132,6 +139,7 @@ class ProductExportModule extends BackendModule
      * Normalize a given string by removing tabs, spaces and newlines from, allowing better comparison
      *
      * @param string $text
+     *
      * @return string
      */
     private function normalizeText($text)
@@ -140,7 +148,6 @@ class ProductExportModule extends BackendModule
     }
 
     /**
-     * @param GridViewRow $exportRow
      * @return string
      */
     private function getExportUrl(GridViewRow $exportRow)

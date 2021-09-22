@@ -13,6 +13,7 @@ class FrontendContext extends SubContext
 {
     /**
      * @Given /^I am logged in with account "([^"]*)"(?: with password "([^"]*)")?$/
+     *
      * @param string $email
      * @param string $password
      */
@@ -43,8 +44,10 @@ class FrontendContext extends SubContext
 
     /**
      * @Then the cart should contain :quantity articles with a value of :amount
+     *
      * @param string $quantity
      * @param string $amount
+     *
      * @throws \Exception
      */
     public function theCartShouldContainArticlesWithAValueOf($quantity, $amount)
@@ -58,6 +61,7 @@ class FrontendContext extends SubContext
 
     /**
      * @When I navigate to category tree :tree
+     *
      * @param string $tree
      */
     public function iNavigateToCategoryTree($tree)
@@ -79,6 +83,7 @@ class FrontendContext extends SubContext
 
     /**
      * @Then I should be able to see the product :name with price :testPrice
+     *
      * @param string $name
      * @param string $testPrice
      */
@@ -89,7 +94,7 @@ class FrontendContext extends SubContext
 
         $product = $page->getProductListingBoxElement($name);
         if ($product == null) {
-            throw new ElementNotFoundException(sprintf("Product with ordernumber %s not found!", $name));
+            throw new ElementNotFoundException(sprintf('Product with ordernumber %s not found!', $name));
         }
 
         $price = $product->find('xpath',
@@ -102,12 +107,12 @@ class FrontendContext extends SubContext
             $priceText = str_replace(',', '.', str_replace('.', '', $priceText));
         }
 
-        Assert::assertEquals((float)$priceText, (float)$testPrice);
+        Assert::assertEquals((float) $priceText, (float) $testPrice);
     }
 
     /**
      * @Given I click on :text
-     * @param $text
+     *
      * @throws \Exception
      */
     public function iClickOn($text)
@@ -116,6 +121,7 @@ class FrontendContext extends SubContext
         $button = $this->getSession()->getPage()->findButton($text);
         if ($button) {
             $button->click();
+
             return;
         }
 
@@ -123,6 +129,7 @@ class FrontendContext extends SubContext
         $link = $this->getSession()->getPage()->findLink($text);
         if ($link) {
             $link->click();
+
             return;
         }
 

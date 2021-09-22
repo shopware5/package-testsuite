@@ -9,7 +9,6 @@ class FrontendAccountContext extends SubContext
 {
     /**
      * @Given I register myself:
-     * @param TableNode $table
      */
     public function iRegisterMyself(TableNode $table)
     {
@@ -20,9 +19,9 @@ class FrontendAccountContext extends SubContext
         $page->open();
 
         // Already logged in
-        if ($this->waitIfThereIsText("Willkommen")) {
+        if ($this->waitIfThereIsText('Willkommen')) {
             $page->logout();
-            $this->waitForTextNotPresent("Willkommen");
+            $this->waitForTextNotPresent('Willkommen');
         }
 
         $page->open();

@@ -45,6 +45,7 @@ class ExistingArticleModule extends NewArticleModule
      *
      * @param string $title
      * @param string $grouptitle
+     *
      * @return bool
      */
     public function checkIfMatchesTheRightGroup($title, $grouptitle)
@@ -79,11 +80,10 @@ class ExistingArticleModule extends NewArticleModule
         $groupEntry->click();
     }
 
-
     /**
      * Creates the options of a configurator set
      *
-     * @param array $data
+     * @param array  $data
      * @param string $label
      */
     public function createOptionsForGroup($data, $label)
@@ -117,6 +117,7 @@ class ExistingArticleModule extends NewArticleModule
      * Fills in the property data of an article, excluding the values
      *
      * @param array $data
+     *
      * @throws \Exception
      */
     public function selectProperty($data)
@@ -137,6 +138,7 @@ class ExistingArticleModule extends NewArticleModule
      * Assigns an option to a selected group
      *
      * @param string $value
+     *
      * @throws \Exception
      */
     private function chooseOption($value)
@@ -170,6 +172,7 @@ class ExistingArticleModule extends NewArticleModule
      *
      * @param string $group
      * @param string $value
+     *
      * @throws \Exception
      */
     public function checkCorrespondingPropertyValues($group, $value)

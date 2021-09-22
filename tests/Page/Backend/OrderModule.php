@@ -9,7 +9,7 @@ use Shopware\Element\Backend\GridView\GridViewRow;
 class OrderModule extends BackendModule
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/backend/?app=Order';
 
@@ -53,7 +53,7 @@ class OrderModule extends BackendModule
      */
     public function sendCustomerNotificationMail()
     {
-        $this->waitForText("E-Mail an den Kunden senden");
+        $this->waitForText('E-Mail an den Kunden senden');
 
         $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel('E-Mail senden');
         $this->waitForSelectorPresent('xpath', $buttonXpath);
@@ -98,12 +98,13 @@ class OrderModule extends BackendModule
     /**
      * Get number of orders in backend list
      *
-     * @return integer
+     * @return int
      */
     public function getNumberOfOrdersInOrderList()
     {
         $gridView = $this->getOrderListGridView();
-        return count($gridView->getRows());
+
+        return \count($gridView->getRows());
     }
 
     /**

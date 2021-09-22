@@ -14,11 +14,10 @@ class DebugContext extends SubContext
      * Save a screenshot and log additional info if a step has failed.
      *
      * @AfterStep
-     * @param AfterStepScope $scope
      */
     public function onAfterStep(AfterStepScope $scope)
     {
-        if (TestResult::FAILED === $scope->getTestResult()->getResultCode()) {
+        if ($scope->getTestResult()->getResultCode() === TestResult::FAILED) {
             $this->takeScreenshot();
             $this->logRequest();
         }
@@ -34,7 +33,7 @@ class DebugContext extends SubContext
             return;
         }
 
-        $filePath = dirname(dirname(dirname(__FILE__))) . '/logs/mink';
+        $filePath = \dirname(\dirname(\dirname(__FILE__))) . '/logs/mink';
 
         $this->saveScreenshot(null, $filePath);
     }
@@ -76,11 +75,11 @@ class DebugContext extends SubContext
      */
     private function saveLog($content, $type)
     {
-        $logDir = dirname(dirname(dirname(__FILE__))) . '/logs/mink';
+        $logDir = \dirname(\dirname(\dirname(__FILE__))) . '/logs/mink';
 
         $currentDateAsString = date('YmdHis');
 
-        $path = sprintf("%s/behat-%s.%s", $logDir, $currentDateAsString, $type);
+        $path = sprintf('%s/behat-%s.%s', $logDir, $currentDateAsString, $type);
         if (!file_put_contents($path, $content)) {
             throw new \RuntimeException(sprintf('Failed while trying to write log in "%s".', $path));
         }
@@ -99,28 +98,24 @@ class DebugContext extends SubContext
     }
 
     /**
-     * @param Session $session
-     *
      * @return string|null
      */
     private function getResponseHeadersLogMessage(Session $session)
     {
         try {
-            return 'Response headers:' . "\n" . print_r($session->getResponseHeaders(), true) . "\n";
+            return "Response headers:\n" . print_r($session->getResponseHeaders(), true) . "\n";
         } catch (Exception $exception) {
             return null;
         }
     }
 
     /**
-     * @param Session $session
-     *
      * @return string|null
      */
     private function getRequestContentLogMessage(Session $session)
     {
         try {
-            return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
+            return "Response content:\n" . $session->getPage()->getContent() . "\n";
         } catch (Exception $exception) {
             return null;
         }

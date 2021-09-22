@@ -11,7 +11,7 @@ class ProductExportContext extends PageObjectContext
 {
     /**
      * @When I fill in the product export configuration:
-     * @param TableNode $table
+     *
      * @throws \Exception
      */
     public function iFillInTheProductExportGeneralConfiguration(TableNode $table)
@@ -21,7 +21,6 @@ class ProductExportContext extends PageObjectContext
 
     /**
      * @Then I enter the template
-     * @param PyStringNode $template
      */
     public function iEnterTheTemplate(PyStringNode $template)
     {
@@ -30,7 +29,9 @@ class ProductExportContext extends PageObjectContext
 
     /**
      * @Given I open the :title export file
+     *
      * @param string $title
+     *
      * @throws \Exception
      */
     public function iOpenTheCreatedExportFile($title)
@@ -40,7 +41,6 @@ class ProductExportContext extends PageObjectContext
 
     /**
      * @Then it should contain the following product data:
-     * @param PyStringNode $expected
      */
     public function itShouldContainTheFollowingProductData(PyStringNode $expected)
     {
@@ -49,6 +49,7 @@ class ProductExportContext extends PageObjectContext
 
     /**
      * @Given I block products from supplier :supplierName
+     *
      * @param string $supplierName
      */
     public function iBlockProductsFromSupplier($supplierName)
@@ -58,6 +59,7 @@ class ProductExportContext extends PageObjectContext
 
     /**
      * @Given I define a minimum price filter with a value of :minPrice
+     *
      * @param string $minPrice
      */
     public function iDefineAMinimumPriceFilterWithAValueOf($minPrice)
@@ -67,6 +69,7 @@ class ProductExportContext extends PageObjectContext
 
     /**
      * @Given I click the edit icon on the export :exportName
+     *
      * @param string $exportName
      */
     public function iClickTheEditIconOnTheExport($exportName)
@@ -81,6 +84,7 @@ class ProductExportContext extends PageObjectContext
     {
         /** @var ProductExportModule $page */
         $page = $this->getPage('ProductExportModule');
+
         return $page;
     }
 }

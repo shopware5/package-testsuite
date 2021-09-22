@@ -18,7 +18,6 @@ class BackendCustomerContext extends PageObjectContext
 
     /**
      * @When I fill out the new customer form:
-     * @param TableNode $table
      */
     public function fillNewCustomerForm(TableNode $table)
     {
@@ -27,7 +26,9 @@ class BackendCustomerContext extends PageObjectContext
 
     /**
      * @When I click the edit icon on customer :firstname
+     *
      * @param string $name
+     *
      * @throws \Exception
      */
     public function iClickTheEditIconOnCustomer($name)
@@ -37,7 +38,6 @@ class BackendCustomerContext extends PageObjectContext
 
     /**
      * @When I change the following information:
-     * @param TableNode $table
      */
     public function iChangeTheFollowingInformation(TableNode $table)
     {
@@ -46,6 +46,7 @@ class BackendCustomerContext extends PageObjectContext
 
     /**
      * @When I click the delete icon on customer :firstname
+     *
      * @param string $firstname
      */
     public function iClickTheDeleteIconOnCustomer($firstname)
@@ -60,6 +61,7 @@ class BackendCustomerContext extends PageObjectContext
     {
         /** @var CustomerModule $page */
         $page = $this->getPage('CustomerModule');
+
         return $page;
     }
 }

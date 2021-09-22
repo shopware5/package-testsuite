@@ -32,8 +32,6 @@ class CustomerModule extends BackendModule
     /**
      * Fill the new customer form of the backend module with
      * the supplied data.
-     *
-     * @param array $data
      */
     public function fillNewCustomerFormWith(array $data)
     {
@@ -43,8 +41,6 @@ class CustomerModule extends BackendModule
 
     /**
      * Fill the edit customer form with the supplied data
-     *
-     * @param array $data
      */
     public function fillEditCustomerFormWith(array $data)
     {
@@ -55,8 +51,6 @@ class CustomerModule extends BackendModule
     /**
      * Click the edit icon for the customer with a given
      * firstname.
-     *
-     * @param $firstname
      */
     public function openEditFormForCustomer($firstname)
     {
@@ -68,8 +62,6 @@ class CustomerModule extends BackendModule
     /**
      * Click the delete icon for the customer with a given
      * firstname.
-     *
-     * @param $firstname
      */
     public function clickDeleteIconForCustomer($firstname)
     {
@@ -80,9 +72,6 @@ class CustomerModule extends BackendModule
 
     /**
      * Fill a form within the supplied window with the supplied form data
-     *
-     * @param Window $window
-     * @param array $data
      */
     private function fillCustomerForm(Window $window, array $data)
     {
@@ -93,7 +82,7 @@ class CustomerModule extends BackendModule
             return $row['type'] === 'paymentbox';
         });
 
-        foreach($paymentFields as $row) {
+        foreach ($paymentFields as $row) {
             $combobox = $window->find('xpath', BackendXpathBuilder::getComboboxXpathByLabel($row['label']));
             $this->fillPaymentCombobox($combobox, $row['value']);
         }
@@ -102,7 +91,6 @@ class CustomerModule extends BackendModule
     /**
      * Special helper method that fills an extJS payment info combobox
      *
-     * @param NodeElement $combobox
      * @param string $value
      */
     private function fillPaymentCombobox(NodeElement $combobox, $value)
@@ -127,6 +115,7 @@ class CustomerModule extends BackendModule
 
     /**
      * Helper method to get the "new customer" window node element
+     *
      * @return Window
      */
     private function getNewCustomerWindow()

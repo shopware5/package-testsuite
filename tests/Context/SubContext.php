@@ -10,8 +10,8 @@ use Behat\MinkExtension\Context\MinkAwareContext;
 use Cocur\Slugify\Slugify;
 use Dotenv\Dotenv;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
-use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Component\SpinTrait\SpinTrait;
+use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 
 class SubContext extends PageObjectContext implements MinkAwareContext
 {
@@ -29,7 +29,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     public function __construct()
     {
-        $dotenv = new Dotenv(dirname(__DIR__));
+        $dotenv = new Dotenv(\dirname(__DIR__));
         $dotenv->load();
     }
 
@@ -53,8 +53,6 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     /**
      * Sets parameters provided for Mink.
-     *
-     * @param array $parameters
      */
     public function setMinkParameters(array $parameters)
     {
@@ -65,8 +63,6 @@ class SubContext extends PageObjectContext implements MinkAwareContext
      * Returns specific mink parameter.
      *
      * @param string $name
-     *
-     * @return mixed
      */
     public function getMinkParameter($name)
     {
@@ -95,24 +91,27 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
+     *
      * @param string $text
-     * @param int $sleep
+     * @param int    $sleep
      */
     protected function waitForText($text, $sleep = 2)
     {
         sleep($sleep);
         $this->spin(function (SubContext $context) use ($text) {
             $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(text(), '$text')]");
-            return $result != null && count($result) > 0;
+
+            return $result != null && \count($result) > 0;
         });
     }
 
     /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
+     *
      * @param string $selector xpath selector
      * @param string $text
-     * @param int $sleep
-     * @param int $wait
+     * @param int    $sleep
+     * @param int    $wait
      */
     protected function waitForTextInElement($selector, $text, $sleep = 2, $wait = 60)
     {
@@ -121,14 +120,16 @@ class SubContext extends PageObjectContext implements MinkAwareContext
             /** @var NodeElement $baseElement */
             $baseElement = $context->getSession()->getPage()->find('xpath', $selector);
             $result = $baseElement->findAll('xpath', "/descendant::*[contains(text(), '$text')]");
-            return $result != null && count($result) > 0;
+
+            return $result != null && \count($result) > 0;
         }, $wait);
     }
 
     /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
+     *
      * @param string $text
-     * @param int $sleep
+     * @param int    $sleep
      */
     protected function waitForTextNotPresent($text, $sleep = 2)
     {
@@ -143,6 +144,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     /**
      * Checks via spin function if a locator is invisible on page, with sleep at the beginning (default 2)
+     *
      * @param string $selector css, xpath...
      * @param string $locator
      */
@@ -151,15 +153,18 @@ class SubContext extends PageObjectContext implements MinkAwareContext
         $this->spin(function (SubContext $context) use ($selector, $locator) {
             /** @var NodeElement $elem */
             $elem = $context->getSession()->getPage()->find($selector, $locator);
+
             return empty($elem) || !$elem->isVisible();
         }, 90);
     }
 
     /**
      * Checks via spin function if a locator is present on page, with sleep at the beginning (default 2)
+     *
      * @param string $selector css, xpath...
      * @param string $locator
-     * @param int $sleep
+     * @param int    $sleep
+     *
      * @return NodeElement
      */
     protected function waitForSelectorPresent($selector, $locator, $sleep = 2)
@@ -172,16 +177,19 @@ class SubContext extends PageObjectContext implements MinkAwareContext
             if ($elem === null) {
                 return false;
             }
+
             return true;
         });
+
         return $elem;
     }
 
     /**
      * Checks via spin function if a locator is not present on page, with sleep at the beginning (default 2)
+     *
      * @param string $selector css, xpath...
      * @param string $locator
-     * @param int $sleep
+     * @param int    $sleep
      */
     protected function waitForSelectorNotPresent($selector, $locator, $sleep = 2)
     {
@@ -192,26 +200,31 @@ class SubContext extends PageObjectContext implements MinkAwareContext
             if ($elem === null) {
                 return true;
             }
+
             return false;
         });
     }
 
     /**
      * Checks via a string exists
+     *
      * @param string $text
-     * @param SubContext $context
+     *
      * @return bool
      */
     protected function checkIfThereIsText($text, SubContext $context)
     {
         $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(., '$text')]");
+
         return !empty($result);
     }
 
     /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
+     *
      * @param string $text
-     * @param int $wait
+     * @param int    $wait
+     *
      * @return bool
      */
     protected function waitIfThereIsText($text, $wait = 5)
@@ -223,15 +236,18 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     /**
      * Checks via spin function if a string exists, returns false/true after $wait
+     *
      * @param string $text
-     * @param int $wait
+     * @param int    $wait
+     *
      * @return bool
      */
     protected function textExistsEventually($text, $wait = 60)
     {
         return $this->spinWithNoException(function (SubContext $context) use ($text) {
             $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(., '$text')]");
-            return $result != null && count($result) > 0;
+
+            return $result != null && \count($result) > 0;
         }, $wait);
     }
 
@@ -239,6 +255,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
     {
         $slugify = new Slugify();
         $slugify->addRule('@', 'at');
+
         return $slugify->slugify($text, $separator);
     }
 }

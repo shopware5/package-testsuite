@@ -8,6 +8,7 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 class NewArticleModule extends BackendModule
 {
     private $priceRowAnchor = 'Beliebig';
+
     protected $moduleWindowTitle = 'Artikeldetails :';
 
     /**
@@ -16,6 +17,7 @@ class NewArticleModule extends BackendModule
      * @param string $value
      * @param string $cellAnchor
      * @param string $inputName
+     *
      * @throws \Exception
      */
     public function setArticlePriceData($value, $cellAnchor, $inputName)
@@ -36,9 +38,11 @@ class NewArticleModule extends BackendModule
      * Finds the field position for the price
      *
      * @param NodeElement $cellElement
-     * @param string $anchor
-     * @return int position
+     * @param string      $anchor
+     *
      * @throws \Exception
+     *
+     * @return int position
      */
     private function findPriceDataFieldPosition($cellElement, $anchor)
     {
@@ -66,8 +70,7 @@ class NewArticleModule extends BackendModule
      * Sets the price in the corresponding input field
      *
      * @param float $value
-     * @param int $position
-     * @param $inputName
+     * @param int   $position
      *
      * @throws \Exception
      */
@@ -88,7 +91,7 @@ class NewArticleModule extends BackendModule
             ->child('div', [], 1)
             ->getXpath();
 
-        /** @var NodeElement $priceField */
+        /* @var NodeElement $priceField */
         $this->waitForSelectorPresent('xpath', $priceFieldXpath);
         $this->waitForSelectorVisible('xpath', $priceFieldXpath);
         $priceField = $row->find('xpath', $priceFieldXpath);
@@ -120,6 +123,7 @@ class NewArticleModule extends BackendModule
      * Sets the basic information of the article
      *
      * @param array $data
+     *
      * @throws \Exception
      */
     public function setBasicData($data)
@@ -132,6 +136,7 @@ class NewArticleModule extends BackendModule
      * Adds the category to the article
      *
      * @param string $name
+     *
      * @throws \Exception
      */
     public function addCategory($name)
@@ -156,6 +161,7 @@ class NewArticleModule extends BackendModule
      *
      * @param string $name
      * @param string $area
+     *
      * @throws \Exception
      */
     public function checkAddedCategory($name, $area)

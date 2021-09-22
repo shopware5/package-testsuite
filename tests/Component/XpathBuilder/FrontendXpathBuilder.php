@@ -8,11 +8,12 @@ class FrontendXpathBuilder extends BaseXpathBuilder
      * Returns xpath that selects an input field with an exact id
      *
      * @param string $id
+     *
      * @return string
      */
     public static function getInputById($id)
     {
-        return (new self)->child('input', ['@id' => $id])->getXpath();
+        return (new self())->child('input', ['@id' => $id])->getXpath();
     }
 
     /**
@@ -20,21 +21,23 @@ class FrontendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $tag
      * @param string $name
+     *
      * @return string
      */
     public static function getElementXpathByName($tag, $name)
     {
-        return (new self)->child($tag, ['~name' => $name])->getXpath();
+        return (new self())->child($tag, ['~name' => $name])->getXpath();
     }
 
     /**
      * Returns xpath that selects a form based on its action
      *
      * @param string $action
+     *
      * @return string
      */
     public static function getFormByAction($action)
     {
-        return (new self)->child('form', ['@action' => $action])->getXpath();
+        return (new self())->child('form', ['@action' => $action])->getXpath();
     }
 }

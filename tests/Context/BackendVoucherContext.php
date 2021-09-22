@@ -15,7 +15,6 @@ class BackendVoucherContext extends SubContext
 {
     /**
      * @When I fill out the voucher form:
-     * @param TableNode $table
      */
     public function fillNewVoucherForm(TableNode $table)
     {
@@ -24,6 +23,7 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @When I click the edit icon on the voucher named :name
+     *
      * @param string $name
      */
     public function iClickTheEditIconOnVoucher($name)
@@ -33,7 +33,6 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @Given I click the delete icon on the voucher named :name
-     * @param $name
      */
     public function iClickTheDeleteIconOnTheVoucherNamed($name)
     {
@@ -42,6 +41,7 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @Given I add the voucher :code to my cart
+     *
      * @param string $code
      */
     public function iAddTheVoucherToMyCart($code)
@@ -53,6 +53,7 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @Given I should be able to use the code exactly once
+     *
      * @throws \Exception
      */
     public function iShouldBeAbleToUseTheCodeExactlyOnce()
@@ -74,6 +75,7 @@ class BackendVoucherContext extends SubContext
     {
         /** @var VoucherModule $page */
         $page = $this->getPage('VoucherModule');
+
         return $page;
     }
 
@@ -81,6 +83,7 @@ class BackendVoucherContext extends SubContext
      * Get the first dynamically generated voucher code
      *
      * @param bool $voucherWasUsed
+     *
      * @return string
      */
     private function getVoucherCodeFromPage($voucherWasUsed = false)
@@ -109,6 +112,7 @@ class BackendVoucherContext extends SubContext
 
     /**
      * @param string $voucherCode
+     *
      * @throws \Exception
      */
     private function fillCartWithProductsAndGeneratedVoucher($voucherCode)
@@ -148,6 +152,7 @@ class BackendVoucherContext extends SubContext
         $backend->clickOnTabWithName('Individuelle Gutscheincodes');
 
         $usedCode = $this->getVoucherCodeFromPage(true);
+
         return $usedCode;
     }
 }

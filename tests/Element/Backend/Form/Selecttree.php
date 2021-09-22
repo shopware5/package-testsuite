@@ -11,12 +11,13 @@ class Selecttree extends ExtJsElement
 {
     /**
      * @param string $xpath
-     * @param Window $window
+     *
      * @return Selecttree
      */
     public static function createFromXpath($xpath, Window $window)
     {
         $selecttree = new self($xpath, $window->getSession());
+
         return $selecttree;
     }
 
@@ -44,6 +45,7 @@ class Selecttree extends ExtJsElement
      * Return a list of all elements of a select tree
      *
      * @param string $selectString
+     *
      * @return array
      */
     private function getSelectTreeElementXpaths($selectString)
@@ -51,7 +53,7 @@ class Selecttree extends ExtJsElement
         $xpaths = [];
 
         $categories = array_map('trim', explode('>', $selectString));
-        $lastKey = count($categories) - 1;
+        $lastKey = \count($categories) - 1;
 
         foreach ($categories as $key => $category) {
             if ($key === $lastKey) {
@@ -81,11 +83,11 @@ class Selecttree extends ExtJsElement
             ->descendant('div', ['@text' => 'Deutsch'])
             ->ancestor('div', ['~class' => 'x-tree-panel'])
             ->getXpath();
+
         return $dropdownXpath;
     }
 
     /**
-     * @param $dropdownXpath
      * @return NodeElement|null
      */
     private function getDropdownFromWindow($dropdownXpath)
@@ -93,7 +95,8 @@ class Selecttree extends ExtJsElement
         $dropdown = null;
         $this->waitFor(10, function () use (&$dropdown, $dropdownXpath) {
             $dropdown = $this->getSession()->getPage()->find('xpath', $dropdownXpath);
-            return null !== $dropdown;
+
+            return $dropdown !== null;
         });
 
         return $dropdown;

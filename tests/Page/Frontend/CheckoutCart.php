@@ -3,7 +3,6 @@
 namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
-use Shopware\Component\Api\ApiClient;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
@@ -11,12 +10,12 @@ use Shopware\Page\ContextAwarePage;
 class CheckoutCart extends ContextAwarePage
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/checkout/cart';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCssSelectors()
     {
@@ -29,7 +28,7 @@ class CheckoutCart extends ContextAwarePage
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -60,7 +59,6 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Validate the cart contains the given expected cart positions
-     * @param array $positionData
      */
     public function validateCart(array $positionData)
     {
@@ -72,6 +70,7 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Adds an article to the cart
+     *
      * @param string $article
      */
     public function addArticle($article)
@@ -89,15 +88,16 @@ class CheckoutCart extends ContextAwarePage
      * Remove the cart position at the specified index
      *
      * @param int $position
+     *
      * @throws \Exception
      */
     public function removeCartPositionAtIndex($position)
     {
         $this->open();
         $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
-        $position = (int)$position;
+        $position = (int) $position;
 
-        if ($position > count($rows)) {
+        if ($position > \count($rows)) {
             throw new \Exception(sprintf('Can\'t delete cart position #%s - no such position', $position));
         }
 
@@ -108,7 +108,7 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Checks the aggregation
-     * @param $aggregation
+     *
      * @throws \Exception
      */
     public function checkAggregation($aggregation)
@@ -151,7 +151,7 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Fills the cart with products
-     * @param array $items
+     *
      * @throws \Exception
      */
     public function fillCartWithProducts(array $items)
@@ -193,11 +193,12 @@ class CheckoutCart extends ContextAwarePage
      *
      * @param string $quantity
      * @param string $amount
+     *
      * @throws \Exception
      */
     public function checkPositionCountAndCartSum($quantity, $amount)
     {
-        if ($this->getCartPositionCount() !== (int)$quantity || $this->getCartSum() !== self::toFloat($amount)) {
+        if ($this->getCartPositionCount() !== (int) $quantity || $this->getCartSum() !== self::toFloat($amount)) {
             throw new \Exception(sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
                 $quantity, $amount, $this->getCartPositionCount(), $this->getCartSum()));
         }
@@ -221,7 +222,8 @@ class CheckoutCart extends ContextAwarePage
     {
         $this->open();
         $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
-        return count($rows);
+
+        return \count($rows);
     }
 
     /**
@@ -233,6 +235,7 @@ class CheckoutCart extends ContextAwarePage
     {
         $this->open();
         $element = $this->find('css', $this->getCssSelectors()['sum']);
+
         return self::toFloat($element->getText());
     }
 
@@ -267,12 +270,13 @@ class CheckoutCart extends ContextAwarePage
      *
      * @param CartPosition[] $expected
      * @param CartPosition[] $actual
+     *
      * @throws \Exception
      */
     private function assertCartPositionListsAreEqual(array $expected, array $actual)
     {
-        if (count($expected) !== count($actual)) {
-            throw new \Exception(sprintf('Expected %s cart positions, got %s.', count($expected), count($actual)));
+        if (\count($expected) !== \count($actual)) {
+            throw new \Exception(sprintf('Expected %s cart positions, got %s.', \count($expected), \count($actual)));
         }
 
         /** @var CartPosition $expectedPosition */
@@ -298,48 +302,44 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Compare two cart positions for equality
      *
-     * @param CartPosition $expected
-     * @param CartPosition $actual
      * @return bool
      */
     private function compareCartPositions(CartPosition $expected, CartPosition $actual)
     {
-        return $actual->getName() === $expected->getName() &&
-            strpos($actual->getNumber(), $expected->getNumber()) !== false &&
-            $actual->getQuantity() === $expected->getQuantity() &&
-            $actual->getItemPrice() === $expected->getItemPrice() &&
-            $actual->getSum() === $expected->getSum();
+        return $actual->getName() === $expected->getName()
+            && strpos($actual->getNumber(), $expected->getNumber()) !== false
+            && $actual->getQuantity() === $expected->getQuantity()
+            && $actual->getItemPrice() === $expected->getItemPrice()
+            && $actual->getSum() === $expected->getSum();
     }
 
     /**
      * Returns true if the cart contains a product with a given number and a given quantity
      *
-     * @param $number
-     * @param $quantity
      * @return bool
      */
     private function hasCartProductWithQuantity($number, $quantity)
     {
         $xPath = "//p[contains(text(), '" . $number . "')]//ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' row--product ')]//input[@name='sArticle' and @value='" . $quantity . "']";
+
         return $this->has('xpath', $xPath);
     }
 
     /**
      * Convert a given string value to a float
      *
-     * @param $string
      * @return float
      */
     private static function toFloat($string)
     {
-        if (is_float($string)) {
+        if (\is_float($string)) {
             return $string;
         }
 
         $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
-        preg_match("/([0-9]+[\\.]?[0-9]*)/", $float, $matches);
+        preg_match('/([0-9]+[\\.]?[0-9]*)/', $float, $matches);
 
-        return floatval($matches[0]);
+        return \floatval($matches[0]);
     }
 
     /**
@@ -361,7 +361,7 @@ class CheckoutCart extends ContextAwarePage
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function verifyPage()
     {
@@ -373,7 +373,6 @@ class CheckoutCart extends ContextAwarePage
     }
 
     /**
-     * @param array $positionData
      * @return array
      */
     private function hydratePositionData(array $positionData)
@@ -381,6 +380,7 @@ class CheckoutCart extends ContextAwarePage
         $expectedPositions = array_map(function ($position) {
             return CartPosition::fromArray($position);
         }, $positionData);
+
         return $expectedPositions;
     }
 }

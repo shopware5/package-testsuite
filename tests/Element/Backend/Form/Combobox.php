@@ -31,8 +31,6 @@ class Combobox extends ExtJsElement
     /**
      * Helper method that returns true if two NodeElements touch
      *
-     * @param NodeElement $elemA
-     * @param NodeElement $elemB
      * @return bool
      */
     private function elementsTouch(NodeElement $elemA, NodeElement $elemB)
@@ -53,18 +51,20 @@ class Combobox extends ExtJsElement
      *
      * @param string $id
      * @param string $side Can be either top, bottom, left or right
+     *
      * @return int
      */
     private function getYCoordinateForElement($id, $side = 'top')
     {
-        return (int)$this->getSession()->getDriver()->evaluateScript(
-            "return document.getElementById('" . $id . "').getBoundingClientRect()." . $side . ";"
+        return (int) $this->getSession()->getDriver()->evaluateScript(
+            "return document.getElementById('" . $id . "').getBoundingClientRect()." . $side . ';'
         );
     }
 
     /**
-     * @return NodeElement
      * @throws \Exception
+     *
+     * @return NodeElement
      */
     private function getComboboxPebble()
     {
@@ -97,12 +97,13 @@ class Combobox extends ExtJsElement
 
         $dropdownsXpath = $this->getDropdownsXpath();
         $dropdowns = $this->getSession()->getPage()->findAll('xpath', $dropdownsXpath);
+
         return $dropdowns;
     }
 
     /**
      * @param string $value
-     * @param NodeElement $dropdown
+     *
      * @return NodeElement
      */
     private function getOptionByValue($value, NodeElement $dropdown)
@@ -112,6 +113,7 @@ class Combobox extends ExtJsElement
             ->getXpath();
 
         $option = $dropdown->find('xpath', $optionXpath);
+
         return $option;
     }
 }

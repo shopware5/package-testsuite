@@ -12,7 +12,6 @@ class FrontendCheckoutContext extends SubContext
 {
     /**
      * @Given the aggregations should look like this:
-     * @param TableNode $aggregations
      */
     public function theCartAggregationsShouldLookLikeThis(TableNode $aggregations)
     {
@@ -24,7 +23,6 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @When I fill in the registration form:
-     * @param TableNode $customerData
      */
     public function iFillInTheRegistrationForm(TableNode $customerData)
     {
@@ -35,6 +33,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @When I add the article :number to my basket
+     *
      * @param string $number
      */
     public function iAddTheArticleToMyBasket($number)
@@ -47,6 +46,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @When I remove the article on position :position
+     *
      * @param string $position
      */
     public function iRemoveTheArticleOnPosition($position)
@@ -100,7 +100,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @Given the cart contains the following products:
-     * @param TableNode $items
+     *
      * @throws \Exception
      */
     public function theCartContainsTheFollowingProducts(TableNode $items)
@@ -115,6 +115,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @Given I change my payment method to :paymentMethod
+     *
      * @param string $paymentMethod
      */
     public function changePaymentMethodTo($paymentMethod)
@@ -127,6 +128,7 @@ class FrontendCheckoutContext extends SubContext
 
     /**
      * @Given /^I change my shipping method to "([^"]*)"(?::)?$/
+     *
      * @param string $shippingMethod
      */
     public function changeShippingMethodTo($shippingMethod)

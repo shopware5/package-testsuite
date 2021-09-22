@@ -5,6 +5,7 @@
 /tests/vendor/
 /tests/logs/mink/*
 !/tests/logs/mink/.gitkeep
+/tests/.php-cs-fixer.cache
 /files/*
 !/files/.gitkeep
 /temp/*

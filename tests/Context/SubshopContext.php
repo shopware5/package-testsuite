@@ -9,25 +9,26 @@ class SubshopContext extends SubContext
 {
     /**
      * @Given I am in subshop with URL :url
-     * @param $url
      */
     public function iAmInSubshopWithURL($url)
     {
-        if (substr($url, 0, 4) === "http") {
+        if (substr($url, 0, 4) === 'http') {
             $this->setMinkParameters([
                 'base_url' => $url,
             ]);
+
             return;
         }
         $baseUrl = $this->getMinkParameter('base_url');
         $this->setMinkParameters([
-            'base_url' => rtrim($baseUrl, "/") . "/" . ltrim($url, "/"),
+            'base_url' => rtrim($baseUrl, '/') . '/' . ltrim($url, '/'),
         ]);
     }
 
     /**
      * @Then I should be able to access the subshop via using :url
      * @Then I should be able to access the shop via using :url
+     *
      * @param string $url
      */
     public function iShouldBeAbleToAccessTheSubshopViaUsing($url)
@@ -37,6 +38,7 @@ class SubshopContext extends SubContext
 
     /**
      * @When I click the :label menu element
+     *
      * @param string $label
      */
     public function iClickTheMenuElement($label)
@@ -48,6 +50,7 @@ class SubshopContext extends SubContext
 
     /**
      * @When I click the :label settings element
+     *
      * @param string $label
      */
     public function iClickTheSettingsElement($label)
@@ -59,8 +62,6 @@ class SubshopContext extends SubContext
 
     /**
      * @Given I fill in and submit the :formname configuration form:
-     * @param $formname
-     * @param TableNode $table
      */
     public function iFillTheConfigurationForm($formname, TableNode $table)
     {

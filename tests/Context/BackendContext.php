@@ -13,6 +13,7 @@ class BackendContext extends SubContext
     /**
      * @Given I am logged into the backend
      * @When I log in with user :user and password :password
+     *
      * @param string $user
      * @param string $password
      */
@@ -25,6 +26,7 @@ class BackendContext extends SubContext
 
     /**
      * @When I hover backend menu item :item
+     *
      * @param string $itemName
      */
     public function iHoverBackendMenuItem($itemName)
@@ -36,6 +38,7 @@ class BackendContext extends SubContext
 
     /**
      * @When I click on backend menu item :item
+     *
      * @param string $itemName
      */
     public function iClickOnBackendMenuItem($itemName)
@@ -45,6 +48,7 @@ class BackendContext extends SubContext
 
     /**
      * @When I click on backend menu item that contains :text
+     *
      * @param string $text
      */
     public function iClickOnBackendMenuItemThatContains($text)
@@ -54,7 +58,6 @@ class BackendContext extends SubContext
 
     /**
      * @Given the following shipping options exist:
-     * @param TableNode $table
      */
     public function theFollowingShippingOptionsExist(TableNode $table)
     {
@@ -72,8 +75,8 @@ class BackendContext extends SubContext
 
     /**
      * @Given the shipping method :method has the following shipping costs:
+     *
      * @param string $method
-     * @param TableNode $table
      */
     public function theShippingMethodHasTheFollowingShippingCosts($method, TableNode $table)
     {
@@ -84,6 +87,7 @@ class BackendContext extends SubContext
 
     /**
      * @When I click the :label button
+     *
      * @param string $label
      */
     public function clickButtonByLabel($label)
@@ -105,6 +109,7 @@ class BackendContext extends SubContext
 
     /**
      * @When I click on the :tabName tab
+     *
      * @param string $tabName
      */
     public function iClickOnTheTab($tabName)

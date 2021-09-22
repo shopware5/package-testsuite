@@ -9,7 +9,7 @@ use Shopware\Page\ContextAwarePage;
 class Detail extends ContextAwarePage
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/detail/index/sArticle/{articleId}?number={number}';
 
@@ -17,6 +17,7 @@ class Detail extends ContextAwarePage
      * Puts the current article <quantity> times to basket
      *
      * @param int $quantity
+     *
      * @throws ElementNotFoundException
      */
     public function toBasket($quantity = 1)
@@ -41,11 +42,11 @@ class Detail extends ContextAwarePage
         $this->waitForSelectorNotPresent('xpath', $overlayXpath);
     }
 
-
     /**
      * Checks if the amount and the corresponding graduated price are matching correctly
      *
      * @param string $graduatedprice
+     *
      * @throws \Exception
      */
     public function checkGraduatedPrice($graduatedprice)
@@ -65,6 +66,7 @@ class Detail extends ContextAwarePage
      * Checks if the base price information is shown correctly
      *
      * @param string $entry
+     *
      * @throws \Exception
      */
     public function checkBasePrice($entry)

@@ -11,7 +11,6 @@ class BackendPaymentContext extends PageObjectContext
 {
     /**
      * @Given the following payment methods are activated:
-     * @param TableNode $table
      */
     public function theFollowingPaymentMethodsAreActivated(TableNode $table)
     {

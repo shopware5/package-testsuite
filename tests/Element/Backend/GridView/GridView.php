@@ -7,7 +7,6 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\ExtJsElement;
 
 /**
- * Class GridView
  * Represents an ExtJS grid view
  */
 class GridView extends ExtJsElement
@@ -55,8 +54,10 @@ class GridView extends ExtJsElement
      * Get the first row that contains given string
      *
      * @param string $content
-     * @return GridViewRow
+     *
      * @throws \Exception
+     *
+     * @return GridViewRow
      */
     public function getRowByContent($content)
     {
@@ -98,6 +99,7 @@ class GridView extends ExtJsElement
         $reloadButtonXpath = BackendXpathBuilder::create()
             ->descendant('span', ['~class' => 'x-tbar-loading'])
             ->getXpath();
+
         return $reloadButtonXpath;
     }
 
@@ -109,6 +111,7 @@ class GridView extends ExtJsElement
         $rowsXpath = BackendXpathBuilder::create()
             ->descendant('tr', ['~class' => 'x-grid-row'])
             ->getXpath();
+
         return $rowsXpath;
     }
 

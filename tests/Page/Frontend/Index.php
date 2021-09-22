@@ -9,12 +9,12 @@ use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 class Index extends Page
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -45,6 +45,7 @@ class Index extends Page
 
     /**
      * @param string $subCategory
+     *
      * @return NodeElement|null
      */
     public function getSubNavElement($subCategory)
@@ -54,6 +55,7 @@ class Index extends Page
 
     /**
      * @param string $mainCategory
+     *
      * @return NodeElement|null
      */
     public function getMainNavElement($mainCategory)
@@ -63,22 +65,26 @@ class Index extends Page
 
     /**
      * @param string $productName
+     *
      * @return NodeElement
      */
     public function getProductListingBoxElement($productName)
     {
         $xpath = $this->getXPathSelectors()['templateListingProductBoxByName'];
+
         return $this->find('xpath', str_replace('{PRODUCTNAME}', $productName, $xpath));
     }
 
     /**
      * @param string $title
      * @param string $template
+     *
      * @return NodeElement|null
      */
     public function getNavElement($title, $template)
     {
         $xpath = $this->getXPathSelectors()[$template];
+
         return $this->find('xpath', str_replace('{NAVTITLE}', $title, $xpath));
     }
 }
