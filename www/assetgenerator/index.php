@@ -4,31 +4,32 @@ function getRandomWord($len = 10)
 {
     $word = array_merge(range('a', 'z'), range('A', 'Z'));
     shuffle($word);
+
     return substr(implode($word), 0, $len);
 }
 
 $filename = $_GET['file'];
 
 if (empty($filename)) {
-    $filename = getRandomWord().'.jpg';
+    $filename = getRandomWord() . '.jpg';
 }
 
 $allowedExtensions = ['png', 'jpg', 'gif'];
 
 $filenameExploded = explode('.', $filename);
 
-if (count($filenameExploded) == 1) {
-    throw new Exception("No filename extension in url.");
+if (\count($filenameExploded) === 1) {
+    throw new Exception('No filename extension in url.');
 }
 
-$extension = strtolower($filenameExploded[count($filenameExploded) - 1]);
+$extension = strtolower($filenameExploded[\count($filenameExploded) - 1]);
 
-if ($extension == 'jpeg') {
+if ($extension === 'jpeg') {
     $extension = 'jpg';
 }
 
-if (!in_array($extension, $allowedExtensions)) {
-    throw new Exception("Filename extension not allowed/unknown");
+if (!\in_array($extension, $allowedExtensions)) {
+    throw new Exception('Filename extension not allowed/unknown');
 }
 
 require_once 'classes/ImageConfig.php';
@@ -40,16 +41,16 @@ $path = explode('/', $filename);
 
 $size = [];
 
-if (count($path) > 1) {
+if (\count($path) > 1) {
     $size = explode('x', strtolower($path[0]));
 }
 
-if (count($size) == 2 && (int)$size[0] > 0 && (int)$size[1] > 0) {
-    $config->setImageWidth((int)$size[0]);
-    $config->setImageHeight((int)$size[1]);
+if (\count($size) === 2 && (int) $size[0] > 0 && (int) $size[1] > 0) {
+    $config->setImageWidth((int) $size[0]);
+    $config->setImageHeight((int) $size[1]);
 }
 
-$config->setText($bareFilename = explode('.', $path[count($path) - 1])[0]);
+$config->setText($bareFilename = explode('.', $path[\count($path) - 1])[0]);
 
 $generator = new RandomImageGenerator($config);
 $imgRes = $generator->getImageData();

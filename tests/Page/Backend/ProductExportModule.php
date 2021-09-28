@@ -2,26 +2,36 @@
 
 namespace Shopware\Page\Backend;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\GridView\GridViewRow;
 
 class ProductExportModule extends BackendModule
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $path = '/backend/?app=ProductFeed';
 
-    /** @var string */
-    protected $moduleWindowTitle = 'Produktexporte';
+    protected string $moduleWindowTitle = 'Produktexporte';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $editorWindowTitle = 'Feed - Konfiguration';
 
     /**
      * {@inheritdoc}
      */
-    public function verify(array $urlParameters)
+    public function verify(array $urlParameters): bool
     {
-        return null !== $this->getModuleWindow();
+        try {
+            $this->getModuleWindow();
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -39,9 +49,10 @@ class ProductExportModule extends BackendModule
      * Enters the template on which the product export is based of
      *
      * @param string $template The template itself
+     *
      * @throws \Exception
      */
-    public function enterTemplate($template)
+    public function enterTemplate(string $template): void
     {
         $editor = $this->getEditorWindow(false);
 
@@ -60,7 +71,6 @@ class ProductExportModule extends BackendModule
     /**
      * Open a product export
      *
-     * @param $exportTitle
      * @throws \Exception
      */
     public function openExport($exportTitle)
@@ -101,7 +111,7 @@ class ProductExportModule extends BackendModule
      */
     public function addMinimumPriceFilter($minPrice)
     {
-        $this->getEditorWindow()->getInput('Preis grösser:')->setValue((int)$minPrice);
+        $this->getEditorWindow()->getInput('Preis grösser:')->setValue((int) $minPrice);
     }
 
     /**
@@ -116,10 +126,9 @@ class ProductExportModule extends BackendModule
     }
 
     /**
-     * @param string $expected
      * @throws \Exception
      */
-    public function checkExportResult($expected)
+    public function checkExportResult(string $expected): void
     {
         $actual = $this->getText();
 
@@ -132,6 +141,7 @@ class ProductExportModule extends BackendModule
      * Normalize a given string by removing tabs, spaces and newlines from, allowing better comparison
      *
      * @param string $text
+     *
      * @return string
      */
     private function normalizeText($text)
@@ -140,7 +150,6 @@ class ProductExportModule extends BackendModule
     }
 
     /**
-     * @param GridViewRow $exportRow
      * @return string
      */
     private function getExportUrl(GridViewRow $exportRow)

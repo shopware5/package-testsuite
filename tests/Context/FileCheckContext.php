@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Shopware\Page\Backend\SystemInfoModule;
@@ -7,10 +9,14 @@ use Shopware\Page\Backend\SystemInfoModule;
 class FileCheckContext extends SubContext
 {
     private $testPath;
-    private $folderRequirementLabel = 'media/music/';
-    private $fileRequirementLabel = 'engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap.php';
-    private $renamedFileRequirementLabel = '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap-.php';
-    private $unfulfilledIcon = 'cross';
+
+    private string $folderRequirementLabel = 'media/music/';
+
+    private string $fileRequirementLabel = 'engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap.php';
+
+    private string $renamedFileRequirementLabel = '/engine/Shopware/Plugins/Default/Frontend/TagCloud/Bootstrap-.php';
+
+    private string $unfulfilledIcon = 'cross';
 
     public function __construct()
     {
@@ -21,16 +27,15 @@ class FileCheckContext extends SubContext
     /**
      * @Given the filecheck requirements are not met
      */
-    public function theFilecheckRequirementsAreNotMet()
+    public function theFilecheckRequirementsAreNotMet(): void
     {
         $this->setRequirementsFulfillment(false);
     }
 
-
     /**
      * @When I correct the :requirement requirement
      */
-    public function iCorrectTheRequirement($requirement)
+    public function iCorrectTheRequirement($requirement): void
     {
         $this->setRequirementsFulfillment(true, $requirement);
     }
@@ -39,10 +44,9 @@ class FileCheckContext extends SubContext
      * @Then a :requirement requirement should have a :icon as status
      * @Then all :requirement requirements should have a :icon as status
      */
-    public function aRequirementShouldOwnAsStatus($requirement, $icon)
+    public function aRequirementShouldOwnAsStatus($requirement, $icon): void
     {
-        /** @var SystemInfoModule $page */
-        $page = $this->getPage('SystemInfoModule');
+        $page = $this->getValidPage('SystemInfoModule', SystemInfoModule::class);
 
         $this->waitForText('engine');
         $requirementLabel = $requirement === 'folder' ? $this->folderRequirementLabel : $this->fileRequirementLabel;
@@ -53,17 +57,18 @@ class FileCheckContext extends SubContext
         );
     }
 
-
     /**
      * Fakes an unfulfilled requirement or undoes it
-     * @param bool $meetRequirements Determines if the requirement should be met or not
-     * @param string $type Determines if the requirement should be defined fo a specific element (optional)
+     *
+     * @param bool   $meetRequirements Determines if the requirement should be met or not
+     * @param string $type             Determines if the requirement should be defined fo a specific element (optional)
      */
-    private function setRequirementsFulfillment($meetRequirements, $type = '')
+    private function setRequirementsFulfillment(bool $meetRequirements, string $type = ''): void
     {
         if ($meetRequirements === false) {
             rename($this->testPath . '/' . $this->fileRequirementLabel, $this->testPath . $this->renamedFileRequirementLabel);
             chmod($this->testPath . '/' . $this->folderRequirementLabel, 0444);
+
             return;
         }
 

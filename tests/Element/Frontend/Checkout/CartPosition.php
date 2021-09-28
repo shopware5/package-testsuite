@@ -32,9 +32,9 @@ class CartPosition
     /**
      * @param string $name
      * @param string $number
-     * @param int $quantity
-     * @param float $itemPrice
-     * @param float $sum
+     * @param int    $quantity
+     * @param float  $itemPrice
+     * @param float  $sum
      */
     private function __construct($name, $number, $quantity, $itemPrice, $sum)
     {
@@ -46,17 +46,17 @@ class CartPosition
     }
 
     /**
-     * @param array $data
-     * @return CartPosition
      * @throws \Exception
+     *
+     * @return CartPosition
      */
     public static function fromArray(array $data)
     {
-        if (!array_key_exists('name', $data) ||
-            !array_key_exists('number', $data) ||
-            !array_key_exists('quantity', $data) ||
-            !array_key_exists('itemPrice', $data) ||
-            !array_key_exists('sum', $data)
+        if (!\array_key_exists('name', $data)
+            || !\array_key_exists('number', $data)
+            || !\array_key_exists('quantity', $data)
+            || !\array_key_exists('itemPrice', $data)
+            || !\array_key_exists('sum', $data)
         ) {
             throw new \Exception('Not enough arguments to create CartPosition from array.');
         }
@@ -116,17 +116,16 @@ class CartPosition
     /**
      * Convert a given string value to a float
      *
-     * @param $string
      * @return float
      */
     private static function toFloat($string)
     {
-        if (is_float($string)) {
+        if (\is_float($string)) {
             return $string;
         }
 
         $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
-        preg_match("/([0-9]+[\\.]?[0-9]*)/", $float, $matches);
+        preg_match('/([0-9]+[\\.]?[0-9]*)/', $float, $matches);
 
         return (float) $matches[0];
     }

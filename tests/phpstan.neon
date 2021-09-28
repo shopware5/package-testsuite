@@ -1,0 +1,12 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+    level: 8
+    paths:
+        - Component
+        - Context
+        - Element
+        - Page
+    ignoreErrors:
+        - '#has parameter \$.* with no value type specified in iterable type Behat\\Gherkin\\Node\\TableNode#'

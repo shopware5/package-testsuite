@@ -7,12 +7,11 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 class PaymentModule extends BackendModule
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/backend/?app=Payment';
 
-    /** @var string */
-    protected $moduleWindowTitle = 'Zahlungsarten';
+    protected string $moduleWindowTitle = 'Zahlungsarten';
 
     /**
      * Activate a given payment method
@@ -44,7 +43,6 @@ class PaymentModule extends BackendModule
     }
 
     /**
-     * @param $name
      * @return string
      */
     private function getPaymentMethodXpath($name)
@@ -57,5 +55,3 @@ class PaymentModule extends BackendModule
         return $paymentMethodXpath;
     }
 }
-
-//div[starts-with(@id, 'payment-main-tree')]/descendant::div[contains(concat(' ', normalize-space(@class), ' '), ' x-grid-cell-inner ') and ./descendant-or-self::*[text()[contains(.,'SEPA (')]]]

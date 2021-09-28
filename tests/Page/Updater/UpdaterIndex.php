@@ -7,9 +7,8 @@ use Shopware\Page\ContextAwarePage;
 
 class UpdaterIndex extends ContextAwarePage
 {
-
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/recovery/update/';
 
@@ -41,7 +40,6 @@ class UpdaterIndex extends ContextAwarePage
 
     /**
      * Advances to the next updater page
-     *
      */
     public function advance()
     {
@@ -62,11 +60,10 @@ class UpdaterIndex extends ContextAwarePage
 
     /**
      * Indicates the finished Cleanup step
-     *
      */
     public function finishCleanup()
     {
-        $textNotPresent = $this->waitForTextNotPresent("entfernte Dateien");
+        $textNotPresent = $this->waitForTextNotPresent('entfernte Dateien');
         $indicatorNotPresent = $this->waitForSelectorNotPresent('css', '.loading-indicator');
 
         if ($textNotPresent === false || $indicatorNotPresent === false) {
@@ -78,7 +75,6 @@ class UpdaterIndex extends ContextAwarePage
      * Provides the handling of the update-asset folder after the update is finshed
      *
      * @param string $updateTitle Text which indicates the hint to remove the update assets
-     *
      */
     public function handleUpdateAssets($updateTitle)
     {
@@ -89,9 +85,8 @@ class UpdaterIndex extends ContextAwarePage
      * Advances to the next updater page
      *
      * @param string $stepName Name of the step from which the navigation will proceed
-     *
      */
-    public function advanceToStep($stepName)
+    public function advanceToStep(string $stepName): void
     {
         $xpath = $this->getXPathSelectors();
         $forwardButton = $this->waitForSelectorPresent('xpath', $xpath[$stepName]);

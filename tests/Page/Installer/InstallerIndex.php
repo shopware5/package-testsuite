@@ -8,7 +8,7 @@ use Shopware\Page\ContextAwarePage;
 class InstallerIndex extends ContextAwarePage
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/recovery/install/';
 
@@ -102,9 +102,7 @@ class InstallerIndex extends ContextAwarePage
                 $schemaInput = $this->find('xpath', $schemaInputXpath);
 
                 // Element will be replaced with a <select> by the onFocus listener on $schemaInput
-                if($schemaInput) {
-                    $schemaInput->focus();
-                }
+                $schemaInput->focus();
 
                 // Wait for the onFocus listener to finish its AJAX request & replace
                 $schemaSelect = $this->waitForSelectorPresent('xpath', $schemaSelectXpath, 10);
@@ -137,7 +135,6 @@ class InstallerIndex extends ContextAwarePage
 
     /**
      * Returns to the previous page when the database was already imported
-     *
      */
     public function returnToPreviousDbPage()
     {
@@ -162,7 +159,8 @@ class InstallerIndex extends ContextAwarePage
      * Checks if a field possesses the attribute "disbled"
      *
      * @param string $selector Defines which selector should be used
-     * @param string $locator Indicates which field would be checked
+     * @param string $locator  Indicates which field would be checked
+     *
      * @throws \Exception
      */
     public function checkIfDisabled($selector, $locator)
@@ -180,7 +178,7 @@ class InstallerIndex extends ContextAwarePage
     /**
      * Checks if the new shop is available after installation
      *
-     * @param string $type Frontend or Backend of the shop
+     * @param string $type   Frontend or Backend of the shop
      * @param string $target Actual target of the link
      **/
     public function checkIfShopIsAvailable($type, $target)

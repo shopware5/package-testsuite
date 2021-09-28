@@ -6,8 +6,6 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 
 /**
- * Class ExtJsElement
- *
  * Base class for all ExtJs element representations.
  *
  * Elements are identified by an xpath expression and the current session.
@@ -22,8 +20,6 @@ use Behat\Mink\Session;
 abstract class ExtJsElement extends NodeElement
 {
     /**
-     * ExtJsElement constructor.
-     *
      * Behat expects an xpath to identify an element as well as the current session,
      * as node elements are accessed and manipulated lazily & in real time. Xpaths
      * should always start at the page root level, i.e. //* or BaseXpathBuilder::create();
@@ -34,7 +30,6 @@ abstract class ExtJsElement extends NodeElement
      * for an example of this abstract xpath handling.
      *
      * @param string $xpath
-     * @param Session $session
      */
     public function __construct($xpath, Session $session)
     {
@@ -65,12 +60,12 @@ abstract class ExtJsElement extends NodeElement
 
         // Check if object exists
         if (!$this->isValid()) {
-            throw new \Exception('Could not find element of type ' . get_class($this) . ' with xpath: ' . $this->getXpath());
+            throw new \Exception('Could not find element of type ' . \get_class($this) . ' with xpath: ' . $this->getXpath());
         }
 
         // Check if object is visible
         if (!$this->isVisible()) {
-            throw new \Exception('Element of type ' . get_class($this) . ' not visible.');
+            throw new \Exception('Element of type ' . \get_class($this) . ' not visible.');
         }
     }
 }

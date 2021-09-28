@@ -8,17 +8,15 @@ use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 class NewArticleModule extends BackendModule
 {
     private $priceRowAnchor = 'Beliebig';
-    protected $moduleWindowTitle = 'Artikeldetails :';
+
+    protected string $moduleWindowTitle = 'Artikeldetails :';
 
     /**
      * Sets the price or other data for the article
      *
-     * @param string $value
-     * @param string $cellAnchor
-     * @param string $inputName
      * @throws \Exception
      */
-    public function setArticlePriceData($value, $cellAnchor, $inputName)
+    public function setArticlePriceData(string $value, string $cellAnchor, string $inputName): void
     {
         $window = $this->getModuleWindow(false);
         $builder = new BackendXpathBuilder();
@@ -35,12 +33,11 @@ class NewArticleModule extends BackendModule
     /**
      * Finds the field position for the price
      *
-     * @param NodeElement $cellElement
-     * @param string $anchor
-     * @return int position
      * @throws \Exception
+     *
+     * @return int position
      */
-    private function findPriceDataFieldPosition($cellElement, $anchor)
+    private function findPriceDataFieldPosition(NodeElement $cellElement, string $anchor): int
     {
         $builder = new BackendXpathBuilder();
         $positionIndex = 1;
@@ -49,10 +46,8 @@ class NewArticleModule extends BackendModule
         $this->waitForSelectorPresent('xpath', $cellParent->getXpath());
         $this->waitForSelectorVisible('xpath', $cellParent->getXpath());
 
-        /** @var NodeElement[] $cellList */
         $cells = $cellParent->findAll('xpath', $builder->child('div', ['~class' => 'x-column-header'])->getXpath());
 
-        /** @var NodeElement $cell */
         foreach ($cells as $cell) {
             if ($cell->getText() === $anchor) {
                 return $positionIndex;
@@ -65,13 +60,9 @@ class NewArticleModule extends BackendModule
     /**
      * Sets the price in the corresponding input field
      *
-     * @param float $value
-     * @param int $position
-     * @param $inputName
-     *
      * @throws \Exception
      */
-    private function setPriceData($value, $position, $inputName)
+    private function setPriceData(string $value, int $position, string $inputName)
     {
         $window = $this->getModuleWindow(false);
         $builder = new BackendXpathBuilder();
@@ -88,7 +79,7 @@ class NewArticleModule extends BackendModule
             ->child('div', [], 1)
             ->getXpath();
 
-        /** @var NodeElement $priceField */
+        /* @var NodeElement $priceField */
         $this->waitForSelectorPresent('xpath', $priceFieldXpath);
         $this->waitForSelectorVisible('xpath', $priceFieldXpath);
         $priceField = $row->find('xpath', $priceFieldXpath);
@@ -120,6 +111,7 @@ class NewArticleModule extends BackendModule
      * Sets the basic information of the article
      *
      * @param array $data
+     *
      * @throws \Exception
      */
     public function setBasicData($data)
@@ -132,6 +124,7 @@ class NewArticleModule extends BackendModule
      * Adds the category to the article
      *
      * @param string $name
+     *
      * @throws \Exception
      */
     public function addCategory($name)
@@ -156,6 +149,7 @@ class NewArticleModule extends BackendModule
      *
      * @param string $name
      * @param string $area
+     *
      * @throws \Exception
      */
     public function checkAddedCategory($name, $area)

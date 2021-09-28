@@ -1,86 +1,77 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectContext;
 use Shopware\Page\Backend\ProductExportModule;
 
-class ProductExportContext extends PageObjectContext
+class ProductExportContext extends SubContext
 {
     /**
      * @When I fill in the product export configuration:
-     * @param TableNode $table
+     *
      * @throws \Exception
      */
-    public function iFillInTheProductExportGeneralConfiguration(TableNode $table)
+    public function iFillInTheProductExportGeneralConfiguration(TableNode $table): void
     {
         $this->getModulePage()->fillConfigurationForm($table->getHash());
     }
 
     /**
      * @Then I enter the template
-     * @param PyStringNode $template
      */
-    public function iEnterTheTemplate(PyStringNode $template)
+    public function iEnterTheTemplate(PyStringNode $template): void
     {
-        $this->getModulePage()->enterTemplate($template);
+        $this->getModulePage()->enterTemplate($template->getRaw());
     }
 
     /**
      * @Given I open the :title export file
-     * @param string $title
+     *
      * @throws \Exception
      */
-    public function iOpenTheCreatedExportFile($title)
+    public function iOpenTheCreatedExportFile(string $title): void
     {
         $this->getModulePage()->openExport($title);
     }
 
     /**
      * @Then it should contain the following product data:
-     * @param PyStringNode $expected
      */
-    public function itShouldContainTheFollowingProductData(PyStringNode $expected)
+    public function itShouldContainTheFollowingProductData(PyStringNode $expected): void
     {
-        $this->getModulePage()->checkExportResult($expected);
+        $this->getModulePage()->checkExportResult($expected->getRaw());
     }
 
     /**
      * @Given I block products from supplier :supplierName
-     * @param string $supplierName
      */
-    public function iBlockProductsFromSupplier($supplierName)
+    public function iBlockProductsFromSupplier(string $supplierName): void
     {
         $this->getModulePage()->blockSupplier($supplierName);
     }
 
     /**
      * @Given I define a minimum price filter with a value of :minPrice
-     * @param string $minPrice
      */
-    public function iDefineAMinimumPriceFilterWithAValueOf($minPrice)
+    public function iDefineAMinimumPriceFilterWithAValueOf(string $minPrice): void
     {
         $this->getModulePage()->addMinimumPriceFilter($minPrice);
     }
 
     /**
      * @Given I click the edit icon on the export :exportName
-     * @param string $exportName
      */
-    public function iClickTheEditIconOnTheExport($exportName)
+    public function iClickTheEditIconOnTheExport(string $exportName): void
     {
         $this->getModulePage()->clickEditIconForExport($exportName);
     }
 
-    /**
-     * @return ProductExportModule|null
-     */
-    private function getModulePage()
+    private function getModulePage(): ProductExportModule
     {
-        /** @var ProductExportModule $page */
-        $page = $this->getPage('ProductExportModule');
-        return $page;
+        return $this->getValidPage('ProductExportModule', ProductExportModule::class);
     }
 }

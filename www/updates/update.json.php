@@ -1,19 +1,19 @@
 <?php
+
 header('Content-Type: application/json');
 
-$shopwareVersion = array_key_exists('shopware_version', $_GET) ? $_GET['shopware_version'] : null;
+$shopwareVersion = $_GET['shopware_version'] ?? null;
 $filename = '/var/www/cdn/update.zip';
 $size = filesize($filename);
 $sha1 = sha1_file($filename);
 
-
 if (!$sha1 || !$size || !file_exists($filename) || !$shopwareVersion) {
-    echo json_encode(['message' => 'No update file found.']);
+    echo json_encode(['message' => 'No update file found.'], JSON_THROW_ON_ERROR);
     exit;
 }
 
 $updateVersion = explode('.', $shopwareVersion);
-$updateVersion[count($updateVersion) - 1]++;
+++$updateVersion[\count($updateVersion) - 1];
 $updateVersion = implode('.', $updateVersion);
 
 echo json_encode([
@@ -116,4 +116,4 @@ echo json_encode([
         ],
     ],
     'isNewer' => true,
-]);
+], JSON_THROW_ON_ERROR);

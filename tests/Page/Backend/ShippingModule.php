@@ -3,26 +3,26 @@
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Window;
 
 class ShippingModule extends BackendModule
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/backend/?app=Shipping';
 
-    /** @var string */
-    protected $moduleWindowTitle = 'Versandkosten Verwaltung';
+    protected string $moduleWindowTitle = 'Versandkosten Verwaltung';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $editorWindowTitle = 'Versandkosten';
 
     /**
      * Create a new shipping method from the details provided.
-     *
-     * @param array $shipping
      */
     public function createShippingMethodIfNotExists(array $shipping)
     {
@@ -43,18 +43,18 @@ class ShippingModule extends BackendModule
         $this->fillCell($costCell, $shipping['costs']);
 
         // Set optional shipping free limit
-        if (array_key_exists('shippingfree', $shipping)) {
+        if (\array_key_exists('shippingfree', $shipping)) {
             $editor->getInput('Versandkosten frei ab:')->setValue($shipping['shippingfree']);
         }
 
         // Activate payment methods if configured
-        if (array_key_exists('activePaymentMethods', $shipping)) {
+        if (\array_key_exists('activePaymentMethods', $shipping)) {
             $paymentMethods = $this->extractPaymentMethodsToActivate($shipping);
             $this->activatePaymentMethods($editor, $paymentMethods);
         }
 
         // Activate countries if configured
-        if (array_key_exists('activeCountries', $shipping)) {
+        if (\array_key_exists('activeCountries', $shipping)) {
             $countries = $this->extractShippingCountriesToActivate($shipping);
             $this->activateCountries($editor, $countries);
         }
@@ -82,11 +82,9 @@ class ShippingModule extends BackendModule
     /**
      * Set the shipping cost configuration for a given shipping method
      *
-     * @param string $methodName
-     * @param array $costData
      * @throws \Exception
      */
-    public function setShippingCosts($methodName, array $costData)
+    public function setShippingCosts(string $methodName, array $costData): void
     {
         $this->open();
         $window = $this->getModuleWindow();
@@ -137,33 +135,29 @@ class ShippingModule extends BackendModule
 
     /**
      * Helper method that returns true if a given shipping method already exists
-     *
-     * @param string $name
-     * @return bool
      */
-    private function shippingMethodExists($name)
+    private function shippingMethodExists(string $name): bool
     {
-        $shippingMethod = $this->find('xpath', BackendXpathBuilder::create()
-            ->child('strong', ['@text' => $name])
-            ->getXpath());
+        try {
+            $this->find('xpath', BackendXpathBuilder::create()->child('strong', ['@text' => $name])->getXpath());
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
 
-        return null !== $shippingMethod;
+        return true;
     }
 
     /**
      * Activated a given set of payment methods for the shipping method that is currently being edited
-     *
-     * @param NodeElement $editor
-     * @param array $paymentMethods
      */
-    private function activatePaymentMethods(NodeElement $editor, array $paymentMethods)
+    private function activatePaymentMethods(NodeElement $editor, array $paymentMethods): void
     {
         $paymentTabXpath = BackendXpathBuilder::getTabXpathByLabel('Zahlart Auswahl');
         $editor->find('xpath', $paymentTabXpath)->click();
 
         foreach ($paymentMethods as $paymentMethod) {
             $row = $this->getGridRowByContent($paymentMethod, $editor);
-            if (null !== $row) {
+            if ($row !== null) {
                 $row->doubleClick();
             }
         }
@@ -171,9 +165,6 @@ class ShippingModule extends BackendModule
 
     /**
      * Activated a given set of countries for the shipping method that is currently being edited
-     *
-     * @param NodeElement $editor
-     * @param array $countries
      */
     private function activateCountries(NodeElement $editor, array $countries)
     {
@@ -182,7 +173,7 @@ class ShippingModule extends BackendModule
 
         foreach ($countries as $country) {
             $row = $this->getGridRowByContent($country, $editor);
-            if (null !== $row) {
+            if ($row !== null) {
                 $row->doubleClick();
             }
         }
@@ -193,7 +184,7 @@ class ShippingModule extends BackendModule
      * to a shipping method.
      *
      * @param string $text
-     * @param NodeElement|null $scope
+     *
      * @return NodeElement|null
      */
     private function getGridRowByContent($text, NodeElement $scope = null)
@@ -211,7 +202,6 @@ class ShippingModule extends BackendModule
     /**
      * Helper method that fills a given cell with a value
      *
-     * @param NodeElement $cell
      * @param string $columnValue
      */
     private function fillCell(NodeElement $cell, $columnValue)
@@ -222,7 +212,6 @@ class ShippingModule extends BackendModule
     }
 
     /**
-     * @param array $shipping
      * @return array
      */
     private function buildShippingConfigFormData(array $shipping)
@@ -241,7 +230,6 @@ class ShippingModule extends BackendModule
     }
 
     /**
-     * @param NodeElement $editor
      * @return NodeElement
      */
     private function getShippingCostCell(NodeElement $editor)
@@ -251,11 +239,11 @@ class ShippingModule extends BackendModule
             ->descendant('div', ['~class' => 'x-grid-cell-inner'], 3)
             ->getXpath();
         $costCell = $editor->find('xpath', $costCellXpath);
+
         return $costCell;
     }
 
     /**
-     * @param array $shipping
      * @return array
      */
     private function extractPaymentMethodsToActivate(array $shipping)
@@ -263,11 +251,11 @@ class ShippingModule extends BackendModule
         $paymentMethods = strpos($shipping['activePaymentMethods'], ',')
             ? explode(', ', $shipping['activePaymentMethods'])
             : [$shipping['activePaymentMethods']];
+
         return $paymentMethods;
     }
 
     /**
-     * @param array $shipping
      * @return array
      */
     private function extractShippingCountriesToActivate(array $shipping)
@@ -275,19 +263,16 @@ class ShippingModule extends BackendModule
         $countries = strpos($shipping['activeCountries'], ',')
             ? explode(', ', $shipping['activeCountries'])
             : [$shipping['activeCountries']];
+
         return $countries;
     }
 
-    /**
-     * @param Window $editor
-     */
     private function emptyShippingCostConfiguration(Window $editor)
     {
         $costRowsXpath = BackendXpathBuilder::create()->child('tr', ['~class' => 'x-grid-row'])->getXpath();
         $costRows = $editor->findAll('xpath', $costRowsXpath);
         array_shift($costRows);
 
-        /** @var NodeElement $costRow */
         foreach ($costRows as $costRow) {
             $deleteIcon = $costRow->find('xpath', BackendXpathBuilder::getIconXpathByType('delete'));
             $deleteIcon->click();

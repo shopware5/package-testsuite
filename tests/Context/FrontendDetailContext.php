@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -9,41 +11,27 @@ use Shopware\Page\Frontend\Search;
 class FrontendDetailContext extends SubContext
 {
     /**
-     * @return Detail
      * @throws \Exception
      */
-    private function getDetailPage()
+    private function getDetailPage(): Detail
     {
-        /** @var Detail $page */
-        $page = $this->getPage('Detail');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-        return $page;
+        return $this->getValidPage('Detail', Detail::class);
     }
 
-
     /**
-     * @return Search
      * @throws \Exception
      */
-    private function getSearchPage()
+    private function getSearchPage(): Search
     {
-        /** @var Search $page */
-        $page = $this->getPage('Search');
-        if ($page === null) {
-            throw new \RuntimeException('Page is not defined.');
-        }
-        return $page;
+        return $this->getValidPage('Search', Search::class);
     }
 
     /**
      * @When I choose the variant with the number :optionNumber
      *
-     * @param $optionNumber
      * @throws \Exception
      */
-    public function iChooseTheVariantWithTheNumber($optionNumber)
+    public function iChooseTheVariantWithTheNumber($optionNumber): void
     {
         $this->getDetailPage()->fillField('group[5]', $optionNumber);
     }
@@ -53,7 +41,7 @@ class FrontendDetailContext extends SubContext
      *
      * @throws \Exception
      */
-    public function iWaitForTheLoadingIndicatorToDisappear()
+    public function iWaitForTheLoadingIndicatorToDisappear(): void
     {
         $this->getDetailPage()->waitForOverlayToDisappear();
     }
@@ -61,10 +49,9 @@ class FrontendDetailContext extends SubContext
     /**
      * @Given I am on the detail page for article with ordernumber :ordernumber
      *
-     * @param string $ordernumber
      * @throws \Exception
      */
-    public function iAmOnTheDetailPageForArticleWithOrdernumber($ordernumber)
+    public function iAmOnTheDetailPageForArticleWithOrdernumber(string $ordernumber): void
     {
         $this->getSearchPage()->open(['searchTerm' => $ordernumber]);
     }
@@ -72,23 +59,20 @@ class FrontendDetailContext extends SubContext
     /**
      * @When I put the current article :quantity times into the basket
      *
-     * @param string $quantity
      * @throws \Exception
      */
-    public function iPutTheArticleTimesIntoTheBasket($quantity)
+    public function iPutTheArticleTimesIntoTheBasket(string $quantity): void
     {
         $this->getDetailPage()->toBasket($quantity);
         $this->waitForText('Der Artikel wurde erfolgreich in den Warenkorb gelegt');
     }
 
-
     /**
      * @Then I should see the following graduated prices:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
-    public function iShouldSeeTheFollowingGraduatedPrices(TableNode $table)
+    public function iShouldSeeTheFollowingGraduatedPrices(TableNode $table): void
     {
         $data = $table->getHash();
 
@@ -97,14 +81,12 @@ class FrontendDetailContext extends SubContext
         }
     }
 
-
     /**
      * @Given I should see the base price information:
      *
-     * @param TableNode $table
      * @throws \Exception
      */
-    public function iShouldSeeTheBasePriceInformation(TableNode $table)
+    public function iShouldSeeTheBasePriceInformation(TableNode $table): void
     {
         $data = $table->getHash();
 

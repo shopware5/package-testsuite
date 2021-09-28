@@ -6,11 +6,14 @@ trait SpinTrait
 {
     /**
      * Based on Behat's own example
+     *
      * @see http://docs.behat.org/en/v2.5/cookbook/using_spin_functions.html#adding-a-timeout
-     * @param $lambda
+     *
      * @param int $wait
-     * @return bool
+     *
      * @throws \Exception
+     *
+     * @return bool
      */
     protected function spin($lambda, $wait = 120)
     {
@@ -21,9 +24,11 @@ trait SpinTrait
 
     /**
      * Based on Behat's own example
+     *
      * @see http://docs.behat.org/en/v2.5/cookbook/using_spin_functions.html#adding-a-timeout
-     * @param $lambda
+     *
      * @param int $wait
+     *
      * @return bool
      */
     protected function spinWithNoException($lambda, $wait = 120)

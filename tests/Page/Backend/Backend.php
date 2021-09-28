@@ -8,7 +8,7 @@ use Shopware\Page\ContextAwarePage;
 class Backend extends ContextAwarePage
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/backend/';
 

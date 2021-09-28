@@ -1,15 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Shopware\Page\Updater\UpdaterIndex;
 
 class UpdaterContext extends SubContext
 {
-    /**
-     * @var string
-     */
-    private $testPath;
+    private string $testPath;
 
     /**
      * UpdaterContext constructor override.
@@ -23,61 +22,51 @@ class UpdaterContext extends SubContext
     /**
      * @When I advance to the next updater page
      */
-    public function iAdvanceToTheNextUpdaterPage()
+    public function iAdvanceToTheNextUpdaterPage(): void
     {
-        /** @var UpdaterIndex $page */
-        $page = $this->getPage('UpdaterIndex');
+        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
         $page->advance();
     }
 
     /**
      * @When I start the database migration
      */
-    public function iClickToStartTheDatabaseMigration()
+    public function iClickToStartTheDatabaseMigration(): void
     {
-        /** @var UpdaterIndex $page */
-        $page = $this->getPage('UpdaterIndex');
+        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
         $page->clickOnDbStart();
     }
 
     /**
      * @When I have unused files in my installation
      */
-    public function iHaveUnusedFilesInMyInstallation()
+    public function iHaveUnusedFilesInMyInstallation(): void
     {
-        $page = $this->getPage('UpdaterIndex');
-        $entry = $page->find('css', 'td');
-
-        if ($entry) {
-            return;
-        }
+        $this->getValidPage('UpdaterIndex', UpdaterIndex::class)->find('css', 'td');
     }
 
     /**
      * @When the cleanup will be finished and the loading indicator disappears
      */
-    public function theCleanupWillBeFinished()
+    public function theCleanupWillBeFinished(): void
     {
-        /** @var UpdaterIndex $page */
-        $page = $this->getPage('UpdaterIndex');
+        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
         $page->finishCleanup();
     }
 
     /**
      * @Given I should see the reminder :hint to remove the update-assets folder
-     * @param string $hint
      */
-    public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder($hint)
+    public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder(string $hint): void
     {
-        /** @var UpdaterIndex $page */
-        $page = $this->getPage('UpdaterIndex');
+        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
         $page->handleUpdateAssets($hint);
     }
 
     /**
      * @Given the update requirements are met
      */
-    public function theUpdateRequirementsAreMet()
+    public function theUpdateRequirementsAreMet(): void
     {
         $this->setRequirementsFulfillment(true);
     }
@@ -85,19 +74,19 @@ class UpdaterContext extends SubContext
     /**
      * @Given the update requirements are not met
      */
-    public function theUpdateRequirementsAreNotMet()
+    public function theUpdateRequirementsAreNotMet(): void
     {
         $this->setRequirementsFulfillment(false);
     }
 
     /**
      * Sets the access privileges of a directory according to the situation to simulate system requirements
-     * @param bool $meetRequirements
      */
-    private function setRequirementsFulfillment($meetRequirements)
+    private function setRequirementsFulfillment(bool $meetRequirements): void
     {
         if ($meetRequirements === false) {
             chmod($this->testPath, 0444);
+
             return;
         }
         chmod($this->testPath, 0777);
@@ -106,19 +95,17 @@ class UpdaterContext extends SubContext
     /**
      * @When I correct the requirements
      */
-    public function iCorrectTheRequirements()
+    public function iCorrectTheRequirements(): void
     {
         $this->setRequirementsFulfillment(true);
     }
 
     /**
      * @When I advance to the next step via :stepName
-     * @param $stepName
      */
-    public function iAdvanceToTheNextRequirementsStep($stepName)
+    public function iAdvanceToTheNextRequirementsStep(string $stepName): void
     {
-        /** @var UpdaterIndex $page */
-        $page = $this->getPage('UpdaterIndex');
+        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
         $page->advanceToStep($stepName);
     }
 }

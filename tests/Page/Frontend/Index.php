@@ -3,18 +3,18 @@
 namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
+use Shopware\Page\ContextAwarePage;
 
-class Index extends Page
+class Index extends ContextAwarePage
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getXPathSelectors()
     {
@@ -45,6 +45,7 @@ class Index extends Page
 
     /**
      * @param string $subCategory
+     *
      * @return NodeElement|null
      */
     public function getSubNavElement($subCategory)
@@ -54,6 +55,7 @@ class Index extends Page
 
     /**
      * @param string $mainCategory
+     *
      * @return NodeElement|null
      */
     public function getMainNavElement($mainCategory)
@@ -63,22 +65,20 @@ class Index extends Page
 
     /**
      * @param string $productName
+     *
      * @return NodeElement
      */
     public function getProductListingBoxElement($productName)
     {
         $xpath = $this->getXPathSelectors()['templateListingProductBoxByName'];
+
         return $this->find('xpath', str_replace('{PRODUCTNAME}', $productName, $xpath));
     }
 
-    /**
-     * @param string $title
-     * @param string $template
-     * @return NodeElement|null
-     */
-    public function getNavElement($title, $template)
+    public function getNavElement(string $title, string $template): NodeElement
     {
         $xpath = $this->getXPathSelectors()[$template];
+
         return $this->find('xpath', str_replace('{NAVTITLE}', $title, $xpath));
     }
 }

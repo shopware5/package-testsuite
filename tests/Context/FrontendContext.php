@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use PHPUnit\Framework\Assert;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Page\Frontend\Account;
 use Shopware\Page\Frontend\CheckoutCart;
@@ -13,13 +14,10 @@ class FrontendContext extends SubContext
 {
     /**
      * @Given /^I am logged in with account "([^"]*)"(?: with password "([^"]*)")?$/
-     * @param string $email
-     * @param string $password
      */
-    public function iAmLoggedInWithAccount($email, $password = '')
+    public function iAmLoggedInWithAccount(string $email, string $password = ''): void
     {
-        /** @var Account $accountPage */
-        $accountPage = $this->getPage('Account');
+        $accountPage = $this->getValidPage('Account', Account::class);
         $accountPage->open();
 
         // We are logged in
@@ -43,14 +41,12 @@ class FrontendContext extends SubContext
 
     /**
      * @Then the cart should contain :quantity articles with a value of :amount
-     * @param string $quantity
-     * @param string $amount
+     *
      * @throws \Exception
      */
-    public function theCartShouldContainArticlesWithAValueOf($quantity, $amount)
+    public function theCartShouldContainArticlesWithAValueOf(string $quantity, string $amount): void
     {
-        /** @var CheckoutCart $page */
-        $page = $this->getPage('CheckoutCart');
+        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $page->open();
 
         $page->checkPositionCountAndCartSum($quantity, $amount);
@@ -58,64 +54,53 @@ class FrontendContext extends SubContext
 
     /**
      * @When I navigate to category tree :tree
-     * @param string $tree
      */
-    public function iNavigateToCategoryTree($tree)
+    public function iNavigateToCategoryTree(string $tree): void
     {
-        $tree = explode('>', $tree);
-        $tree = array_map(function ($string) {
-            return trim($string);
-        }, $tree);
-        $mainCategory = array_shift($tree);
-        /** @var Index $index */
-        $index = $this->getPage('Index');
+        $treeArray = explode('>', $tree);
+        $treeArray = array_map('trim', $treeArray);
+        $mainCategory = array_shift($treeArray);
+
+        $index = $this->getValidPage('Index', Index::class);
         $index->open();
         $this->waitForText('AGB');
         $index->getMainNavElement($mainCategory)->click();
-        foreach ($tree as $subCategory) {
+        foreach ($treeArray as $subCategory) {
             $index->getSubNavElement($subCategory)->click();
         }
     }
 
     /**
      * @Then I should be able to see the product :name with price :testPrice
-     * @param string $name
-     * @param string $testPrice
      */
-    public function iShouldBeAbleToSeeTheProductWithPrice($name, $testPrice)
+    public function iShouldBeAbleToSeeTheProductWithPrice(string $name, string $testPrice): void
     {
-        /** @var Index $page */
-        $page = $this->getPage('Index');
+        $product = $this->getValidPage('Index', Index::class)->getProductListingBoxElement($name);
 
-        $product = $page->getProductListingBoxElement($name);
-        if ($product == null) {
-            throw new ElementNotFoundException(sprintf("Product with ordernumber %s not found!", $name));
-        }
-
-        $price = $product->find('xpath',
-            (new BaseXpathBuilder())->descendant('span', ['~class' => 'price--default'])->getXpath());
+        $price = $product->find('xpath', (new BaseXpathBuilder())->descendant('span', ['~class' => 'price--default'])->getXpath());
 
         $priceText = $price->getText();
         $priceText = explode(' ', $priceText)[0];
 
         if (!is_numeric($priceText)) {
-            $priceText = str_replace(',', '.', str_replace('.', '', $priceText));
+            $priceText = str_replace(['.', ','], ['', '.'], $priceText);
         }
 
-        Assert::assertEquals((float)$priceText, (float)$testPrice);
+        Assert::assertEquals((float) $priceText, (float) $testPrice);
     }
 
     /**
      * @Given I click on :text
-     * @param $text
+     *
      * @throws \Exception
      */
-    public function iClickOn($text)
+    public function iClickOn(string $text): void
     {
         // Trt to find a button with the given text
         $button = $this->getSession()->getPage()->findButton($text);
         if ($button) {
             $button->click();
+
             return;
         }
 
@@ -123,6 +108,7 @@ class FrontendContext extends SubContext
         $link = $this->getSession()->getPage()->findLink($text);
         if ($link) {
             $link->click();
+
             return;
         }
 

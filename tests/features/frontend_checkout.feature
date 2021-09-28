@@ -4,11 +4,11 @@ Feature: I can buy products using the store frontend
   Background:
     Given the following products exist in the store:
       | number  | name                         | price | tax | supplier                | categories                                                             |
-      | SWT0001 | BienenhoniK - Karl Süßkleber | 5.20  | 19  | Bienenstock             | Root > Deutsch > Nahrungsmittel > Süß                                  |
-      | SWT0002 | Sushi-Reis                   | 12    | 19  | KendalJP Inc.           | Root > Deutsch > Nahrungsmittel > Getreide                             |
-      | SWT0003 | Sommerhandschuhe "Sansibar"  | 35.50 | 19  | Kunstschneerasen AG     | Root > Deutsch > Kleidung > Herren ; Root > Deutsch > Kleidung > Damen |
-      | SWT0004 | Kaviar vom Rind              | 44,99 | 19  | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
-      | SWT0005 | Kaviar vom Rind (das Buch)   | 10,99 | 7   | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
+      | SWT1001 | BienenhoniK - Karl Süßkleber | 5.20  | 19  | Bienenstock             | Root > Deutsch > Nahrungsmittel > Süß                                  |
+      | SWT1002 | Sushi-Reis                   | 12    | 19  | KendalJP Inc.           | Root > Deutsch > Nahrungsmittel > Getreide                             |
+      | SWT1003 | Sommerhandschuhe "Sansibar"  | 35.50 | 19  | Kunstschneerasen AG     | Root > Deutsch > Kleidung > Herren ; Root > Deutsch > Kleidung > Damen |
+      | SWT1004 | Kaviar vom Rind              | 44,99 | 19  | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
+      | SWT1005 | Kaviar vom Rind (das Buch)   | 10,99 | 7   | GenTech? Schmeckt! GmbH | Root > Deutsch > Nahrungsmittel > Ungewöhnlich                         |
 
     And the following countries are active for checkout:
       | iso | shippingFree | taxFree | taxFreeUstId | active | displayStateInRegistration | forceStateInRegistration |
@@ -44,7 +44,7 @@ Feature: I can buy products using the store frontend
 
     And the cart contains the following products:
       | number  | name            | quantity | itemPrice | sum   |
-      | SWT0004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
+      | SWT1004 | Kaviar vom Rind | 1        | 44,99     | 44,99 |
 
     And I change my shipping method to "Shipping Free from 40":
 
@@ -73,7 +73,7 @@ Feature: I can buy products using the store frontend
     And I am logged in with account "regular.customer@shopware.de.test" with password "shopware"
     And the cart contains the following products:
       | name                       | number  | quantity | itemPrice | sum   |
-      | Kaviar vom Rind (das Buch) | SWT0005 | 1        | 10,99     | 10,99 |
+      | Kaviar vom Rind (das Buch) | SWT1005 | 1        | 10,99     | 10,99 |
 
     When I am on the page "CheckoutCart"
     And I change my payment method to "SEPA"
@@ -91,7 +91,7 @@ Feature: I can buy products using the store frontend
   Scenario: I can buy products that have different tax rates
     Given the cart contains the following products:
       | name                       | number  | quantity | itemPrice | sum   |
-      | Kaviar vom Rind (das Buch) | SWT0005 | 2        | 10,99     | 21,98 |
+      | Kaviar vom Rind (das Buch) | SWT1005 | 2        | 10,99     | 21,98 |
 
     Then the aggregations should look like this:
       | label         | value   |
@@ -100,7 +100,7 @@ Feature: I can buy products using the store frontend
       | total         | 25,88 € |
       | sumWithoutVat | 24,18 € |
 
-    When I add the article "SWT0004" to my basket
+    When I add the article "SWT1004" to my basket
     Then the aggregations should look like this:
       | label         | value   |
       | sum           | 66,97 € |
@@ -139,7 +139,7 @@ Feature: I can buy products using the store frontend
 
     Then  I should see "Willkommen, David Bowie"
 
-    When  I am on the detail page for article with ordernumber "SWT0004"
+    When  I am on the detail page for article with ordernumber "SWT1004"
     Then  I should see "Kaviar vom Rind"
 
     When  I put the current article "3" times into the basket
@@ -181,7 +181,7 @@ Feature: I can buy products using the store frontend
 
     And the cart contains the following products:
       | name                         | number  | quantity | itemPrice                 | sum                 |
-      | BienenhoniK - Karl Süßkleber | SWT0001 | 3        | <cart.position.itemPrice> | <cart.position.sum> |
+      | BienenhoniK - Karl Süßkleber | SWT1001 | 3        | <cart.position.itemPrice> | <cart.position.sum> |
 
     Then the cart should contain 1 articles with a value of "<cart.sum>"
     And the aggregations should look like this:
@@ -214,7 +214,7 @@ Feature: I can buy products using the store frontend
     Given I am logged in with account "regular.customer@shopware.de.test " with password "shopware"
     And the cart contains the following products:
       | number  | name       | quantity | itemPrice | sum |
-      | SWT0002 | Sushi-Reis | 2        | 12        | 24  |
+      | SWT1002 | Sushi-Reis | 2        | 12        | 24  |
 
     Then the cart should contain 1 articles with a value of "24,00 €"
     And   the aggregations should look like this:
@@ -224,7 +224,7 @@ Feature: I can buy products using the store frontend
       | total         | 27,90 € |
       | sumWithoutVat | 23,45 € |
 
-    When  I add the article "SWT0001" to my basket
+    When  I add the article "SWT1001" to my basket
     Then  the cart should contain 2 articles with a value of "29,20 €"
     And   the aggregations should look like this:
       | label         | value   |
@@ -234,7 +234,7 @@ Feature: I can buy products using the store frontend
       | sumWithoutVat | 27,82 € |
 
     When  I remove the article on position 1
-    And  I add the article "SWT0001" to my basket
+    And  I add the article "SWT1001" to my basket
     Then  the cart should contain 1 articles with a value of "10,40 €"
     And   the aggregations should look like this:
       | label         | value   |
@@ -259,7 +259,7 @@ Feature: I can buy products using the store frontend
     Given I am logged in with account "regular.customer@shopware.ch.test " with password "shopware"
     And the cart contains the following products:
       | number  | name       | quantity | itemPrice | sum     |
-      | SWT0002 | Sushi-Reis | 2        | 10,08 €   | 20,16 € |
+      | SWT1002 | Sushi-Reis | 2        | 10,08 €   | 20,16 € |
 
     # Technically, this should be "20,17€", but there appears to be a rounding error
     Then the cart should contain 1 articles with a value of "20,16 €"
@@ -269,7 +269,7 @@ Feature: I can buy products using the store frontend
       | shipping | 3,28 €  |
       | total    | 23,44 € |
 
-    When  I add the article "SWT0001" to my basket
+    When  I add the article "SWT1001" to my basket
     Then  the cart should contain 2 articles with a value of "24,53 €"
     And   the aggregations should look like this:
       | label    | value   |
@@ -278,8 +278,8 @@ Feature: I can buy products using the store frontend
       | total    | 27,81 € |
 
     When  I remove the article on position 1
-    And  I add the article "SWT0001" to my basket
-    And  I add the article "SWT0001" to my basket
+    And  I add the article "SWT1001" to my basket
+    And  I add the article "SWT1001" to my basket
     Then  the cart should contain 1 articles with a value of "13,11 €"
     And   the aggregations should look like this:
       | label    | value   |
@@ -304,7 +304,7 @@ Feature: I can buy products using the store frontend
   Scenario Outline: I can buy an article from its detail page and complete checkout
     Given I am logged in with account "<account.email>" with password "<account.password>"
 
-    When  I am on the detail page for article with ordernumber "SWT0001"
+    When  I am on the detail page for article with ordernumber "SWT1001"
     Then  I should see "BienenhoniK - Karl Süßkleber"
 
     When  I put the current article "3" times into the basket
@@ -338,7 +338,7 @@ Feature: I can buy products using the store frontend
     When I am logged in with account "<email>" with password "<password>"
     And the cart contains the following products:
       | number  | name            | quantity | itemPrice                | sum                |
-      | SWT0004 | Kaviar vom Rind | 1        | <cartPosition.itemPrice> | <cartPosition.sum> |
+      | SWT1004 | Kaviar vom Rind | 1        | <cartPosition.itemPrice> | <cartPosition.sum> |
 
     And I proceed to checkout cart
     And I change my payment method to "<paymentMethod>"

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -15,47 +17,43 @@ class BackendVoucherContext extends SubContext
 {
     /**
      * @When I fill out the voucher form:
-     * @param TableNode $table
      */
-    public function fillNewVoucherForm(TableNode $table)
+    public function fillNewVoucherForm(TableNode $table): void
     {
         $this->getModulePage()->fillVoucherEditorFormWith($table->getHash());
     }
 
     /**
      * @When I click the edit icon on the voucher named :name
-     * @param string $name
      */
-    public function iClickTheEditIconOnVoucher($name)
+    public function iClickTheEditIconOnVoucher(string $name): void
     {
         $this->getModulePage()->openEditFormForVoucher($name);
     }
 
     /**
      * @Given I click the delete icon on the voucher named :name
-     * @param $name
      */
-    public function iClickTheDeleteIconOnTheVoucherNamed($name)
+    public function iClickTheDeleteIconOnTheVoucherNamed(string $name): void
     {
         $this->getModulePage()->deleteVoucher($name);
     }
 
     /**
      * @Given I add the voucher :code to my cart
-     * @param string $code
      */
-    public function iAddTheVoucherToMyCart($code)
+    public function iAddTheVoucherToMyCart(string $code): void
     {
-        /** @var CheckoutCart $page */
-        $page = $this->getPage('CheckoutCart');
+        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $page->addVoucher($code);
     }
 
     /**
      * @Given I should be able to use the code exactly once
+     *
      * @throws \Exception
      */
-    public function iShouldBeAbleToUseTheCodeExactlyOnce()
+    public function iShouldBeAbleToUseTheCodeExactlyOnce(): void
     {
         $voucherCode = $this->getVoucherCodeFromPage();
 
@@ -67,75 +65,57 @@ class BackendVoucherContext extends SubContext
         Assert::assertEquals($voucherCode, $usedCode);
     }
 
-    /**
-     * @return VoucherModule
-     */
-    private function getModulePage()
+    private function getModulePage(): VoucherModule
     {
-        /** @var VoucherModule $page */
-        $page = $this->getPage('VoucherModule');
-        return $page;
+        return $this->getValidPage('VoucherModule', VoucherModule::class);
     }
 
     /**
      * Get the first dynamically generated voucher code
-     *
-     * @param bool $voucherWasUsed
-     * @return string
      */
-    private function getVoucherCodeFromPage($voucherWasUsed = false)
+    private function getVoucherCodeFromPage(bool $voucherWasUsed = false): string
     {
-        $voucherWasUsed = $voucherWasUsed ? 'Ja' : 'Nein';
+        $voucherWasUsedText = $voucherWasUsed ? 'Ja' : 'Nein';
 
         $codeXpathSelector = BackendXpathBuilder::create()
             ->child('div')
-            ->contains($voucherWasUsed)
+            ->contains($voucherWasUsedText)
             ->ancestor('td', [], 1)
             ->precedingSibling('td')
             ->child('div', ['~class' => 'x-grid-cell-inner'])
             ->getXpath();
 
-        $codeCell = $this->waitForSelectorPresent('xpath', $codeXpathSelector);
-
-        return $codeCell->getText();
+        return $this->waitForSelectorPresent('xpath', $codeXpathSelector)->getText();
     }
 
-    private function loginAsFrontendUser()
+    private function loginAsFrontendUser(): void
     {
-        /** @var Account $accountPage */
-        $accountPage = $this->getPage('Account');
+        $accountPage = $this->getValidPage('Account', Account::class);
         $accountPage->login('regular.customer@shopware.de.test', 'shopware');
     }
 
     /**
-     * @param string $voucherCode
      * @throws \Exception
      */
-    private function fillCartWithProductsAndGeneratedVoucher($voucherCode)
+    private function fillCartWithProductsAndGeneratedVoucher(string $voucherCode): void
     {
-        /** @var CheckoutCart $cartPage */
-        $cartPage = $this->getPage('CheckoutCart');
+        $cartPage = $this->getValidPage('CheckoutCart', CheckoutCart::class);
         $cartPage->fillCartWithProducts([
             ['number' => 'SWT0001', 'quantity' => 1],
         ]);
         $cartPage->addVoucher($voucherCode);
     }
 
-    private function finishCheckout()
+    private function finishCheckout(): void
     {
-        /** @var CheckoutConfirm $confirmPage */
-        $confirmPage = $this->getPage('CheckoutConfirm');
+        $confirmPage = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
         $confirmPage->proceedToCheckout();
         $this->waitForText('Vielen Dank', 6);
     }
 
-    /**
-     * @return string
-     */
-    private function getUsedVoucherCodeFromBackend()
+    private function getUsedVoucherCodeFromBackend(): string
     {
-        /** @var VoucherModule $voucherModule */
-        $voucherModule = $this->getPage('VoucherModule');
+        $voucherModule = $this->getValidPage('VoucherModule', VoucherModule::class);
         $voucherModule->open();
 
         $this->waitForText('Neuer Individueller Testgutschein', 3);
@@ -143,11 +123,9 @@ class BackendVoucherContext extends SubContext
         $voucherModule->openEditFormForVoucher('Neuer Individueller Testgutschein');
         $this->waitForText('Gutschein-Konfiguration', 6);
 
-        /** @var Backend $backend */
-        $backend = $this->getPage('Backend');
+        $backend = $this->getValidPage('Backend', Backend::class);
         $backend->clickOnTabWithName('Individuelle Gutscheincodes');
 
-        $usedCode = $this->getVoucherCodeFromPage(true);
-        return $usedCode;
+        return $this->getVoucherCodeFromPage(true);
     }
 }

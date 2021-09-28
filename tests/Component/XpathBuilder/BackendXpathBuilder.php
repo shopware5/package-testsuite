@@ -11,13 +11,15 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * allows explicit fuzziness by passing in 'false' as the second parameter.
      *
      * @param string $title
-     * @param bool $exactMatch
+     * @param bool   $exactMatch
+     *
      * @return string
      */
     public static function getWindowXpathByTitle($title, $exactMatch = true)
     {
         $prefix = $exactMatch ? '@' : '~';
-        return (new self)
+
+        return (new self())
             ->child('span', [$prefix . 'text' => $title])
             ->ancestor('div', ['~class' => 'x-window'], 1)
             ->getXpath();
@@ -29,6 +31,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * @param string $label
      * @param string $tag
      * @param string $scope
+     *
      * @return string
      */
     public static function getFormElementXpathByLabel($label, $tag, $scope = '/')
@@ -46,6 +49,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $label
      * @param string $scope
+     *
      * @return string
      */
     public static function getButtonXpathByLabel($label, $scope = '/')
@@ -62,6 +66,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $label
      * @param string $scope
+     *
      * @return string
      */
     public static function getInputXpathByLabel($label, $scope = '/')
@@ -74,6 +79,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $label
      * @param string $scope
+     *
      * @return string
      */
     public static function getComboboxXpathByLabel($label, $scope = '/')
@@ -94,18 +100,19 @@ class BackendXpathBuilder extends BaseXpathBuilder
      */
     public static function getFocusedElementXpath()
     {
-        return (new self)->child('input', ['~class' => 'x-form-focus'])->getXpath();
+        return (new self())->child('input', ['~class' => 'x-form-focus'])->getXpath();
     }
 
     /**
      * Return xpath to an extJs tab by its label
      *
      * @param string $label
+     *
      * @return string
      */
     public static function getTabXpathByLabel($label)
     {
-        return (new self)
+        return (new self())
             ->child('span', ['@text' => $label])
             ->ancestor('div', ['~class' => 'x-tab'], 1)
             ->getXpath();
@@ -115,17 +122,19 @@ class BackendXpathBuilder extends BaseXpathBuilder
      * Return xpath to extJs icon by type
      *
      * @param string $type
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     public static function getIconXpathByType($type)
     {
         switch ($type) {
             case 'edit':
-                return (new self)->child('img', ['~class' => 'sprite-pencil'])->getXpath();
+                return (new self())->child('img', ['~class' => 'sprite-pencil'])->getXpath();
                 break;
             case 'delete':
-                return (new self)->child('img', ['~class' => 'sprite-minus-circle-frame'])->getXpath();
+                return (new self())->child('img', ['~class' => 'sprite-minus-circle-frame'])->getXpath();
                 break;
             default:
                 throw new \Exception('Unknown icon type ' . $type);
@@ -137,9 +146,10 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $action
      * @param string $optionText
+     *
      * @return string
      */
-    public function getDropdownXpathByAction($action, $optionText = "")
+    public function getDropdownXpathByAction($action, $optionText = '')
     {
         $this->child('div', ['~class' => 'x-boundlist', 'and', '@data-action' => $action]);
 
@@ -153,6 +163,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * @param string $label
      * @param string $scope
+     *
      * @return string
      */
     public static function getFieldsetXpathByLabel($label, $scope = '/')
