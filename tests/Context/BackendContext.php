@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
+use Shopware\Context\Exception\TooManyElementsFoundException;
 use Shopware\Page\Backend\Backend;
 use Shopware\Page\Backend\ShippingModule;
 
@@ -14,7 +16,7 @@ class BackendContext extends SubContext
 {
     /**
      * @Given I am logged into the backend
-     * @When I log in with user :user and password :password
+     * @When  I log in with user :user and password :password
      */
     public function iLogInWithUserAndPassword(string $user = 'demo', string $password = 'demo'): void
     {
@@ -80,15 +82,21 @@ class BackendContext extends SubContext
         $page = $this->getValidPage('Backend', Backend::class);
         $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel($label);
         $this->waitForSelectorPresent('xpath', $buttonXpath);
-        foreach ($page->findAll('xpath', $buttonXpath) as $button) {
-            if ($button->isVisible()) {
-                $button->click();
+        $buttons = $page->findAll('xpath', $buttonXpath);
+        $buttons = array_filter($buttons, static function (NodeElement $button) {
+            return $button->isVisible() && !$button->hasAttribute('disabled');
+        });
 
-                return;
-            }
+        if (empty($buttons)) {
+            throw new ElementNotFoundException($this->getDriver(), 'button', 'xpath', $buttonXpath);
         }
 
-        throw new ElementNotFoundException($this->getDriver(), 'button', 'xpath', $buttonXpath);
+        if (\count($buttons) !== 1) {
+            throw new TooManyElementsFoundException($this->getDriver(), 'button', 'xpath', $buttonXpath);
+        }
+
+        $button = array_shift($buttons);
+        $button->click();
     }
 
     /**
