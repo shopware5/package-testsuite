@@ -10,6 +10,10 @@ variables:
   MYSQL_PASSWORD: shopware
   MYSQL_DATABASE: shopware
 
+default:
+  tags:
+    - t3.medium
+
 stages:
   - Build package
   - Testing
@@ -54,6 +58,8 @@ Install process:
 
 Update process:
   image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli
+  tags:
+    - m5.large
   stage: Testing
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
