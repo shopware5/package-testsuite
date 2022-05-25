@@ -1,6 +1,5 @@
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: "tcp://docker:2376"
   DOCKER_TLS_CERTDIR: "/certs"
   GIT_STRATEGY: clone
   PACKAGE_TAG: ""
@@ -36,14 +35,14 @@ Build package:
       - deploy-script/output/package/*.zip
 
 Install process:
-  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli # TODO: Replace this with the official docker image
+  image: docker:20
   stage: Testing
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   dependencies:
     - Build package
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:20-dind
       alias: docker
   script:
     - cp deploy-script/output/package/*.zip files/
@@ -58,7 +57,7 @@ Install process:
 
 
 Update process:
-  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli # TODO: Replace this with the official docker image
+  image: docker:20
   tags:
     - m5.large
   stage: Testing
@@ -69,7 +68,7 @@ Update process:
   dependencies:
     - Build package
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:20-dind
       alias: docker
   script:
     - mv deploy-script/output/package/*.zip files/
@@ -83,14 +82,14 @@ Update process:
       junit: tests/logs/mink/*.xml
 
 Test installation:
-  image: gitlab.shopware.com:5005/shopware/5/product/package-testsuite/docker-cli # TODO: Replace this with the official docker image
+  image: docker:20
   stage: Testing
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   dependencies:
     - Build package
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:20-dind
       alias: docker
   script:
     - mv deploy-script/output/package/*.zip files/

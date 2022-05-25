@@ -45,7 +45,7 @@ After calling the script you can run specific features manually.
 It is recommended to use an alias like the following:
  
  ```bash
-alias runmink='docker-compose -f docker-compose.yml -f docker-compose.local.yml run --rm behat ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
+alias runmink='docker compose -f docker-compose.yml -f docker-compose.local.yml run --rm behat ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
  ```
 
  Then you can run a specific feature by simply calling:
