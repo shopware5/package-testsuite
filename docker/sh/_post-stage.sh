@@ -1,19 +1,15 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-if [ "$1" = "" ]
-then
-    echo "Missing argument. Should be 'bamboo.buildResultKey'"
-    exit 1
-fi
-
-export COMPOSE_PROJECT_NAME=$1
-echo "COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}"
+#!/usr/bin/env sh
+set -eu
 
 echo "Cleanup"
-[ -f "$ENV_TESTS" ] && rm -f "$ENV_TESTS"
-[ -f "$BEHAT" ] && rm -f "$BEHAT"
+[ -f "${ENV_TESTS:-}" ] && rm -f "$ENV_TESTS"
+[ -f "${BEHAT:-}" ] && rm -f "$BEHAT"
+
 rm -f ../tests/clean_db.sql
-docker-compose run --rm --entrypoint="chown" apache "$(id -u):$(id -g)" -R /tests
-docker-compose down -v --remove-orphans
-docker-compose rm --force -v
+
+compose exec apache chown -R "$(id -u):$(id -g)" /tests
+
+compose down -v --remove-orphans
+compose rm -v --force
+
+unalias compose

@@ -1,2 +1,4 @@
-#!/bin/bash
-$('pwd')/vendor/bin/behat $*
+#!/bin/sh
+set -eu
+
+"$(pwd)"/vendor/bin/behat "$@"

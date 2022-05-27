@@ -1,21 +1,13 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-if [ "$1" = "" ]
-then
-    echo "Missing argument. Should be 'bamboo.buildResultKey'"
-    exit 1
-fi
-
-trap "{ . ./sh/_post-stage.sh; exit 1; }" ERR
+#!/usr/bin/env sh
+set -eu
 
 . ./sh/_pre-stage.sh
 
 echo "Unzipping installer"
-docker-compose run --rm --entrypoint="find" apache /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
+compose run --rm --entrypoint="find" apache /source -maxdepth 1 -name "${INSTALL_PACKAGE_NAME}" -exec unzip -q {} -d /var/www/shopware \;
 
 echo "Install Shopware via CLI"
-docker-compose run --rm --entrypoint="php" apache /var/www/shopware/recovery/install/index.php \
+compose run --rm --entrypoint="php" apache /var/www/shopware/recovery/install/index.php \
     --no-interaction \
     --db-host="mysql" \
     --db-name="shopware" \
@@ -33,6 +25,6 @@ docker-compose run --rm --entrypoint="php" apache /var/www/shopware/recovery/ins
 . ./sh/_configure-sw-installation.sh
 
 echo "Run Mink"
-docker-compose run --rm behat ./behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing'
+compose run --rm behat --format=pretty --out=std --format=junit --out=/logs/mink --tags '~@updater&&~@installer&&~@knownFailing'
 
 . ./sh/_post-stage.sh

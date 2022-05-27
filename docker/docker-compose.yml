@@ -1,5 +1,3 @@
-version: '3.1'
-
 volumes:
   datavolume:
   updatesvolume:
@@ -54,6 +52,7 @@ services:
       - apache:updates.example
       - apache:cdn.example
       - selenium
+    entrypoint: [ "/tests/behat" ]
     environment:
       SHOPWARE_ENV: testing
       TZ: Europe/Berlin
@@ -70,7 +69,7 @@ services:
       LANG: 'de_DE.UTF-8'
       SCREEN_WIDTH: '1920'
       SCREEN_HEIGHT: '1080'
-  start-mysql:
+  wait-for-mysql:
     image: busybox:latest
     entrypoint:
       - sh
@@ -85,3 +84,18 @@ services:
       "
     depends_on:
       - mysql
+  wait-for-selenium:
+    image: busybox:latest
+    entrypoint:
+      - sh
+    command: >
+      -c "
+        while !(nc -z selenium 4444)
+        do
+          echo -n '.'
+          sleep 1
+        done;
+        echo 'selenium ready!'
+      "
+    depends_on:
+      - selenium

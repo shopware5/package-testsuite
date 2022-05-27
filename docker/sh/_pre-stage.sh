@@ -1,8 +1,20 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env sh
+set -eu
 
-export COMPOSE_PROJECT_NAME=$1
+if [ -z "${1:-}" ]; then
+    echo "Missing argument. Should be 'bamboo.buildResultKey'"
+    exit 1
+fi
+
+export COMPOSE_PROJECT_NAME=${1}
 echo "COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}"
+
+# Include testing config for docker compose when running locally
+if [ -z "${CI:-}" ]; then
+  alias compose="docker compose -f docker-compose.yml -f docker-compose.local.yml"
+else
+  alias compose="docker compose -f docker-compose.yml"
+fi
 
 ENV_TESTS="../tests/.env"
 ENV_TESTS_DIST="../tests/.env.dist"
@@ -34,9 +46,14 @@ echo "Create configuration"
 cp ${ENV_TESTS_DIST} ${ENV_TESTS}
 cp ${BEHAT_DIST} ${BEHAT}
 
-echo "Starting docker"
-docker-compose down -v --remove-orphans
-docker-compose run --rm start-mysql && docker-compose up -d
+echo "Pulling images"
+compose pull -q
+
+echo "Starting services"
+compose up -d mysql apache selenium
+
+compose run --rm wait-for-mysql
+compose run --rm wait-for-selenium
 
 echo "Composer install in /tests"
-docker-compose run --rm -w "/tests" --entrypoint="composer" apache install --ignore-platform-req=composer-plugin-api
+compose run --rm -w "/tests" --entrypoint="composer" apache install --ignore-platform-req=composer-plugin-api
