@@ -45,7 +45,7 @@ After calling the script you can run specific features manually.
 It is recommended to use an alias like the following:
  
  ```bash
-alias runmink='docker compose -f docker-compose.yml -f docker-compose.local.yml run --rm behat ./behat $1 --format=pretty --out=std --format=junit --out=/logs/mink'
+alias runmink='docker compose  -f docker/docker-compose.yml -f docker/docker-compose.local.yml run --rm behat --format=pretty --out=std --format=junit --out=/logs/mink $1'
  ```
 
  Then you can run a specific feature by simply calling:
@@ -53,7 +53,13 @@ alias runmink='docker compose -f docker-compose.yml -f docker-compose.local.yml 
  ```bash
 runmink /tests/features/backend_customers.feature
  ```
- 
+## The helper script
+
+Inside the root directory you will find a helper script that can do most of the aforementioned things for you to spare you the trouble of remembering everything.
+The script offers the following methods
+* `./helper.sh installmink` installs a mink setup based on the install zip inside the `files/` directory
+* `./helper.sh delmink` stops and removes the installation
+* `./helper.sh runmink` allows you to run tests e.g `./helper.sh runmink tests/features/backend_article.feature`
 ## Running tests without Docker
 
 If you don't want to use Docker, you can still execute `behat` manually.
