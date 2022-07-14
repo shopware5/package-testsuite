@@ -35,6 +35,16 @@ class BackendContext extends SubContext
     }
 
     /**
+     * @When I hover over backend menu item question mark
+     */
+    public function iHoverBackendMenuItemQuestionMark(): void
+    {
+        $xpath = "//span[contains(@class, 'shopware-help-menu')]";
+        $this->waitForSelectorPresent('xpath', $xpath);
+        $this->getSession()->getDriver()->mouseOver($xpath);
+    }
+
+    /**
      * @When I click on backend menu item :item
      */
     public function iClickOnBackendMenuItem(string $itemName): void

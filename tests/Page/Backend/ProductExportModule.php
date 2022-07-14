@@ -2,6 +2,7 @@
 
 namespace Shopware\Page\Backend;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\GridView\GridViewRow;
@@ -158,7 +159,7 @@ class ProductExportModule extends BackendModule
         $fileLink = $exportRow->find('xpath', $fileLinkXpath)->getAttribute('href');
 
         $baseUrlIndex = strpos($this->getDriver()->getCurrentUrl(), '/backend/');
-        $baseUrl = substr($this->getDriver()->getCurrentUrl(), 0, $baseUrlIndex);
+        $baseUrl = substr($this->getDriver()->getCurrentUrl(), 0, (int) $baseUrlIndex);
 
         return $baseUrl . $fileLink;
     }

@@ -936,11 +936,6 @@ parameters:
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Parameter \\#3 \\$length of function substr expects int, int\\<0, max\\>\\|false given\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnMenuElement\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: Page/Backend/SettingsModule.php
