@@ -16,7 +16,6 @@ Feature: I can add properties to an article
   Scenario: I can add properties to an article
     Given I am logged into the backend
     Then I should see "Artikel" eventually
-    And I should see "Feedback" eventually
 
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Übersicht"

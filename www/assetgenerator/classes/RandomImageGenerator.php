@@ -10,8 +10,6 @@ class RandomImageGenerator
     {
         $this->config = $imageConfig;
         $this->generateImageData();
-
-        return $this;
     }
 
     public static function create(ImageConfig $imageConfig)

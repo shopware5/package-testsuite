@@ -56,8 +56,7 @@ class OrderModule extends BackendModule
         $this->waitForSelectorPresent('xpath', $buttonXpath);
         $button = $this->find('xpath', $buttonXpath);
         $button->click();
-
-        sleep(4);
+        $this->waitForSelectorNotPresent('xpath', $buttonXpath);
     }
 
     /**

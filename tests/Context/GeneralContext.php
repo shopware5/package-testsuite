@@ -97,16 +97,16 @@ class GeneralContext extends SubContext
      */
     private static function cleanDatabase(): void
     {
-        $dbDumpFile = __DIR__ . '/../clean_db.sql';
+        $dbDumpFile = __DIR__ . '/../../clean_db.sql';
 
         if (!is_file($dbDumpFile)) {
-            echo 'Could not reset database - no clean state available. (Missing dump file).' . PHP_EOL;
+            echo "Could not reset database - no clean state available. Missing dump file at " . $dbDumpFile . PHP_EOL;
 
             return;
         }
 
         echo 'Resetting database to clean state...' . PHP_EOL;
-        passthru(sprintf('mysql -u shopware -pshopware -h mysql shopware < %s', $dbDumpFile));
+        passthru(sprintf('mysql -u root -proot -h mysql shopware < %s', $dbDumpFile));
     }
 
     /**

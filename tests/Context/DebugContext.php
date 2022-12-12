@@ -35,7 +35,7 @@ class DebugContext extends SubContext
             return;
         }
 
-        $filePath = \dirname(__FILE__, 3) . '/logs/mink';
+        $filePath = \dirname(__FILE__, 2) . '/logs/mink';
 
         $this->saveScreenshot(null, $filePath);
     }
@@ -74,7 +74,7 @@ class DebugContext extends SubContext
      */
     private function saveLog(string $content, string $type): void
     {
-        $logDir = \dirname(__FILE__, 3) . '/logs/mink';
+        $logDir = \dirname(__FILE__, 2) . '/logs/mink';
 
         $currentDateAsString = date('YmdHis');
 

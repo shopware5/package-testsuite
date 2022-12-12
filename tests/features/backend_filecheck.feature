@@ -7,7 +7,6 @@ Feature: I can check the files which belong to my shop installation
   Scenario: I can check the original state of my folders and files
     Given I am logged into the backend
     Then I should see "Einstellungen" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Einstellungen"
     And I click the "Systeminfo" menu element
     Then I should see "Shopware-Verzeichnisse" eventually
@@ -17,7 +16,6 @@ Feature: I can check the files which belong to my shop installation
     When I correct the "folder" requirement
     And I reload the page
     Then I should see "Einstellungen" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Einstellungen"
     And I click the "Systeminfo" menu element
     Then I should see "Shopware-Verzeichnisse" eventually
@@ -31,7 +29,6 @@ Feature: I can check the files which belong to my shop installation
     When I correct the "file" requirement
     And I reload the page
     Then I should see "Einstellungen" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Einstellungen"
     And I click the "Systeminfo" menu element
     Then I should see "Shopware-Verzeichnisse" eventually

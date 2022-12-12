@@ -10,7 +10,6 @@ Feature: I can create and access a subshop
   Scenario: I can create a subshop
     Given I am logged into the backend
     Then I should see "Einstellungen" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Einstellungen"
     And I click the "Grundeinstellungen" menu element
     Then I should see "Shopeinstellungen" eventually
@@ -38,7 +37,6 @@ Feature: I can create and access a subshop
     And I am on the page "Index"
 
     Then I should be able to access the subshop via using "http://shopware-subshop-01.test"
-    And I should see "Subshop-Unterkategorie" eventually
 
     Then I should be able to access the shop via using "http://shopware.test/"
     And I should see "Newsletter" eventually

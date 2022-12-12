@@ -19,10 +19,10 @@ Feature: I can start and complete the installation process
       | c_database_schema |
     When I fill the form:
       | field               | value    |
-      | c_database_host     | mysql    |
+      | c_database_host     | localhost|
       | c_database_port     | 3306     |
-      | c_database_user     | shopware |
-      | c_database_password | shopware |
+      | c_database_user     | root     |
+      | c_database_password | root     |
       | c_database_schema   | shopware |
     And I advance to the next installer page
 

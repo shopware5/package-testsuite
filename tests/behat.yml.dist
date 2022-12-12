@@ -12,19 +12,22 @@ default:
                   - Shopware\Element
                   - Shopware\Element\Frontend
         Behat\MinkExtension:
-            base_url: 'http://shopware.test/'
+            base_url: 'http://shopware.test'
             show_cmd: 'echo "Scenario failed! Saved current page to %s"'
-            show_tmp_dir: 'tests/logs/mink'
+            show_tmp_dir: '%paths.base%/logs/mink'
             show_auto: true
-            default_session: 'goutte'
+            default_session: 'selenium2'
             javascript_session: 'selenium2'
-            goutte: ~
+            browser_name: chrome
             selenium2:
-                wd_host: 'http://selenium:4444/wd/hub'
+                wd_host: 'http://localhost:4444/wd/hub'
                 capabilities:
                     browser: chrome
                     marionette: true
-            browser_name: chrome
+                    extra_capabilities:
+                        chromeOptions:
+                            args:
+                                - "--lang=de"
 
     gherkin:
       filters:
