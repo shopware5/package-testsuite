@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-INSTALLER_URL='https://www.shopware.com/de/Download/redirect/version/sw5/file/install_5.6.10_b9471cf7c3f30dfc05d7c959f555c2a8d1c24420.zip'
+INSTALLER_URL='https://releases.shopware.com/install_5.6.10_b9471cf7c3f30dfc05d7c959f555c2a8d1c24420.zip'
 
 . ./sh/_pre-stage.sh
 
