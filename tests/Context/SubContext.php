@@ -27,7 +27,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     public function __construct()
     {
-        $dotenv = new Dotenv(\dirname(__DIR__));
+        $dotenv = Dotenv::createUnsafeImmutable(\dirname(__DIR__));
         $dotenv->load();
     }
 

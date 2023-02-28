@@ -4,22 +4,20 @@
     "type": "project",
     "require-dev": {
         "ext-json": "*",
-        "php": "~7.4.0",
         "behat/behat": "^3.7",
         "behat/mink": "^1.8",
         "behat/mink-selenium2-driver": "^1.6",
-        "bossa/phpspec2-expect": "^3.1",
         "cocur/slugify": "^2.3",
+        "fakerphp/faker": "^1.21",
         "friends-of-behat/mink-extension": "^2.4",
         "friendsofphp/php-cs-fixer": "^3.1",
-        "fzaninotto/faker": "^1.6",
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "^7.5",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.0",
         "phpstan/phpstan": "^0.12.99",
         "phpunit/phpunit": "^9.4",
         "sensiolabs/behat-page-object-extension": "^2.0",
-        "smalot/pdfparser": "^0.14.0",
-        "vlucas/phpdotenv": "^2.3"
+        "smalot/pdfparser": "^2.3",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {
@@ -27,10 +25,6 @@
         }
     },
     "config": {
-        "platform": {
-            "php": "7.4"
-
-        },
         "sort-packages": true
     }
 }
