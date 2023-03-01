@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
@@ -19,9 +21,10 @@ class NewArticleModule extends BackendModule
     public function setArticlePriceData(string $value, string $cellAnchor, string $inputName): void
     {
         $window = $this->getModuleWindow(false);
-        $builder = new BackendXpathBuilder();
-
-        $cellElementXpath = $builder->child('span', ['@text' => $cellAnchor, 'and', '~class' => 'x-column-header-text'])->ancestor('div', [], 1)->getXpath();
+        $cellElementXpath = (new BackendXpathBuilder())
+            ->child('span', ['@text' => $cellAnchor, 'and', '~class' => 'x-column-header-text'])
+            ->ancestor('div', [], 1)
+            ->getXpath();
         $this->waitForSelectorPresent('xpath', $cellElementXpath);
         $this->waitForSelectorVisible('xpath', $cellElementXpath);
         $cellElement = $window->find('xpath', $cellElementXpath);
@@ -62,7 +65,7 @@ class NewArticleModule extends BackendModule
      *
      * @throws \Exception
      */
-    private function setPriceData(string $value, int $position, string $inputName)
+    private function setPriceData(string $value, int $position, string $inputName): void
     {
         $window = $this->getModuleWindow(false);
         $builder = new BackendXpathBuilder();
@@ -79,10 +82,12 @@ class NewArticleModule extends BackendModule
             ->child('div', [], 1)
             ->getXpath();
 
-        /* @var NodeElement $priceField */
         $this->waitForSelectorPresent('xpath', $priceFieldXpath);
         $this->waitForSelectorVisible('xpath', $priceFieldXpath);
         $priceField = $row->find('xpath', $priceFieldXpath);
+        if (!$priceField instanceof NodeElement) {
+            throw new \RuntimeException(sprintf('Could not find price field with xPath "%s"', $priceFieldXpath));
+        }
         $priceField->click();
 
         $priceInputXpath = $builder->reset()->child('input', ['@name' => $inputName], 1)->getXpath();
@@ -130,9 +135,7 @@ class NewArticleModule extends BackendModule
     public function addCategory($name)
     {
         $window = $this->getModuleWindow(false);
-        $builder = new BackendXpathBuilder();
-
-        $plusXpath = $builder
+        $plusXpath = (new BackendXpathBuilder())
             ->child('div', ['@text' => $name])
             ->ancestor('tr', [], 1)
             ->descendant('td', [], 2)
@@ -140,7 +143,6 @@ class NewArticleModule extends BackendModule
             ->getXpath();
 
         $plus = $window->find('xpath', $plusXpath);
-        $this->assertNotNull($plus, $plusXpath);
         $plus->click();
     }
 
@@ -152,25 +154,22 @@ class NewArticleModule extends BackendModule
      *
      * @throws \Exception
      */
-    public function checkAddedCategory($name, $area)
+    public function checkAddedCategory($name, $area): void
     {
         $window = $this->getModuleWindow(false);
-        $builder = new BackendXpathBuilder();
-
-        $plusXpath = $builder
+        $plusXpath = (new BackendXpathBuilder())
             ->child('div', ['@text' => $name])
             ->ancestor('div', ['~class' => 'x-panel'], 1)
             ->descendant('span', ['@text' => $area], 1)
             ->getXpath();
 
-        $plus = $window->find('xpath', $plusXpath);
-        $this->assertNotNull($plus, $plusXpath);
+        $window->find('xpath', $plusXpath);
     }
 
     /**
      * Saves the article
      */
-    public function saveArticle()
+    public function saveArticle(): void
     {
         $button = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
         $button->click();

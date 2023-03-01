@@ -44,7 +44,7 @@ class BackendVoucherContext extends SubContext
      */
     public function iAddTheVoucherToMyCart(string $code): void
     {
-        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $page = $this->getValidPage(CheckoutCart::class);
         $page->addVoucher($code);
     }
 
@@ -67,7 +67,7 @@ class BackendVoucherContext extends SubContext
 
     private function getModulePage(): VoucherModule
     {
-        return $this->getValidPage('VoucherModule', VoucherModule::class);
+        return $this->getValidPage(VoucherModule::class);
     }
 
     /**
@@ -90,7 +90,7 @@ class BackendVoucherContext extends SubContext
 
     private function loginAsFrontendUser(): void
     {
-        $accountPage = $this->getValidPage('Account', Account::class);
+        $accountPage = $this->getValidPage(Account::class);
         $accountPage->login('regular.customer@shopware.de.test', 'shopware');
     }
 
@@ -99,7 +99,7 @@ class BackendVoucherContext extends SubContext
      */
     private function fillCartWithProductsAndGeneratedVoucher(string $voucherCode): void
     {
-        $cartPage = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $cartPage = $this->getValidPage(CheckoutCart::class);
         $cartPage->fillCartWithProducts([
             ['number' => 'SWT0001', 'quantity' => 1],
         ]);
@@ -108,14 +108,14 @@ class BackendVoucherContext extends SubContext
 
     private function finishCheckout(): void
     {
-        $confirmPage = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
+        $confirmPage = $this->getValidPage(CheckoutConfirm::class);
         $confirmPage->proceedToCheckout();
         $this->waitForText('Vielen Dank', 6);
     }
 
     private function getUsedVoucherCodeFromBackend(): string
     {
-        $voucherModule = $this->getValidPage('VoucherModule', VoucherModule::class);
+        $voucherModule = $this->getValidPage(VoucherModule::class);
         $voucherModule->open();
 
         $this->waitForText('Neuer Individueller Testgutschein', 3);
@@ -123,7 +123,7 @@ class BackendVoucherContext extends SubContext
         $voucherModule->openEditFormForVoucher('Neuer Individueller Testgutschein');
         $this->waitForText('Gutschein-Konfiguration', 6);
 
-        $backend = $this->getValidPage('Backend', Backend::class);
+        $backend = $this->getValidPage(Backend::class);
         $backend->clickOnTabWithName('Individuelle Gutscheincodes');
 
         return $this->getVoucherCodeFromPage(true);

@@ -53,6 +53,6 @@ class BackendCustomerContext extends SubContext
 
     private function getModulePage(): CustomerModule
     {
-        return $this->getValidPage('CustomerModule', CustomerModule::class);
+        return $this->getValidPage(CustomerModule::class);
     }
 }

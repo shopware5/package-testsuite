@@ -15,7 +15,7 @@ class FrontendDetailContext extends SubContext
      */
     private function getDetailPage(): Detail
     {
-        return $this->getValidPage('Detail', Detail::class);
+        return $this->getValidPage(Detail::class);
     }
 
     /**
@@ -23,7 +23,7 @@ class FrontendDetailContext extends SubContext
      */
     private function getSearchPage(): Search
     {
-        return $this->getValidPage('Search', Search::class);
+        return $this->getValidPage(Search::class);
     }
 
     /**

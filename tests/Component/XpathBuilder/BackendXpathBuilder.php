@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Component\XpathBuilder;
 
 class BackendXpathBuilder extends BaseXpathBuilder
@@ -9,13 +11,8 @@ class BackendXpathBuilder extends BaseXpathBuilder
      *
      * This function builds an xpath that matches the window name exactly, but
      * allows explicit fuzziness by passing in 'false' as the second parameter.
-     *
-     * @param string $title
-     * @param bool   $exactMatch
-     *
-     * @return string
      */
-    public static function getWindowXpathByTitle($title, $exactMatch = true)
+    public static function getWindowXpathByTitle(string $title, bool $exactMatch = true): string
     {
         $prefix = $exactMatch ? '@' : '~';
 
@@ -27,14 +24,8 @@ class BackendXpathBuilder extends BaseXpathBuilder
 
     /**
      * Get an xpath for an extJS form element by its label
-     *
-     * @param string $label
-     * @param string $tag
-     * @param string $scope
-     *
-     * @return string
      */
-    public static function getFormElementXpathByLabel($label, $tag, $scope = '/')
+    public static function getFormElementXpathByLabel(string $label, string $tag, string $scope = '/'): string
     {
         return static::create($scope)
             ->descendant('label', ['@text' => $label])
@@ -46,13 +37,8 @@ class BackendXpathBuilder extends BaseXpathBuilder
 
     /**
      * Return an Xpath that finds a button by its label
-     *
-     * @param string $label
-     * @param string $scope
-     *
-     * @return string
      */
-    public static function getButtonXpathByLabel($label, $scope = '/')
+    public static function getButtonXpathByLabel(string $label, string $scope = '/'): string
     {
         return static::create($scope)
             ->child('span', ['@class' => 'x-btn-inner'])
@@ -63,26 +49,16 @@ class BackendXpathBuilder extends BaseXpathBuilder
 
     /**
      * Shorthand function to get an extJS input field by its label
-     *
-     * @param string $label
-     * @param string $scope
-     *
-     * @return string
      */
-    public static function getInputXpathByLabel($label, $scope = '/')
+    public static function getInputXpathByLabel(string $label, string $scope = '/'): string
     {
         return self::getFormElementXpathByLabel($label, 'input', $scope);
     }
 
     /**
      * Returns label-specific xpath for a combobox
-     *
-     * @param string $label
-     * @param string $scope
-     *
-     * @return string
      */
-    public static function getComboboxXpathByLabel($label, $scope = '/')
+    public static function getComboboxXpathByLabel(string $label, string $scope = '/'): string
     {
         return static::create($scope)
             ->descendant('label', ['@text' => $label])
@@ -95,22 +71,16 @@ class BackendXpathBuilder extends BaseXpathBuilder
 
     /**
      * Return xpath to the currently focused extJs input
-     *
-     * @return string
      */
-    public static function getFocusedElementXpath()
+    public static function getFocusedElementXpath(): string
     {
         return (new self())->child('input', ['~class' => 'x-form-focus'])->getXpath();
     }
 
     /**
      * Return xpath to an extJs tab by its label
-     *
-     * @param string $label
-     *
-     * @return string
      */
-    public static function getTabXpathByLabel($label)
+    public static function getTabXpathByLabel(string $label): string
     {
         return (new self())
             ->child('span', ['@text' => $label])
@@ -121,13 +91,9 @@ class BackendXpathBuilder extends BaseXpathBuilder
     /**
      * Return xpath to extJs icon by type
      *
-     * @param string $type
-     *
-     * @throws \Exception
-     *
-     * @return string
+     *@throws \Exception
      */
-    public static function getIconXpathByType($type)
+    public static function getIconXpathByType(string $type): string
     {
         switch ($type) {
             case 'edit':
@@ -137,36 +103,14 @@ class BackendXpathBuilder extends BaseXpathBuilder
                 return (new self())->child('img', ['~class' => 'sprite-minus-circle-frame'])->getXpath();
                 break;
             default:
-                throw new \Exception('Unknown icon type ' . $type);
+                throw new \RuntimeException('Unknown icon type ' . $type);
         }
     }
 
     /**
-     * Return a dropdown xpath by its action
-     *
-     * @param string $action
-     * @param string $optionText
-     *
-     * @return string
-     */
-    public function getDropdownXpathByAction($action, $optionText = '')
-    {
-        $this->child('div', ['~class' => 'x-boundlist', 'and', '@data-action' => $action]);
-
-        return empty($optionText)
-            ? $this->descendant('li', ['@role' => 'option'])->getXpath()
-            : $this->descendant('li', ['@role' => 'option', 'and', '@text' => $optionText])->getXpath();
-    }
-
-    /**
      * Return an Xpath that finds a fieldset by its label
-     *
-     * @param string $label
-     * @param string $scope
-     *
-     * @return string
      */
-    public static function getFieldsetXpathByLabel($label, $scope = '/')
+    public static function getFieldsetXpathByLabel(string $label, string $scope = '/'): string
     {
         return static::create($scope)
             ->descendant('fieldset')

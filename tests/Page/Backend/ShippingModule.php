@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
@@ -16,10 +18,7 @@ class ShippingModule extends BackendModule
 
     protected string $moduleWindowTitle = 'Versandkosten Verwaltung';
 
-    /**
-     * @var string
-     */
-    protected $editorWindowTitle = 'Versandkosten';
+    protected string $editorWindowTitle = 'Versandkosten';
 
     /**
      * Create a new shipping method from the details provided.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Element\Backend\Form;
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;

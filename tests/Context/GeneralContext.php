@@ -6,6 +6,7 @@ namespace Shopware\Context;
 
 use Behat\Behat\Hook\Scope\ScenarioScope;
 use Behat\Mink\Driver\Selenium2Driver;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class GeneralContext extends SubContext
 {
@@ -24,6 +25,7 @@ class GeneralContext extends SubContext
      * Isolate scenarios tagged with 'isolated'
      *
      * @BeforeScenario
+     *
      * @AfterScenario
      */
     public static function onAfterScenario(ScenarioScope $scope): void
@@ -68,7 +70,10 @@ class GeneralContext extends SubContext
 
     /**
      * @Given I am on the page :pageName
+     *
      * @When I go to the page :pageName
+     *
+     * @param class-string<Page> $pageName
      */
     public function iAmOnThePage(string $pageName): void
     {

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
+use Behat\Mink\Element\NodeElement;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class PaymentModule extends BackendModule
@@ -15,10 +18,8 @@ class PaymentModule extends BackendModule
 
     /**
      * Activate a given payment method
-     *
-     * @param string $name
      */
-    public function activatePaymentMethod($name)
+    public function activatePaymentMethod(string $name): void
     {
         $this->open();
         $window = $this->getModuleWindow();
@@ -38,20 +39,19 @@ class PaymentModule extends BackendModule
 
         $checkbox->toggle();
 
-        $window->findButton('Speichern')->click();
+        $saveButton = $window->findButton('Speichern');
+        if (!$saveButton instanceof NodeElement) {
+            throw new \RuntimeException('Could not find save button');
+        }
+        $saveButton->click();
         $this->waitForText('Zahlungsart gespeichert', 1);
     }
 
-    /**
-     * @return string
-     */
-    private function getPaymentMethodXpath($name)
+    private function getPaymentMethodXpath(string $name): string
     {
-        $paymentMethodXpath = BackendXpathBuilder::create()
+        return BackendXpathBuilder::create()
             ->child('div', ['starts-with' => ['@id', 'payment-main-tree']])
             ->descendant('div', ['~class' => 'x-grid-cell-inner', 'and', '~text' => $name])
             ->getXpath();
-
-        return $paymentMethodXpath;
     }
 }

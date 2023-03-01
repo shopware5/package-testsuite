@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Updater;
 
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
@@ -15,7 +17,7 @@ class UpdaterIndex extends ContextAwarePage
     /**
      * {@inheritdoc}
      */
-    public function getXPathSelectors()
+    public function getXPathSelectors(): array
     {
         return [
             'forwardButton' => BaseXpathBuilder::create()->child('input', ['@value' => 'Weiter'])->getXpath(),
@@ -31,7 +33,7 @@ class UpdaterIndex extends ContextAwarePage
     /**
      * {@inheritdoc}
      */
-    public function getCssSelectors()
+    public function getCssSelectors(): array
     {
         return [
             'startDbMigrationButton' => '#start-ajax',
@@ -41,7 +43,7 @@ class UpdaterIndex extends ContextAwarePage
     /**
      * Advances to the next updater page
      */
-    public function advance()
+    public function advance(): void
     {
         $xpath = $this->getXPathSelectors();
         $forwardButton = $this->waitForSelectorPresent('xpath', $xpath['forwardButton']);
@@ -52,7 +54,7 @@ class UpdaterIndex extends ContextAwarePage
     /**
      * Starts the database migration
      */
-    public function clickOnDbStart()
+    public function clickOnDbStart(): void
     {
         $forwardButton = $this->find('css', $this->getCssSelectors()['startDbMigrationButton']);
         $forwardButton->click();
@@ -61,14 +63,10 @@ class UpdaterIndex extends ContextAwarePage
     /**
      * Indicates the finished Cleanup step
      */
-    public function finishCleanup()
+    public function finishCleanup(): void
     {
-        $textNotPresent = $this->waitForTextNotPresent('entfernte Dateien');
-        $indicatorNotPresent = $this->waitForSelectorNotPresent('css', '.loading-indicator');
-
-        if ($textNotPresent === false || $indicatorNotPresent === false) {
-            throw new \Exception('Cleanup could not be finished');
-        }
+        $this->waitForTextNotPresent('entfernte Dateien');
+        $this->waitForSelectorNotPresent('css', '.loading-indicator');
     }
 
     /**
@@ -76,7 +74,7 @@ class UpdaterIndex extends ContextAwarePage
      *
      * @param string $updateTitle Text which indicates the hint to remove the update assets
      */
-    public function handleUpdateAssets($updateTitle)
+    public function handleUpdateAssets(string $updateTitle): void
     {
         $this->waitForText($updateTitle);
     }

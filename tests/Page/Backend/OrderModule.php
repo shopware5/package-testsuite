@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\GridView\GridView;
 use Shopware\Element\Backend\GridView\GridViewRow;
+use Shopware\Element\Backend\Window;
 
 class OrderModule extends BackendModule
 {
@@ -15,17 +18,12 @@ class OrderModule extends BackendModule
 
     protected string $moduleWindowTitle = 'Bestellungen';
 
-    /**
-     * @var string
-     */
-    protected $editorWindowTitle = 'Bestellungs-Details:';
+    protected string $editorWindowTitle = 'Bestellungs-Details:';
 
     /**
      * Open an order by email
-     *
-     * @param string $email
      */
-    public function openOrderByEmail($email)
+    public function openOrderByEmail(string $email): void
     {
         $orderRow = $this->getOrderListGridView()->getRowByContent($email);
         $orderRow->clickActionIcon('sprite-pencil');
@@ -33,22 +31,19 @@ class OrderModule extends BackendModule
 
     /**
      * Set order or payment status
-     *
-     * @param string $type
-     * @param string $status
      */
-    public function setStatusByType($type, $status)
+    public function setStatusByType(string $type, string $status): void
     {
         $label = strtolower($type) === 'order' ? 'Bestellstatus:' : 'Zahlungsstatus:';
 
-        $statusCombobox = $this->getEditorWindow()->getCombobox($label);
+        $statusCombobox = $this->getEditorWindow(false)->getCombobox($label);
         $statusCombobox->setValue($status);
     }
 
     /**
      * Send a notification email to the customer using the email window opened after saving after a status history change
      */
-    public function sendCustomerNotificationMail()
+    public function sendCustomerNotificationMail(): void
     {
         $this->waitForText('E-Mail an den Kunden senden');
 
@@ -62,27 +57,16 @@ class OrderModule extends BackendModule
     /**
      * Reload the status history tab
      */
-    public function reloadStatusHistory()
+    public function reloadStatusHistory(): void
     {
-        $gridView = $this->getEditorWindow()->getGridView('Benutzer');
+        $gridView = $this->getEditorWindow(false)->getGridView('Benutzer');
         $gridView->reload();
     }
 
     /**
-     * Click the email icon on the topmost generated document
-     */
-    public function clickEmailIconOnLastGeneratedIcon()
-    {
-        $row = $this->getLastGeneratedDocumentGridRow();
-        $row->clickActionIcon('sprite-mail-send');
-    }
-
-    /**
      * Filter the backend order list by shipping country
-     *
-     * @param string $country
      */
-    public function filterOrderListForShippingCountry($country)
+    public function filterOrderListForShippingCountry(string $country): void
     {
         $this->getModuleWindow()->getCombobox('Lieferland:')->setValue($country);
         $this->findButton('Ausführen')->click();
@@ -93,10 +77,8 @@ class OrderModule extends BackendModule
 
     /**
      * Get number of orders in backend list
-     *
-     * @return int
      */
-    public function getNumberOfOrdersInOrderList()
+    public function getNumberOfOrdersInOrderList(): int
     {
         $gridView = $this->getOrderListGridView();
 
@@ -106,7 +88,7 @@ class OrderModule extends BackendModule
     /**
      * Sort backend order list by order value (ascendingly)
      */
-    public function sortOrderListByValue()
+    public function sortOrderListByValue(): void
     {
         sleep(3);
         $this->getOrderListGridView()->sortBy('Betrag');
@@ -114,39 +96,17 @@ class OrderModule extends BackendModule
 
     /**
      * Get the topmost order from the backend listing
-     *
-     * @return GridViewRow
      */
-    public function getTopmostOrderFromList()
+    public function getTopmostOrderFromList(): GridViewRow
     {
         return $this->getOrderListGridView()->getFirstRow();
     }
 
     /**
-     * Get the latest generated document grid row
-     *
-     * @return GridViewRow
-     */
-    private function getLastGeneratedDocumentGridRow()
-    {
-        return $this->getEditorWindow()->getGridView('Betrag')->getRowByContent('Rechnung');
-    }
-
-    /**
      * Get main order list grid view
-     *
-     * @return GridView
      */
-    private function getOrderListGridView()
+    private function getOrderListGridView(): GridView
     {
         return $this->getModuleWindow()->getGridView('Bestellnummer');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getEditorWindow($exactMatch = false)
-    {
-        return parent::getEditorWindow($exactMatch);
     }
 }

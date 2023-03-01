@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Component\Form;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
@@ -11,9 +14,9 @@ trait FormFillerTrait
     /**
      * Fill a given form where the fields are identified by their name and tag types
      *
-     * @param array $formData Expected format: [['name' => 'sAGB', 'value' => '1', 'type' => 'checkbox']]
+     * @param array<array{name: string, value: mixed, type: string}> $formData Expected format: [['name' => 'sAGB', 'value' => '1', 'type' => 'checkbox']]
      */
-    public function fillForm(ContextAwarePage $page, array $formData)
+    public function fillForm(ContextAwarePage $page, array $formData): void
     {
         foreach ($formData as $formElement) {
             switch ($formElement['type']) {
@@ -35,12 +38,8 @@ trait FormFillerTrait
 
     /**
      * Get a NodeElement with the given name
-     *
-     * @param string $xpath
-     *
-     * @return \Behat\Mink\Element\NodeElement|null
      */
-    private function getElementByName(ContextAwarePage $page, $xpath)
+    private function getElementByName(ContextAwarePage $page, string $xpath): NodeElement
     {
         return $page->waitForSelectorPresent('xpath', $xpath);
     }
@@ -57,12 +56,7 @@ trait FormFillerTrait
         }
     }
 
-    /**
-     * @param string $xpath
-     *
-     * @return string
-     */
-    private function selectLastElement($xpath)
+    private function selectLastElement(string $xpath): string
     {
         return sprintf('(%s)[last()]', $xpath);
     }

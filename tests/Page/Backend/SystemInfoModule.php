@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;

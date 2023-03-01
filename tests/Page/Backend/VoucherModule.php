@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 class VoucherModule extends BackendModule
@@ -17,7 +19,7 @@ class VoucherModule extends BackendModule
     /**
      * {@inheritdoc}
      */
-    protected $editorWindowTitle = 'Gutschein-Konfiguration';
+    protected string $editorWindowTitle = 'Gutschein-Konfiguration';
 
     /**
      * Fill the new voucher form of the backend module with

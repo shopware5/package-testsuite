@@ -1,18 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Component\XpathBuilder;
 
 class BaseXpathBuilder
 {
-    /**
-     * @var string
-     */
-    private $xpath;
+    private string $xpath;
 
-    /**
-     * @param string $xpath
-     */
-    public function __construct($xpath = '/')
+    public function __construct(string $xpath = '/')
     {
         $this->xpath = $xpath;
     }
@@ -20,21 +16,17 @@ class BaseXpathBuilder
     /**
      * Create and return empty Xpath Builder instance
      *
-     * @param string $xpath
-     *
      * @return BaseXpathBuilder
      */
-    public static function create($xpath = '/')
+    public static function create(string $xpath = '/')
     {
         return new self($xpath);
     }
 
     /**
      * Get built xpath
-     *
-     * @return string
      */
-    public function getXpath()
+    public function getXpath(): string
     {
         return $this->xpath;
     }
@@ -42,7 +34,7 @@ class BaseXpathBuilder
     /**
      * Replace the built xpath
      */
-    public function setXpath($xpath)
+    public function setXpath(string $xpath): void
     {
         $this->xpath = $xpath;
     }
@@ -50,11 +42,9 @@ class BaseXpathBuilder
     /**
      * Explicitly reset the builder to start from anywhere
      *
-     * @param string $xpath
-     *
      * @return $this
      */
-    public function reset($xpath = '/')
+    public function reset(string $xpath = '/'): BaseXpathBuilder
     {
         $this->setXpath($xpath);
 
@@ -63,96 +53,61 @@ class BaseXpathBuilder
 
     /**
      * Refine current xpath by a child selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function child($tag, array $conditions = [], $index = null)
+    public function child(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/', $conditions, $index);
     }
 
     /**
      * Refine current xpath by an ancestor selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function ancestor($tag, array $conditions = [], $index = null)
+    public function ancestor(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/ancestor::', $conditions, $index);
     }
 
     /**
      * Refine current xpath by a descendant selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function descendant($tag, array $conditions = [], $index = null)
+    public function descendant(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/descendant::', $conditions, $index);
     }
 
     /**
      * Refine current xpath by a following selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function following($tag, array $conditions = [], $index = null)
+    public function following(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/following::', $conditions, $index);
     }
 
     /**
      * Refine current xpath by a preceding selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function preceding($tag, array $conditions = [], $index = null)
+    public function preceding(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/preceding::', $conditions, $index);
     }
 
     /**
      * Refine current xpath by a following sibling selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function followingSibling($tag, array $conditions = [], $index = null)
+    public function followingSibling(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/following-sibling::', $conditions, $index);
     }
 
     /**
      * Refine current xpath by a preceding sibling selector
-     *
-     * @param string   $tag
-     * @param int|null $index
-     *
-     * @return self
      */
-    public function precedingSibling($tag, array $conditions = [], $index = null)
+    public function precedingSibling(string $tag, array $conditions = [], ?int $index = null): BaseXpathBuilder
     {
         return $this->appendPartialPath($tag, '/preceding-sibling::', $conditions, $index);
     }
 
-    public function contains($text)
+    public function contains(string $text): BaseXpathBuilder
     {
         if ($text === '') {
             return $this;
@@ -165,18 +120,15 @@ class BaseXpathBuilder
 
     /**
      * @param string[]|string $string
-     * @param string          $attribute
-     *
-     * @return string
      */
-    public static function getContainsAttributeString($string, $attribute)
+    public static function getContainsAttributeString($string, string $attribute): string
     {
         if (!\is_array($string)) {
             $string = [$string];
         }
         $result = '';
         foreach ($string as $part) {
-            $result .= "contains(concat(' ', normalize-space(@$attribute), ' '), ' $part ') and ";
+            $result .= sprintf("contains(concat(' ', normalize-space(@%s), ' '), ' %s ') and ", $attribute, $part);
         }
 
         return rtrim($result, ' and ');
@@ -187,19 +139,19 @@ class BaseXpathBuilder
      *
      * @internal
      *
-     * @throws \Exception
+     * @param array<array-key, string|array<string>> $conditions
      *
-     * @return string
+     * @throws \Exception
      */
-    protected function parseConditions($conditions)
+    protected function parseConditions(array $conditions): string
     {
         $conditionString = '';
 
-        $targetModifiersPrefixes = ['!'];
         $targetModifiers = ['@', '~'];
         $subConditionHandlers = ['starts-with', 'ends-with', 'visible'];
 
         foreach ($conditions as $target => $condition) {
+            $target = (string) $target;
             if (\in_array($target, $subConditionHandlers, true)) {
                 switch ($target) {
                     case 'starts-with':
@@ -226,14 +178,14 @@ class BaseXpathBuilder
             }
 
             $targetModifiersPrefix = substr($target, 0, 1);
-            if (\in_array($targetModifiersPrefix, $targetModifiersPrefixes)) {
+            if ($targetModifiersPrefix === '!') {
                 $target = substr($target, 1);
             } else {
                 $targetModifiersPrefix = null;
             }
 
             $targetModifier = substr($target, 0, 1);
-            if (\in_array($targetModifier, $targetModifiers)) {
+            if (\in_array($targetModifier, $targetModifiers, true)) {
                 $target = substr($target, 1);
             } else {
                 $targetModifier = null;
@@ -251,12 +203,18 @@ class BaseXpathBuilder
 
             switch ($targetModifier) {
                 case '@':
+                    if (!\is_string($condition)) {
+                        throw new \RuntimeException('condition must be string at this point');
+                    }
                     $conditionString .= $this->equals($target, $condition) . ' ';
                     break;
                 case '~':
                     $conditionString .= $this->getContainsString($target, $condition) . ' ';
                     break;
                 default:
+                    if (!\is_string($condition)) {
+                        throw new \RuntimeException('condition must be string at this point');
+                    }
                     $conditionString .= $condition . ' ';
             }
 
@@ -276,23 +234,13 @@ class BaseXpathBuilder
      * Internal helper function to append a new search selector to the xpath
      * that is being built.
      *
-     * @param string $tag
-     * @param string $prefix
-     * @param array  $conditions
-     * @param int    $index
-     *
      * @throws \Exception
-     *
-     * @return self
      */
-    private function appendPartialPath($tag, $prefix, $conditions, $index)
+    private function appendPartialPath(string $tag, string $prefix, array $conditions, ?int $index): BaseXpathBuilder
     {
         // Input validation
         if ($tag === '') {
             throw new \Exception('Invalid argument: Tag cannot be empty.');
-        }
-        if ($index !== null && !\is_int($index)) {
-            throw new \Exception('Invalid argument: Index must be of type integer.');
         }
 
         // Add prefix
@@ -317,29 +265,23 @@ class BaseXpathBuilder
 
     /**
      * Helper function for the predicate parser
-     *
-     * @return string
      */
-    private function equals($target, $text)
+    private function equals(string $target, string $text): string
     {
         switch ($target) {
             case 'text':
-                return "text()='$text'";
-                break;
+                return sprintf("text()='%s'", $text);
             default:
-                return "@$target='$text'";
+                return sprintf("@%s='%s'", $target, $text);
         }
     }
 
     /**
      * Helper function for the predicate parser
      *
-     * @param string          $target
      * @param string[]|string $text
-     *
-     * @return string
      */
-    private function getContainsString($target, $text)
+    private function getContainsString(string $target, $text): string
     {
         if (!\is_array($text)) {
             $text = [$text];
@@ -353,7 +295,6 @@ class BaseXpathBuilder
                 }
 
                 return rtrim($result, ' and ');
-                break;
             default:
                 return self::getContainsAttributeString($text, $target);
         }

@@ -24,7 +24,7 @@ class UpdaterContext extends SubContext
      */
     public function iAdvanceToTheNextUpdaterPage(): void
     {
-        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
+        $page = $this->getValidPage(UpdaterIndex::class);
         $page->advance();
     }
 
@@ -33,7 +33,7 @@ class UpdaterContext extends SubContext
      */
     public function iClickToStartTheDatabaseMigration(): void
     {
-        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
+        $page = $this->getValidPage(UpdaterIndex::class);
         $page->clickOnDbStart();
     }
 
@@ -42,7 +42,7 @@ class UpdaterContext extends SubContext
      */
     public function iHaveUnusedFilesInMyInstallation(): void
     {
-        $this->getValidPage('UpdaterIndex', UpdaterIndex::class)->find('css', 'td');
+        $this->getValidPage(UpdaterIndex::class)->find('css', 'td');
     }
 
     /**
@@ -50,7 +50,7 @@ class UpdaterContext extends SubContext
      */
     public function theCleanupWillBeFinished(): void
     {
-        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
+        $page = $this->getValidPage(UpdaterIndex::class);
         $page->finishCleanup();
     }
 
@@ -59,7 +59,7 @@ class UpdaterContext extends SubContext
      */
     public function iShouldSeeTheReminderToRemoveTheUpdateAssetsFolder(string $hint): void
     {
-        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
+        $page = $this->getValidPage(UpdaterIndex::class);
         $page->handleUpdateAssets($hint);
     }
 
@@ -105,7 +105,7 @@ class UpdaterContext extends SubContext
      */
     public function iAdvanceToTheNextRequirementsStep(string $stepName): void
     {
-        $page = $this->getValidPage('UpdaterIndex', UpdaterIndex::class);
+        $page = $this->getValidPage(UpdaterIndex::class);
         $page->advanceToStep($stepName);
     }
 }

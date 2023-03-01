@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Component\SpinTrait;
 
 trait SpinTrait
@@ -9,16 +11,14 @@ trait SpinTrait
      *
      * @see http://docs.behat.org/en/v2.5/cookbook/using_spin_functions.html#adding-a-timeout
      *
-     * @param int $wait
+     * @param callable $lambda
      *
      * @throws \Exception
-     *
-     * @return bool
      */
-    protected function spin($lambda, $wait = 120)
+    protected function spin($lambda, int $wait = 10): void
     {
         if (!$this->spinWithNoException($lambda, $wait)) {
-            throw new \Exception("Spin function timed out after {$wait} seconds");
+            throw new \Exception(sprintf('Spin function timed out after %s seconds', $wait));
         }
     }
 
@@ -27,11 +27,9 @@ trait SpinTrait
      *
      * @see http://docs.behat.org/en/v2.5/cookbook/using_spin_functions.html#adding-a-timeout
      *
-     * @param int $wait
-     *
-     * @return bool
+     * @param callable $lambda
      */
-    protected function spinWithNoException($lambda, $wait = 120)
+    protected function spinWithNoException($lambda, int $wait = 10): bool
     {
         $time = time();
         $stopTime = $time + $wait;

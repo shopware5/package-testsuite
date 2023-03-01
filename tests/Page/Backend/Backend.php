@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
@@ -14,11 +16,8 @@ class Backend extends ContextAwarePage
 
     /**
      * Log user into the backend
-     *
-     * @param string $user
-     * @param string $password
      */
-    public function login($user = 'demo', $password = 'demo')
+    public function login(string $user = 'demo', string $password = 'demo'): void
     {
         $this->open();
         $this->getSession()->setCookie('lastCheckSubscriptionDate', date('dmY'));
@@ -44,10 +43,8 @@ class Backend extends ContextAwarePage
 
     /**
      * Click on a tab identified by its label
-     *
-     * @param string $label
      */
-    public function clickOnTabWithName($label)
+    public function clickOnTabWithName(string $label): void
     {
         $tab = $this->find('xpath', BackendXpathBuilder::getTabXpathByLabel($label));
         $tab->click();

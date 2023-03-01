@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Page\Backend;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ExistingArticleModule extends NewArticleModule
@@ -45,7 +46,13 @@ class ExistingArticleModule extends NewArticleModule
             ->descendant('span', ['@text' => $groupTitle], 1)
             ->getXpath();
 
-        return $groupMatchXpath !== null;
+        try {
+            $this->find('xpath', $groupMatchXpath);
+
+            return true;
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
     }
 
     /**

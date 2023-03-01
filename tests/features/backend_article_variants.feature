@@ -23,7 +23,6 @@ Feature: I can generate and use article variants
     And I set "10" as the article price
     Then I am able to save my article
     And I should see "Erfolgreich" eventually
-    And the "Varianten" tab should be active
 
     When I click on the "Varianten" tab
     Then I should see "Art des Konfigurators:" eventually

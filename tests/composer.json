@@ -13,7 +13,7 @@
         "friendsofphp/php-cs-fixer": "^3.1",
         "guzzlehttp/guzzle": "^7.5",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.0",
-        "phpstan/phpstan": "^0.12.99",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.4",
         "sensiolabs/behat-page-object-extension": "^2.0",
         "smalot/pdfparser": "^2.3",

@@ -1,133 +1,71 @@
 <?php
 
+declare(strict_types=1);
+
 class ImageConfig
 {
-    /**
-     * @var int
-     */
-    private $imageWidth;
+    private int $imageWidth = 640;
 
-    /**
-     * @var int
-     */
-    private $imageHeight;
+    private int $imageHeight = 480;
 
-    /**
-     * @var int
-     */
-    private $maxLineWidth;
+    private int $maxLineWidth = 15;
 
-    /**
-     * @var int
-     */
-    private $colorDeviation;
+    private int $colorDeviation = 20;
 
-    /**
-     * @var string
-     */
-    private $text;
+    private string $text = '';
 
-    /**
-     * @return int
-     */
-    public function getImageWidth()
+    public function getImageWidth(): int
     {
-        if (!\is_int($this->imageWidth)) {
-            return 640;
-        }
-
         return $this->imageWidth;
     }
 
-    /**
-     * @param int $imageWidth
-     */
-    public function setImageWidth($imageWidth)
+    public function setImageWidth(int $imageWidth): void
     {
         $this->imageWidth = $imageWidth;
     }
 
-    /**
-     * @return int
-     */
-    public function getImageHeight()
+    public function getImageHeight(): int
     {
-        if (!\is_int($this->imageHeight)) {
-            return 480;
-        }
-
         return $this->imageHeight;
     }
 
-    /**
-     * @param int $imageHeight
-     */
-    public function setImageHeight($imageHeight)
+    public function setImageHeight(int $imageHeight): void
     {
         $this->imageHeight = $imageHeight;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxLineWidth()
+    public function getMaxLineWidth(): int
     {
-        if (!\is_int($this->maxLineWidth)) {
-            return 15;
-        }
-
         return $this->maxLineWidth;
     }
 
-    /**
-     * @param int $maxLineWidth
-     */
-    public function setMaxLineWidth($maxLineWidth)
+    public function setMaxLineWidth(int $maxLineWidth): void
     {
         $this->maxLineWidth = $maxLineWidth;
     }
 
-    /**
-     * @return int
-     */
-    public function getColorDeviation()
+    public function getColorDeviation(): int
     {
-        if (!\is_int($this->colorDeviation)) {
-            return 20;
-        }
-
         return $this->colorDeviation;
     }
 
-    /**
-     * @param int $colorDeviation
-     */
-    public function setColorDeviation($colorDeviation)
+    public function setColorDeviation(int $colorDeviation): void
     {
         $this->colorDeviation = $colorDeviation;
     }
 
-    /**
-     * @return float
-     */
-    public function getSeed()
+    public function getSeed(): float
     {
         return (float) microtime() * 1000000;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText(): string
     {
-        return $this->text ?: '';
+        return $this->text;
     }
 
-    /**
-     * @param string $text
-     */
-    public function setText($text)
+    public function setText(string $text): void
     {
-        $this->text = (string) $text;
+        $this->text = $text;
     }
 }

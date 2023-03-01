@@ -72,6 +72,6 @@ class ProductExportContext extends SubContext
 
     private function getModulePage(): ProductExportModule
     {
-        return $this->getValidPage('ProductExportModule', ProductExportModule::class);
+        return $this->getValidPage(ProductExportModule::class);
     }
 }

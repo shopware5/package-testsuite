@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Element\Backend;
 
 use Behat\Mink\Element\NodeElement;
@@ -45,7 +47,7 @@ abstract class ExtJsElement extends NodeElement
      * is created, this function checks if the element indeed exists and can
      * be used in testing, failing early with an exception if it doesn't.
      */
-    protected function waitForElementAvailable()
+    protected function waitForElementAvailable(): void
     {
         // Check if the element already exists in the DOM
         if ($this->isValid()) {
@@ -60,12 +62,12 @@ abstract class ExtJsElement extends NodeElement
 
         // Check if object exists
         if (!$this->isValid()) {
-            throw new \Exception('Could not find element of type ' . \get_class($this) . ' with xpath: ' . $this->getXpath());
+            throw new \RuntimeException('Could not find element of type ' . \get_class($this) . ' with xpath: ' . $this->getXpath());
         }
 
         // Check if object is visible
         if (!$this->isVisible()) {
-            throw new \Exception('Element of type ' . \get_class($this) . ' not visible.');
+            throw new \RuntimeException('Element of type ' . \get_class($this) . ' not visible.');
         }
     }
 }

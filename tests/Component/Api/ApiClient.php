@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Component\Api;
 
 use Faker\Factory as FakerFactory;
@@ -119,17 +121,13 @@ class ApiClient
     }
 
     /**
-     * @param string $name
-     *
      * @throws \Exception
-     *
-     * @return bool
      */
-    public function articleExistsByName($name)
+    public function articleExistsByName(string $name): bool
     {
         $response = $this->get('api/articles', [
             'filter' => [
-                'name' => (string) $name,
+                'name' => $name,
             ],
             'limit' => 1,
         ]);
