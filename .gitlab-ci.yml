@@ -94,7 +94,7 @@ Test installation:
     - name: docker:20-dind
       alias: docker
   script:
-    - mv deploy-script/output/package/*.zip files/
+    - mv deploy-script/output/package/*.zip  /
     - cd docker
     - ./stage_general.sh $CI_JOB_ID
   artifacts:

@@ -10,7 +10,7 @@ class InstallerIndex extends ContextAwarePage
     /**
      * @var string
      */
-    protected $path = '/recovery/install/';
+    protected $path = '/recovery/install/index.php';
 
     /**
      * {@inheritdoc}
@@ -95,23 +95,6 @@ class InstallerIndex extends ContextAwarePage
     public function fillInAndSubmitForm($data)
     {
         foreach ($data as $formElement) {
-            if ($formElement['field'] === 'c_database_schema') {
-                $schemaInputXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
-                $schemaSelectXpath = FrontendXpathBuilder::getElementXpathByName('select', $formElement['field']);
-
-                $schemaInput = $this->find('xpath', $schemaInputXpath);
-
-                // Element will be replaced with a <select> by the onFocus listener on $schemaInput
-                $schemaInput->focus();
-
-                // Wait for the onFocus listener to finish its AJAX request & replace
-                $schemaSelect = $this->waitForSelectorPresent('xpath', $schemaSelectXpath, 10);
-
-                $schemaSelect->selectOption($formElement['value']);
-
-                continue;
-            }
-
             $elementXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
             $element = $this->waitForSelectorPresent('xpath', $elementXpath);
 
