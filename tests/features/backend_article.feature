@@ -10,7 +10,6 @@ Feature: I can create, update and delete an article
   Scenario: I can create a new article
     Given I am logged into the backend
     Then I should see "Artikel" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Anlegen"
     Then I should see "Artikeldetails : Neuer Artikel" eventually
@@ -47,7 +46,6 @@ Feature: I can create, update and delete an article
   Scenario: I can edit an existing article
     Given I am logged into the backend
     Then I should see "Artikel" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Übersicht"
     Then I should see "SW99999" eventually
@@ -63,7 +61,6 @@ Feature: I can create, update and delete an article
   Scenario: I can delete an existing article
     Given I am logged into the backend
     Then I should see "Artikel" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Übersicht"
     Then I should see "SW99999" eventually

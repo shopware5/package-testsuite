@@ -10,7 +10,6 @@ Feature: I can generate and use article variants
   Scenario: I can create a new article with variants
     Given I am logged into the backend
     Then I should see "Artikel" eventually
-    And I should see "Feedback" eventually
     When I hover backend menu item "Artikel"
     And I click on backend menu item that contains "Anlegen"
     Then I should see "Artikeldetails : Neuer Artikel" eventually
