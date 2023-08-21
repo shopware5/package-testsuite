@@ -16,7 +16,7 @@ class BackendArticleContext extends SubContext
      */
     private function getBackendModulePage(): BackendModule
     {
-        return $this->getValidPage('BackendModule', BackendModule::class);
+        return $this->getValidPage(BackendModule::class);
     }
 
     /**
@@ -24,7 +24,7 @@ class BackendArticleContext extends SubContext
      */
     private function getExistingArticleModulePage(): ExistingArticleModule
     {
-        return $this->getValidPage('ExistingArticleModule', ExistingArticleModule::class);
+        return $this->getValidPage(ExistingArticleModule::class);
     }
 
     /**
@@ -32,7 +32,7 @@ class BackendArticleContext extends SubContext
      */
     private function getNewArticleModulePage(): NewArticleModule
     {
-        return $this->getValidPage('NewArticleModule', NewArticleModule::class);
+        return $this->getValidPage(NewArticleModule::class);
     }
 
     /**
@@ -154,18 +154,6 @@ class BackendArticleContext extends SubContext
     public function iConfirmToDeleteTheEntry(): void
     {
         $this->getBackendModulePage()->answerMessageBox('Ja');
-    }
-
-    /**
-     * @Given the :title tab should be active
-     *
-     * @throws \Exception
-     */
-    public function theTabShouldBeActive(string $title): void
-    {
-        if ($this->getBackendModulePage()->checkIfTabIsActive($title) !== true) {
-            throw new \RuntimeException('Variant was not set active.');
-        }
     }
 
     /**

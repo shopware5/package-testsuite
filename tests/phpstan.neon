@@ -1,12 +1,13 @@
 includes:
-	- phpstan-baseline.neon
+    - phpstan-baseline.neon
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
 parameters:
     level: 8
+    phpVersion: 70400
     paths:
         - Component
         - Context
         - Element
         - Page
-    ignoreErrors:
-        - '#has parameter \$.* with no value type specified in iterable type Behat\\Gherkin\\Node\\TableNode#'
+        - ../www

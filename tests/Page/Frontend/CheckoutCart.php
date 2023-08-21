@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Frontend;
 
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
-use Shopware\Context\Exception\PageNotDefinedException;
 use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
 
@@ -157,10 +158,7 @@ class CheckoutCart extends ContextAwarePage
     {
         $originalPath = $this->path;
 
-        $detailPage = $this->getPage('Detail');
-        if (!$detailPage instanceof Detail) {
-            throw new PageNotDefinedException('Detail', Detail::class);
-        }
+        $detailPage = $this->getPage(Detail::class);
 
         foreach ($items as $row) {
             if (!$this->hasCartProductWithQuantity($row['number'], $row['quantity'])) {
@@ -281,8 +279,8 @@ class CheckoutCart extends ContextAwarePage
                     }
 
                     throw new \Exception(sprintf('Cart positions not as expected: Expected: %s Got: %s',
-                            print_r($expectedPosition, true),
-                            print_r($actualPosition, true))
+                        print_r($expectedPosition, true),
+                        print_r($actualPosition, true))
                     );
                 }
             }

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Window;
 use Shopware\Page\ContextAwarePage;
@@ -12,20 +13,11 @@ class BackendModule extends ContextAwarePage
 {
     protected string $moduleWindowTitle = '';
 
-    /**
-     * @var Window|null
-     */
-    protected $moduleWindow;
+    protected ?Window $moduleWindow = null;
 
-    /**
-     * @var string
-     */
-    protected $editorWindowTitle;
+    protected string $editorWindowTitle = '';
 
-    /**
-     * @var Window|null
-     */
-    protected $editorWindow;
+    protected ?Window $editorWindow = null;
 
     /**
      * Fill a standard ExtJs form with data
@@ -40,9 +32,11 @@ class BackendModule extends ContextAwarePage
      *                         'textarea'
      * - fieldset (optional) - You can scope a single form element further by providing the parenting fieldset
      *
+     * @param array<array<string, mixed>> $formElements
+     *
      * @throws \Exception
      */
-    public function fillExtJsForm(Window $formParent, array $formElements)
+    public function fillExtJsForm(Window $formParent, array $formElements): void
     {
         foreach ($formElements as $element) {
             $element['fieldset'] = isset($element['fieldset']) ? $element['fieldset'] : '';
@@ -78,10 +72,8 @@ class BackendModule extends ContextAwarePage
 
     /**
      * Helper method that fills an extJS combobox input field
-     *
-     * @param string $value
      */
-    public function fillComboboxInput(NodeElement $comboInputField, $value)
+    public function fillComboboxInput(NodeElement $comboInputField, string $value): void
     {
         $comboInputField->click();
         $comboInputField->setValue($value);
@@ -89,24 +81,15 @@ class BackendModule extends ContextAwarePage
 
     /**
      * Expands a collapsed element
-     *
-     * @param string $label
-     * @param null   $fieldset
      */
-    public function expandCategoryCollapsible($label, $fieldset = null)
+    public function expandCategoryCollapsible(string $label): void
     {
-        $builder = new BackendXpathBuilder();
-
-        $collapsibleFieldXpath = $builder
+        $collapsibleFieldXpath = (new BackendXpathBuilder())
             ->child('div', ['@text' => $label], 1)
             ->ancestor('tr', [], 1)
             ->getXpath();
 
-        if ($fieldset) {
-            $element = $fieldset->find('xpath', $collapsibleFieldXpath);
-        } else {
-            $element = $this->find('xpath', $collapsibleFieldXpath);
-        }
+        $element = $this->find('xpath', $collapsibleFieldXpath);
 
         $element->doubleClick();
     }
@@ -116,30 +99,15 @@ class BackendModule extends ContextAwarePage
      *
      * @throws \Exception
      */
-    public function answerMessageBox($answer)
+    public function answerMessageBox(string $answer): void
     {
-        $builder = new BackendXpathBuilder();
-
-        $answerButtonXpath = $builder
+        $answerButtonXpath = (new BackendXpathBuilder())
             ->child('span', ['@text' => $answer, 'and', '~class' => 'x-btn-inner'], 1)
             ->ancestor('button', [], 1)
             ->getXpath();
 
         $answerButton = $this->find('xpath', $answerButtonXpath);
-        $this->assertNotNull($answerButton, $answerButtonXpath);
         $answerButton->click();
-    }
-
-    public function checkIfTabIsActive($title)
-    {
-        $builder = new BackendXpathBuilder();
-
-        $tabXpath = $builder
-            ->child('span', ['@text' => $title, 'and', '~class' => 'x-tab-inner'], 1)
-            ->ancestor('button', ['@disabled' => ''], 1)
-            ->getXpath();
-
-        return $tabXpath !== null;
     }
 
     /**
@@ -148,12 +116,8 @@ class BackendModule extends ContextAwarePage
     protected function getModuleWindow(bool $exactMatch = true): Window
     {
         // Cache the window reference as long as it is still valid
-        if (!$this->moduleWindow || !$this->moduleWindow->isValid() || $exactMatch === false) {
+        if (!$this->moduleWindow || !$this->moduleWindow->isValid() || !$exactMatch) {
             $this->moduleWindow = Window::createFromTitle($this->moduleWindowTitle, $this->getSession(), $exactMatch);
-        }
-
-        if ($this->moduleWindow === null) {
-            throw new ElementNotFoundException($this->getDriver());
         }
 
         return $this->moduleWindow;
@@ -161,15 +125,11 @@ class BackendModule extends ContextAwarePage
 
     /**
      * Helper method that returns the current editor window
-     *
-     * @param bool $exactMatch
-     *
-     * @return Window|null
      */
-    protected function getEditorWindow($exactMatch = true)
+    protected function getEditorWindow(bool $exactMatch = true): Window
     {
         // Cache the window reference as long as it is still valid
-        if (!$this->editorWindow || !$this->editorWindow->isValid() || $exactMatch == false) {
+        if (!$this->editorWindow || !$this->editorWindow->isValid() || !$exactMatch) {
             $this->editorWindow = Window::createFromTitle($this->editorWindowTitle, $this->getSession(), $exactMatch);
         }
 
@@ -179,16 +139,11 @@ class BackendModule extends ContextAwarePage
     /**
      * Clicks the selected icon for the entry with a given name.
      *
-     * @param string $name
-     * @param string $icon
-     *
      * @throws \Exception
      */
-    public function clickEntryIconByName($name, $icon)
+    public function clickEntryIconByName(string $name, string $icon): void
     {
-        $builder = new BackendXpathBuilder();
-
-        $editIconXpath = $builder
+        $editIconXpath = (new BackendXpathBuilder())
             ->child('div')
             ->contains($name)
             ->ancestor('tr', ['~class' => 'x-grid-row'])

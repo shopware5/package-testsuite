@@ -17,7 +17,7 @@ class FrontendContext extends SubContext
      */
     public function iAmLoggedInWithAccount(string $email, string $password = ''): void
     {
-        $accountPage = $this->getValidPage('Account', Account::class);
+        $accountPage = $this->getValidPage(Account::class);
         $accountPage->open();
 
         // We are logged in
@@ -46,7 +46,7 @@ class FrontendContext extends SubContext
      */
     public function theCartShouldContainArticlesWithAValueOf(string $quantity, string $amount): void
     {
-        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $page = $this->getValidPage(CheckoutCart::class);
         $page->open();
 
         $page->checkPositionCountAndCartSum($quantity, $amount);
@@ -61,7 +61,7 @@ class FrontendContext extends SubContext
         $treeArray = array_map('trim', $treeArray);
         $mainCategory = array_shift($treeArray);
 
-        $index = $this->getValidPage('Index', Index::class);
+        $index = $this->getValidPage(Index::class);
         $index->open();
         $this->waitForText('AGB');
         $index->getMainNavElement($mainCategory)->click();
@@ -75,7 +75,7 @@ class FrontendContext extends SubContext
      */
     public function iShouldBeAbleToSeeTheProductWithPrice(string $name, string $testPrice): void
     {
-        $product = $this->getValidPage('Index', Index::class)->getProductListingBoxElement($name);
+        $product = $this->getValidPage(Index::class)->getProductListingBoxElement($name);
 
         $price = $product->find('xpath', (new BaseXpathBuilder())->descendant('span', ['~class' => 'price--default'])->getXpath());
 

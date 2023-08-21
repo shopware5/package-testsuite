@@ -46,7 +46,7 @@ class FileCheckContext extends SubContext
      */
     public function aRequirementShouldOwnAsStatus($requirement, $icon): void
     {
-        $page = $this->getValidPage('SystemInfoModule', SystemInfoModule::class);
+        $page = $this->getValidPage(SystemInfoModule::class);
 
         $this->waitForText('engine');
         $requirementLabel = $requirement === 'folder' ? $this->folderRequirementLabel : $this->fileRequirementLabel;

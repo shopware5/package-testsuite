@@ -16,11 +16,12 @@ class BackendContext extends SubContext
 {
     /**
      * @Given I am logged into the backend
+     *
      * @When  I log in with user :user and password :password
      */
     public function iLogInWithUserAndPassword(string $user = 'demo', string $password = 'demo'): void
     {
-        $page = $this->getValidPage('Backend', Backend::class);
+        $page = $this->getValidPage(Backend::class);
         $page->login($user, $password);
     }
 
@@ -65,10 +66,10 @@ class BackendContext extends SubContext
      */
     public function theFollowingShippingOptionsExist(TableNode $table): void
     {
-        $page = $this->getValidPage('Backend', Backend::class);
+        $page = $this->getValidPage(Backend::class);
         $page->login();
 
-        $page = $this->getValidPage('ShippingModule', ShippingModule::class);
+        $page = $this->getValidPage(ShippingModule::class);
 
         foreach ($table->getHash() as $shipping) {
             $page->createShippingMethodIfNotExists($shipping);
@@ -80,7 +81,7 @@ class BackendContext extends SubContext
      */
     public function theShippingMethodHasTheFollowingShippingCosts(string $method, TableNode $table): void
     {
-        $page = $this->getValidPage('ShippingModule', ShippingModule::class);
+        $page = $this->getValidPage(ShippingModule::class);
         $page->setShippingCosts($method, $table->getHash());
     }
 
@@ -89,7 +90,7 @@ class BackendContext extends SubContext
      */
     public function clickButtonByLabel(string $label): void
     {
-        $page = $this->getValidPage('Backend', Backend::class);
+        $page = $this->getValidPage(Backend::class);
         $buttonXpath = BackendXpathBuilder::getButtonXpathByLabel($label);
         $this->waitForSelectorPresent('xpath', $buttonXpath);
         $buttons = $page->findAll('xpath', $buttonXpath);
@@ -114,7 +115,7 @@ class BackendContext extends SubContext
      */
     public function iClickOnTheTab(string $tabName): void
     {
-        $page = $this->getValidPage('Backend', Backend::class);
+        $page = $this->getValidPage(Backend::class);
         $page->clickOnTabWithName($tabName);
     }
 }

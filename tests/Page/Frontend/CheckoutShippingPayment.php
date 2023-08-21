@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
@@ -105,11 +107,13 @@ class CheckoutShippingPayment extends ContextAwarePage
      * Wait for the Javascript Overlay to close, indicating the new shipping/payment
      * method was selected successfully.
      */
-    private function waitForJsOverlayToClose()
+    private function waitForJsOverlayToClose(): void
     {
-        $this->waitForSelectorInvisible('xpath', FrontendXpathBuilder::create()
-            ->child('div', ['~class' => 'js--overlay'])
-            ->getXpath()
+        $this->waitForSelectorInvisible(
+            'xpath',
+            FrontendXpathBuilder::create()
+                ->child('div', ['~class' => 'js--overlay'])
+                ->getXpath()
         );
     }
 }

@@ -5,9 +5,6 @@ This project automates rudimentary QA tasks to ensure the most basic features of
 
 ## Installation
 
-This project is only supported on Linux and requires that both [docker](https://docs.docker.com/engine/installation/linux/) 
-and [docker compose](https://docs.docker.com/compose/) are available on the system.
-
 Clone the project and copy the following .dist files:
 
 ```bash
@@ -28,42 +25,6 @@ Create a token in your personal gitlab area and use it as password.
 
 ## Running tests
 
-Running the tests is as easy as calling the appropriate shell scripts in the `./docker` directory.
-Please note that these scripts need a build key as first argument.
-For local testing purposes, you can simply pass any arbitrary string as an argument such as:
-
-* `./stage_installer.sh testing` Tests install functionality
-* `./stage_updater.sh testing` Tests update functionality
-* `./stage_general.sh testing` Regular shop functionality
-
-## Running single features
-
-For local development, it is very useful to be able to run single features or tests without running a whole stage.
-That is what the `./docker/_local_manual_testing.sh` script is for. 
-It sets up the same environment the stages execute in but doesn't execute a single test on its own. 
-After calling the script you can run specific features manually. 
-It is recommended to use an alias like the following:
- 
- ```bash
-alias runmink='docker compose  -f docker/docker-compose.yml -f docker/docker-compose.local.yml run --rm behat --format=pretty --out=std --format=junit --out=/logs/mink $1'
- ```
-
- Then you can run a specific feature by simply calling:
-
- ```bash
-runmink /tests/features/backend_customers.feature
- ```
-## The helper script
-
-Inside the root directory you will find a helper script that can do most of the aforementioned things for you to spare you the trouble of remembering everything.
-The script offers the following methods
-* `./helper.sh installmink` installs a mink setup based on the install zip inside the `files/` directory
-* `./helper.sh delmink` stops and removes the installation
-* `./helper.sh runmink` allows you to run tests e.g `./helper.sh runmink tests/features/backend_article.feature`
-## Running tests without Docker
-
-If you don't want to use Docker, you can still execute `behat` manually.
-
 - Execute `composer install` in `tests`.
 - Make sure that you have installed Selenium on your maschine like described here: https://github.com/shopware/shopware/tree/5.7/tests/Mink#selenium
 - Adjust the value `assets_url` in the `tests/.env` file
@@ -78,28 +39,6 @@ If you don't want to use Docker, you can still execute `behat` manually.
 
 Now you can execute `./behat` in the `tests` directory for the whole test suite.
 Or use `./behat features/frontend_account.feature` for a specific feature.
- 
-## Debugging and Development
-
-### Remote debugging using VNC Sessions
-
-When run in development mode (by using `./docker/_local_manual_testing.sh`),
-Selenium is run in debug mode and exposes port 5900. 
-It is necessary to forward this port from the docker container to the host (your development machine),
-which is already done in `./docker/docker-compose.local.yml`. 
-That means if you use the alias supplied above for running your tests, 
-you can use any VNC client to connect to `localhost:5900`. 
-When prompted for a password, enter `secret`.
-
-#### Note for Windows user
-
-If you develop on Windows and run the test suite in a virtual machine, 
-make sure you also forward the port from your VM to your host machine.
-With Vagrant, add the following port forwarding rule to your Vagrantfile and restart your VM:
-
-```
-    config.vm.network "forwarded_port", guest: 5900, host: 5900
-```
 
 ## Writing Tests
 
@@ -108,10 +47,10 @@ With Vagrant, add the following port forwarding rule to your Vagrantfile and res
 The `*.feature` files should only contain human-readable, english sentences, assumptions and actions.
 
 The `*Context.php` files all live in the `Shopware\Context` namespace
-and may only contain step definitions for steps used the feature files. 
-All logic should be handled by the `Pages`. 
-Step definitions should be short and expressive. 
-Only use regular expressions in step name definitions when absolutely necessary. 
+and may only contain step definitions for steps used the feature files.
+All logic should be handled by the `Pages`.
+Step definitions should be short and expressive.
+Only use regular expressions in step name definitions when absolutely necessary.
 Most of the time it might be better to refactor steps into smaller sub-steps that only handle one single functionality.
 
 ### Using Tags
@@ -120,7 +59,7 @@ Additional functionality for tests can be enabled by tagging either single scena
 
 #### @knownFailing
 
-This tag prevents features from being tested completely, 
+This tag prevents features from being tested completely,
 useful to be able to commit WIP features that would otherwise cause a breaking CI build.
 
 #### @isolated
@@ -132,8 +71,8 @@ Per default, the database is being reset to a clean state after every feature.
 
 The `Shopware\Component\XpathBuilder` namespace contains a few classes that can be helpful
 when writing tests that rely on complicated xpath queries.
-It is recommended to use either the `FrontendXpathBuilder` or the `BackendXpathBuilder`, 
-which both inherit from the `BaseXpathBuilder` but additionally provide useful shortcuts for often-needed functionality, 
+It is recommended to use either the `FrontendXpathBuilder` or the `BackendXpathBuilder`,
+which both inherit from the `BaseXpathBuilder` but additionally provide useful shortcuts for often-needed functionality,
 like e.g. selecting an ExtJS window by its title.
 
 #### Using the BaseXpathBuilder
@@ -160,18 +99,18 @@ $builder
 
 ```
 
-The BaseXpathBuilder comes pre-configured with a single `/` as its path. 
-There is *no implicit resetting* with the base builder. 
-If you configured a path and want to reuse the same Builder-instance, 
-you need to call `$builder->reset()` on it again in order to reset the path to its default value. 
+The BaseXpathBuilder comes pre-configured with a single `/` as its path.
+There is *no implicit resetting* with the base builder.
+If you configured a path and want to reuse the same Builder-instance,
+you need to call `$builder->reset()` on it again in order to reset the path to its default value.
 It is recommended that you explicitly call `->reset()` explicitly at the beginning of every xpath build to mitigate any possible, hard-to-debug mistakes.
 
 All builder support building xpaths fluently by chaining calls such as `->child([...])`, `->descendant([...])` or`->followingSibling([...])`.
 Those public methods all have the same signature of `->child($tag, $predicates, $index)`, with the latter two being optional.
 
 To retrieve the currently configured xpath, call the `->getXpath()` method.
-Please note that in contrast to the LegacyXpathBuilder, 
-the BaseXpathBuilder() *does not* implicitly reset the builder when you get the path. 
+Please note that in contrast to the LegacyXpathBuilder,
+the BaseXpathBuilder() *does not* implicitly reset the builder when you get the path.
 
 There is a static shorthand method useful for creating xpaths inline:
 
@@ -221,27 +160,3 @@ The asset generator is available over HTTP at `http://assetgenerator/`:
  ```
 
 Please note that the size parameter is completely optional.
-
-## Docker Container Reference
-
-### Apache container
-* 
-* Runs PHP7 and Apache Server
-* Serves Shopware installation from `/var/www/shopware`
-* Serves asset generator from `/var/www/assetgenerator`
-
-### MySQL container
-* 
-* Provides mariaDB database named `shopware` for user `shopware` with password `shopware`
-* Root access for user `root` with password `toor`
-
-### Selenium container
-* 
-* Uses the selenium/standalone-chrome Docker image
-* Exposes port 5900 in development mode (`docker-compose.local.yml`) for remote debugging via VNC
-
-### SMTP container
-* 
-* Based on mailhog Docker image
-* Configured to receive all mails from apache container
-* Refer to [Mailhog's API Documentation](https://github.com/mailhog/MailHog/blob/master/docs/APIv2.md)

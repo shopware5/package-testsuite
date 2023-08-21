@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Backend;
 
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\GridView\GridViewRow;
@@ -16,10 +17,7 @@ class ProductExportModule extends BackendModule
 
     protected string $moduleWindowTitle = 'Produktexporte';
 
-    /**
-     * @var string
-     */
-    protected $editorWindowTitle = 'Feed - Konfiguration';
+    protected string $editorWindowTitle = 'Feed - Konfiguration';
 
     /**
      * {@inheritdoc}

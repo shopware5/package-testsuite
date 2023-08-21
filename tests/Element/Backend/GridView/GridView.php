@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Element\Backend\GridView;
 
 use Behat\Mink\Element\NodeElement;
@@ -14,7 +16,7 @@ class GridView extends ExtJsElement
     /**
      * Reload the content of the grid view
      */
-    public function reload()
+    public function reload(): void
     {
         $reloadButton = $this->find('xpath', $this->getReloadButtonXpath());
 
@@ -29,9 +31,9 @@ class GridView extends ExtJsElement
     /**
      * Return all visible rows from a grid view
      *
-     * @return GridViewRow[]
+     * @return array<GridViewRow>
      */
-    public function getRows()
+    public function getRows(): array
     {
         $rows = $this->findAll('xpath', $this->getGridViewRowsXpath());
 
@@ -42,24 +44,22 @@ class GridView extends ExtJsElement
 
     /**
      * Returns the first row from a grid view
-     *
-     * @return GridViewRow
      */
-    public function getFirstRow()
+    public function getFirstRow(): GridViewRow
     {
-        return $this->find('xpath', $this->getGridViewFirstRowXpath());
+        $xPath = $this->getGridViewFirstRowXpath();
+        $element = $this->find('xpath', $xPath);
+        if (!$element instanceof NodeElement) {
+            throw new \RuntimeException(sprintf('Could not find grid view row with xPath: "%s"', $xPath));
+        }
+
+        return new GridViewRow($element->getXpath(), $this->getSession());
     }
 
     /**
      * Get the first row that contains given string
-     *
-     * @param string $content
-     *
-     * @throws \Exception
-     *
-     * @return GridViewRow
      */
-    public function getRowByContent($content)
+    public function getRowByContent(string $content): GridViewRow
     {
         foreach ($this->getRows() as $row) {
             if (strpos($row->getHtml(), $content)) {
@@ -67,15 +67,13 @@ class GridView extends ExtJsElement
             }
         }
 
-        throw new \Exception('Could not find grid view row by with content: ' . $content);
+        throw new \RuntimeException('Could not find grid view row by with content: ' . $content);
     }
 
     /**
      * Sort a grid view by a given header name
-     *
-     * @param string $headerName
      */
-    public function sortBy($headerName)
+    public function sortBy(string $headerName): void
     {
         $tableHeaderXpath = BackendXpathBuilder::create()
             ->child('span', ['~class' => 'x-column-header-text'])
@@ -91,28 +89,18 @@ class GridView extends ExtJsElement
         $tableHeader->click();
     }
 
-    /**
-     * @return string
-     */
-    private function getReloadButtonXpath()
+    private function getReloadButtonXpath(): string
     {
-        $reloadButtonXpath = BackendXpathBuilder::create()
+        return BackendXpathBuilder::create()
             ->descendant('span', ['~class' => 'x-tbar-loading'])
             ->getXpath();
-
-        return $reloadButtonXpath;
     }
 
-    /**
-     * @return string
-     */
-    private function getGridViewRowsXpath()
+    private function getGridViewRowsXpath(): string
     {
-        $rowsXpath = BackendXpathBuilder::create()
+        return BackendXpathBuilder::create()
             ->descendant('tr', ['~class' => 'x-grid-row'])
             ->getXpath();
-
-        return $rowsXpath;
     }
 
     private function getGridViewFirstRowXpath(): string

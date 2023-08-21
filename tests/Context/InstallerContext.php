@@ -15,7 +15,7 @@ class InstallerContext extends SubContext
      */
     public function iAdvanceToTheNextInstallerPage(): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->advance();
     }
 
@@ -35,7 +35,7 @@ class InstallerContext extends SubContext
      */
     public function iCheckTheCheckbox(): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->tickCheckbox('tos');
     }
 
@@ -44,7 +44,7 @@ class InstallerContext extends SubContext
      */
     public function theFollowingFormFieldsMustBeRequired(TableNode $table): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $data = $table->getHash();
 
         foreach ($data as $field) {
@@ -57,7 +57,7 @@ class InstallerContext extends SubContext
      */
     public function iFillTheForm(TableNode $table): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $data = $table->getHash();
 
         $page->fillInAndSubmitForm($data);
@@ -68,7 +68,7 @@ class InstallerContext extends SubContext
      */
     public function iClickOn(string $text): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->clickOnElementWithText($text);
     }
 
@@ -77,7 +77,7 @@ class InstallerContext extends SubContext
      */
     public function iGoBackToThePreviousInstallerPage(): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->returnToPreviousDbPage();
     }
 
@@ -86,7 +86,7 @@ class InstallerContext extends SubContext
      */
     public function iChooseTheRadioFieldWithValue(string $value): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->tickRadioButtonOption($value);
     }
 
@@ -95,7 +95,7 @@ class InstallerContext extends SubContext
      */
     public function iShouldSeeTheLinkLeadingTo(string $linktext, string $target): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->checkIfShopIsAvailable($linktext, $target);
     }
 
@@ -126,7 +126,7 @@ class InstallerContext extends SubContext
     {
         usleep(250000);
 
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->checkIfDisabled('css', $field);
     }
 
@@ -135,7 +135,7 @@ class InstallerContext extends SubContext
      */
     public function iSkip(string $text): void
     {
-        $page = $this->getValidPage('InstallerIndex', InstallerIndex::class);
+        $page = $this->getValidPage(InstallerIndex::class);
         $page->clickOnElementToSkip($text);
     }
 }

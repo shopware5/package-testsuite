@@ -16,7 +16,7 @@ class FrontendAccountContext extends SubContext
     {
         $data = $table->getHash();
 
-        $page = $this->getValidPage('Account', Account::class);
+        $page = $this->getValidPage(Account::class);
         $page->open();
 
         // Already logged in

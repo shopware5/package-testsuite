@@ -19,7 +19,7 @@ class FrontendCheckoutContext extends SubContext
     {
         $aggregations = $aggregations->getHash();
 
-        $checkoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $checkoutCart = $this->getValidPage(CheckoutCart::class);
         $checkoutCart->checkAggregation($aggregations);
     }
 
@@ -28,7 +28,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iFillInTheRegistrationForm(TableNode $customerData): void
     {
-        $page = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
+        $page = $this->getValidPage(CheckoutConfirm::class);
         $page->fillOutRegistrationForm($customerData->getHash());
     }
 
@@ -37,7 +37,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iAddTheArticleToMyBasket(string $number): void
     {
-        $checkoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $checkoutCart = $this->getValidPage(CheckoutCart::class);
         $checkoutCart->addArticle($number);
         $this->waitForText($number);
     }
@@ -47,7 +47,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iRemoveTheArticleOnPosition(string $position): void
     {
-        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $page = $this->getValidPage(CheckoutCart::class);
         $page->removeCartPositionAtIndex($position);
     }
 
@@ -56,7 +56,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iProceedToOrderConfirmation(): void
     {
-        $frontendCheckoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $frontendCheckoutCart = $this->getValidPage(CheckoutCart::class);
         $frontendCheckoutCart->open();
         $frontendCheckoutCart->proceedToOrderConfirmation();
     }
@@ -66,7 +66,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iProceedToCheckout(): void
     {
-        $frontendCheckoutConfirm = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
+        $frontendCheckoutConfirm = $this->getValidPage(CheckoutConfirm::class);
         $frontendCheckoutConfirm->proceedToCheckout();
     }
 
@@ -75,7 +75,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iProceedToCheckoutCart(): void
     {
-        $frontendCheckoutCart = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $frontendCheckoutCart = $this->getValidPage(CheckoutCart::class);
         $frontendCheckoutCart->open();
         $frontendCheckoutCart->proceedToOrderConfirmation();
     }
@@ -85,7 +85,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function iProceedToCheckoutConfirmation(): void
     {
-        $frontendCheckoutConfirmation = $this->getValidPage('CheckoutConfirm', CheckoutConfirm::class);
+        $frontendCheckoutConfirmation = $this->getValidPage(CheckoutConfirm::class);
         $frontendCheckoutConfirmation->open();
     }
 
@@ -96,7 +96,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function theCartContainsTheFollowingProducts(TableNode $items): void
     {
-        $page = $this->getValidPage('CheckoutCart', CheckoutCart::class);
+        $page = $this->getValidPage(CheckoutCart::class);
         $page->open();
         $page->emptyCart();
         $page->fillCartWithProducts($items->getHash());
@@ -109,7 +109,7 @@ class FrontendCheckoutContext extends SubContext
      */
     public function changePaymentMethodTo(string $paymentMethod): void
     {
-        $page = $this->getValidPage('CheckoutShippingPayment', CheckoutShippingPayment::class);
+        $page = $this->getValidPage(CheckoutShippingPayment::class);
         $page->open();
         $page->changePaymentMethodTo($paymentMethod);
     }
@@ -119,18 +119,19 @@ class FrontendCheckoutContext extends SubContext
      */
     public function changeShippingMethodTo(string $shippingMethod): void
     {
-        $page = $this->getValidPage('CheckoutShippingPayment', CheckoutShippingPayment::class);
+        $page = $this->getValidPage(CheckoutShippingPayment::class);
         $page->open();
         $page->changeShippingMethodTo($shippingMethod);
     }
 
     /**
      * @Given I am not logged in
+     *
      * @And I am not logged in
      */
     public function iAmNotLoggedIn(): void
     {
-        $page = $this->getValidPage('Account', Account::class);
+        $page = $this->getValidPage(Account::class);
         $page->open();
 
         // See if we already are logged out

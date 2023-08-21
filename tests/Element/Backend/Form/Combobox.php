@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Element\Backend\Form;
 
 use Behat\Mink\Element\NodeElement;
@@ -11,29 +13,32 @@ class Combobox extends ExtJsElement
     /**
      * {@inheritdoc}
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         // Open combobox dropdown
         $pebble = $this->getComboboxPebble();
         $pebble->click();
 
-        // Find the correct dropdown by it's positioning on the page
+        // Find the correct dropdown by its positioning on the page
         foreach ($this->getOpenDropdowns() as $dropdown) {
             if (!$this->elementsTouch($dropdown, $pebble)) {
                 continue;
             }
 
             // Click on correct dropdown entry
-            $this->getOptionByValue($value, $dropdown)->click();
+            $option = $this->getOptionByValue($value, $dropdown);
+            if (!$option instanceof NodeElement) {
+                throw new \RuntimeException(sprintf('Could not find option with value "%s"', print_r($value, true)));
+            }
+
+            $option->click();
         }
     }
 
     /**
      * Helper method that returns true if two NodeElements touch
-     *
-     * @return bool
      */
-    private function elementsTouch(NodeElement $elemA, NodeElement $elemB)
+    private function elementsTouch(NodeElement $elemA, NodeElement $elemB): bool
     {
         $idA = $elemA->getAttribute('id');
         $aTop = $this->getYCoordinateForElement($idA, 'top');
@@ -49,12 +54,9 @@ class Combobox extends ExtJsElement
     /**
      * Get the bounding box position value for any element on the page by it's id
      *
-     * @param string $id
      * @param string $side Can be either top, bottom, left or right
-     *
-     * @return int
      */
-    private function getYCoordinateForElement($id, $side = 'top')
+    private function getYCoordinateForElement(string $id, string $side = 'top'): int
     {
         return (int) $this->getSession()->getDriver()->evaluateScript(
             "return document.getElementById('" . $id . "').getBoundingClientRect()." . $side . ';'
@@ -63,10 +65,8 @@ class Combobox extends ExtJsElement
 
     /**
      * @throws \Exception
-     *
-     * @return NodeElement
      */
-    private function getComboboxPebble()
+    private function getComboboxPebble(): NodeElement
     {
         $pebbleXpath = BackendXpathBuilder::create()->child('div', ['~class' => 'x-form-trigger'])->getXpath();
         $pebble = $this->find('xpath', $pebbleXpath);
@@ -78,10 +78,7 @@ class Combobox extends ExtJsElement
         return $pebble;
     }
 
-    /**
-     * @return string
-     */
-    private function getDropdownsXpath()
+    private function getDropdownsXpath(): string
     {
         return BackendXpathBuilder::create()->child('div', ['~class' => 'x-boundlist'])->getXpath();
     }
@@ -91,29 +88,21 @@ class Combobox extends ExtJsElement
      *
      * @return NodeElement[]
      */
-    private function getOpenDropdowns()
+    private function getOpenDropdowns(): array
     {
         sleep(2);
 
         $dropdownsXpath = $this->getDropdownsXpath();
-        $dropdowns = $this->getSession()->getPage()->findAll('xpath', $dropdownsXpath);
 
-        return $dropdowns;
+        return $this->getSession()->getPage()->findAll('xpath', $dropdownsXpath);
     }
 
-    /**
-     * @param string $value
-     *
-     * @return NodeElement
-     */
-    private function getOptionByValue($value, NodeElement $dropdown)
+    private function getOptionByValue(string $value, NodeElement $dropdown): ?NodeElement
     {
         $optionXpath = BackendXpathBuilder::create()
             ->child('li', ['@role' => 'option', 'and', '@text' => $value])
             ->getXpath();
 
-        $option = $dropdown->find('xpath', $optionXpath);
-
-        return $option;
+        return $dropdown->find('xpath', $optionXpath);
     }
 }

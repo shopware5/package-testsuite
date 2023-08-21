@@ -27,7 +27,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
 
     public function __construct()
     {
-        $dotenv = new Dotenv(\dirname(__DIR__));
+        $dotenv = Dotenv::createUnsafeImmutable(\dirname(__DIR__));
         $dotenv->load();
     }
 
@@ -83,11 +83,11 @@ class SubContext extends PageObjectContext implements MinkAwareContext
      *
      * @return TPage
      */
-    public function getValidPage(string $pageName, string $pageClass): Page
+    public function getValidPage(string $pageClass): Page
     {
-        $page = $this->getPage($pageName);
+        $page = $this->getPage($pageClass);
         if (!$page instanceof $pageClass) {
-            throw new PageNotDefinedException($pageName, $pageClass);
+            throw new PageNotDefinedException($pageClass);
         }
 
         return $page;
@@ -102,7 +102,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
         $this->spin(function (SubContext $context) use ($text) {
             $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(text(), '$text')]");
 
-            return $result != null && \count($result) > 0;
+            return !empty($result);
         });
     }
 
@@ -131,20 +131,6 @@ class SubContext extends PageObjectContext implements MinkAwareContext
     protected function waitForTextNotPresent(string $text, int $sleep = 2): void
     {
         $this->waitForSelectorNotPresent('xpath', "//*[contains(text(), '$text')]", $sleep);
-    }
-
-    /**
-     * Checks via spin function if a locator is invisible on page, with sleep at the beginning (default 2)
-     *
-     * @param string $selector css, xpath...
-     */
-    protected function waitForSelectorInvisible(string $selector, string $locator): void
-    {
-        $this->spin(function (SubContext $context) use ($selector, $locator) {
-            $elem = $context->getSession()->getPage()->find($selector, $locator);
-
-            return empty($elem) || !$elem->isVisible();
-        }, 90);
     }
 
     /**
@@ -203,18 +189,6 @@ class SubContext extends PageObjectContext implements MinkAwareContext
     {
         return $this->spinWithNoException(function (SubContext $context) use ($text) {
             return $this->checkIfThereIsText($text, $context);
-        }, $wait);
-    }
-
-    /**
-     * Checks via spin function if a string exists, returns false/true after $wait
-     */
-    protected function textExistsEventually(string $text, int $wait = 60): bool
-    {
-        return $this->spinWithNoException(function (SubContext $context) use ($text) {
-            $result = $context->getSession()->getPage()->findAll('xpath', "//*[contains(., '$text')]");
-
-            return $result != null && \count($result) > 0;
         }, $wait);
     }
 

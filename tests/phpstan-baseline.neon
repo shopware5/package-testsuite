@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method RandomImageGenerator\\:\\:imagettfbboxextended\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../www/assetgenerator/classes/RandomImageGenerator.php
+
+		-
 			message: "#^Access to an undefined property Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:\\$client\\.$#"
 			count: 2
 			path: Component/Api/ApiClient.php
@@ -46,7 +51,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:buildPropertyDataArray\\(\\) has parameter \\$group with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:buildPropertyDataArray\\(\\) has parameter \\$group with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -56,7 +61,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -71,12 +76,12 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has parameter \\$url with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has parameter \\$url with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createArticle\\(\\) has parameter \\$product with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createArticle\\(\\) has parameter \\$product with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -86,7 +91,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCategoryTree\\(\\) has parameter \\$categories with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCategoryTree\\(\\) has parameter \\$categories with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -101,17 +106,17 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has parameter \\$customerGroup with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has parameter \\$customerGroup with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createOrder\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createOrder\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -121,7 +126,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createProperty\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createProperty\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -131,7 +136,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:customerGroupExistsByKey\\(\\) has parameter \\$key with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:customerGroupExistsByKey\\(\\) has parameter \\$key with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -141,7 +146,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:delete\\(\\) has parameter \\$url with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:delete\\(\\) has parameter \\$url with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -151,17 +156,17 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteAllCustomers\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteAllCustomers\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteCustomerByEmail\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteCustomerByEmail\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteCustomerById\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteCustomerById\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -186,7 +191,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:post\\(\\) has parameter \\$url with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:post\\(\\) has parameter \\$url with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -196,17 +201,17 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has parameter \\$httpCode with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has parameter \\$httpCode with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has parameter \\$result with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has parameter \\$result with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -221,7 +226,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:put\\(\\) has parameter \\$url with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:put\\(\\) has parameter \\$url with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -231,7 +236,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:setCountryData\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:setCountryData\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -241,7 +246,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:throwExceptionWhenEmpty\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:throwExceptionWhenEmpty\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -256,12 +261,12 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has parameter \\$customerGroup with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has parameter \\$customerGroup with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -271,7 +276,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Property Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:\\$validMethods has no typehint specified\\.$#"
+			message: "#^Property Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:\\$validMethods has no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -296,27 +301,7 @@ parameters:
 			path: Component/XpathBuilder/BaseXpathBuilder.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:contains\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:contains\\(\\) has parameter \\$text with no typehint specified\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:descendant\\(\\) has parameter \\$conditions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:equals\\(\\) has parameter \\$target with no typehint specified\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:equals\\(\\) has parameter \\$text with no typehint specified\\.$#"
 			count: 1
 			path: Component/XpathBuilder/BaseXpathBuilder.php
 
@@ -331,11 +316,6 @@ parameters:
 			path: Component/XpathBuilder/BaseXpathBuilder.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:parseConditions\\(\\) has parameter \\$conditions with no typehint specified\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:preceding\\(\\) has parameter \\$conditions with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/XpathBuilder/BaseXpathBuilder.php
@@ -346,47 +326,22 @@ parameters:
 			path: Component/XpathBuilder/BaseXpathBuilder.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:setXpath\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:setXpath\\(\\) has parameter \\$xpath with no typehint specified\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Parameter \\#4 \\$index of method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:appendPartialPath\\(\\) expects int, int\\|null given\\.$#"
-			count: 7
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 2
-			path: Component/XpathBuilder/BaseXpathBuilder.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:aRequirementShouldOwnAsStatus\\(\\) has parameter \\$icon with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:aRequirementShouldOwnAsStatus\\(\\) has parameter \\$icon with no type specified\\.$#"
 			count: 1
 			path: Context/FileCheckContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:aRequirementShouldOwnAsStatus\\(\\) has parameter \\$requirement with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:aRequirementShouldOwnAsStatus\\(\\) has parameter \\$requirement with no type specified\\.$#"
 			count: 1
 			path: Context/FileCheckContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:iCorrectTheRequirement\\(\\) has parameter \\$requirement with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:iCorrectTheRequirement\\(\\) has parameter \\$requirement with no type specified\\.$#"
 			count: 1
 			path: Context/FileCheckContext.php
 
 		-
-			message: "#^Property Shopware\\\\Context\\\\FileCheckContext\\:\\:\\$testPath has no typehint specified\\.$#"
+			message: "#^Property Shopware\\\\Context\\\\FileCheckContext\\:\\:\\$testPath has no type specified\\.$#"
 			count: 1
 			path: Context/FileCheckContext.php
 
@@ -406,7 +361,7 @@ parameters:
 			path: Context/FrontendContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\FrontendDetailContext\\:\\:iChooseTheVariantWithTheNumber\\(\\) has parameter \\$optionNumber with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\FrontendDetailContext\\:\\:iChooseTheVariantWithTheNumber\\(\\) has parameter \\$optionNumber with no type specified\\.$#"
 			count: 1
 			path: Context/FrontendDetailContext.php
 
@@ -416,37 +371,32 @@ parameters:
 			path: Context/FrontendDetailContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iScrollDown\\(\\) has parameter \\$pixels with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iScrollDown\\(\\) has parameter \\$pixels with no type specified\\.$#"
 			count: 1
 			path: Context/GeneralContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iWaitForSeconds\\(\\) has parameter \\$amount with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iWaitForSeconds\\(\\) has parameter \\$amount with no type specified\\.$#"
 			count: 1
 			path: Context/GeneralContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\InstallerContext\\:\\:iShouldSeeAfterImportIsFinished\\(\\) has parameter \\$text with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\InstallerContext\\:\\:iShouldSeeAfterImportIsFinished\\(\\) has parameter \\$text with no type specified\\.$#"
 			count: 1
 			path: Context/InstallerContext.php
 
 		-
-			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
-			count: 2
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:getMinkParameter\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:getMinkParameter\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Context/SubContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMink\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMink\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Context/SubContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMinkParameters\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMinkParameters\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Context/SubContext.php
 
@@ -456,27 +406,12 @@ parameters:
 			path: Context/SubContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:slugify\\(\\) has parameter \\$separator with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:slugify\\(\\) has parameter \\$separator with no type specified\\.$#"
 			count: 1
 			path: Context/SubContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:slugify\\(\\) has parameter \\$text with no typehint specified\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:spin\\(\\) has parameter \\$lambda with no typehint specified\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:spin\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:spinWithNoException\\(\\) has parameter \\$lambda with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:slugify\\(\\) has parameter \\$text with no type specified\\.$#"
 			count: 1
 			path: Context/SubContext.php
 
@@ -491,22 +426,27 @@ parameters:
 			path: Context/SubContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubshopContext\\:\\:iAmInSubshopWithURL\\(\\) has parameter \\$url with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubshopContext\\:\\:iAmInSubshopWithURL\\(\\) has parameter \\$url with no type specified\\.$#"
 			count: 1
 			path: Context/SubshopContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubshopContext\\:\\:iFillTheConfigurationForm\\(\\) has parameter \\$formname with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Context\\\\SubshopContext\\:\\:iFillTheConfigurationForm\\(\\) has parameter \\$formname with no type specified\\.$#"
 			count: 1
 			path: Context/SubshopContext.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\ExtJsElement\\:\\:waitForElementAvailable\\(\\) has no return typehint specified\\.$#"
+			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: Element/Backend/ExtJsElement.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Checkbox\\:\\:toggle\\(\\) has no return typehint specified\\.$#"
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: Element/Backend/ExtJsElement.php
+
+		-
+			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Checkbox\\:\\:toggle\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Element/Backend/Form/Checkbox.php
 
@@ -517,16 +457,6 @@ parameters:
 
 		-
 			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:getComboboxPebble\\(\\) should return Behat\\\\Mink\\\\Element\\\\NodeElement but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Element/Backend/Form/Combobox.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:getOptionByValue\\(\\) should return Behat\\\\Mink\\\\Element\\\\NodeElement but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Element/Backend/Form/Combobox.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:setValue\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: Element/Backend/Form/Combobox.php
 
@@ -556,7 +486,7 @@ parameters:
 			path: Element/Backend/Form/Selecttree.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:getDropdownFromWindow\\(\\) has parameter \\$dropdownXpath with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:getDropdownFromWindow\\(\\) has parameter \\$dropdownXpath with no type specified\\.$#"
 			count: 1
 			path: Element/Backend/Form/Selecttree.php
 
@@ -566,7 +496,7 @@ parameters:
 			path: Element/Backend/Form/Selecttree.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:setValue\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:setValue\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Element/Backend/Form/Selecttree.php
 
@@ -591,27 +521,12 @@ parameters:
 			path: Element/Backend/GridView/GridView.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridView\\:\\:getFirstRow\\(\\) should return Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridViewRow but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Element/Backend/GridView/GridView.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridView\\:\\:reload\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Element/Backend/GridView/GridView.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridView\\:\\:sortBy\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Element/Backend/GridView/GridView.php
-
-		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
 			count: 1
 			path: Element/Backend/GridView/GridViewRow.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridViewRow\\:\\:clickActionIcon\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridViewRow\\:\\:clickActionIcon\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Element/Backend/GridView/GridViewRow.php
 
@@ -626,69 +541,9 @@ parameters:
 			path: Element/Frontend/Checkout/CartPosition.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Frontend\\\\Checkout\\\\CartPosition\\:\\:toFloat\\(\\) has parameter \\$string with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Element\\\\Frontend\\\\Checkout\\\\CartPosition\\:\\:toFloat\\(\\) has parameter \\$string with no type specified\\.$#"
 			count: 1
 			path: Element/Frontend/Checkout/CartPosition.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\Backend\\:\\:clickOnTabWithName\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/Backend.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\Backend\\:\\:login\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/Backend.php
-
-		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:answerMessageBox\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:answerMessageBox\\(\\) has parameter \\$answer with no typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:checkIfTabIsActive\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:checkIfTabIsActive\\(\\) has parameter \\$title with no typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:clickEntryIconByName\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:expandCategoryCollapsible\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:fillComboboxInput\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:fillExtJsForm\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:fillExtJsForm\\(\\) has parameter \\$formElements with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Backend/BackendModule.php
 
 		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
@@ -696,17 +551,17 @@ parameters:
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:clickDeleteIconForCustomer\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:clickDeleteIconForCustomer\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:clickDeleteIconForCustomer\\(\\) has parameter \\$firstname with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:clickDeleteIconForCustomer\\(\\) has parameter \\$firstname with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillCustomerForm\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillCustomerForm\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
@@ -716,7 +571,7 @@ parameters:
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillEditCustomerFormWith\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillEditCustomerFormWith\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
@@ -726,7 +581,7 @@ parameters:
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillNewCustomerFormWith\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillNewCustomerFormWith\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
@@ -736,47 +591,32 @@ parameters:
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillPaymentCombobox\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillPaymentCombobox\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:openEditFormForCustomer\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:openEditFormForCustomer\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:openEditFormForCustomer\\(\\) has parameter \\$firstname with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:openEditFormForCustomer\\(\\) has parameter \\$firstname with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:skipIntroWizardIfNecessary\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:skipIntroWizardIfNecessary\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:addCategory\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/NewArticleModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:addCategory\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:checkAddedCategory\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:saveArticle\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setBasicData\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setBasicData\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/NewArticleModule.php
 
@@ -786,17 +626,12 @@ parameters:
 			path: Page/Backend/NewArticleModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setDescription\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setDescription\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/NewArticleModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setPriceData\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Property Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:\\$priceRowAnchor has no typehint specified\\.$#"
+			message: "#^Property Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:\\$priceRowAnchor has no type specified\\.$#"
 			count: 1
 			path: Page/Backend/NewArticleModule.php
 
@@ -804,79 +639,9 @@ parameters:
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
 			count: 1
 			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Cannot call method getCombobox\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Cannot call method getGridView\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
-			count: 2
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:clickEmailIconOnLastGeneratedIcon\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:filterOrderListForShippingCountry\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:openOrderByEmail\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:reloadStatusHistory\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:sendCustomerNotificationMail\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:setStatusByType\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\OrderModule\\:\\:sortOrderListByValue\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/OrderModule.php
-
-		-
-			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Backend/PaymentModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\PaymentModule\\:\\:activatePaymentMethod\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/PaymentModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\PaymentModule\\:\\:getPaymentMethodXpath\\(\\) has parameter \\$name with no typehint specified\\.$#"
-			count: 1
-			path: Page/Backend/PaymentModule.php
-
-		-
-			message: "#^Cannot call method find\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
 
 		-
 			message: "#^Cannot call method getAttribute\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Cannot call method getInput\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
@@ -886,22 +651,22 @@ parameters:
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:addMinimumPriceFilter\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:addMinimumPriceFilter\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:blockSupplier\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:blockSupplier\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:clickEditIconForExport\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:clickEditIconForExport\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:fillConfigurationForm\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:fillConfigurationForm\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
@@ -911,12 +676,12 @@ parameters:
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:openExport\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:openExport\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:openExport\\(\\) has parameter \\$exportTitle with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:openExport\\(\\) has parameter \\$exportTitle with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
@@ -926,27 +691,22 @@ parameters:
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Parameter \\#1 \\$formParent of method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:fillExtJsForm\\(\\) expects Shopware\\\\Element\\\\Backend\\\\Window, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
 			message: "#^Parameter \\#1 \\$value of method Behat\\\\Mink\\\\Element\\\\NodeElement\\:\\:setValue\\(\\) expects array\\|bool\\|string, int given\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnMenuElement\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnMenuElement\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/SettingsModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnSettingsMenuElement\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnSettingsMenuElement\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/SettingsModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:fillShopConfigurationForm\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:fillShopConfigurationForm\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/SettingsModule.php
 
@@ -961,22 +721,7 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Cannot call method find\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Cannot call method findButton\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
-			count: 2
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Cannot call method getInput\\(\\) on Shopware\\\\Element\\\\Backend\\\\Window\\|null\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:activateCountries\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:activateCountries\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
@@ -1001,12 +746,12 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:clickAddShippingMethodButton\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:clickAddShippingMethodButton\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:createShippingMethodIfNotExists\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:createShippingMethodIfNotExists\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
@@ -1016,12 +761,12 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:deleteShippingMethod\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:deleteShippingMethod\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:emptyShippingCostConfiguration\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:emptyShippingCostConfiguration\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
@@ -1046,7 +791,7 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:fillCell\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:fillCell\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
@@ -1061,47 +806,22 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Parameter \\#1 \\$editor of method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:activateCountries\\(\\) expects Behat\\\\Mink\\\\Element\\\\NodeElement, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Parameter \\#1 \\$editor of method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:activatePaymentMethods\\(\\) expects Behat\\\\Mink\\\\Element\\\\NodeElement, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Parameter \\#1 \\$editor of method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:emptyShippingCostConfiguration\\(\\) expects Shopware\\\\Element\\\\Backend\\\\Window, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Parameter \\#1 \\$editor of method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:getShippingCostCell\\(\\) expects Behat\\\\Mink\\\\Element\\\\NodeElement, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Parameter \\#1 \\$formParent of method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:fillExtJsForm\\(\\) expects Shopware\\\\Element\\\\Backend\\\\Window, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SystemInfoModule\\:\\:checkRequirements\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SystemInfoModule\\:\\:checkRequirements\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/SystemInfoModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:deleteVoucher\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:deleteVoucher\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/VoucherModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:deleteVoucher\\(\\) has parameter \\$name with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:deleteVoucher\\(\\) has parameter \\$name with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/VoucherModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:fillVoucherEditorFormWith\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:fillVoucherEditorFormWith\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/VoucherModule.php
 
@@ -1111,39 +831,14 @@ parameters:
 			path: Page/Backend/VoucherModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:openEditFormForVoucher\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:openEditFormForVoucher\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/VoucherModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:openEditFormForVoucher\\(\\) has parameter \\$name with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:openEditFormForVoucher\\(\\) has parameter \\$name with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/VoucherModule.php
-
-		-
-			message: "#^Parameter \\#1 \\$formParent of method Shopware\\\\Page\\\\Backend\\\\BackendModule\\:\\:fillExtJsForm\\(\\) expects Shopware\\\\Element\\\\Backend\\\\Window, Shopware\\\\Element\\\\Backend\\\\Window\\|null given\\.$#"
-			count: 1
-			path: Page/Backend/VoucherModule.php
-
-		-
-			message: "#^Cannot call method hasClass\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:assertNotNull\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:assertNotNull\\(\\) has parameter \\$element with no typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:clickOnElementWhenReady\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
 
 		-
 			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:has\\(\\) has parameter \\$locator with no value type specified in iterable type array\\.$#"
@@ -1151,132 +846,22 @@ parameters:
 			path: Page/ContextAwarePage.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:spin\\(\\) has parameter \\$lambda with no typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:spin\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:spinWithNoException\\(\\) has parameter \\$lambda with no typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForClassNotPresent\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForModalOverlayClosed\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForSelectorInvisible\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForSelectorNotPresent\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForSelectorPresent\\(\\) should return Behat\\\\Mink\\\\Element\\\\NodeElement but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForSelectorVisible\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForText\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForTextNotPresent\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForXpathElementPresent\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForXpathElementPresent\\(\\) has parameter \\$xpath with no typehint specified\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitIfSelectorPresent\\(\\) should return Behat\\\\Mink\\\\Element\\\\NodeElement but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Parameter \\#1 \\$object of function get_class expects object, null given\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Parameter \\#2 \\$locator of method Shopware\\\\Page\\\\ContextAwarePage\\:\\:waitForSelectorInvisible\\(\\) expects string, Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder given\\.$#"
-			count: 1
-			path: Page/ContextAwarePage.php
-
-		-
-			message: "#^Cannot call method check\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
 			count: 1
 			path: Page/Frontend/Account.php
 
 		-
-			message: "#^Cannot call method selectOption\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:login\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Account.php
 
 		-
-			message: "#^Cannot call method setValue\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:logout\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Account.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:fillForm\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:fillForm\\(\\) has parameter \\$formData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:getElementByName\\(\\) never returns null so it can be removed from the return typehint\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:login\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:logout\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:register\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:register\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Account.php
 
@@ -1296,17 +881,17 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:addArticle\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:addArticle\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:addVoucher\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:addVoucher\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:assertCartPositionListsAreEqual\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:assertCartPositionListsAreEqual\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
@@ -1316,17 +901,17 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:checkPositionCountAndCartSum\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:checkPositionCountAndCartSum\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:emptyCart\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:emptyCart\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:fillCartWithProducts\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:fillCartWithProducts\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
@@ -1336,22 +921,22 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getCssSelectors\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getCssSelectors\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getXPathSelectors\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getXPathSelectors\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:hasCartProductWithQuantity\\(\\) has parameter \\$number with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:hasCartProductWithQuantity\\(\\) has parameter \\$number with no type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:hasCartProductWithQuantity\\(\\) has parameter \\$quantity with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:hasCartProductWithQuantity\\(\\) has parameter \\$quantity with no type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
@@ -1366,22 +951,22 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:proceedToOrderConfirmation\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:proceedToOrderConfirmation\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:removeCartPositionAtIndex\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:removeCartPositionAtIndex\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:toFloat\\(\\) has parameter \\$string with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:toFloat\\(\\) has parameter \\$string with no type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:validateCart\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:validateCart\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
@@ -1391,14 +976,9 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:verifyPage\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:verifyPage\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Cannot call method check\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
 
 		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
@@ -1411,27 +991,7 @@ parameters:
 			path: Page/Frontend/CheckoutConfirm.php
 
 		-
-			message: "#^Cannot call method selectOption\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Cannot call method setValue\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:fillForm\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:fillForm\\(\\) has parameter \\$formData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:fillOutRegistrationForm\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:fillOutRegistrationForm\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutConfirm.php
 
@@ -1441,12 +1001,7 @@ parameters:
 			path: Page/Frontend/CheckoutConfirm.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:getElementByName\\(\\) never returns null so it can be removed from the return typehint\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:proceedToCheckout\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:proceedToCheckout\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutConfirm.php
 
@@ -1456,27 +1011,27 @@ parameters:
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:changePaymentMethodTo\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:changePaymentMethodTo\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectPaymentMethod\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectPaymentMethod\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectPaymentMethod\\(\\) has parameter \\$paymentMethod with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectPaymentMethod\\(\\) has parameter \\$paymentMethod with no type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectShippingMethod\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectShippingMethod\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectShippingMethod\\(\\) has parameter \\$shippingMethod with no typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectShippingMethod\\(\\) has parameter \\$shippingMethod with no type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutShippingPayment.php
 
@@ -1486,27 +1041,22 @@ parameters:
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:waitForJsOverlayToClose\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkBasePrice\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkBasePrice\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkGraduatedPrice\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkGraduatedPrice\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:toBasket\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:toBasket\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:waitForOverlayToDisappear\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:waitForOverlayToDisappear\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 
@@ -1536,7 +1086,7 @@ parameters:
 			path: Page/Frontend/Detail.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Index\\:\\:getXPathSelectors\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Index\\:\\:getXPathSelectors\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Index.php
 
@@ -1546,37 +1096,37 @@ parameters:
 			path: Page/Frontend/Search.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:advance\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:advance\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkIfDisabled\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkIfDisabled\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkIfShopIsAvailable\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkIfShopIsAvailable\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkRequiredFields\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkRequiredFields\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:clickOnElementToSkip\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:clickOnElementToSkip\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:clickOnElementWithText\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:clickOnElementWithText\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:fillInAndSubmitForm\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:fillInAndSubmitForm\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
@@ -1586,27 +1136,27 @@ parameters:
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getCssSelectors\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getCssSelectors\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getXPathSelectors\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getXPathSelectors\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:returnToPreviousDbPage\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:returnToPreviousDbPage\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:tickCheckbox\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:tickCheckbox\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:tickRadioButtonOption\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:tickRadioButtonOption\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
@@ -1616,32 +1166,11 @@ parameters:
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:advance\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:getCssSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Updater/UpdaterIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:clickOnDbStart\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:getXPathSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Updater/UpdaterIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:finishCleanup\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Updater/UpdaterIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:getCssSelectors\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Updater/UpdaterIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:getXPathSelectors\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Updater/UpdaterIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Updater\\\\UpdaterIndex\\:\\:handleUpdateAssets\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: Page/Updater/UpdaterIndex.php
-

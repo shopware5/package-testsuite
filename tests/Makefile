@@ -5,13 +5,13 @@ SHELL := bash
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-check-code: check-phpstan check-code-style
+check-code: check-code-style check-phpstan
 
 check-code-style:
-	./vendor/bin/php-cs-fixer fix --dry-run
+	./vendor/bin/php-cs-fixer fix --dry-run -v
 
 fix-code-style:
-	./vendor/bin/php-cs-fixer fix
+	./vendor/bin/php-cs-fixer fix -v
 
 check-phpstan:
 	 ./vendor/bin/phpstan analyze

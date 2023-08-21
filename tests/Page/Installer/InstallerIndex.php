@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Installer;
 
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;

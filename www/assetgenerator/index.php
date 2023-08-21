@@ -1,6 +1,8 @@
 <?php
 
-function getRandomWord($len = 10)
+declare(strict_types=1);
+
+function getRandomWord(int $len = 10): string
 {
     $word = array_merge(range('a', 'z'), range('A', 'Z'));
     shuffle($word);

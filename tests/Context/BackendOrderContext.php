@@ -38,14 +38,6 @@ class BackendOrderContext extends SubContext
     }
 
     /**
-     * @When I click the email icon on the last generated document
-     */
-    public function iClickTheEmailIconOnTheLastGeneratedDocument(): void
-    {
-        $this->getModulePage()->clickEmailIconOnLastGeneratedIcon();
-    }
-
-    /**
      * @When I filter the backend order list for shipping country :country
      */
     public function iFilterTheBackendOrderListForShippingCountry(string $country): void
@@ -124,7 +116,7 @@ class BackendOrderContext extends SubContext
 
     private function getModulePage(): OrderModule
     {
-        return $this->getValidPage('OrderModule', OrderModule::class);
+        return $this->getValidPage(OrderModule::class);
     }
 
     /**
@@ -135,19 +127,16 @@ class BackendOrderContext extends SubContext
         $documentsPath = getenv('base_path') . '/files/documents';
 
         if (!is_dir($documentsPath)) {
-            throw new \Exception('Could not open document directory at ' . $documentsPath);
+            throw new \RuntimeException('Could not open document directory at ' . $documentsPath);
         }
 
         return $documentsPath;
     }
 
-    /**
-     *@throws \Exception
-     */
     private function getPdfTextContent(string $filepath): string
     {
         if (!is_file($filepath)) {
-            throw new \Exception('Could not open file ' . $filepath);
+            throw new \RuntimeException('Could not open file ' . $filepath);
         }
 
         return (new Parser())->parseFile($filepath)->getText();

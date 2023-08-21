@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopware\Page\Frontend;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;

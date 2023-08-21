@@ -41,7 +41,7 @@ class SubshopContext extends SubContext
      */
     public function iClickTheMenuElement(string $label): void
     {
-        $page = $this->getValidPage('SettingsModule', SettingsModule::class);
+        $page = $this->getValidPage(SettingsModule::class);
         $page->clickOnMenuElement($label);
     }
 
@@ -50,7 +50,7 @@ class SubshopContext extends SubContext
      */
     public function iClickTheSettingsElement(string $label): void
     {
-        $page = $this->getValidPage('SettingsModule', SettingsModule::class);
+        $page = $this->getValidPage(SettingsModule::class);
         $page->clickOnSettingsMenuElement($label);
     }
 
@@ -59,7 +59,7 @@ class SubshopContext extends SubContext
      */
     public function iFillTheConfigurationForm($formname, TableNode $table): void
     {
-        $page = $this->getValidPage('SettingsModule', SettingsModule::class);
+        $page = $this->getValidPage(SettingsModule::class);
 
         $data = $table->getHash();
         $page->fillShopConfigurationForm($data);

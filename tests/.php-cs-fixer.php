@@ -24,6 +24,7 @@ return (new Config())
 
         'class_attributes_separation' => ['elements' => ['method' => 'one', 'property' => 'one']],
         'concat_space' => ['spacing' => 'one'],
+        'declare_strict_types' => true,
         'doctrine_annotation_indentation' => true,
         'doctrine_annotation_spaces' => true,
         'general_phpdoc_annotation_remove' => [

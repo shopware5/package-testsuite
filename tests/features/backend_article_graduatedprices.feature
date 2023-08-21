@@ -7,8 +7,8 @@ Feature: I can generate and use article with graduated prices
       | Shopkunden | EK  |
     And the category tree "Root > Deutsch > ErsteKategorie > Unterkategorie" exists
     And the following products exist in the store:
-      | number  | name              | price | tax | supplier | categories                                       |
-      | SW88888 | Einfacher Artikel | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
+      | number  | name                | price | tax | supplier | categories                                       |
+      | SW88888 | Einfacher Artikel 8 | 10    | 19  | Finch    | Root > Deutsch > ErsteKategorie > Unterkategorie |
 
   Scenario: I can add graduated prices to the article
     Given I am logged into the backend
@@ -17,7 +17,7 @@ Feature: I can generate and use article with graduated prices
     And I click on backend menu item that contains "Übersicht"
     Then I should see "SW88888" eventually
     When I click the edit icon of the entry "SW88888"
-    Then I should see "Artikeldetails : Einfacher Artikel" eventually
+    Then I should see "Artikeldetails : Einfacher Artikel 8" eventually
 
     When I limit the price "10" for an amount up to "2"
     Then I should see "2" as to-price
@@ -31,7 +31,7 @@ Feature: I can generate and use article with graduated prices
     When I am on the homepage
     And I navigate to category tree "ErsteKategorie > Unterkategorie"
     And I am on the detail page for article with ordernumber "SW88888"
-    And I should see "Einfacher Artikel" eventually
+    And I should see "Einfacher Artikel 8" eventually
     Then I should see the following graduated prices:
       | amount | price |
       | 2      | 10,00 |
@@ -41,7 +41,7 @@ Feature: I can generate and use article with graduated prices
     Then I should see "Der Artikel wurde erfolgreich in den Warenkorb gelegt" eventually
     And I should see "10" eventually
     When I click on "Warenkorb bearbeiten"
-    Then I should see "Einfacher Artikel" eventually
+    Then I should see "Einfacher Artikel 8" eventually
     And I should see "10,00" eventually
     When I am on the detail page for article with ordernumber "SW88888"
     And I put the current article "2" times into the basket
