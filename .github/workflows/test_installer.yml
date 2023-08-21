@@ -3,9 +3,8 @@ on:
 
 jobs:
     setup-shopware:
-        name: Setup Shopware
+        name: General Shopware Tests
         runs-on: ubuntu-latest
-
         container:
             image: ghcr.io/shopware5/docker-images-testing/running:shopware_5.7_8.0_7.4
             credentials:
@@ -13,82 +12,82 @@ jobs:
                 password: ${{ secrets.github_token }}
 
         steps:
-          -   run: |
-                apt-get update
-                apt-get install -y ca-certificates curl gnupg lsb-release
-                mkdir -m 0755 -p /etc/apt/keyrings
-                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-                echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$(lsb_release -i | awk '{ print tolower($3) }') $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-                apt-get update
-                apt-get install -y docker-ce-cli docker-buildx-plugin docker-compose-plugin
+            -   run: |
+                    apt-get update
+                    apt-get install -y ca-certificates curl gnupg lsb-release
+                    mkdir -m 0755 -p /etc/apt/keyrings
+                    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+                    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$(lsb_release -i | awk '{ print tolower($3) }') $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+                    apt-get update
+                    apt-get install -y docker-ce-cli docker-buildx-plugin docker-compose-plugin
 
-          -   run: apt-get install -y unzip
+            -   run: apt-get install -y unzip
 
-          -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v3
 
-          -   run: docker run -d --network=container:$(docker ps -q) --name chrome -e LANGUAGE=de --shm-size 3g selenium/standalone-chrome:94.0
+            -   run: docker run -d --network=container:$(docker ps -q) --name chrome -e LANGUAGE=de --shm-size 3g selenium/standalone-chrome:94.0
 
-          -   name: Download latest Shopware
-              id: download-artifact
-              uses: dawidd6/action-download-artifact@v2
-              with:
-                github_token: ${{secrets.GITHUB_TOKEN}}
-                workflow: create-release.yml
-                workflow_conclusion: success
-                branch: 5.7
-                repo: shopware5/shopware
+            -   name: Download latest Shopware
+                id: download-artifact
+                uses: dawidd6/action-download-artifact@v2
+                with:
+                    github_token: ${{secrets.GITHUB_TOKEN}}
+                    workflow: create-release.yml
+                    workflow_conclusion: success
+                    branch: 5.7
+                    repo: shopware5/shopware
 
-          -   name: Unzip artifacts
-              run: |
-                cd artifact && mv install*.zip ../update.zip
+            -   name: Unzip artifacts
+                run: |
+                    cd artifact && mv install*.zip ../update.zip
 
-          -   name: Download last update package and unzip it
-              run: |
-                unzip update.zip -d /shopware
+            -   name: Download last update package and unzip it
+                run: |
+                    unzip update.zip -d /shopware
 
-          - name: Exnable extra services
-            run: |
-              cp -r ./www/assetgenerator /var/www/assetgenerator
-              cp -r ./www/updates /var/www/updates
-              cp .github/sites-enabled/* /etc/nginx/sites-enabled
-              echo "127.0.0.1  assetgenerator.example" >> /etc/hosts
-              echo "127.0.0.1  mysql" >> /etc/hosts
-              echo "127.0.0.1  updates.example" >> /etc/hosts
-              echo "127.0.0.1  cdn.example" >> /etc/hosts
-              echo "127.0.0.1  shopware.test" >> /etc/hosts
-              echo "127.0.0.1  shopware-subshop-01.test" >> /etc/hosts
+            -   name: Exnable extra services
+                run: |
+                    cp -r ./www/assetgenerator /var/www/assetgenerator
+                    cp -r ./www/updates /var/www/updates
+                    cp .github/sites-enabled/* /etc/nginx/sites-enabled
+                    echo "127.0.0.1  assetgenerator.example" >> /etc/hosts
+                    echo "127.0.0.1  mysql" >> /etc/hosts
+                    echo "127.0.0.1  updates.example" >> /etc/hosts
+                    echo "127.0.0.1  cdn.example" >> /etc/hosts
+                    echo "127.0.0.1  shopware.test" >> /etc/hosts
+                    echo "127.0.0.1  shopware-subshop-01.test" >> /etc/hosts
 
-          -   run: |
-                /usr/bin/supervisord -c /etc/supervisord.conf &
-                bash .github/wait-for-mysql.sh
+            -   run: |
+                    /usr/bin/supervisord -c /etc/supervisord.conf &
+                    bash .github/wait-for-mysql.sh
 
-          -   run: mysqladmin --user=root password 'root'
-          -   run: mysql -u root -proot -e "CREATE DATABASE shopware"
+            -   run: mysqladmin --user=root password 'root'
+            -   run: mysql -u root -proot -e "CREATE DATABASE shopware"
 
-          -   name: Adjust config all files
-              run: |
-                cp ./.github/php/config_testing.php /shopware/config_testing.php
-                cp ./.github/php/config.php /shopware/config.php
+            -   name: Adjust config all files
+                run: |
+                    cp ./.github/php/config_testing.php /shopware/config_testing.php
+                    cp ./.github/php/config.php /shopware/config.php
 
-          - name: Copy files
-            run: |
-              cp ./tests/.env.dist ./tests/.env
-              cp ./tests/behat.yml.dist ./tests/behat.yml
-            shell: bash
+            -   name: Copy files
+                run: |
+                    cp ./tests/.env.dist ./tests/.env
+                    cp ./tests/behat.yml.dist ./tests/behat.yml
+                shell: bash
 
-          -   name: Chmod all files
-              run: |
-                chmod -R 777 /shopware/
+            -   name: Chmod all files
+                run: |
+                    chmod -R 777 /shopware/
 
-          -   name: Run Mink
-              run: |
-                  cd tests
-                  composer install
-                  vendor/bin/behat -vv --format=pretty --out=std --tags '@installer&&~@knownFailing'
+            -   name: Run Mink
+                run: |
+                    cd tests
+                    composer install
+                    vendor/bin/behat -vv --format=pretty --out=std --tags '@installer&&~@knownFailing'
 
-          - name: Archive results
-            if: always()
-            uses: actions/upload-artifact@v3
-            with:
-              name: build data
-              path: tests/logs/mink
+            -   name: Archive results
+                if: always()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: build data
+                    path: tests/logs/mink
