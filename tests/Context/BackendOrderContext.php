@@ -54,7 +54,7 @@ class BackendOrderContext extends SubContext
     {
         $actualAmount = $this->getModulePage()->getNumberOfOrdersInOrderList();
         if ((int) $amount !== $actualAmount) {
-            throw new \Exception(sprintf('Expected %s order, found %s.', $amount, $actualAmount));
+            throw new \Exception(\sprintf('Expected %s order, found %s.', $amount, $actualAmount));
         }
     }
 
@@ -76,7 +76,7 @@ class BackendOrderContext extends SubContext
         $topmostOrder = $this->getModulePage()->getTopmostOrderFromList();
 
         if (!strpos($topmostOrder->getHtml(), $email)) {
-            throw new \Exception(sprintf('Expected order from %s would be at top of list.', $email));
+            throw new \Exception(\sprintf('Expected order from %s would be at top of list.', $email));
         }
     }
 
