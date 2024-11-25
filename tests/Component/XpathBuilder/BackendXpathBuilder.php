@@ -91,7 +91,7 @@ class BackendXpathBuilder extends BaseXpathBuilder
     /**
      * Return xpath to extJs icon by type
      *
-     *@throws \Exception
+     * @throws \Exception
      */
     public static function getIconXpathByType(string $type): string
     {

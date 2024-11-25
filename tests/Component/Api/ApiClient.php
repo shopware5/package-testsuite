@@ -200,7 +200,7 @@ class ApiClient
             }
 
             if ($existsResponse['total'] > 1) {
-                throw new \RuntimeException(sprintf('There are multiple definitions for "%s" with parent id %i.',
+                throw new \RuntimeException(\sprintf('There are multiple definitions for "%s" with parent id %i.',
                     $category, $parentId));
             }
 

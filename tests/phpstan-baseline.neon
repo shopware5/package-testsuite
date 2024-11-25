@@ -366,11 +366,6 @@ parameters:
 			path: Context/FrontendDetailContext.php
 
 		-
-			message: "#^Parameter \\#1 \\$quantity of method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:toBasket\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: Context/FrontendDetailContext.php
-
-		-
 			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iScrollDown\\(\\) has parameter \\$pixels with no type specified\\.$#"
 			count: 1
 			path: Context/GeneralContext.php
@@ -492,11 +487,6 @@ parameters:
 
 		-
 			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:getSelectTreeElementXpaths\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Element/Backend/Form/Selecttree.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:setValue\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Element/Backend/Form/Selecttree.php
 
@@ -1077,11 +1067,6 @@ parameters:
 
 		-
 			message: "#^Offset 'price' does not exist on string\\.$#"
-			count: 1
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Parameter \\#2 \\$value of method Behat\\\\Mink\\\\Element\\\\TraversableElement\\:\\:fillField\\(\\) expects string, int given\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 

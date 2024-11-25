@@ -58,6 +58,6 @@ trait FormFillerTrait
 
     private function selectLastElement(string $xpath): string
     {
-        return sprintf('(%s)[last()]', $xpath);
+        return \sprintf('(%s)[last()]', $xpath);
     }
 }

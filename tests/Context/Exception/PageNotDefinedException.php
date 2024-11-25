@@ -13,7 +13,7 @@ class PageNotDefinedException extends \RuntimeException
      */
     public function __construct(string $pageClass, int $code = 0, ?\Throwable $previous = null)
     {
-        $message = sprintf('Page "%s" is not defined', $pageClass);
+        $message = \sprintf('Page "%s" is not defined', $pageClass);
         parent::__construct($message, $code, $previous);
     }
 }

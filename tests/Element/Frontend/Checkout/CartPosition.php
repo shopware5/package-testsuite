@@ -9,27 +9,27 @@ class CartPosition
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $number;
+    private string $number;
 
     /**
      * @var int
      */
-    private $quantity;
+    private int $quantity;
 
     /**
      * @var float
      */
-    private $itemPrice;
+    private float $itemPrice;
 
     /**
      * @var float
      */
-    private $sum;
+    private float $sum;
 
     /**
      * @param string $name
@@ -38,7 +38,7 @@ class CartPosition
      * @param float  $itemPrice
      * @param float  $sum
      */
-    private function __construct($name, $number, $quantity, $itemPrice, $sum)
+    private function __construct(string $name, string $number, int $quantity, float $itemPrice, float $sum)
     {
         $this->name = $name;
         $this->number = $number;
@@ -52,7 +52,7 @@ class CartPosition
      *
      * @return CartPosition
      */
-    public static function fromArray(array $data)
+    public static function fromArray(array $data): CartPosition
     {
         if (!\array_key_exists('name', $data)
             || !\array_key_exists('number', $data)
@@ -78,7 +78,7 @@ class CartPosition
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -86,7 +86,7 @@ class CartPosition
     /**
      * @return string
      */
-    public function getNumber()
+    public function getNumber(): string
     {
         return $this->number;
     }
@@ -94,7 +94,7 @@ class CartPosition
     /**
      * @return int
      */
-    public function getQuantity()
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
@@ -102,7 +102,7 @@ class CartPosition
     /**
      * @return float
      */
-    public function getItemPrice()
+    public function getItemPrice(): float
     {
         return $this->itemPrice;
     }
@@ -110,7 +110,7 @@ class CartPosition
     /**
      * @return float
      */
-    public function getSum()
+    public function getSum(): float
     {
         return $this->sum;
     }
@@ -120,7 +120,7 @@ class CartPosition
      *
      * @return float
      */
-    private static function toFloat($string)
+    private static function toFloat($string): float
     {
         if (\is_float($string)) {
             return $string;
@@ -129,6 +129,6 @@ class CartPosition
         $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
         preg_match('/([0-9]+[\\.]?[0-9]*)/', $float, $matches);
 
-        return (float) $matches[0];
+        return (float) ($matches[0] ?? 0.0);
     }
 }
