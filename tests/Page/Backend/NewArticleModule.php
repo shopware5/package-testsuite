@@ -86,7 +86,7 @@ class NewArticleModule extends BackendModule
         $this->waitForSelectorVisible('xpath', $priceFieldXpath);
         $priceField = $row->find('xpath', $priceFieldXpath);
         if (!$priceField instanceof NodeElement) {
-            throw new \RuntimeException(sprintf('Could not find price field with xPath "%s"', $priceFieldXpath));
+            throw new \RuntimeException(\sprintf('Could not find price field with xPath "%s"', $priceFieldXpath));
         }
         $priceField->click();
 

@@ -99,7 +99,7 @@ class CheckoutCart extends ContextAwarePage
         $position = (int) $position;
 
         if ($position > \count($rows)) {
-            throw new \Exception(sprintf('Can\'t delete cart position #%s - no such position', $position));
+            throw new \Exception(\sprintf('Can\'t delete cart position #%s - no such position', $position));
         }
 
         $row = $rows[$position - 1];
@@ -194,7 +194,7 @@ class CheckoutCart extends ContextAwarePage
     public function checkPositionCountAndCartSum(string $quantity, string $amount)
     {
         if ($this->getCartPositionCount() !== (int) $quantity || $this->getCartSum() !== self::toFloat($amount)) {
-            throw new \Exception(sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
+            throw new \Exception(\sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
                 $quantity, $amount, $this->getCartPositionCount(), $this->getCartSum()));
         }
     }
@@ -268,7 +268,7 @@ class CheckoutCart extends ContextAwarePage
     private function assertCartPositionListsAreEqual(array $expected, array $actual)
     {
         if (\count($expected) !== \count($actual)) {
-            throw new \Exception(sprintf('Expected %s cart positions, got %s.', \count($expected), \count($actual)));
+            throw new \Exception(\sprintf('Expected %s cart positions, got %s.', \count($expected), \count($actual)));
         }
 
         foreach ($expected as $expectedPosition) {
@@ -278,14 +278,14 @@ class CheckoutCart extends ContextAwarePage
                         continue 2;
                     }
 
-                    throw new \Exception(sprintf('Cart positions not as expected: Expected: %s Got: %s',
+                    throw new \Exception(\sprintf('Cart positions not as expected: Expected: %s Got: %s',
                         print_r($expectedPosition, true),
                         print_r($actualPosition, true))
                     );
                 }
             }
 
-            throw new \Exception(sprintf('Could not find position %s', print_r($expectedPosition, true)));
+            throw new \Exception(\sprintf('Could not find position %s', print_r($expectedPosition, true)));
         }
     }
 
@@ -327,7 +327,7 @@ class CheckoutCart extends ContextAwarePage
         $float = str_replace([' ', '.', ','], ['', '', '.'], $string);
         preg_match('/([0-9]+[\\.]?[0-9]*)/', $float, $matches);
 
-        return (float) $matches[0];
+        return (float) ($matches[0] ?? 0.0);
     }
 
     /**
@@ -363,12 +363,10 @@ class CheckoutCart extends ContextAwarePage
     /**
      * @return array
      */
-    private function hydratePositionData(array $positionData)
+    private function hydratePositionData(array $positionData): array
     {
-        $expectedPositions = array_map(function ($position) {
+        return array_map(function ($position) {
             return CartPosition::fromArray($position);
         }, $positionData);
-
-        return $expectedPositions;
     }
 }

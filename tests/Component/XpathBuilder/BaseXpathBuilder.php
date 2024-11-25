@@ -113,7 +113,7 @@ class BaseXpathBuilder
             return $this;
         }
 
-        $this->xpath .= sprintf("[text()[contains(.,'%s')]]", $text);
+        $this->xpath .= \sprintf("[text()[contains(.,'%s')]]", $text);
 
         return $this;
     }
@@ -128,7 +128,7 @@ class BaseXpathBuilder
         }
         $result = '';
         foreach ($string as $part) {
-            $result .= sprintf("contains(concat(' ', normalize-space(@%s), ' '), ' %s ') and ", $attribute, $part);
+            $result .= \sprintf("contains(concat(' ', normalize-space(@%s), ' '), ' %s ') and ", $attribute, $part);
         }
 
         return rtrim($result, ' and ');
@@ -252,12 +252,12 @@ class BaseXpathBuilder
         // Add conditions
         $conditionString = $this->parseConditions($conditions);
         if (!empty($conditionString)) {
-            $this->xpath .= sprintf('[%s]', trim($conditionString));
+            $this->xpath .= \sprintf('[%s]', trim($conditionString));
         }
 
         // Add index
         if ($index !== null) {
-            $this->xpath .= sprintf('[%d]', $index);
+            $this->xpath .= \sprintf('[%d]', $index);
         }
 
         return $this;
@@ -270,9 +270,9 @@ class BaseXpathBuilder
     {
         switch ($target) {
             case 'text':
-                return sprintf("text()='%s'", $text);
+                return \sprintf("text()='%s'", $text);
             default:
-                return sprintf("@%s='%s'", $target, $text);
+                return \sprintf("@%s='%s'", $target, $text);
         }
     }
 
