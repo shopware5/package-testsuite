@@ -6,6 +6,7 @@ namespace Shopware\Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Shopware\Component\SpinTrait\SpinTrait;
 
@@ -14,9 +15,39 @@ class ContextAwarePage extends Page
     use SpinTrait;
 
     /**
+     * @param string[]|string $locator
+     *
+     * @throws ElementNotFoundException
+     */
+    public function find(string $selector, $locator): NodeElement
+    {
+        $element = parent::find($selector, $locator);
+        if ($element === null) {
+            if (\is_array($locator)) {
+                $locator = implode(' ', $locator);
+            }
+            throw new ElementNotFoundException($this->getDriver(), null, $selector, $locator);
+        }
+
+        return $element;
+    }
+
+    /**
+     * @param array|string $locator
+     */
+    public function has(string $selector, $locator): bool
+    {
+        try {
+            return parent::has($selector, $locator);
+        } catch (ElementNotFoundException $e) {
+            return false;
+        }
+    }
+
+    /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function waitForText(string $text, int $sleep = 2): void
     {
@@ -53,7 +84,7 @@ class ContextAwarePage extends Page
      *
      * @param string $selector css, xpath...
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function waitForSelectorPresent(string $selector, string $locator, int $sleep = 2): NodeElement
     {
@@ -80,7 +111,7 @@ class ContextAwarePage extends Page
      *
      * @param string $selector css, xpath...
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function waitForSelectorNotPresent(string $selector, string $locator, int $sleep = 2): void
     {
@@ -98,7 +129,7 @@ class ContextAwarePage extends Page
     /**
      * Checks via spin function if an element is present on page via given xpath, with sleep at the beginning (default 2)
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function waitForXpathElementPresent(string $xpath, int $sleep = 2): void
     {
@@ -116,7 +147,7 @@ class ContextAwarePage extends Page
     /**
      * Checks via spin function if a string exists, with sleep at the beginning (default 2)
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function waitForTextNotPresent(string $text, int $sleep = 2): void
     {
@@ -128,7 +159,7 @@ class ContextAwarePage extends Page
      *
      * @param string $selector css, xpath...
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function waitForSelectorVisible(string $selector, string $locator): void
     {
@@ -152,37 +183,5 @@ class ContextAwarePage extends Page
 
             return empty($elem) || !$elem->isVisible();
         }, 90);
-    }
-
-    /**
-     * @param string          $selector
-     * @param string[]|string $locator
-     *
-     * @throws ElementNotFoundException
-     */
-    public function find($selector, $locator): NodeElement
-    {
-        $element = parent::find($selector, $locator);
-        if ($element === null) {
-            if (\is_array($locator)) {
-                $locator = implode(' ', $locator);
-            }
-            throw new ElementNotFoundException($this->getDriver(), null, $selector, $locator);
-        }
-
-        return $element;
-    }
-
-    /**
-     * @param string       $selector
-     * @param array|string $locator
-     */
-    public function has($selector, $locator): bool
-    {
-        try {
-            return parent::has($selector, $locator);
-        } catch (ElementNotFoundException $e) {
-            return false;
-        }
     }
 }

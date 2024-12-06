@@ -14,7 +14,7 @@ class SettingsModule extends BackendModule
      *
      * @param string $elementName Name of the element
      */
-    public function clickOnMenuElement($elementName)
+    public function clickOnMenuElement(string $elementName): void
     {
         $xpath = BackendXpathBuilder::create()
             ->child('span', ['@text' => $elementName, 'and', '~class' => 'x-menu-item-text'])
@@ -31,7 +31,7 @@ class SettingsModule extends BackendModule
      *
      * @param string $elementName Name of the element
      */
-    public function clickOnSettingsMenuElement($elementName)
+    public function clickOnSettingsMenuElement(string $elementName): void
     {
         $xpath = BackendXpathBuilder::create()
             ->child('div', ['@text' => $elementName, 'and', '~class' => 'x-grid-cell-inner'])
@@ -48,7 +48,7 @@ class SettingsModule extends BackendModule
      *
      * @param array $data Defines the form field and their data
      */
-    public function fillShopConfigurationForm(array $data)
+    public function fillShopConfigurationForm(array $data): void
     {
         $window = Window::createFromTitle('Grundeinstellungen - Shops', $this->getSession());
         $this->fillExtJsForm($window, $data);

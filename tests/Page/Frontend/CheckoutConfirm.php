@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Page\Frontend;
 
+use RuntimeException;
 use Shopware\Component\Form\FormFillerTrait;
 use Shopware\Page\ContextAwarePage;
 
@@ -19,21 +20,22 @@ class CheckoutConfirm extends ContextAwarePage
     /**
      * Proceeds the checkout
      */
-    public function proceedToCheckout()
+    public function proceedToCheckout(): void
     {
         $this->open();
         $this->checkField('sAGB');
         $button = $this->findButton('Zahlungspflichtig bestellen');
+        if ($button === null) {
+            throw new RuntimeException('Could not find the submit button');
+        }
         $button->focus();
         $button->click();
     }
 
     /**
      * Fill out the registration form during checkout
-     *
-     * @param array $formData
      */
-    public function fillOutRegistrationForm($formData)
+    public function fillOutRegistrationForm(array $formData): void
     {
         $this->fillForm($this, $formData);
     }

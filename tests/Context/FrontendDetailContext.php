@@ -5,33 +5,18 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use Shopware\Page\Frontend\Detail;
 use Shopware\Page\Frontend\Search;
 
 class FrontendDetailContext extends SubContext
 {
     /**
-     * @throws \Exception
-     */
-    private function getDetailPage(): Detail
-    {
-        return $this->getValidPage(Detail::class);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function getSearchPage(): Search
-    {
-        return $this->getValidPage(Search::class);
-    }
-
-    /**
      * @When I choose the variant with the number :optionNumber
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function iChooseTheVariantWithTheNumber($optionNumber): void
+    public function iChooseTheVariantWithTheNumber(string $optionNumber): void
     {
         $this->getDetailPage()->fillField('group[5]', $optionNumber);
     }
@@ -39,7 +24,7 @@ class FrontendDetailContext extends SubContext
     /**
      * @Given I wait for the loading indicator to disappear
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iWaitForTheLoadingIndicatorToDisappear(): void
     {
@@ -49,7 +34,7 @@ class FrontendDetailContext extends SubContext
     /**
      * @Given I am on the detail page for article with ordernumber :ordernumber
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iAmOnTheDetailPageForArticleWithOrdernumber(string $ordernumber): void
     {
@@ -59,7 +44,7 @@ class FrontendDetailContext extends SubContext
     /**
      * @When I put the current article :quantity times into the basket
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iPutTheArticleTimesIntoTheBasket(string $quantity): void
     {
@@ -70,28 +55,40 @@ class FrontendDetailContext extends SubContext
     /**
      * @Then I should see the following graduated prices:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldSeeTheFollowingGraduatedPrices(TableNode $table): void
     {
-        $data = $table->getHash();
-
-        foreach ($data as $graduatedprice) {
-            $this->getDetailPage()->checkGraduatedPrice($graduatedprice);
+        foreach ($table->getHash() as $graduatedPrice) {
+            $this->getDetailPage()->checkGraduatedPrice($graduatedPrice);
         }
     }
 
     /**
      * @Given I should see the base price information:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldSeeTheBasePriceInformation(TableNode $table): void
     {
-        $data = $table->getHash();
-
-        foreach ($data as $entry) {
+        foreach ($table->getHash() as $entry) {
             $this->getDetailPage()->checkBasePrice($entry);
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getDetailPage(): Detail
+    {
+        return $this->getValidPage(Detail::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getSearchPage(): Search
+    {
+        return $this->getValidPage(Search::class);
     }
 }

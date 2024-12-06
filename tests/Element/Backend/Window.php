@@ -42,7 +42,7 @@ class Window extends ExtJsElement
      * by providing an arbitrary string that appears within the grid view that
      * is to be selected.
      */
-    public function getGridView(?string $containsText = ''): GridView
+    public function getGridView(string $containsText = ''): GridView
     {
         return new GridView($this->getGridViewXpath($containsText), $this->getSession());
     }
@@ -100,6 +100,24 @@ class Window extends ExtJsElement
     public function getSelecttree(string $label, ?string $fieldset = null): Selecttree
     {
         return Selecttree::createFromXpath($this->getSelecttreeXpath($label, $fieldset), $this);
+    }
+
+    /**
+     * @param string[]|string $locator
+     *
+     * @throws ElementNotFoundException
+     */
+    public function find(string $selector, $locator): NodeElement
+    {
+        $element = parent::find($selector, $locator);
+        if ($element === null) {
+            if (\is_array($locator)) {
+                $locator = implode(' ', $locator);
+            }
+            throw new ElementNotFoundException($this->getDriver(), null, $selector, $locator);
+        }
+
+        return $element;
     }
 
     private function getGridViewXpath(string $containsText = ''): string
@@ -162,24 +180,5 @@ class Window extends ExtJsElement
             ->followingSibling('td', [], 1)
             ->descendant('div', ['~class' => 'x-form-trigger'])
             ->getXpath();
-    }
-
-    /**
-     * @param string          $selector
-     * @param string[]|string $locator
-     *
-     * @throws ElementNotFoundException
-     */
-    public function find($selector, $locator): NodeElement
-    {
-        $element = parent::find($selector, $locator);
-        if ($element === null) {
-            if (\is_array($locator)) {
-                $locator = implode(' ', $locator);
-            }
-            throw new ElementNotFoundException($this->getDriver(), null, $selector, $locator);
-        }
-
-        return $element;
     }
 }

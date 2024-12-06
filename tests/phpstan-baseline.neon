@@ -6,16 +6,6 @@ parameters:
 			path: ../www/assetgenerator/classes/RandomImageGenerator.php
 
 		-
-			message: "#^Access to an undefined property Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:\\$client\\.$#"
-			count: 2
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Call to sprintf contains 1 placeholder, 2 values given\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:buildArticleDataArray\\(\\) has parameter \\$categories with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
@@ -61,11 +51,6 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
@@ -76,22 +61,17 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) has parameter \\$url with no type specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:call\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createArticle\\(\\) has parameter \\$product with no type specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createArticle\\(\\) has parameter \\$product with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCategory\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCategoryTree\\(\\) has parameter \\$categories with no type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -106,27 +86,12 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has parameter \\$customerGroup with no type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createOrder\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createCustomerGroup\\(\\) has parameter \\$customerGroup with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createOrder\\(\\) has parameter \\$orderData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:createProperty\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -146,27 +111,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:delete\\(\\) has parameter \\$url with no type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:delete\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteAllCustomers\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteCustomerByEmail\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:deleteCustomerById\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -191,27 +136,12 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:post\\(\\) has parameter \\$url with no type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:post\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has parameter \\$httpCode with no type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) has parameter \\$result with no type specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:prepareResponse\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -226,27 +156,12 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:put\\(\\) has parameter \\$url with no type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:put\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:setCountryData\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
 			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:setCountryData\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:throwExceptionWhenEmpty\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -261,12 +176,7 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has parameter \\$customerGroup with no type specified\\.$#"
+			message: "#^Method Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:updateCustomerGroup\\(\\) has parameter \\$customerGroup with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
 
@@ -276,14 +186,9 @@ parameters:
 			path: Component/Api/ApiClient.php
 
 		-
-			message: "#^Property Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:\\$validMethods has no type specified\\.$#"
+			message: "#^Property Shopware\\\\Component\\\\Api\\\\ApiClient\\:\\:\\$validMethods type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Component/Api/ApiClient.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 2
-			path: Component/XpathBuilder/BackendXpathBuilder.php
 
 		-
 			message: "#^Method Shopware\\\\Component\\\\XpathBuilder\\\\BaseXpathBuilder\\:\\:ancestor\\(\\) has parameter \\$conditions with no value type specified in iterable type array\\.$#"
@@ -326,31 +231,6 @@ parameters:
 			path: Component/XpathBuilder/BaseXpathBuilder.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:aRequirementShouldOwnAsStatus\\(\\) has parameter \\$icon with no type specified\\.$#"
-			count: 1
-			path: Context/FileCheckContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:aRequirementShouldOwnAsStatus\\(\\) has parameter \\$requirement with no type specified\\.$#"
-			count: 1
-			path: Context/FileCheckContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\FileCheckContext\\:\\:iCorrectTheRequirement\\(\\) has parameter \\$requirement with no type specified\\.$#"
-			count: 1
-			path: Context/FileCheckContext.php
-
-		-
-			message: "#^Property Shopware\\\\Context\\\\FileCheckContext\\:\\:\\$testPath has no type specified\\.$#"
-			count: 1
-			path: Context/FileCheckContext.php
-
-		-
-			message: "#^Parameter \\#1 \\$position of method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:removeCartPositionAtIndex\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: Context/FrontendCheckoutContext.php
-
-		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
 			count: 2
 			path: Context/FrontendContext.php
@@ -361,52 +241,7 @@ parameters:
 			path: Context/FrontendContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\FrontendDetailContext\\:\\:iChooseTheVariantWithTheNumber\\(\\) has parameter \\$optionNumber with no type specified\\.$#"
-			count: 1
-			path: Context/FrontendDetailContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iScrollDown\\(\\) has parameter \\$pixels with no type specified\\.$#"
-			count: 1
-			path: Context/GeneralContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\GeneralContext\\:\\:iWaitForSeconds\\(\\) has parameter \\$amount with no type specified\\.$#"
-			count: 1
-			path: Context/GeneralContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\InstallerContext\\:\\:iShouldSeeAfterImportIsFinished\\(\\) has parameter \\$text with no type specified\\.$#"
-			count: 1
-			path: Context/InstallerContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:getMinkParameter\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMink\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMinkParameters\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
 			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:setMinkParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:slugify\\(\\) has parameter \\$separator with no type specified\\.$#"
-			count: 1
-			path: Context/SubContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubContext\\:\\:slugify\\(\\) has parameter \\$text with no type specified\\.$#"
 			count: 1
 			path: Context/SubContext.php
 
@@ -421,16 +256,6 @@ parameters:
 			path: Context/SubContext.php
 
 		-
-			message: "#^Method Shopware\\\\Context\\\\SubshopContext\\:\\:iAmInSubshopWithURL\\(\\) has parameter \\$url with no type specified\\.$#"
-			count: 1
-			path: Context/SubshopContext.php
-
-		-
-			message: "#^Method Shopware\\\\Context\\\\SubshopContext\\:\\:iFillTheConfigurationForm\\(\\) has parameter \\$formname with no type specified\\.$#"
-			count: 1
-			path: Context/SubshopContext.php
-
-		-
 			message: "#^Negated boolean expression is always true\\.$#"
 			count: 1
 			path: Element/Backend/ExtJsElement.php
@@ -441,32 +266,7 @@ parameters:
 			path: Element/Backend/ExtJsElement.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Checkbox\\:\\:toggle\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Element/Backend/Form/Checkbox.php
-
-		-
-			message: "#^Cannot call method isVisible\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Element/Backend/Form/Combobox.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:getComboboxPebble\\(\\) should return Behat\\\\Mink\\\\Element\\\\NodeElement but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Element/Backend/Form/Combobox.php
-
-		-
 			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:setValue\\(\\) has parameter \\$value with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Element/Backend/Form/Combobox.php
-
-		-
-			message: "#^Parameter \\#1 \\$id of method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:getYCoordinateForElement\\(\\) expects string, string\\|null given\\.$#"
-			count: 4
-			path: Element/Backend/Form/Combobox.php
-
-		-
-			message: "#^Parameter \\#1 \\$value of method Shopware\\\\Element\\\\Backend\\\\Form\\\\Combobox\\:\\:getOptionByValue\\(\\) expects string, array\\|bool\\|string given\\.$#"
 			count: 1
 			path: Element/Backend/Form/Combobox.php
 
@@ -481,22 +281,12 @@ parameters:
 			path: Element/Backend/Form/Selecttree.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:getDropdownFromWindow\\(\\) has parameter \\$dropdownXpath with no type specified\\.$#"
-			count: 1
-			path: Element/Backend/Form/Selecttree.php
-
-		-
 			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:getSelectTreeElementXpaths\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Element/Backend/Form/Selecttree.php
 
 		-
 			message: "#^Method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:setValue\\(\\) has parameter \\$value with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Element/Backend/Form/Selecttree.php
-
-		-
-			message: "#^Parameter \\#1 \\$selectString of method Shopware\\\\Element\\\\Backend\\\\Form\\\\Selecttree\\:\\:getSelectTreeElementXpaths\\(\\) expects string, array\\|bool\\|string given\\.$#"
 			count: 1
 			path: Element/Backend/Form/Selecttree.php
 
@@ -516,22 +306,7 @@ parameters:
 			path: Element/Backend/GridView/GridViewRow.php
 
 		-
-			message: "#^Method Shopware\\\\Element\\\\Backend\\\\GridView\\\\GridViewRow\\:\\:clickActionIcon\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Element/Backend/GridView/GridViewRow.php
-
-		-
-			message: "#^Parameter \\#1 \\$containsText of method Shopware\\\\Element\\\\Backend\\\\Window\\:\\:getGridViewXpath\\(\\) expects string, string\\|null given\\.$#"
-			count: 1
-			path: Element/Backend/Window.php
-
-		-
 			message: "#^Method Shopware\\\\Element\\\\Frontend\\\\Checkout\\\\CartPosition\\:\\:fromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Element/Frontend/Checkout/CartPosition.php
-
-		-
-			message: "#^Method Shopware\\\\Element\\\\Frontend\\\\Checkout\\\\CartPosition\\:\\:toFloat\\(\\) has parameter \\$string with no type specified\\.$#"
 			count: 1
 			path: Element/Frontend/Checkout/CartPosition.php
 
@@ -541,27 +316,7 @@ parameters:
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:clickDeleteIconForCustomer\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:clickDeleteIconForCustomer\\(\\) has parameter \\$firstname with no type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillCustomerForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillCustomerForm\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillEditCustomerFormWith\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
@@ -571,57 +326,12 @@ parameters:
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillNewCustomerFormWith\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillNewCustomerFormWith\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Backend/CustomerModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:fillPaymentCombobox\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:openEditFormForCustomer\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:openEditFormForCustomer\\(\\) has parameter \\$firstname with no type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\CustomerModule\\:\\:skipIntroWizardIfNecessary\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/CustomerModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:addCategory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setBasicData\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setBasicData\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:setDescription\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/NewArticleModule.php
-
-		-
-			message: "#^Property Shopware\\\\Page\\\\Backend\\\\NewArticleModule\\:\\:\\$priceRowAnchor has no type specified\\.$#"
 			count: 1
 			path: Page/Backend/NewArticleModule.php
 
@@ -641,37 +351,7 @@ parameters:
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:addMinimumPriceFilter\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:blockSupplier\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:clickEditIconForExport\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:fillConfigurationForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:fillConfigurationForm\\(\\) has parameter \\$formData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:openExport\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ProductExportModule\\:\\:openExport\\(\\) has parameter \\$exportTitle with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/ProductExportModule.php
 
@@ -681,26 +361,6 @@ parameters:
 			path: Page/Backend/ProductExportModule.php
 
 		-
-			message: "#^Parameter \\#1 \\$value of method Behat\\\\Mink\\\\Element\\\\NodeElement\\:\\:setValue\\(\\) expects array\\|bool\\|string, int given\\.$#"
-			count: 1
-			path: Page/Backend/ProductExportModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnMenuElement\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/SettingsModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:clickOnSettingsMenuElement\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/SettingsModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:fillShopConfigurationForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/SettingsModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SettingsModule\\:\\:fillShopConfigurationForm\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Backend/SettingsModule.php
@@ -708,11 +368,6 @@ parameters:
 		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
 			count: 6
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:activateCountries\\(\\) has no return type specified\\.$#"
-			count: 1
 			path: Page/Backend/ShippingModule.php
 
 		-
@@ -736,27 +391,7 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:clickAddShippingMethodButton\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:createShippingMethodIfNotExists\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:createShippingMethodIfNotExists\\(\\) has parameter \\$shipping with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:deleteShippingMethod\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:emptyShippingCostConfiguration\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
 
@@ -781,11 +416,6 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:fillCell\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/ShippingModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\ShippingModule\\:\\:getShippingCostCell\\(\\) should return Behat\\\\Mink\\\\Element\\\\NodeElement but returns Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
 			count: 1
 			path: Page/Backend/ShippingModule.php
@@ -796,37 +426,7 @@ parameters:
 			path: Page/Backend/ShippingModule.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\SystemInfoModule\\:\\:checkRequirements\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/SystemInfoModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:deleteVoucher\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/VoucherModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:deleteVoucher\\(\\) has parameter \\$name with no type specified\\.$#"
-			count: 1
-			path: Page/Backend/VoucherModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:fillVoucherEditorFormWith\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/VoucherModule.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:fillVoucherEditorFormWith\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Backend/VoucherModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:openEditFormForVoucher\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Backend/VoucherModule.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Backend\\\\VoucherModule\\:\\:openEditFormForVoucher\\(\\) has parameter \\$name with no type specified\\.$#"
 			count: 1
 			path: Page/Backend/VoucherModule.php
 
@@ -837,21 +437,6 @@ parameters:
 
 		-
 			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:login\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:logout\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/Account.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Account\\:\\:register\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/Account.php
 
@@ -871,37 +456,7 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:addArticle\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:addVoucher\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:assertCartPositionListsAreEqual\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:checkAggregation\\(\\) has parameter \\$aggregation with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:checkPositionCountAndCartSum\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:emptyCart\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:fillCartWithProducts\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
@@ -911,22 +466,12 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getCssSelectors\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getCssSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getXPathSelectors\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:hasCartProductWithQuantity\\(\\) has parameter \\$number with no type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:hasCartProductWithQuantity\\(\\) has parameter \\$quantity with no type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:getXPathSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
 
@@ -941,49 +486,9 @@ parameters:
 			path: Page/Frontend/CheckoutCart.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:proceedToOrderConfirmation\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:removeCartPositionAtIndex\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:toFloat\\(\\) has parameter \\$string with no type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:validateCart\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:validateCart\\(\\) has parameter \\$positionData with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutCart\\:\\:verifyPage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutCart.php
-
-		-
-			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Cannot call method focus\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:fillOutRegistrationForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
 
 		-
 			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:fillOutRegistrationForm\\(\\) has parameter \\$formData with no value type specified in iterable type array\\.$#"
@@ -991,87 +496,22 @@ parameters:
 			path: Page/Frontend/CheckoutConfirm.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutConfirm\\:\\:proceedToCheckout\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutConfirm.php
-
-		-
-			message: "#^Cannot call method click\\(\\) on Behat\\\\Mink\\\\Element\\\\NodeElement\\|null\\.$#"
-			count: 2
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:changePaymentMethodTo\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectPaymentMethod\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectPaymentMethod\\(\\) has parameter \\$paymentMethod with no type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectShippingMethod\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:selectShippingMethod\\(\\) has parameter \\$shippingMethod with no type specified\\.$#"
-			count: 1
-			path: Page/Frontend/CheckoutShippingPayment.php
-
-		-
 			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\CheckoutShippingPayment\\:\\:verifyUrl\\(\\) has parameter \\$urlParameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/CheckoutShippingPayment.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkBasePrice\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkBasePrice\\(\\) has parameter \\$entry with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkGraduatedPrice\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:checkGraduatedPrice\\(\\) has parameter \\$graduatedPrice with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/Detail.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:toBasket\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Detail\\:\\:waitForOverlayToDisappear\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Offset 'amount' does not exist on string\\.$#"
-			count: 1
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Offset 'data' does not exist on string\\.$#"
-			count: 2
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Offset 'information' does not exist on string\\.$#"
-			count: 1
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Offset 'price' does not exist on string\\.$#"
-			count: 1
-			path: Page/Frontend/Detail.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Index\\:\\:getXPathSelectors\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Frontend\\\\Index\\:\\:getXPathSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Frontend/Index.php
 
@@ -1081,37 +521,7 @@ parameters:
 			path: Page/Frontend/Search.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:advance\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkIfDisabled\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkIfShopIsAvailable\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkRequiredFields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:clickOnElementToSkip\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:clickOnElementWithText\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:fillInAndSubmitForm\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:checkRequiredFields\\(\\) has parameter \\$field with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
@@ -1121,32 +531,12 @@ parameters:
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getCssSelectors\\(\\) has no return type specified\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getCssSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 
 		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getXPathSelectors\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:returnToPreviousDbPage\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:tickCheckbox\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:tickRadioButtonOption\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: Page/Installer/InstallerIndex.php
-
-		-
-			message: "#^Offset 'fieldname' does not exist on string\\.$#"
+			message: "#^Method Shopware\\\\Page\\\\Installer\\\\InstallerIndex\\:\\:getXPathSelectors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: Page/Installer/InstallerIndex.php
 

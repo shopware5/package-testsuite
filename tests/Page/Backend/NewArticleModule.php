@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Exception;
+use RuntimeException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class NewArticleModule extends BackendModule
 {
-    private $priceRowAnchor = 'Beliebig';
-
     protected string $moduleWindowTitle = 'Artikeldetails :';
+
+    private string $priceRowAnchor = 'Beliebig';
 
     /**
      * Sets the price or other data for the article
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setArticlePriceData(string $value, string $cellAnchor, string $inputName): void
     {
@@ -34,9 +36,73 @@ class NewArticleModule extends BackendModule
     }
 
     /**
+     * Sets the text for the short description
+     */
+    public function setDescription(string $text): void
+    {
+        $this->getDriver()->executeScript("tinymce.get()[0].setContent('" . $text . "');");
+    }
+
+    /**
+     * Sets the basic information of the article
+     *
+     * @throws Exception
+     */
+    public function setBasicData(array $data): void
+    {
+        $window = $this->getModuleWindow(false);
+        $this->fillExtJsForm($window, $data);
+    }
+
+    /**
+     * Adds the category to the article
+     *
+     * @throws Exception
+     */
+    public function addCategory(string $name): void
+    {
+        $window = $this->getModuleWindow(false);
+        $plusXpath = (new BackendXpathBuilder())
+            ->child('div', ['@text' => $name])
+            ->ancestor('tr', [], 1)
+            ->descendant('td', [], 2)
+            ->descendant('img')
+            ->getXpath();
+
+        $plus = $window->find('xpath', $plusXpath);
+        $plus->click();
+    }
+
+    /**
+     * Checks if the category is connected to the article correctly
+     *
+     * @throws Exception
+     */
+    public function checkAddedCategory(string $name, string $area): void
+    {
+        $window = $this->getModuleWindow(false);
+        $plusXpath = (new BackendXpathBuilder())
+            ->child('div', ['@text' => $name])
+            ->ancestor('div', ['~class' => 'x-panel'], 1)
+            ->descendant('span', ['@text' => $area], 1)
+            ->getXpath();
+
+        $window->find('xpath', $plusXpath);
+    }
+
+    /**
+     * Saves the article
+     */
+    public function saveArticle(): void
+    {
+        $button = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
+        $button->click();
+    }
+
+    /**
      * Finds the field position for the price
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return int position
      */
@@ -57,13 +123,13 @@ class NewArticleModule extends BackendModule
             }
             ++$positionIndex;
         }
-        throw new \Exception('Corresponding input field is missing.');
+        throw new Exception('Corresponding input field is missing.');
     }
 
     /**
      * Sets the price in the corresponding input field
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setPriceData(string $value, int $position, string $inputName): void
     {
@@ -86,7 +152,7 @@ class NewArticleModule extends BackendModule
         $this->waitForSelectorVisible('xpath', $priceFieldXpath);
         $priceField = $row->find('xpath', $priceFieldXpath);
         if (!$priceField instanceof NodeElement) {
-            throw new \RuntimeException(\sprintf('Could not find price field with xPath "%s"', $priceFieldXpath));
+            throw new RuntimeException(\sprintf('Could not find price field with xPath "%s"', $priceFieldXpath));
         }
         $priceField->click();
 
@@ -100,78 +166,5 @@ class NewArticleModule extends BackendModule
 
         // Minks keyPress-method is buggy unfortunately, this is a workaround to de-focus the price input so its value is actually set.
         $window->click();
-    }
-
-    /**
-     * Sets the text for the short description
-     *
-     * @param string $text
-     */
-    public function setDescription($text)
-    {
-        $this->getDriver()->executeScript("tinymce.get()[0].setContent('" . $text . "');");
-    }
-
-    /**
-     * Sets the basic information of the article
-     *
-     * @param array $data
-     *
-     * @throws \Exception
-     */
-    public function setBasicData($data)
-    {
-        $window = $this->getModuleWindow(false);
-        $this->fillExtJsForm($window, $data);
-    }
-
-    /**
-     * Adds the category to the article
-     *
-     * @param string $name
-     *
-     * @throws \Exception
-     */
-    public function addCategory($name)
-    {
-        $window = $this->getModuleWindow(false);
-        $plusXpath = (new BackendXpathBuilder())
-            ->child('div', ['@text' => $name])
-            ->ancestor('tr', [], 1)
-            ->descendant('td', [], 2)
-            ->descendant('img')
-            ->getXpath();
-
-        $plus = $window->find('xpath', $plusXpath);
-        $plus->click();
-    }
-
-    /**
-     * Checks if the category is connected to the article correctly
-     *
-     * @param string $name
-     * @param string $area
-     *
-     * @throws \Exception
-     */
-    public function checkAddedCategory($name, $area): void
-    {
-        $window = $this->getModuleWindow(false);
-        $plusXpath = (new BackendXpathBuilder())
-            ->child('div', ['@text' => $name])
-            ->ancestor('div', ['~class' => 'x-panel'], 1)
-            ->descendant('span', ['@text' => $area], 1)
-            ->getXpath();
-
-        $window->find('xpath', $plusXpath);
-    }
-
-    /**
-     * Saves the article
-     */
-    public function saveArticle(): void
-    {
-        $button = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getButtonXpathByLabel('Artikel speichern'));
-        $button->click();
     }
 }

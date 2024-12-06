@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Shopware\Component\XpathBuilder;
 
+use Exception;
+use RuntimeException;
+
 class BackendXpathBuilder extends BaseXpathBuilder
 {
     /**
@@ -91,19 +94,17 @@ class BackendXpathBuilder extends BaseXpathBuilder
     /**
      * Return xpath to extJs icon by type
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getIconXpathByType(string $type): string
     {
         switch ($type) {
             case 'edit':
                 return (new self())->child('img', ['~class' => 'sprite-pencil'])->getXpath();
-                break;
             case 'delete':
                 return (new self())->child('img', ['~class' => 'sprite-minus-circle-frame'])->getXpath();
-                break;
             default:
-                throw new \RuntimeException('Unknown icon type ' . $type);
+                throw new RuntimeException('Unknown icon type ' . $type);
         }
     }
 

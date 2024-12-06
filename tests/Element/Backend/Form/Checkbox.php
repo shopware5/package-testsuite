@@ -9,10 +9,7 @@ use Shopware\Element\Backend\ExtJsElement;
 
 class Checkbox extends ExtJsElement
 {
-    /**
-     * @return bool
-     */
-    public function isChecked()
+    public function isChecked(): bool
     {
         $checkedXpath = BackendXpathBuilder::create()
             ->ancestor('table', ['~class' => 'x-form-cb-checked'], 1)
@@ -23,7 +20,7 @@ class Checkbox extends ExtJsElement
         return $checked !== null;
     }
 
-    public function toggle()
+    public function toggle(): void
     {
         $this->click();
     }

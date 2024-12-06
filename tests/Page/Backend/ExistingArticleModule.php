@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Exception;
+use RuntimeException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class ExistingArticleModule extends NewArticleModule
@@ -107,7 +109,7 @@ class ExistingArticleModule extends NewArticleModule
      *
      * @param array<array<string, string>> $data
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function selectProperty(array $data): void
     {
@@ -124,39 +126,9 @@ class ExistingArticleModule extends NewArticleModule
     }
 
     /**
-     * Assigns an option to a selected group
-     *
-     * @throws \Exception
-     */
-    private function chooseOption(string $value): void
-    {
-        $builder = new BackendXpathBuilder();
-        $comboBoxXpath = $builder
-            ->child('table', ['@data-action' => 'values-table'])
-            ->descendant('td', [], 1)
-            ->followingSibling('td', [], 1)
-            ->descendant('div', ['~class' => 'x-form-trigger'])
-            ->getXpath();
-
-        $pebble = $this->find('xpath', $comboBoxXpath);
-        $pebble->click();
-        sleep(1);
-
-        $options = $this->findAll('xpath',
-            $builder->reset()->child('li', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
-
-        foreach ($options as $option) {
-            try {
-                $option->click();
-            } catch (\Exception $e) {
-            }
-        }
-    }
-
-    /**
      * Checks if a specific value matches to a given property correctly
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkCorrespondingPropertyValues(string $group, string $value): void
     {
@@ -190,7 +162,7 @@ class ExistingArticleModule extends NewArticleModule
         $orderNumberInputField = $this->find('xpath', $orderNumberInputFieldXPath);
         $value = $orderNumberInputField->getValue();
         if (!\is_string($value)) {
-            throw new \RuntimeException('Value of order number input field needs to be string');
+            throw new RuntimeException('Value of order number input field needs to be string');
         }
         $orderNumberInputField->setValue($value . $additionalText);
 
@@ -201,5 +173,35 @@ class ExistingArticleModule extends NewArticleModule
     {
         $variantRow = $this->getModuleWindow(false)->getGridView($orderNumber)->getRowByContent($orderNumber);
         $variantRow->clickActionIcon('sprite-pencil');
+    }
+
+    /**
+     * Assigns an option to a selected group
+     *
+     * @throws Exception
+     */
+    private function chooseOption(string $value): void
+    {
+        $builder = new BackendXpathBuilder();
+        $comboBoxXpath = $builder
+            ->child('table', ['@data-action' => 'values-table'])
+            ->descendant('td', [], 1)
+            ->followingSibling('td', [], 1)
+            ->descendant('div', ['~class' => 'x-form-trigger'])
+            ->getXpath();
+
+        $pebble = $this->find('xpath', $comboBoxXpath);
+        $pebble->click();
+        sleep(1);
+
+        $options = $this->findAll('xpath',
+            $builder->reset()->child('li', ['~class' => 'x-boundlist-item', 'and', '@text' => $value])->getXpath());
+
+        foreach ($options as $option) {
+            try {
+                $option->click();
+            } catch (Exception $e) {
+            }
+        }
     }
 }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Shopware\Component\XpathBuilder;
 
+use Exception;
+use RuntimeException;
+
 class BaseXpathBuilder
 {
     private string $xpath;
@@ -15,10 +18,8 @@ class BaseXpathBuilder
 
     /**
      * Create and return empty Xpath Builder instance
-     *
-     * @return BaseXpathBuilder
      */
-    public static function create(string $xpath = '/')
+    public static function create(string $xpath = '/'): BaseXpathBuilder
     {
         return new self($xpath);
     }
@@ -141,7 +142,7 @@ class BaseXpathBuilder
      *
      * @param array<array-key, string|array<string>> $conditions
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function parseConditions(array $conditions): string
     {
@@ -156,7 +157,7 @@ class BaseXpathBuilder
                 switch ($target) {
                     case 'starts-with':
                         if (!\is_array($condition) || \count($condition) !== 2) {
-                            throw new \Exception('Invalid number of arguments for SubConditionHandler starts-with: '
+                            throw new Exception('Invalid number of arguments for SubConditionHandler starts-with: '
                                 . "\n" . print_r($target, true)
                                 . "\n" . print_r($condition, true)
                                 . "\n" . print_r($conditions, true) . "\n");
@@ -165,14 +166,14 @@ class BaseXpathBuilder
                         break;
                     case 'ends-with':
                         if (!\is_array($condition) || \count($condition) !== 2) {
-                            throw new \Exception('Invalid number of arguments for SubConditionHandler: ' . $target);
+                            throw new Exception('Invalid number of arguments for SubConditionHandler: ' . $target);
                         }
                         $attr = $condition[0];
                         $text = $condition[1];
                         $conditionString .= "'" . $text . "'=substring(" . $attr . ', string-length(' . $attr . ")- string-length('" . $text . "') +1) ";
                         break;
                     default:
-                        throw new \Exception('SubConditionHandler not implemented: ' . $target);
+                        throw new Exception('SubConditionHandler not implemented: ' . $target);
                 }
                 continue;
             }
@@ -197,14 +198,14 @@ class BaseXpathBuilder
                         $conditionString .= 'not(';
                         break;
                     default:
-                        throw new \Exception('TargetModifiersPrefixHandler not implemented: ' . $targetModifiersPrefix);
+                        throw new Exception('TargetModifiersPrefixHandler not implemented: ' . $targetModifiersPrefix);
                 }
             }
 
             switch ($targetModifier) {
                 case '@':
                     if (!\is_string($condition)) {
-                        throw new \RuntimeException('condition must be string at this point');
+                        throw new RuntimeException('condition must be string at this point');
                     }
                     $conditionString .= $this->equals($target, $condition) . ' ';
                     break;
@@ -213,17 +214,13 @@ class BaseXpathBuilder
                     break;
                 default:
                     if (!\is_string($condition)) {
-                        throw new \RuntimeException('condition must be string at this point');
+                        throw new RuntimeException('condition must be string at this point');
                     }
                     $conditionString .= $condition . ' ';
             }
 
-            if ($targetModifiersPrefix) {
-                switch ($targetModifiersPrefix) {
-                    case '!':
-                        $conditionString .= ')';
-                        break;
-                }
+            if ($targetModifiersPrefix === '!') {
+                $conditionString .= ')';
             }
         }
 
@@ -234,13 +231,13 @@ class BaseXpathBuilder
      * Internal helper function to append a new search selector to the xpath
      * that is being built.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function appendPartialPath(string $tag, string $prefix, array $conditions, ?int $index): BaseXpathBuilder
     {
         // Input validation
         if ($tag === '') {
-            throw new \Exception('Invalid argument: Tag cannot be empty.');
+            throw new Exception('Invalid argument: Tag cannot be empty.');
         }
 
         // Add prefix

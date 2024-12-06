@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Window;
 use Shopware\Page\ContextAwarePage;
@@ -34,12 +35,12 @@ class BackendModule extends ContextAwarePage
      *
      * @param array<array<string, mixed>> $formElements
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function fillExtJsForm(Window $formParent, array $formElements): void
     {
         foreach ($formElements as $element) {
-            $element['fieldset'] = isset($element['fieldset']) ? $element['fieldset'] : '';
+            $element['fieldset'] = $element['fieldset'] ?? '';
             switch ($element['type']) {
                 case 'input':
                     $input = $formParent->getInput($element['label'], $element['fieldset']);
@@ -97,7 +98,7 @@ class BackendModule extends ContextAwarePage
     /**
      * Chooses the desired answer in a message box
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function answerMessageBox(string $answer): void
     {
@@ -108,6 +109,25 @@ class BackendModule extends ContextAwarePage
 
         $answerButton = $this->find('xpath', $answerButtonXpath);
         $answerButton->click();
+    }
+
+    /**
+     * Clicks the selected icon for the entry with a given name.
+     *
+     * @throws Exception
+     */
+    public function clickEntryIconByName(string $name, string $icon): void
+    {
+        $editIconXpath = (new BackendXpathBuilder())
+            ->child('div')
+            ->contains($name)
+            ->ancestor('tr', ['~class' => 'x-grid-row'])
+            ->descendant('img', ['~class' => $icon])
+            ->getXpath();
+
+        $this->waitForXpathElementPresent($editIconXpath);
+        $editIcon = $this->find('xpath', $editIconXpath);
+        $editIcon->click();
     }
 
     /**
@@ -134,24 +154,5 @@ class BackendModule extends ContextAwarePage
         }
 
         return $this->editorWindow;
-    }
-
-    /**
-     * Clicks the selected icon for the entry with a given name.
-     *
-     * @throws \Exception
-     */
-    public function clickEntryIconByName(string $name, string $icon): void
-    {
-        $editIconXpath = (new BackendXpathBuilder())
-            ->child('div')
-            ->contains($name)
-            ->ancestor('tr', ['~class' => 'x-grid-row'])
-            ->descendant('img', ['~class' => $icon])
-            ->getXpath();
-
-        $this->waitForXpathElementPresent($editIconXpath);
-        $editIcon = $this->find('xpath', $editIconXpath);
-        $editIcon->click();
     }
 }

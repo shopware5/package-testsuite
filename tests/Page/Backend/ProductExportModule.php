@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Exception;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\GridView\GridViewRow;
 
@@ -35,10 +36,8 @@ class ProductExportModule extends BackendModule
 
     /**
      * Fills in the product export configuration form
-     *
-     * @param array $formData
      */
-    public function fillConfigurationForm($formData)
+    public function fillConfigurationForm(array $formData): void
     {
         $editor = $this->getEditorWindow(false);
         $this->fillExtJsForm($editor, $formData);
@@ -49,7 +48,7 @@ class ProductExportModule extends BackendModule
      *
      * @param string $template The template itself
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function enterTemplate(string $template): void
     {
@@ -70,22 +69,17 @@ class ProductExportModule extends BackendModule
     /**
      * Open a product export
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function openExport($exportTitle)
+    public function openExport(string $exportTitle): void
     {
-        $window = $this->getModuleWindow();
-
-        $exportRow = $window->getGridView()->getRowByContent($exportTitle);
+        $exportRow = $this->getModuleWindow()->getGridView()->getRowByContent($exportTitle);
 
         $exportUrl = $this->getExportUrl($exportRow);
         $this->getSession()->visit($exportUrl);
     }
 
-    /**
-     * @param string $supplierName
-     */
-    public function blockSupplier($supplierName)
+    public function blockSupplier(string $supplierName): void
     {
         $supplierXpath = BackendXpathBuilder::create()
             ->child('span', ['@text' => 'Verfügbare Hersteller'])
@@ -105,53 +99,41 @@ class ProductExportModule extends BackendModule
         $this->waitForSelectorPresent('xpath', $buttonXpath)->click();
     }
 
-    /**
-     * @param string $minPrice
-     */
-    public function addMinimumPriceFilter($minPrice)
+    public function addMinimumPriceFilter(string $minPrice): void
     {
         $this->getEditorWindow()->getInput('Preis grösser:')->setValue($minPrice);
     }
 
     /**
      * Click the edit icon on the given export
-     *
-     * @param string $exportName
      */
-    public function clickEditIconForExport($exportName)
+    public function clickEditIconForExport(string $exportName): void
     {
         $exportRow = $this->getModuleWindow()->getGridView()->getRowByContent($exportName);
         $exportRow->clickActionIcon('sprite-pencil');
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkExportResult(string $expected): void
     {
         $actual = $this->getText();
 
         if ($this->normalizeText($expected) !== $this->normalizeText($actual)) {
-            throw new \Exception('Product stream not as expected.. Expected: ' . $expected . ' but got ' . $actual);
+            throw new Exception('Product stream not as expected.. Expected: ' . $expected . ' but got ' . $actual);
         }
     }
 
     /**
      * Normalize a given string by removing tabs, spaces and newlines from, allowing better comparison
-     *
-     * @param string $text
-     *
-     * @return string
      */
-    private function normalizeText($text)
+    private function normalizeText(string $text): string
     {
         return str_replace([' ', '\t', '\n'], '', $text);
     }
 
-    /**
-     * @return string
-     */
-    private function getExportUrl(GridViewRow $exportRow)
+    private function getExportUrl(GridViewRow $exportRow): string
     {
         $fileLinkXpath = BackendXpathBuilder::create()->descendant('a', [], 1)->getXpath();
         $fileLink = $exportRow->find('xpath', $fileLinkXpath)->getAttribute('href');

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
+use RuntimeException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class PaymentModule extends BackendModule
@@ -41,7 +42,7 @@ class PaymentModule extends BackendModule
 
         $saveButton = $window->findButton('Speichern');
         if (!$saveButton instanceof NodeElement) {
-            throw new \RuntimeException('Could not find save button');
+            throw new RuntimeException('Could not find save button');
         }
         $saveButton->click();
         $this->waitForText('Zahlungsart gespeichert', 1);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Page\Frontend;
 
+use Exception;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Element\Frontend\Checkout\CartPosition;
 use Shopware\Page\ContextAwarePage;
@@ -15,10 +16,7 @@ class CheckoutCart extends ContextAwarePage
      */
     protected $path = '/checkout/cart';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssSelectors()
+    public function getCssSelectors(): array
     {
         return [
             'sum' => 'li.entry--sum > div.entry--value',
@@ -28,10 +26,7 @@ class CheckoutCart extends ContextAwarePage
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getXPathSelectors()
+    public function getXPathSelectors(): array
     {
         return [
             'addProductInput' => FrontendXpathBuilder::create()
@@ -61,7 +56,7 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Validate the cart contains the given expected cart positions
      */
-    public function validateCart(array $positionData)
+    public function validateCart(array $positionData): void
     {
         $expectedPositions = $this->hydratePositionData($positionData);
         $actualPositions = $this->extractActualCartPositions();
@@ -71,10 +66,8 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Adds an article to the cart
-     *
-     * @param string $article
      */
-    public function addArticle($article)
+    public function addArticle(string $article): void
     {
         $addProductInputXpath = $this->getXPathSelectors()['addProductInput'];
         $addProductSubmitXpath = $this->getXPathSelectors()['addProductSubmit'];
@@ -88,18 +81,15 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Remove the cart position at the specified index
      *
-     * @param int $position
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function removeCartPositionAtIndex($position)
+    public function removeCartPositionAtIndex(int $position): void
     {
         $this->open();
         $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
-        $position = (int) $position;
 
         if ($position > \count($rows)) {
-            throw new \Exception(\sprintf('Can\'t delete cart position #%s - no such position', $position));
+            throw new Exception(\sprintf('Can\'t delete cart position #%s - no such position', $position));
         }
 
         $row = $rows[$position - 1];
@@ -109,7 +99,7 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Checks the aggregation
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkAggregation(array $aggregation): void
     {
@@ -121,28 +111,28 @@ class CheckoutCart extends ContextAwarePage
                     $element = $this->find('css', $this->getCssSelectors()['sum']);
                     $value = $element->getText();
                     if (self::toFloat($value) !== self::toFloat($row['value'])) {
-                        throw new \Exception('Expected cart sum to be ' . $row['value'] . ', got ' . $value);
+                        throw new Exception('Expected cart sum to be ' . $row['value'] . ', got ' . $value);
                     }
                     break;
                 case 'shipping':
                     $element = $this->find('css', $this->getCssSelectors()['shipping']);
                     $value = $element->getText();
                     if (self::toFloat($value) !== self::toFloat($row['value'])) {
-                        throw new \Exception('Expected shipping to be ' . $row['value'] . ', got ' . $value);
+                        throw new Exception('Expected shipping to be ' . $row['value'] . ', got ' . $value);
                     }
                     break;
                 case 'total':
                     $element = $this->find('css', $this->getCssSelectors()['total']);
                     $value = $element->getText();
                     if (self::toFloat($value) !== self::toFloat($row['value'])) {
-                        throw new \Exception('Expected total to be ' . $row['value'] . ', got ' . $value);
+                        throw new Exception('Expected total to be ' . $row['value'] . ', got ' . $value);
                     }
                     break;
                 case 'sumWithoutVat':
                     $element = $this->find('css', $this->getCssSelectors()['sumWithoutVat']);
                     $value = $element->getText();
                     if (self::toFloat($value) !== self::toFloat($row['value'])) {
-                        throw new \Exception('Expected sum without vat to be ' . $row['value'] . ', got ' . $value);
+                        throw new Exception('Expected sum without vat to be ' . $row['value'] . ', got ' . $value);
                     }
                     break;
             }
@@ -152,9 +142,9 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Fills the cart with products
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function fillCartWithProducts(array $items)
+    public function fillCartWithProducts(array $items): void
     {
         $originalPath = $this->path;
 
@@ -176,12 +166,10 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Remove all products from the cart
      */
-    public function emptyCart()
+    public function emptyCart(): void
     {
         $this->open();
-        $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
-
-        foreach ($rows as $row) {
+        foreach ($this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']) as $row) {
             $row->findButton('Löschen')->click();
         }
     }
@@ -189,12 +177,12 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Check the cart position count and cart sum
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function checkPositionCountAndCartSum(string $quantity, string $amount)
+    public function checkPositionCountAndCartSum(string $quantity, string $amount): void
     {
         if ($this->getCartPositionCount() !== (int) $quantity || $this->getCartSum() !== self::toFloat($amount)) {
-            throw new \Exception(\sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
+            throw new Exception(\sprintf('Expected %s positions with a sum of %s, but got %s with a sum of %s',
                 $quantity, $amount, $this->getCartPositionCount(), $this->getCartSum()));
         }
     }
@@ -202,18 +190,44 @@ class CheckoutCart extends ContextAwarePage
     /**
      * Proceeds to the confirmation page
      */
-    public function proceedToOrderConfirmation()
+    public function proceedToOrderConfirmation(): void
     {
         $this->open();
         $this->clickLink('Zur Kasse');
     }
 
     /**
-     * Return number of positions in cart
-     *
-     * @return int
+     * Add voucher to the cart
      */
-    private function getCartPositionCount()
+    public function addVoucher(string $code): void
+    {
+        $this->open();
+
+        $voucherInputXpath = FrontendXpathBuilder::getElementXpathByName('input', 'sVoucher');
+        $this->waitForSelectorPresent('xpath', $voucherInputXpath);
+        $this->find('xpath', $voucherInputXpath)->setValue($code);
+
+        $voucherSubmitXpath = FrontendXpathBuilder::create($voucherInputXpath)->followingSibling('button')->getXpath();
+        $this->waitForSelectorPresent('xpath', $voucherSubmitXpath);
+        $this->find('xpath', $voucherSubmitXpath)->click();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function verifyPage(): bool
+    {
+        if (strpos($this->getHtml(), 'is--ctl-checkout is--act-cart') === false) {
+            throw new Exception('Could not verify page - expected to be on checkout/cart.');
+        }
+
+        return true;
+    }
+
+    /**
+     * Return number of positions in cart
+     */
+    private function getCartPositionCount(): int
     {
         $this->open();
         $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
@@ -237,7 +251,7 @@ class CheckoutCart extends ContextAwarePage
      *
      * @return CartPosition[]
      */
-    private function extractActualCartPositions()
+    private function extractActualCartPositions(): array
     {
         $this->open();
         $rows = $this->findAll('xpath', $this->getXPathSelectors()['cartPositionRow']);
@@ -263,12 +277,12 @@ class CheckoutCart extends ContextAwarePage
      * @param CartPosition[] $expected
      * @param CartPosition[] $actual
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    private function assertCartPositionListsAreEqual(array $expected, array $actual)
+    private function assertCartPositionListsAreEqual(array $expected, array $actual): void
     {
         if (\count($expected) !== \count($actual)) {
-            throw new \Exception(\sprintf('Expected %s cart positions, got %s.', \count($expected), \count($actual)));
+            throw new Exception(\sprintf('Expected %s cart positions, got %s.', \count($expected), \count($actual)));
         }
 
         foreach ($expected as $expectedPosition) {
@@ -278,23 +292,21 @@ class CheckoutCart extends ContextAwarePage
                         continue 2;
                     }
 
-                    throw new \Exception(\sprintf('Cart positions not as expected: Expected: %s Got: %s',
+                    throw new Exception(\sprintf('Cart positions not as expected: Expected: %s Got: %s',
                         print_r($expectedPosition, true),
                         print_r($actualPosition, true))
                     );
                 }
             }
 
-            throw new \Exception(\sprintf('Could not find position %s', print_r($expectedPosition, true)));
+            throw new Exception(\sprintf('Could not find position %s', print_r($expectedPosition, true)));
         }
     }
 
     /**
      * Compare two cart positions for equality
-     *
-     * @return bool
      */
-    private function compareCartPositions(CartPosition $expected, CartPosition $actual)
+    private function compareCartPositions(CartPosition $expected, CartPosition $actual): bool
     {
         return $actual->getName() === $expected->getName()
             && strpos($actual->getNumber(), $expected->getNumber()) !== false
@@ -305,10 +317,8 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Returns true if the cart contains a product with a given number and a given quantity
-     *
-     * @return bool
      */
-    private function hasCartProductWithQuantity($number, $quantity)
+    private function hasCartProductWithQuantity(string $number, string $quantity): bool
     {
         $xPath = "//p[contains(text(), '" . $number . "')]//ancestor::div[contains(concat(' ', normalize-space(@class), ' '), ' row--product ')]//input[@name='sArticle' and @value='" . $quantity . "']";
 
@@ -317,6 +327,8 @@ class CheckoutCart extends ContextAwarePage
 
     /**
      * Convert a given string value to a float
+     *
+     * @param string|float $string
      */
     private static function toFloat($string): float
     {
@@ -330,42 +342,9 @@ class CheckoutCart extends ContextAwarePage
         return (float) ($matches[0] ?? 0.0);
     }
 
-    /**
-     * Add voucher to the cart
-     *
-     * @param string $code
-     */
-    public function addVoucher($code)
-    {
-        $this->open();
-
-        $voucherInputXpath = FrontendXpathBuilder::getElementXpathByName('input', 'sVoucher');
-        $this->waitForSelectorPresent('xpath', $voucherInputXpath);
-        $this->find('xpath', $voucherInputXpath)->setValue($code);
-
-        $voucherSubmitXpath = FrontendXpathBuilder::create($voucherInputXpath)->followingSibling('button')->getXpath();
-        $this->waitForSelectorPresent('xpath', $voucherSubmitXpath);
-        $this->find('xpath', $voucherSubmitXpath)->click();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function verifyPage()
-    {
-        if (!strpos($this->getHtml(), 'is--ctl-checkout is--act-cart')) {
-            throw new \Exception('Could not verify page - expected to be on checkout/cart.');
-        }
-
-        return true;
-    }
-
-    /**
-     * @return array
-     */
     private function hydratePositionData(array $positionData): array
     {
-        return array_map(function ($position) {
+        return array_map(static function (array $position) {
             return CartPosition::fromArray($position);
         }, $positionData);
     }

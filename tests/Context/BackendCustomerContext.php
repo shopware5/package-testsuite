@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use Shopware\Page\Backend\CustomerModule;
 
 class BackendCustomerContext extends SubContext
@@ -28,7 +29,7 @@ class BackendCustomerContext extends SubContext
     /**
      * @When I click the edit icon on customer :firstname
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iClickTheEditIconOnCustomer(string $name): void
     {

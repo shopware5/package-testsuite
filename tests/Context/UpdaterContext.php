@@ -80,19 +80,6 @@ class UpdaterContext extends SubContext
     }
 
     /**
-     * Sets the access privileges of a directory according to the situation to simulate system requirements
-     */
-    private function setRequirementsFulfillment(bool $meetRequirements): void
-    {
-        if ($meetRequirements === false) {
-            chmod($this->testPath, 0444);
-
-            return;
-        }
-        chmod($this->testPath, 0777);
-    }
-
-    /**
      * @When I correct the requirements
      */
     public function iCorrectTheRequirements(): void
@@ -107,5 +94,18 @@ class UpdaterContext extends SubContext
     {
         $page = $this->getValidPage(UpdaterIndex::class);
         $page->advanceToStep($stepName);
+    }
+
+    /**
+     * Sets the access privileges of a directory according to the situation to simulate system requirements
+     */
+    private function setRequirementsFulfillment(bool $meetRequirements): void
+    {
+        if ($meetRequirements === false) {
+            chmod($this->testPath, 0444);
+
+            return;
+        }
+        chmod($this->testPath, 0777);
     }
 }

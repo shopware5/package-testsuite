@@ -102,7 +102,7 @@ class InstallerContext extends SubContext
     /**
      * @Then I should see :text after import is finished
      */
-    public function iShouldSeeAfterImportIsFinished($text): void
+    public function iShouldSeeAfterImportIsFinished(string $text): void
     {
         $builder = new BackendXpathBuilder();
         $this->waitForTextInElement($builder->child('div', ['@class' => 'counter-container'])->getXpath(), $text, 0, 120);

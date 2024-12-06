@@ -19,11 +19,8 @@ class Account extends ContextAwarePage
 
     /**
      * Logs a user into the frontend
-     *
-     * @param string $email
-     * @param string $password
      */
-    public function login($email, $password)
+    public function login(string $email, string $password): void
     {
         $this->open();
 
@@ -42,7 +39,7 @@ class Account extends ContextAwarePage
     /**
      * Log the currently authenticated user out of the frontend
      */
-    public function logout()
+    public function logout(): void
     {
         $this->open();
         $this->getDriver()->visit($this->getDriver()->getCurrentUrl() . '/logout');
@@ -51,7 +48,7 @@ class Account extends ContextAwarePage
     /**
      * Fills the fields of the registration form and submits it
      */
-    public function register(array $data)
+    public function register(array $data): void
     {
         $this->open();
         $this->fillForm($this, $data);

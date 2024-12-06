@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Element\Backend\GridView;
 
 use Behat\Mink\Element\NodeElement;
+use RuntimeException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\ExtJsElement;
 
@@ -50,7 +51,7 @@ class GridView extends ExtJsElement
         $xPath = $this->getGridViewFirstRowXpath();
         $element = $this->find('xpath', $xPath);
         if (!$element instanceof NodeElement) {
-            throw new \RuntimeException(\sprintf('Could not find grid view row with xPath: "%s"', $xPath));
+            throw new RuntimeException(\sprintf('Could not find grid view row with xPath: "%s"', $xPath));
         }
 
         return new GridViewRow($element->getXpath(), $this->getSession());
@@ -67,7 +68,7 @@ class GridView extends ExtJsElement
             }
         }
 
-        throw new \RuntimeException('Could not find grid view row by with content: ' . $content);
+        throw new RuntimeException('Could not find grid view row by with content: ' . $content);
     }
 
     /**

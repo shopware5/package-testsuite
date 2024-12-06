@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Shopware\Component\SpinTrait;
 
+use Exception;
+
 trait SpinTrait
 {
     /**
@@ -13,12 +15,12 @@ trait SpinTrait
      *
      * @param callable $lambda
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function spin($lambda, int $wait = 10): void
     {
         if (!$this->spinWithNoException($lambda, $wait)) {
-            throw new \Exception(\sprintf('Spin function timed out after %s seconds', $wait));
+            throw new Exception(\sprintf('Spin function timed out after %s seconds', $wait));
         }
     }
 
@@ -38,7 +40,7 @@ trait SpinTrait
                 if ($lambda($this)) {
                     return true;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // do nothing
             }
 

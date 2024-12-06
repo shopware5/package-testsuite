@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use Shopware\Page\Frontend\Account;
 use Shopware\Page\Frontend\CheckoutCart;
 use Shopware\Page\Frontend\CheckoutConfirm;
@@ -48,7 +49,7 @@ class FrontendCheckoutContext extends SubContext
     public function iRemoveTheArticleOnPosition(string $position): void
     {
         $page = $this->getValidPage(CheckoutCart::class);
-        $page->removeCartPositionAtIndex($position);
+        $page->removeCartPositionAtIndex((int) $position);
     }
 
     /**
@@ -92,7 +93,7 @@ class FrontendCheckoutContext extends SubContext
     /**
      * @Given the cart contains the following products:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function theCartContainsTheFollowingProducts(TableNode $items): void
     {

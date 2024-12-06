@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use PHPUnit\Framework\Assert;
+use RuntimeException;
 use Shopware\Page\Backend\OrderModule;
 use Smalot\PdfParser\Parser;
 
@@ -14,7 +16,7 @@ class BackendOrderContext extends SubContext
     /**
      * @When I open the order from email :email
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function iOpenTheOrderFromEmail(string $email): void
     {
@@ -48,13 +50,13 @@ class BackendOrderContext extends SubContext
     /**
      * @Then I should see exactly :amount order in the order list
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldSeeExactlyOneOrderInTheOrderList(string $amount): void
     {
         $actualAmount = $this->getModulePage()->getNumberOfOrdersInOrderList();
         if ((int) $amount !== $actualAmount) {
-            throw new \Exception(\sprintf('Expected %s order, found %s.', $amount, $actualAmount));
+            throw new Exception(\sprintf('Expected %s order, found %s.', $amount, $actualAmount));
         }
     }
 
@@ -69,14 +71,14 @@ class BackendOrderContext extends SubContext
     /**
      * @Then I should see the order from :email at the top of the order list
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldSeeTheOrderFromAtTheTopOfTheOrderList(string $email): void
     {
         $topmostOrder = $this->getModulePage()->getTopmostOrderFromList();
 
         if (strpos($topmostOrder->getHtml(), $email) === false) {
-            throw new \Exception(\sprintf('Expected order from %s would be at top of list.', $email));
+            throw new Exception(\sprintf('Expected order from %s would be at top of list.', $email));
         }
     }
 
@@ -91,7 +93,7 @@ class BackendOrderContext extends SubContext
     /**
      * @Given the invoice should contain the following:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function theInvoiceShouldContain(TableNode $content): void
     {
@@ -102,7 +104,7 @@ class BackendOrderContext extends SubContext
 
         $documents = glob($documentsPath . '/*.pdf');
         if (empty($documents)) {
-            throw new \Exception('Could not find generated PDF document.');
+            throw new Exception('Could not find generated PDF document.');
         }
 
         $pdfContent = $this->getPdfTextContent($documents[0]);
@@ -120,14 +122,14 @@ class BackendOrderContext extends SubContext
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function getDocumentsDirectory(): string
     {
         $documentsPath = getenv('base_path') . '/files/documents';
 
         if (!is_dir($documentsPath)) {
-            throw new \RuntimeException('Could not open document directory at ' . $documentsPath);
+            throw new RuntimeException('Could not open document directory at ' . $documentsPath);
         }
 
         return $documentsPath;
@@ -136,7 +138,7 @@ class BackendOrderContext extends SubContext
     private function getPdfTextContent(string $filepath): string
     {
         if (!is_file($filepath)) {
-            throw new \RuntimeException('Could not open file ' . $filepath);
+            throw new RuntimeException('Could not open file ' . $filepath);
         }
 
         return (new Parser())->parseFile($filepath)->getText();

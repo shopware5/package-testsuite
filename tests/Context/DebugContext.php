@@ -9,6 +9,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\Exception;
 use Behat\Mink\Session;
 use Behat\Testwork\Tester\Result\TestResult;
+use RuntimeException;
 
 class DebugContext extends SubContext
 {
@@ -26,6 +27,23 @@ class DebugContext extends SubContext
     }
 
     /**
+     * Save a screenshot of the current window to the file system.
+     *
+     * @param string|null $filename Desired filename, defaults to
+     *                              <browser_name>_<ISO 8601 date>_<randomId>.png
+     * @param string|null $filepath Desired filepath, defaults to
+     *                              upload_tmp_dir, falls back to sys_get_temp_dir()
+     */
+    public function saveScreenshot(?string $filename = null, ?string $filepath = null): void
+    {
+        $filename = $filename ?: \sprintf('%s_%s_%s.%s', $this->getMinkParameter('browser_name'), time(),
+            uniqid('', true), 'png');
+        $filepath = $filepath ?: (\ini_get('upload_tmp_dir') ?: sys_get_temp_dir());
+
+        file_put_contents($filepath . '/' . $filename, $this->getSession()->getScreenshot());
+    }
+
+    /**
      * Take a screenshot of the current Selenium Driver instance
      */
     private function takeScreenshot(): void
@@ -38,23 +56,6 @@ class DebugContext extends SubContext
         $filePath = \dirname(__FILE__, 2) . '/logs/mink';
 
         $this->saveScreenshot(null, $filePath);
-    }
-
-    /**
-     * Save a screenshot of the current window to the file system.
-     *
-     * @param string|null $filename Desired filename, defaults to
-     *                              <browser_name>_<ISO 8601 date>_<randomId>.png
-     * @param string|null $filepath Desired filepath, defaults to
-     *                              upload_tmp_dir, falls back to sys_get_temp_dir()
-     */
-    public function saveScreenshot(?string $filename = null, ?string $filepath = null): void
-    {
-        $filename = $filename ?: \sprintf('%s_%s_%s.%s', $this->getMinkParameter('browser_name'), time(),
-            uniqid('', true), 'png');
-        $filepath = $filepath ?: (\ini_get('upload_tmp_dir') ? \ini_get('upload_tmp_dir') : sys_get_temp_dir());
-
-        file_put_contents($filepath . '/' . $filename, $this->getSession()->getScreenshot());
     }
 
     /**
@@ -80,7 +81,7 @@ class DebugContext extends SubContext
 
         $path = \sprintf('%s/behat-%s.%s', $logDir, $currentDateAsString, $type);
         if (!file_put_contents($path, $content)) {
-            throw new \RuntimeException(\sprintf('Failed while trying to write log in "%s".', $path));
+            throw new RuntimeException(\sprintf('Failed while trying to write log in "%s".', $path));
         }
     }
 

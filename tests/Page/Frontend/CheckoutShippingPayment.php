@@ -30,10 +30,8 @@ class CheckoutShippingPayment extends ContextAwarePage
 
     /**
      * Change the currently selected payment method
-     *
-     * @param string $paymentMethod
      */
-    public function changePaymentMethodTo($paymentMethod)
+    public function changePaymentMethodTo(string $paymentMethod): void
     {
         if (!$this->verifyUrl()) {
             $this->open();
@@ -48,12 +46,8 @@ class CheckoutShippingPayment extends ContextAwarePage
 
     /**
      * Return the shipping or payment method with the given name
-     *
-     * @param string $methodName
-     *
-     * @return NodeElement|null
      */
-    public function getMethodElement($methodName)
+    public function getMethodElement(string $methodName): NodeElement
     {
         $elementXpath = FrontendXpathBuilder::create()
             ->child('label', ['@text' => $methodName])
@@ -66,10 +60,8 @@ class CheckoutShippingPayment extends ContextAwarePage
 
     /**
      * Verifies that we currently are on the shipping/payment page
-     *
-     * @return bool
      */
-    protected function verifyUrl(array $urlParameters = [])
+    protected function verifyUrl(array $urlParameters = []): bool
     {
         return $this->getDriver()->getCurrentUrl() === $this->getUrl($urlParameters);
     }
@@ -77,7 +69,7 @@ class CheckoutShippingPayment extends ContextAwarePage
     /**
      * Select a shipping method from the list in the frontend
      */
-    private function selectShippingMethod($shippingMethod)
+    private function selectShippingMethod(string $shippingMethod): void
     {
         $element = $this->getMethodElement($shippingMethod);
         $element->click();
@@ -87,7 +79,7 @@ class CheckoutShippingPayment extends ContextAwarePage
      * Select a payment method from the list in the frontend and
      * fill in some demo SEPA data if necessary
      */
-    private function selectPaymentMethod($paymentMethod)
+    private function selectPaymentMethod(string $paymentMethod): void
     {
         $element = $this->getMethodElement($paymentMethod);
         $element->click();

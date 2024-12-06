@@ -55,7 +55,7 @@ class GeneralContext extends SubContext
     /**
      * @Given I wait for :amount seconds
      */
-    public function iWaitForSeconds($amount): void
+    public function iWaitForSeconds(string $amount): void
     {
         sleep((int) $amount);
     }
@@ -63,7 +63,7 @@ class GeneralContext extends SubContext
     /**
      * @Given /^I scroll down "([^"]*)" px$/
      */
-    public function iScrollDown($pixels): void
+    public function iScrollDown(string $pixels): void
     {
         $this->getSession()->executeScript(\sprintf('window.scroll(0, %s)', $pixels));
     }
