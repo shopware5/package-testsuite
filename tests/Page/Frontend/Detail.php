@@ -18,11 +18,11 @@ class Detail extends ContextAwarePage
     /**
      * Puts the current article <quantity> times to basket
      *
-     * @param int $quantity
+     * @param string $quantity
      *
      * @throws ElementNotFoundException
      */
-    public function toBasket($quantity = 1)
+    public function toBasket($quantity = '1')
     {
         $this->fillField('sQuantity', $quantity);
         $this->pressButton('In den Warenkorb');

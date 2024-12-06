@@ -18,7 +18,7 @@ trait SpinTrait
     protected function spin($lambda, int $wait = 10): void
     {
         if (!$this->spinWithNoException($lambda, $wait)) {
-            throw new \Exception(sprintf('Spin function timed out after %s seconds', $wait));
+            throw new \Exception(\sprintf('Spin function timed out after %s seconds', $wait));
         }
     }
 

@@ -89,7 +89,7 @@ class ShippingModule extends BackendModule
         $window = $this->getModuleWindow();
 
         if (!$this->shippingMethodExists($methodName)) {
-            throw new \Exception(sprintf('Missing shipping method "%s"', $methodName));
+            throw new \Exception(\sprintf('Missing shipping method "%s"', $methodName));
         }
 
         $methodRow = $window->getGridView()->getRowByContent($methodName);
@@ -186,7 +186,7 @@ class ShippingModule extends BackendModule
      *
      * @return NodeElement|null
      */
-    private function getGridRowByContent($text, NodeElement $scope = null)
+    private function getGridRowByContent($text, ?NodeElement $scope = null)
     {
         $xpath = BackendXpathBuilder::create()
             ->child('div', ['@text' => $text])

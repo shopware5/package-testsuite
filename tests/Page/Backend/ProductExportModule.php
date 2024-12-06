@@ -110,7 +110,7 @@ class ProductExportModule extends BackendModule
      */
     public function addMinimumPriceFilter($minPrice)
     {
-        $this->getEditorWindow()->getInput('Preis grösser:')->setValue((int) $minPrice);
+        $this->getEditorWindow()->getInput('Preis grösser:')->setValue($minPrice);
     }
 
     /**

@@ -32,8 +32,8 @@ Feature: I can manage my orders with the backend order module
       | content                               |
       | Gewählte Zahlungsart: Vorkasse        |
       | Gewählte Versandart: Standard Versand |
-      | Gesamtkosten Netto: 18,47 €           |
-      | Gesamtkosten: 21,98 €                 |
+      | Gesamtkosten Netto:	18,47 €           |
+      | Gesamtkosten:	21,98 €               |
 
   @shopware53
   Scenario: I can filter and sort orders in the backend

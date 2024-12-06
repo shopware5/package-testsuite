@@ -50,7 +50,7 @@ class DebugContext extends SubContext
      */
     public function saveScreenshot(?string $filename = null, ?string $filepath = null): void
     {
-        $filename = $filename ?: sprintf('%s_%s_%s.%s', $this->getMinkParameter('browser_name'), time(),
+        $filename = $filename ?: \sprintf('%s_%s_%s.%s', $this->getMinkParameter('browser_name'), time(),
             uniqid('', true), 'png');
         $filepath = $filepath ?: (\ini_get('upload_tmp_dir') ? \ini_get('upload_tmp_dir') : sys_get_temp_dir());
 
@@ -63,7 +63,7 @@ class DebugContext extends SubContext
     private function logRequest(): void
     {
         $session = $this->getSession();
-        $log = sprintf('Current page: %d %s', $this->getStatusCode(), $session->getCurrentUrl()) . "\n";
+        $log = \sprintf('Current page: %d %s', $this->getStatusCode(), $session->getCurrentUrl()) . "\n";
         $log .= $this->getResponseHeadersLogMessage($session);
         $log .= $this->getRequestContentLogMessage($session);
         $this->saveLog($log, 'log');
@@ -78,9 +78,9 @@ class DebugContext extends SubContext
 
         $currentDateAsString = date('YmdHis');
 
-        $path = sprintf('%s/behat-%s.%s', $logDir, $currentDateAsString, $type);
+        $path = \sprintf('%s/behat-%s.%s', $logDir, $currentDateAsString, $type);
         if (!file_put_contents($path, $content)) {
-            throw new \RuntimeException(sprintf('Failed while trying to write log in "%s".', $path));
+            throw new \RuntimeException(\sprintf('Failed while trying to write log in "%s".', $path));
         }
     }
 

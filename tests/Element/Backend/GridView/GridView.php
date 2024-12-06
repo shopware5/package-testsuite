@@ -50,7 +50,7 @@ class GridView extends ExtJsElement
         $xPath = $this->getGridViewFirstRowXpath();
         $element = $this->find('xpath', $xPath);
         if (!$element instanceof NodeElement) {
-            throw new \RuntimeException(sprintf('Could not find grid view row with xPath: "%s"', $xPath));
+            throw new \RuntimeException(\sprintf('Could not find grid view row with xPath: "%s"', $xPath));
         }
 
         return new GridViewRow($element->getXpath(), $this->getSession());
@@ -105,6 +105,6 @@ class GridView extends ExtJsElement
 
     private function getGridViewFirstRowXpath(): string
     {
-        return sprintf('(%s)[1]', $this->getGridViewRowsXpath());
+        return \sprintf('(%s)[1]', $this->getGridViewRowsXpath());
     }
 }

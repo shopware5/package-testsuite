@@ -28,7 +28,7 @@ class Combobox extends ExtJsElement
             // Click on correct dropdown entry
             $option = $this->getOptionByValue($value, $dropdown);
             if (!$option instanceof NodeElement) {
-                throw new \RuntimeException(sprintf('Could not find option with value "%s"', print_r($value, true)));
+                throw new \RuntimeException(\sprintf('Could not find option with value "%s"', print_r($value, true)));
             }
 
             $option->click();

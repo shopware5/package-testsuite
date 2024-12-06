@@ -65,7 +65,7 @@ class GeneralContext extends SubContext
      */
     public function iScrollDown($pixels): void
     {
-        $this->getSession()->executeScript(sprintf('window.scroll(0, %s)', $pixels));
+        $this->getSession()->executeScript(\sprintf('window.scroll(0, %s)', $pixels));
     }
 
     /**
@@ -105,13 +105,13 @@ class GeneralContext extends SubContext
         $dbDumpFile = __DIR__ . '/../../clean_db.sql';
 
         if (!is_file($dbDumpFile)) {
-            echo "Could not reset database - no clean state available. Missing dump file at " . $dbDumpFile . PHP_EOL;
+            echo 'Could not reset database - no clean state available. Missing dump file at ' . $dbDumpFile . PHP_EOL;
 
             return;
         }
 
         echo 'Resetting database to clean state...' . PHP_EOL;
-        passthru(sprintf('mysql -u root -proot -h mysql shopware < %s', $dbDumpFile));
+        passthru(\sprintf('mysql -u root -proot -h mysql shopware < %s', $dbDumpFile));
     }
 
     /**
