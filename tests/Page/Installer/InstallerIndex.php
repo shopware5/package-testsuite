@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Page\Installer;
 
+use Exception;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 
@@ -14,10 +15,7 @@ class InstallerIndex extends ContextAwarePage
      */
     protected $path = '/recovery/install/index.php';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getXPathSelectors()
+    public function getXPathSelectors(): array
     {
         $builder = new FrontendXpathBuilder();
 
@@ -45,10 +43,7 @@ class InstallerIndex extends ContextAwarePage
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssSelectors()
+    public function getCssSelectors(): array
     {
         return [
             'ce' => '#optionsRadios1',
@@ -62,7 +57,7 @@ class InstallerIndex extends ContextAwarePage
     /**
      * Advances to the next page
      */
-    public function advance()
+    public function advance(): void
     {
         $forwardButton = $this->waitForSelectorPresent('xpath', $this->getXPathSelectors()['forwardButton']);
         $forwardButton->click();
@@ -73,7 +68,7 @@ class InstallerIndex extends ContextAwarePage
      *
      * @param string $identifier Xpath identifier from InstallerIndex
      */
-    public function tickCheckbox($identifier)
+    public function tickCheckbox(string $identifier): void
     {
         $checkboxButton = $this->find('xpath', $this->getXPathSelectors()[$identifier]);
         $checkboxButton->check();
@@ -82,9 +77,9 @@ class InstallerIndex extends ContextAwarePage
     /**
      * Checks, if a particular field is required
      *
-     * @param string $field The given field of the form
+     * @param array $field The given field of the form
      */
-    public function checkRequiredFields($field)
+    public function checkRequiredFields(array $field): void
     {
         $this->find('xpath', $this->getXPathSelectors()[$field['fieldname']])->hasAttribute('required');
     }
@@ -94,7 +89,7 @@ class InstallerIndex extends ContextAwarePage
      *
      * @param array $data The data of the form
      */
-    public function fillInAndSubmitForm($data)
+    public function fillInAndSubmitForm(array $data): void
     {
         foreach ($data as $formElement) {
             $elementXpath = FrontendXpathBuilder::getElementXpathByName('input', $formElement['field']);
@@ -111,7 +106,7 @@ class InstallerIndex extends ContextAwarePage
      *
      * @param string $text The text of the element
      */
-    public function clickOnElementWithText($text)
+    public function clickOnElementWithText(string $text): void
     {
         $elementXpath = $this->getXPathSelectors()[$text];
         $this->waitForSelectorPresent('xpath', $elementXpath);
@@ -121,7 +116,7 @@ class InstallerIndex extends ContextAwarePage
     /**
      * Returns to the previous page when the database was already imported
      */
-    public function returnToPreviousDbPage()
+    public function returnToPreviousDbPage(): void
     {
         $forwardButton = $this->find('xpath', $this->getXPathSelectors()['backwardDbButton']);
         $forwardButton->click();
@@ -132,7 +127,7 @@ class InstallerIndex extends ContextAwarePage
      *
      * @param string $value The label of the option
      */
-    public function tickRadioButtonOption($value)
+    public function tickRadioButtonOption(string $value): void
     {
         $css = $this->getCssSelectors();
 
@@ -146,9 +141,9 @@ class InstallerIndex extends ContextAwarePage
      * @param string $selector Defines which selector should be used
      * @param string $locator  Indicates which field would be checked
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function checkIfDisabled($selector, $locator)
+    public function checkIfDisabled(string $selector, string $locator): void
     {
         $css = $this->getCssSelectors();
 
@@ -156,7 +151,7 @@ class InstallerIndex extends ContextAwarePage
         $element->hasAttribute('disabled');
 
         if ($element->hasAttribute('disabled')) {
-            throw new \Exception('License agreement field should be enabled in this case, but is not.');
+            throw new Exception('License agreement field should be enabled in this case, but is not.');
         }
     }
 
@@ -166,7 +161,7 @@ class InstallerIndex extends ContextAwarePage
      * @param string $type   Frontend or Backend of the shop
      * @param string $target Actual target of the link
      **/
-    public function checkIfShopIsAvailable($type, $target)
+    public function checkIfShopIsAvailable(string $type, string $target): void
     {
         $shopLink = $this->find('xpath', $this->getXPathSelectors()[$type]);
 
@@ -179,7 +174,7 @@ class InstallerIndex extends ContextAwarePage
      *
      * @param string $text Text of the element used for skipping
      **/
-    public function clickOnElementToSkip($text)
+    public function clickOnElementToSkip(string $text): void
     {
         $this->find('named', ['link', $text])->click();
     }

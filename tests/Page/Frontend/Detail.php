@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Page\Frontend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Exception;
 use Shopware\Component\XpathBuilder\FrontendXpathBuilder;
 use Shopware\Page\ContextAwarePage;
 
@@ -18,11 +19,9 @@ class Detail extends ContextAwarePage
     /**
      * Puts the current article <quantity> times to basket
      *
-     * @param string $quantity
-     *
      * @throws ElementNotFoundException
      */
-    public function toBasket($quantity = '1')
+    public function toBasket(string $quantity = '1'): void
     {
         $this->fillField('sQuantity', $quantity);
         $this->pressButton('In den Warenkorb');
@@ -31,13 +30,11 @@ class Detail extends ContextAwarePage
     /**
      * Checks if the variants are applied in the frontend correctly
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function waitForOverlayToDisappear()
+    public function waitForOverlayToDisappear(): void
     {
-        $builder = new FrontendXpathBuilder();
-
-        $overlayXpath = $builder
+        $overlayXpath = (new FrontendXpathBuilder())
             ->child('div', ['~class' => 'js--overlay'], 1)
             ->getXpath();
 
@@ -47,18 +44,14 @@ class Detail extends ContextAwarePage
     /**
      * Checks if the amount and the corresponding graduated price are matching correctly
      *
-     * @param string $graduatedprice
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function checkGraduatedPrice($graduatedprice)
+    public function checkGraduatedPrice(array $graduatedPrice): void
     {
-        $builder = new FrontendXpathBuilder();
-
-        $grPriceXpath = $builder
-            ->child('span', ['~text' => $graduatedprice['amount'], 'and', '~class' => 'block-prices--quantity'], 1)
+        $grPriceXpath = (new FrontendXpathBuilder())
+            ->child('span', ['~text' => $graduatedPrice['amount'], 'and', '~class' => 'block-prices--quantity'], 1)
             ->ancestor('tr', [], 1)
-            ->child('td', ['~text' => $graduatedprice['price'], 'and', '~class' => 'block-prices--cell'], 1)
+            ->child('td', ['~text' => $graduatedPrice['price'], 'and', '~class' => 'block-prices--cell'], 1)
             ->getXpath();
 
         $this->waitForSelectorPresent('xpath', $grPriceXpath);
@@ -67,11 +60,9 @@ class Detail extends ContextAwarePage
     /**
      * Checks if the base price information is shown correctly
      *
-     * @param string $entry
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function checkBasePrice($entry)
+    public function checkBasePrice(array $entry): void
     {
         $builder = new FrontendXpathBuilder();
 

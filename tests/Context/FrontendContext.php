@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Context;
 
+use Exception;
 use PHPUnit\Framework\Assert;
 use Shopware\Component\XpathBuilder\BaseXpathBuilder;
 use Shopware\Page\Frontend\Account;
@@ -42,7 +43,7 @@ class FrontendContext extends SubContext
     /**
      * @Then the cart should contain :quantity articles with a value of :amount
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function theCartShouldContainArticlesWithAValueOf(string $quantity, string $amount): void
     {
@@ -92,7 +93,7 @@ class FrontendContext extends SubContext
     /**
      * @Given I click on :text
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iClickOn(string $text): void
     {
@@ -112,6 +113,6 @@ class FrontendContext extends SubContext
             return;
         }
 
-        throw new \Exception('Could not find element by content ' . $text);
+        throw new Exception('Could not find element by content ' . $text);
     }
 }

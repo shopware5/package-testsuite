@@ -5,6 +5,11 @@ includes:
 parameters:
     level: 8
     phpVersion: 70400
+    treatPhpDocTypesAsCertain: false
+    inferPrivatePropertyTypeFromConstructor: true
+    reportUnmatchedIgnoredErrors: true
+    checkFunctionNameCase: true
+    checkInternalClassCaseSensitivity: true
     paths:
         - Component
         - Context

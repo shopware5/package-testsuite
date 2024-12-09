@@ -1,4 +1,4 @@
 #!/bin/sh
 set -eu
 
-"$(pwd)"/vendor/bin/behat "$@"
+"$(pwd)"/vendor/bin/behat "$@" --stop-on-failure

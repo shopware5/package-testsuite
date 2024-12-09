@@ -8,7 +8,7 @@ use Shopware\Page\Backend\SystemInfoModule;
 
 class FileCheckContext extends SubContext
 {
-    private $testPath;
+    private string $testPath;
 
     private string $folderRequirementLabel = 'media/music/';
 
@@ -21,7 +21,7 @@ class FileCheckContext extends SubContext
     public function __construct()
     {
         parent::__construct();
-        $this->testPath = getenv('base_path');
+        $this->testPath = (string) getenv('base_path');
     }
 
     /**
@@ -35,7 +35,7 @@ class FileCheckContext extends SubContext
     /**
      * @When I correct the :requirement requirement
      */
-    public function iCorrectTheRequirement($requirement): void
+    public function iCorrectTheRequirement(string $requirement): void
     {
         $this->setRequirementsFulfillment(true, $requirement);
     }
@@ -44,7 +44,7 @@ class FileCheckContext extends SubContext
      * @Then a :requirement requirement should have a :icon as status
      * @Then all :requirement requirements should have a :icon as status
      */
-    public function aRequirementShouldOwnAsStatus($requirement, $icon): void
+    public function aRequirementShouldOwnAsStatus(string $requirement, string $icon): void
     {
         $page = $this->getValidPage(SystemInfoModule::class);
 

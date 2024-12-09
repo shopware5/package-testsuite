@@ -59,7 +59,7 @@ class QuestionMarkModule extends BackendModule
      *
      * @return string buildnr
      */
-    public function getBuildNr()
+    public function getBuildNr(): string
     {
         $xpath = BackendXpathBuilder::create()
                     ->child('div',

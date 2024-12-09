@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use PHPUnit\Framework\Assert;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Page\Backend\Backend;
@@ -51,7 +52,7 @@ class BackendVoucherContext extends SubContext
     /**
      * @Given I should be able to use the code exactly once
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldBeAbleToUseTheCodeExactlyOnce(): void
     {
@@ -95,13 +96,13 @@ class BackendVoucherContext extends SubContext
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function fillCartWithProductsAndGeneratedVoucher(string $voucherCode): void
     {
         $cartPage = $this->getValidPage(CheckoutCart::class);
         $cartPage->fillCartWithProducts([
-            ['number' => 'SWT0001', 'quantity' => 1],
+            ['number' => 'SWT0001', 'quantity' => '1'],
         ]);
         $cartPage->addVoucher($voucherCode);
     }

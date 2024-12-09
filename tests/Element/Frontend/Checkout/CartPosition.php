@@ -4,40 +4,20 @@ declare(strict_types=1);
 
 namespace Shopware\Element\Frontend\Checkout;
 
+use Exception;
+
 class CartPosition
 {
-    /**
-     * @var string
-     */
     private string $name;
 
-    /**
-     * @var string
-     */
     private string $number;
 
-    /**
-     * @var int
-     */
     private int $quantity;
 
-    /**
-     * @var float
-     */
     private float $itemPrice;
 
-    /**
-     * @var float
-     */
     private float $sum;
 
-    /**
-     * @param string $name
-     * @param string $number
-     * @param int    $quantity
-     * @param float  $itemPrice
-     * @param float  $sum
-     */
     private function __construct(string $name, string $number, int $quantity, float $itemPrice, float $sum)
     {
         $this->name = $name;
@@ -48,9 +28,7 @@ class CartPosition
     }
 
     /**
-     * @throws \Exception
-     *
-     * @return CartPosition
+     * @throws Exception
      */
     public static function fromArray(array $data): CartPosition
     {
@@ -60,7 +38,7 @@ class CartPosition
             || !\array_key_exists('itemPrice', $data)
             || !\array_key_exists('sum', $data)
         ) {
-            throw new \Exception('Not enough arguments to create CartPosition from array.');
+            throw new Exception('Not enough arguments to create CartPosition from array.');
         }
 
         $data['itemPrice'] = self::toFloat($data['itemPrice']);
@@ -75,41 +53,26 @@ class CartPosition
         );
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getNumber(): string
     {
         return $this->number;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): int
     {
         return $this->quantity;
     }
 
-    /**
-     * @return float
-     */
     public function getItemPrice(): float
     {
         return $this->itemPrice;
     }
 
-    /**
-     * @return float
-     */
     public function getSum(): float
     {
         return $this->sum;
@@ -118,7 +81,7 @@ class CartPosition
     /**
      * Convert a given string value to a float
      *
-     * @return float
+     * @param string|float $string
      */
     private static function toFloat($string): float
     {

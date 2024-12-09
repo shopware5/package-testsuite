@@ -11,21 +11,15 @@ class VoucherModule extends BackendModule
      */
     protected $path = '/backend/?app=Voucher';
 
-    /**
-     * {@inheritdoc}
-     */
     protected string $moduleWindowTitle = 'Gutschein-Administration';
 
-    /**
-     * {@inheritdoc}
-     */
     protected string $editorWindowTitle = 'Gutschein-Konfiguration';
 
     /**
      * Fill the new voucher form of the backend module with
      * the supplied data.
      */
-    public function fillVoucherEditorFormWith(array $data)
+    public function fillVoucherEditorFormWith(array $data): void
     {
         $window = $this->getEditorWindow();
         $this->fillExtJsForm($window, $data);
@@ -34,7 +28,7 @@ class VoucherModule extends BackendModule
     /**
      * Click the edit icon for the row containing $name
      */
-    public function openEditFormForVoucher($name)
+    public function openEditFormForVoucher(string $name): void
     {
         $voucherRow = $this->getModuleWindow()->getGridView()->getRowByContent($name);
         $voucherRow->clickActionIcon('sprite-pencil');
@@ -43,7 +37,7 @@ class VoucherModule extends BackendModule
     /**
      * Delete a voucher by its name
      */
-    public function deleteVoucher($name)
+    public function deleteVoucher(string $name): void
     {
         $voucherRow = $this->getModuleWindow()->getGridView()->getRowByContent($name);
         $voucherRow->clickActionIcon('sprite-minus-circle-frame');

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
+use RuntimeException;
 use Shopware\Component\Api\ApiClient;
 
 class ApiContext extends SubContext
@@ -68,7 +70,7 @@ class ApiContext extends SubContext
     /**
      * @Given the following properties exist in the store:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function theFollowingPropertiesExistInTheStore(TableNode $table): void
     {
@@ -82,7 +84,7 @@ class ApiContext extends SubContext
     /**
      * @Given there is no customer registered with e-mail address :email
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function thereIsNoCustomerRegisteredWithEMailAddress(string $email): void
     {
@@ -99,6 +101,16 @@ class ApiContext extends SubContext
     {
         $api = $this->getApiClient();
         $api->createCategoryTree($tree);
+    }
+
+    /**
+     * @Given the following orders exist:
+     */
+    public function theFollowingOrdersExist(TableNode $orders): void
+    {
+        foreach ($orders as $order) {
+            $this->getApiClient()->createOrder($order);
+        }
     }
 
     private function createCustomer(string $email, string $password = '', string $group = '', string $country = ''): void
@@ -126,7 +138,7 @@ class ApiContext extends SubContext
     }
 
     /**
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     private function getApiClient(): ApiClient
     {
@@ -140,29 +152,19 @@ class ApiContext extends SubContext
         $assetUrl = getenv('assets_url');
 
         if (empty($apiKey)) {
-            throw new \RuntimeException('Please set the api_key parameter in .env');
+            throw new RuntimeException('Please set the api_key parameter in .env');
         }
 
         if (empty($baseUrl)) {
-            throw new \RuntimeException('Please set the base_url parameter in behat.yml');
+            throw new RuntimeException('Please set the base_url parameter in behat.yml');
         }
 
         if (empty($assetUrl)) {
-            throw new \RuntimeException('Please set the asset_url parameter in .env');
+            throw new RuntimeException('Please set the asset_url parameter in .env');
         }
 
         $this->apiClient = new ApiClient($baseUrl, $assetUrl, $apiUser, $apiKey);
 
         return $this->apiClient;
-    }
-
-    /**
-     * @Given the following orders exist:
-     */
-    public function theFollowingOrdersExist(TableNode $orders): void
-    {
-        foreach ($orders as $order) {
-            $this->getApiClient()->createOrder($order);
-        }
     }
 }

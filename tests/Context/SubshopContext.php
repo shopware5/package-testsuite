@@ -10,24 +10,6 @@ use Shopware\Page\Backend\SettingsModule;
 class SubshopContext extends SubContext
 {
     /**
-     * @Given I am in subshop with URL :url
-     */
-    public function iAmInSubshopWithURL($url): void
-    {
-        if (substr($url, 0, 4) === 'http') {
-            $this->setMinkParameters([
-                'base_url' => $url,
-            ]);
-
-            return;
-        }
-        $baseUrl = $this->getMinkParameter('base_url');
-        $this->setMinkParameters([
-            'base_url' => rtrim($baseUrl, '/') . '/' . ltrim($url, '/'),
-        ]);
-    }
-
-    /**
      * @Then I should be able to access the subshop via using :url
      * @Then I should be able to access the shop via using :url
      */
@@ -57,7 +39,7 @@ class SubshopContext extends SubContext
     /**
      * @Given I fill in and submit the :formname configuration form:
      */
-    public function iFillTheConfigurationForm($formname, TableNode $table): void
+    public function iFillTheConfigurationForm(TableNode $table): void
     {
         $page = $this->getValidPage(SettingsModule::class);
 

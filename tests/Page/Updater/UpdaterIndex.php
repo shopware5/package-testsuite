@@ -14,9 +14,6 @@ class UpdaterIndex extends ContextAwarePage
      */
     protected $path = '/recovery/update/';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getXPathSelectors(): array
     {
         return [
@@ -30,9 +27,6 @@ class UpdaterIndex extends ContextAwarePage
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCssSelectors(): array
     {
         return [

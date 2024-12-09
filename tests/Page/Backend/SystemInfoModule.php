@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 
 class SystemInfoModule extends BackendModule
@@ -18,7 +17,7 @@ class SystemInfoModule extends BackendModule
      * @param string $item           The requirement which should be checked
      * @param bool   $expectedStatus Determines if the requirement should be met or not
      **/
-    public function checkRequirements($item, $expectedStatus)
+    public function checkRequirements(string $item, bool $expectedStatus): void
     {
         if ($expectedStatus) {
             $this->checkStatus($item, 'sprite-tick');
@@ -29,13 +28,8 @@ class SystemInfoModule extends BackendModule
 
     /**
      * Check if a given requirement has a given state
-     *
-     * @param string $item
-     * @param string $class
-     *
-     * @return bool
      */
-    private function checkStatus($item, $class)
+    private function checkStatus(string $item, string $class): void
     {
         $grid = $this->getGridForGridItem($item);
         $statusXpath = BackendXpathBuilder::create()
@@ -44,13 +38,7 @@ class SystemInfoModule extends BackendModule
             ->descendant('div', ['~class' => $class])
             ->getXpath();
 
-        try {
-            $grid->find('xpath', $statusXpath);
-        } catch (ElementNotFoundException $e) {
-            return false;
-        }
-
-        return true;
+        $grid->find('xpath', $statusXpath);
     }
 
     /**

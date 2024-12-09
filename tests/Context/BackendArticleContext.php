@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopware\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use Shopware\Page\Backend\BackendModule;
 use Shopware\Page\Backend\ExistingArticleModule;
 use Shopware\Page\Backend\NewArticleModule;
@@ -12,33 +13,9 @@ use Shopware\Page\Backend\NewArticleModule;
 class BackendArticleContext extends SubContext
 {
     /**
-     * @throws \Exception
-     */
-    private function getBackendModulePage(): BackendModule
-    {
-        return $this->getValidPage(BackendModule::class);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function getExistingArticleModulePage(): ExistingArticleModule
-    {
-        return $this->getValidPage(ExistingArticleModule::class);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function getNewArticleModulePage(): NewArticleModule
-    {
-        return $this->getValidPage(NewArticleModule::class);
-    }
-
-    /**
      * @Given I set :price as the article price
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iSetAsTheArticlePriceForTheCustomerGroup(string $price): void
     {
@@ -48,7 +25,7 @@ class BackendArticleContext extends SubContext
     /**
      * @Given I choose :text as article description
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iChooseAsArticleDescription(string $text): void
     {
@@ -58,7 +35,7 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I am able to save my article
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iAmAbleToSaveMyArticle(): void
     {
@@ -68,7 +45,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click to add the category with name :name to the article
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iClickTheIconToAdd(string $name): void
     {
@@ -78,7 +55,7 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I should find the category with name :title in :area
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldFindInTheArea(string $title, string $area): void
     {
@@ -88,7 +65,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I fill in the basic configuration:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iFillInTheBasicConfiguration(TableNode $table): void
     {
@@ -99,7 +76,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I expand the :label element
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iExpandTheCategoryElement(string $label): void
     {
@@ -119,7 +96,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I change the article name to :productName
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iChangeTheArticleNameTo(string $productName): void
     {
@@ -129,7 +106,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click the edit icon of the entry :name
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iClickTheEditIconOfTheEntry(string $name): void
     {
@@ -139,7 +116,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click the delete icon of the entry :name
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iClickTheDeleteIconOfTheEntry(string $name): void
     {
@@ -149,7 +126,7 @@ class BackendArticleContext extends SubContext
     /**
      * @Given I confirm to delete the entry
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iConfirmToDeleteTheEntry(): void
     {
@@ -159,7 +136,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I create the :title group via :label
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iCreateTheGroup(string $groupName, string $label): void
     {
@@ -170,7 +147,7 @@ class BackendArticleContext extends SubContext
      * @Given the group :title should be listed in the area :area
      * @Given the option :title should be listed in the area :area
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function theGroupShouldBeListedAsAnActiveGroup(string $title, string $area): void
     {
@@ -180,7 +157,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I click :group to create the options of it
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iClickToCreateTheOptionsOfIt(string $groupName): void
     {
@@ -190,7 +167,7 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I create the following options options:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iCreateTheFollowingOptionsOptions(TableNode $table): void
     {
@@ -201,7 +178,7 @@ class BackendArticleContext extends SubContext
      * @When I limit the price :price for an amount up to :max
      * @When I set the price :price for any number from here
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iLimitThePriceForAnAmountOfTo(string $price, string $maxAmount = '0'): void
     {
@@ -232,7 +209,7 @@ class BackendArticleContext extends SubContext
     /**
      * @When I fill in the property configuration:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iFillInThePropertyConfiguration(TableNode $table): void
     {
@@ -243,7 +220,7 @@ class BackendArticleContext extends SubContext
     /**
      * @Then I should see :group as corresponding value to :value
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iShouldSeeAsCorrespondingValueTo(string $group, string $value): void
     {
@@ -264,5 +241,29 @@ class BackendArticleContext extends SubContext
     public function iOpenVariantDetailPageOfVariant(string $orderNumber): void
     {
         $this->getExistingArticleModulePage()->openVariantDetailPage($orderNumber);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getBackendModulePage(): BackendModule
+    {
+        return $this->getValidPage(BackendModule::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getExistingArticleModulePage(): ExistingArticleModule
+    {
+        return $this->getValidPage(ExistingArticleModule::class);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getNewArticleModulePage(): NewArticleModule
+    {
+        return $this->getValidPage(NewArticleModule::class);
     }
 }

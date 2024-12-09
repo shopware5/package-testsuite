@@ -5,22 +5,16 @@ declare(strict_types=1);
 namespace Shopware\Element\Backend\Form;
 
 use Behat\Mink\Element\NodeElement;
+use InvalidArgumentException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\ExtJsElement;
 use Shopware\Element\Backend\Window;
 
 class Selecttree extends ExtJsElement
 {
-    /**
-     * @param string $xpath
-     *
-     * @return Selecttree
-     */
-    public static function createFromXpath($xpath, Window $window)
+    public static function createFromXpath(string $xpath, Window $window): Selecttree
     {
-        $selecttree = new self($xpath, $window->getSession());
-
-        return $selecttree;
+        return new self($xpath, $window->getSession());
     }
 
     /**
@@ -28,6 +22,9 @@ class Selecttree extends ExtJsElement
      */
     public function setValue($value)
     {
+        if (!\is_string($value)) {
+            throw new InvalidArgumentException('Value must be a string');
+        }
         // Open dropdown
         $this->click();
 
@@ -45,12 +42,8 @@ class Selecttree extends ExtJsElement
 
     /**
      * Return a list of all elements of a select tree
-     *
-     * @param string $selectString
-     *
-     * @return array
      */
-    private function getSelectTreeElementXpaths($selectString)
+    private function getSelectTreeElementXpaths(string $selectString): array
     {
         $xpaths = [];
 
@@ -76,23 +69,15 @@ class Selecttree extends ExtJsElement
         return $xpaths;
     }
 
-    /**
-     * @return string
-     */
-    private function getSelecttreeDropdownXpath()
+    private function getSelecttreeDropdownXpath(): string
     {
-        $dropdownXpath = BackendXpathBuilder::create()
+        return BackendXpathBuilder::create()
             ->descendant('div', ['@text' => 'Deutsch'])
             ->ancestor('div', ['~class' => 'x-tree-panel'])
             ->getXpath();
-
-        return $dropdownXpath;
     }
 
-    /**
-     * @return NodeElement|null
-     */
-    private function getDropdownFromWindow($dropdownXpath)
+    private function getDropdownFromWindow(string $dropdownXpath): ?NodeElement
     {
         $dropdown = null;
         $this->waitFor(10, function () use (&$dropdown, $dropdownXpath) {

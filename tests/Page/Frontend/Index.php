@@ -15,10 +15,7 @@ class Index extends ContextAwarePage
      */
     protected $path = '/';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getXPathSelectors()
+    public function getXPathSelectors(): array
     {
         return [
             'templateMainNav' => FrontendXpathBuilder::create()
@@ -45,32 +42,17 @@ class Index extends ContextAwarePage
         ];
     }
 
-    /**
-     * @param string $subCategory
-     *
-     * @return NodeElement|null
-     */
-    public function getSubNavElement($subCategory)
+    public function getSubNavElement(string $subCategory): ?NodeElement
     {
         return $this->getNavElement($subCategory, 'templateSubNav');
     }
 
-    /**
-     * @param string $mainCategory
-     *
-     * @return NodeElement|null
-     */
-    public function getMainNavElement($mainCategory)
+    public function getMainNavElement(string $mainCategory): ?NodeElement
     {
         return $this->getNavElement($mainCategory, 'templateMainNav');
     }
 
-    /**
-     * @param string $productName
-     *
-     * @return NodeElement
-     */
-    public function getProductListingBoxElement($productName)
+    public function getProductListingBoxElement(string $productName): NodeElement
     {
         $xpath = $this->getXPathSelectors()['templateListingProductBoxByName'];
 

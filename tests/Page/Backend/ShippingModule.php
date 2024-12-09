@@ -6,6 +6,7 @@ namespace Shopware\Page\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Exception;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\Window;
 
@@ -23,7 +24,7 @@ class ShippingModule extends BackendModule
     /**
      * Create a new shipping method from the details provided.
      */
-    public function createShippingMethodIfNotExists(array $shipping)
+    public function createShippingMethodIfNotExists(array $shipping): void
     {
         $this->open();
 
@@ -65,10 +66,8 @@ class ShippingModule extends BackendModule
 
     /**
      * Delete a shipping method by its name
-     *
-     * @param string $shippingMethod
      */
-    public function deleteShippingMethod($shippingMethod)
+    public function deleteShippingMethod(string $shippingMethod): void
     {
         $shippingRow = $this->getModuleWindow()->getGridView()->getRowByContent($shippingMethod);
         $shippingRow->clickActionIcon('sprite-minus-circle-frame');
@@ -81,7 +80,7 @@ class ShippingModule extends BackendModule
     /**
      * Set the shipping cost configuration for a given shipping method
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setShippingCosts(string $methodName, array $costData): void
     {
@@ -89,7 +88,7 @@ class ShippingModule extends BackendModule
         $window = $this->getModuleWindow();
 
         if (!$this->shippingMethodExists($methodName)) {
-            throw new \Exception(\sprintf('Missing shipping method "%s"', $methodName));
+            throw new Exception(\sprintf('Missing shipping method "%s"', $methodName));
         }
 
         $methodRow = $window->getGridView()->getRowByContent($methodName);
@@ -125,7 +124,7 @@ class ShippingModule extends BackendModule
     /**
      * Helper method that clicks the 'Add Shipping Method' button
      */
-    private function clickAddShippingMethodButton()
+    private function clickAddShippingMethodButton(): void
     {
         $buttonXpath = '//button[@data-action="addShipping"]';
         $this->waitForSelectorPresent('xpath', $buttonXpath, 7);
@@ -165,7 +164,7 @@ class ShippingModule extends BackendModule
     /**
      * Activated a given set of countries for the shipping method that is currently being edited
      */
-    private function activateCountries(NodeElement $editor, array $countries)
+    private function activateCountries(NodeElement $editor, array $countries): void
     {
         $countriesTabXpath = BackendXpathBuilder::getTabXpathByLabel('Länder Auswahl');
         $editor->find('xpath', $countriesTabXpath)->click();
@@ -181,12 +180,8 @@ class ShippingModule extends BackendModule
     /**
      * Helper method to get an extJs grid row by its content. Useful for assigning countries and payment methods
      * to a shipping method.
-     *
-     * @param string $text
-     *
-     * @return NodeElement|null
      */
-    private function getGridRowByContent($text, ?NodeElement $scope = null)
+    private function getGridRowByContent(string $text, ?NodeElement $scope = null): ?NodeElement
     {
         $xpath = BackendXpathBuilder::create()
             ->child('div', ['@text' => $text])
@@ -200,20 +195,15 @@ class ShippingModule extends BackendModule
 
     /**
      * Helper method that fills a given cell with a value
-     *
-     * @param string $columnValue
      */
-    private function fillCell(NodeElement $cell, $columnValue)
+    private function fillCell(NodeElement $cell, string $columnValue): void
     {
         $cell->doubleClick();
         $focusedInput = $this->waitForSelectorPresent('xpath', BackendXpathBuilder::getFocusedElementXpath());
         $focusedInput->setValue($columnValue);
     }
 
-    /**
-     * @return array
-     */
-    private function buildShippingConfigFormData(array $shipping)
+    private function buildShippingConfigFormData(array $shipping): array
     {
         return [
             ['label' => 'Name:', 'value' => $shipping['name'], 'type' => 'input'],
@@ -228,45 +218,31 @@ class ShippingModule extends BackendModule
         ];
     }
 
-    /**
-     * @return NodeElement
-     */
-    private function getShippingCostCell(NodeElement $editor)
+    private function getShippingCostCell(NodeElement $editor): NodeElement
     {
         $costCellXpath = BackendXpathBuilder::create()
             ->child('tr', ['~class' => 'x-grid-row'], 1)
             ->descendant('div', ['~class' => 'x-grid-cell-inner'], 3)
             ->getXpath();
-        $costCell = $editor->find('xpath', $costCellXpath);
 
-        return $costCell;
+        return $editor->find('xpath', $costCellXpath);
     }
 
-    /**
-     * @return array
-     */
-    private function extractPaymentMethodsToActivate(array $shipping)
+    private function extractPaymentMethodsToActivate(array $shipping): array
     {
-        $paymentMethods = strpos($shipping['activePaymentMethods'], ',')
+        return strpos($shipping['activePaymentMethods'], ',')
             ? explode(', ', $shipping['activePaymentMethods'])
             : [$shipping['activePaymentMethods']];
-
-        return $paymentMethods;
     }
 
-    /**
-     * @return array
-     */
-    private function extractShippingCountriesToActivate(array $shipping)
+    private function extractShippingCountriesToActivate(array $shipping): array
     {
-        $countries = strpos($shipping['activeCountries'], ',')
+        return strpos($shipping['activeCountries'], ',')
             ? explode(', ', $shipping['activeCountries'])
             : [$shipping['activeCountries']];
-
-        return $countries;
     }
 
-    private function emptyShippingCostConfiguration(Window $editor)
+    private function emptyShippingCostConfiguration(Window $editor): void
     {
         $costRowsXpath = BackendXpathBuilder::create()->child('tr', ['~class' => 'x-grid-row'])->getXpath();
         $costRows = $editor->findAll('xpath', $costRowsXpath);

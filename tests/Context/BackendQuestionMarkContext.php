@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Context;
 
+use Exception;
 use Shopware\Page\Backend\QuestionMarkModule;
 
 class BackendQuestionMarkContext extends SubContext
@@ -16,7 +17,7 @@ class BackendQuestionMarkContext extends SubContext
         $questionMark = $this->getValidPage(QuestionMarkModule::class);
         $buildNr = $questionMark->getBuildNr();
         if (!strtotime($buildNr)) {
-            throw new \Exception('Build number wrong');
+            throw new Exception('Build number wrong');
         }
     }
 
@@ -28,7 +29,7 @@ class BackendQuestionMarkContext extends SubContext
         $questionMark = $this->getValidPage(QuestionMarkModule::class);
         $versionNr = $questionMark->getVersionNr();
         if (!version_compare($versionNr, '0.0.1', '>')) {
-            throw new \Exception('Version number wrong!');
+            throw new Exception('Version number wrong!');
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Shopware\Context;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Exception;
 use Shopware\Page\Backend\ProductExportModule;
 
 class ProductExportContext extends SubContext
@@ -13,7 +14,7 @@ class ProductExportContext extends SubContext
     /**
      * @When I fill in the product export configuration:
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iFillInTheProductExportGeneralConfiguration(TableNode $table): void
     {
@@ -31,7 +32,7 @@ class ProductExportContext extends SubContext
     /**
      * @Given I open the :title export file
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function iOpenTheCreatedExportFile(string $title): void
     {

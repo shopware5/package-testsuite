@@ -6,6 +6,7 @@ namespace Shopware\Element\Backend;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use RuntimeException;
 
 /**
  * Base class for all ExtJs element representations.
@@ -62,12 +63,12 @@ abstract class ExtJsElement extends NodeElement
 
         // Check if object exists
         if (!$this->isValid()) {
-            throw new \RuntimeException('Could not find element of type ' . \get_class($this) . ' with xpath: ' . $this->getXpath());
+            throw new RuntimeException('Could not find element of type ' . \get_class($this) . ' with xpath: ' . $this->getXpath());
         }
 
         // Check if object is visible
         if (!$this->isVisible()) {
-            throw new \RuntimeException('Element of type ' . \get_class($this) . ' not visible.');
+            throw new RuntimeException('Element of type ' . \get_class($this) . ' not visible.');
         }
     }
 }

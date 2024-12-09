@@ -36,7 +36,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
      *
      * @param Mink $mink Mink session manager
      */
-    public function setMink(Mink $mink)
+    public function setMink(Mink $mink): void
     {
         $this->mink = $mink;
     }
@@ -49,7 +49,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
     /**
      * Sets parameters provided for Mink.
      */
-    public function setMinkParameters(array $parameters)
+    public function setMinkParameters(array $parameters): void
     {
         $this->minkParameters = $parameters;
     }
@@ -57,7 +57,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
     /**
      * Returns specific mink parameter.
      */
-    public function getMinkParameter(string $name)
+    public function getMinkParameter(string $name): ?string
     {
         return $this->minkParameters[$name] ?? null;
     }
@@ -192,7 +192,7 @@ class SubContext extends PageObjectContext implements MinkAwareContext
         }, $wait);
     }
 
-    protected function slugify($text, $separator = ''): string
+    protected function slugify(string $text, string $separator = ''): string
     {
         $slugify = new Slugify();
         $slugify->addRule('@', 'at');

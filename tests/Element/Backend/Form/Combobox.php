@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Shopware\Element\Backend\Form;
 
 use Behat\Mink\Element\NodeElement;
+use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 use Shopware\Component\XpathBuilder\BackendXpathBuilder;
 use Shopware\Element\Backend\ExtJsElement;
 
@@ -15,6 +18,9 @@ class Combobox extends ExtJsElement
      */
     public function setValue($value): void
     {
+        if (!\is_string($value)) {
+            throw new InvalidArgumentException('Value must be a string');
+        }
         // Open combobox dropdown
         $pebble = $this->getComboboxPebble();
         $pebble->click();
@@ -28,7 +34,7 @@ class Combobox extends ExtJsElement
             // Click on correct dropdown entry
             $option = $this->getOptionByValue($value, $dropdown);
             if (!$option instanceof NodeElement) {
-                throw new \RuntimeException(\sprintf('Could not find option with value "%s"', print_r($value, true)));
+                throw new RuntimeException(\sprintf('Could not find option with value "%s"', print_r($value, true)));
             }
 
             $option->click();
@@ -41,11 +47,17 @@ class Combobox extends ExtJsElement
     private function elementsTouch(NodeElement $elemA, NodeElement $elemB): bool
     {
         $idA = $elemA->getAttribute('id');
-        $aTop = $this->getYCoordinateForElement($idA, 'top');
+        if (!\is_string($idA)) {
+            throw new Exception(\sprintf('Element A has no id attribute: %s', $elemA->getText()));
+        }
+        $aTop = $this->getYCoordinateForElement($idA);
         $aBottom = $this->getYCoordinateForElement($idA, 'bottom');
 
         $idB = $elemB->getAttribute('id');
-        $bTop = $this->getYCoordinateForElement($idB, 'top');
+        if (!\is_string($idB)) {
+            throw new Exception(\sprintf('Element B has no id attribute: %s', $elemB->getText()));
+        }
+        $bTop = $this->getYCoordinateForElement($idB);
         $bBottom = $this->getYCoordinateForElement($idB, 'bottom');
 
         return abs($aTop - $bBottom) < 5 || abs($aBottom - $bTop) < 5;
@@ -64,15 +76,15 @@ class Combobox extends ExtJsElement
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function getComboboxPebble(): NodeElement
     {
         $pebbleXpath = BackendXpathBuilder::create()->child('div', ['~class' => 'x-form-trigger'])->getXpath();
         $pebble = $this->find('xpath', $pebbleXpath);
 
-        if (!$pebble->isVisible()) {
-            throw new \Exception('Pebble for combobox not visible.');
+        if (!$pebble || !$pebble->isVisible()) {
+            throw new Exception('Pebble for combobox not visible.');
         }
 
         return $pebble;
