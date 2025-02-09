@@ -48,7 +48,7 @@ jobs:
 
             -   name: Download latest Shopware
                 id: download-artifact
-                uses: dawidd6/action-download-artifact@v6
+                uses: dawidd6/action-download-artifact@v8
                 with:
                     github_token: ${{secrets.GITHUB_TOKEN}}
                     workflow: create-release.yml
