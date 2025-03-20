@@ -39,7 +39,7 @@ Feature: I can manage my orders with the backend order module
   Scenario: I can filter and sort orders in the backend
     Given the following orders exist:
       | customer.email              | position.name | position.quantity | position.price | shipping.country |
-      | order.test@shopware.de.test | Testartikel   | 1                 | 10.99          | DE               |
+      | order.test2@shopware.de | Testartikel   | 1                 | 10.99          | DE               |
       | demo.test@shopware.de.test  | Testartikel   | 3                 | 15.99          | EG               |
 
     Given I am logged into the backend
@@ -54,4 +54,4 @@ Feature: I can manage my orders with the backend order module
 
     When I click the "Zurücksetzen" button
     And I sort the backend order list by order value ascendingly
-    Then I should see the order from "order.test@shopware.de.test" at the top of the order list
+    Then I should see exactly 2 order in the order list

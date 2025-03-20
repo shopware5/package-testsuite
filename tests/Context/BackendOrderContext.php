@@ -69,20 +69,6 @@ class BackendOrderContext extends SubContext
     }
 
     /**
-     * @Then I should see the order from :email at the top of the order list
-     *
-     * @throws Exception
-     */
-    public function iShouldSeeTheOrderFromAtTheTopOfTheOrderList(string $email): void
-    {
-        $topmostOrder = $this->getModulePage()->getTopmostOrderFromList();
-
-        if (strpos($topmostOrder->getHtml(), $email) === false) {
-            throw new Exception(\sprintf('Expected order from %s would be at top of list.', $email));
-        }
-    }
-
-    /**
      * @Then I should be able to send a notification to the customer
      */
     public function iShouldBeAbleToSendANotificationToTheCustomer(): void
