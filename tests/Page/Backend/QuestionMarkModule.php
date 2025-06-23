@@ -49,7 +49,7 @@ class QuestionMarkModule extends BackendModule
             ->getXpath();
         $text = $this->find('xpath', $xpath)->getHtml();
 
-        return str_replace('Unofficial Shopware ', '', $text);
+        return str_replace(['Unofficial ', 'Shopware '], '', $text);
     }
 
     /**

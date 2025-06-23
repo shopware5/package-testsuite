@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Context;
 
-use Exception;
+use RuntimeException;
 use Shopware\Page\Backend\QuestionMarkModule;
 
 class BackendQuestionMarkContext extends SubContext
@@ -16,7 +16,7 @@ class BackendQuestionMarkContext extends SubContext
     {
         $buildNr = $this->getValidPage(QuestionMarkModule::class)->getBuildNr();
         if (!strtotime($buildNr)) {
-            throw new \RuntimeException(sprintf('Build number "%s" is wrong', $buildNr));
+            throw new RuntimeException(\sprintf('Build number "%s" is wrong', $buildNr));
         }
     }
 
@@ -27,7 +27,7 @@ class BackendQuestionMarkContext extends SubContext
     {
         $versionNr = $this->getValidPage(QuestionMarkModule::class)->getVersionNr();
         if (!version_compare($versionNr, '0.0.1', '>')) {
-            throw new \RuntimeException(sprintf('Version number "%s" is wrong', $versionNr));
+            throw new RuntimeException(\sprintf('Version number "%s" is wrong', $versionNr));
         }
     }
 }
