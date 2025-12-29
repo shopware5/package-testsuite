@@ -32,7 +32,7 @@ jobs:
 
             -   name: Download latest Shopware
                 id: download-artifact
-                uses: dawidd6/action-download-artifact@v11
+                uses: dawidd6/action-download-artifact@v12
                 with:
                     github_token: ${{secrets.GITHUB_TOKEN}}
                     workflow: create-release.yml
